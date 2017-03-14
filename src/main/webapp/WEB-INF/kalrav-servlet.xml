@@ -23,4 +23,6 @@
 
 	<mvc:annotation-driven />
 	<mvc:resources mapping="/pages/**" location="/WEB-INF/pages/" />
+	<mvc:resources mapping="/webjars/**" location="/webjars/" />
+
 </beans>
