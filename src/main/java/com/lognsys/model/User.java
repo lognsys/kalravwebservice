@@ -1,17 +1,32 @@
 package com.lognsys.model;
 
-
 public class User {
-	private String auth_id ="";
-	private String firstname = "";
-	private String lastname = "";
-	private String email;
+	private String auth_id = "";
+	private String realname = "";
+	private String username = "";
 	private String location = "";
 	private String phone = "";
 	private String birthdate = "";
-	private boolean notification;
 	private String provenance = "";
+	private boolean notification;
+	private boolean active;
 	private int group_id;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getRealname() {
+		return realname;
+	}
+
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
 
 	public String getAuth_id() {
 		return auth_id;
@@ -19,30 +34,6 @@ public class User {
 
 	public void setAuth_id(String auth_id) {
 		this.auth_id = auth_id;
-	}
-	
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getLocation() {
@@ -93,4 +84,11 @@ public class User {
 		this.group_id = group_id;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 }

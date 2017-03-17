@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/")
 public class BaseController {
 	String message = "Welcome to Spring MVC!";
 
-	@RequestMapping("/hello")
 	public ModelAndView showMessage(
 			@RequestParam(value = "name", required = false, defaultValue = "World") String name) {
 		System.out.println("in controller");
