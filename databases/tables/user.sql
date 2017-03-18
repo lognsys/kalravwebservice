@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS user
 	realname varchar(64) not null default '',
 
 	# Optional phone
-	phone varchar(32) not null default ‘’,
+	phone varchar(32) not null default '',
 	
 	#optional provenance
 	provenance varchar(16) not null default '',
@@ -42,8 +42,11 @@ CREATE TABLE IF NOT EXISTS user
 	#Foreign Key user.id
 	user_id integer not null default 0, 
 
+	#drama average rating
+	avg_rating double(2,1) not null default 0,
+
 	last_edit timestamp not null default current_timestamp on update current_timestamp
 
 ) ENGINE = InnoDB default CHARSET=utf8;
 
-create index users_idx on users(username, realname);
+#create index users_idx on users(username, realname);

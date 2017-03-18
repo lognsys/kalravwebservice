@@ -31,6 +31,9 @@ CREATE TABLE IF NOT EXISTS drama
 	#Optional date 		
 	date datetime not null default current_timestamp,
 
+	#Optional avg_rating
+	avg_rating double(2,1) not null default 0,
+	
 	last_edit TIMESTAMP not null default current_timestamp on update current_timestamp
 
 ) ENGINE=InnoDB default CHARSET=utf8;

@@ -1,10 +1,8 @@
-#
-#
-#
-#
-drop table if exists group
+#group.sql 
 
-CREATE TABLE IF NOT EXISTS group   
+drop table if exists groups;
+
+CREATE TABLE IF NOT EXISTS groups 
 (
 	#Surrogate primary key
    	id integer auto_increment primary key,
@@ -15,7 +13,7 @@ CREATE TABLE IF NOT EXISTS group
 	#foreign key users.id	
 	user_id integer not null default 0,
 
-	last_edit timestamp not null default current_timestamp on update current_timestamp
+	last_edit timestamp not null default current_timestamp on update current_timestamp,
 	
 	UNIQUE(group_name)
 

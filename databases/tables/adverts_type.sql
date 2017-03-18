@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS advert_type 
+(
+   id integer auto_increment primary key,
+   advert_name VARCHAR(45) NOT NULL DEFAULT '',
+   last_edit TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
