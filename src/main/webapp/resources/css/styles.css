@@ -1,0 +1,116 @@
+@CHARSET "UTF-8";
+
+header_container kalrav_logo {
+	margin: 0;
+	padding: 0;
+}
+
+.login_body {
+	padding-top: 10%;
+	font-size: 12px;
+	background: url("../images/stage_backdrop_2.jpg") no-repeat center
+		center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.main {
+	max-width: 320px;
+	margin: 0 auto;
+}
+
+.login-or {
+	position: relative;
+	font-size: 18px;
+	color: #aaa;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.span-or {
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: -2px;
+	margin-left: -25px;
+	background-color: #fff;
+	width: 50px;
+	text-align: center;
+}
+
+.hr-or {
+	background-color: #cdcdcd;
+	height: 1px;
+	margin-top: 0px !important;
+	margin-bottom: 0px !important;
+}
+
+.login_label_color {
+	color: #cdcdcd;
+	margin: 0;
+	padding: 0;
+}
+
+h3 {
+	text-align: center;
+	line-height: 300%;
+	margin: 0;
+}
+
+/** footer start **/
+.social-icon {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.social-icon li {
+	display: inline-block;
+	text-align: center;
+}
+
+.social-icon a {
+	display: block;
+	width: 44px;
+	height: 44px;
+	line-height: 44px;
+	border-radius: 50%;
+	margin-right: 5px;
+}
+
+.social-icon a {
+	background: rgba(255, 255, 255, 0.85);
+	/* social icon background color */
+	color: #000; /* social icon color */
+}
+
+.social-icon a:hover {
+	background: rgba(255, 255, 255, 0.25);
+	/* social icon hover background color */
+	color: #fff; /* social icon hover color */
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding: 5px;
+	height: 60px;
+	background-color: #000;
+	opacity: 0.5;
+}
+
+.footer_text {
+	color: #FFF;
+	list-style: none;
+	height: inherit;
+	float: left;
+	margin-left: 42%;
+}
+
+/** footer end **/
+}
