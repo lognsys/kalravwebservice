@@ -7,7 +7,7 @@
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/pages/footer.jsp" />
 	</definition>
-	<definition name="login" extends="base_layout">
+	<definition name="login1" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Login" />
 		<put-attribute name="body" value="/WEB-INF/pages/login.jsp" />
 	</definition>

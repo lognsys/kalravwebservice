@@ -38,9 +38,6 @@ CREATE TABLE IF NOT EXISTS user
 			        
 	#Optional birthdate 	
 	birthdate varchar(16) not null default '',
-	
-	#Foreign Key user.id
-	user_id integer not null default 0, 
 
 	#drama average rating
 	avg_rating double(2,1) not null default 0,

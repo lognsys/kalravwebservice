@@ -7,7 +7,13 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:component-scan base-package="com.lognsys.web.controller" />
+
+
+	<!-- Load an external mvn config file; appcontext.xml is loaded by unit 
+		tests and should be free of beans related to mvc and the web -->
+	<import resource="classpath:appcontext.xml" />
+	<import resource="classpath:datasource-context.xml" />
+
 
 	<!-- **************************************************************** -->
 	<!-- RESOURCE FOLDERS CONFIGURATION -->
@@ -35,13 +41,4 @@
 			value="org.springframework.web.servlet.view.tiles3.TilesView"></property>
 	</bean>
 
-
-	<!-- **************************************************************** -->
-	<!-- MESSAGE EXTERNALIZATION/INTERNATIONALIZATION -->
-	<!-- Standard Spring MessageSource implementation -->
-	<!-- **************************************************************** -->
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="Messages" />
-	</bean>
 </beans>
