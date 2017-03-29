@@ -4,6 +4,12 @@
 		<div class="main">
 			<h3 class="login_label_color">Please Log In</h3>
 			<div class="row">
+				<c:if test="${not empty error}">
+					<div class="error">${error}</div>
+				</c:if>
+				<c:if test="${not empty msg}">
+					<div class="msg">${msg}</div>
+				</c:if>
 				<%-- <div class="col-xs-6 col-sm-6 col-md-6">
 					<a class="btn btn-lg btn-primary btn-block dashboard"
 						href="${pageContext.request.contextPath}/dashboard">Facebook</a>
