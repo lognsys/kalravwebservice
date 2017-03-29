@@ -1,23 +1,68 @@
 package com.lognsys.model;
 
+import java.sql.Date;
+
+/**
+ * Drama POJO as value object for retrieving values from form
+ * 
+ * 
+ * @author pdoshi
+ *
+ */
+
 public class Drama {
 
-	private int drama_id;
-	private int group_id;
+	private int id;
+	private String title;
 	private String genre;
 	private String star_cast;
 	private String director;
 	private String writer;
 	private String description;
-	private String date_time;
+	private int auditorium_id;
+	private Date date;
+	private int avg_rating;
+
 	private String place;
 
-	public int getDrama_id() {
-		return drama_id;
+	public int getId() {
+		return id;
 	}
 
-	public void setDrama_id(int drama_id) {
-		this.drama_id = drama_id;
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public int getAuditorium_id() {
+		return auditorium_id;
+	}
+
+	public void setAuditorium_id(int auditorium_id) {
+		this.auditorium_id = auditorium_id;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public int getAvg_rating() {
+		return avg_rating;
+	}
+
+	public void setAvg_rating(int avg_rating) {
+		this.avg_rating = avg_rating;
 	}
 
 	public String getGenre() {
@@ -60,28 +105,12 @@ public class Drama {
 		this.description = description;
 	}
 
-	public String getDate_time() {
-		return date_time;
-	}
-
-	public void setDate_time(String date_time) {
-		this.date_time = date_time;
-	}
-
 	public String getPlace() {
 		return place;
 	}
 
 	public void setPlace(String place) {
 		this.place = place;
-	}
-
-	public int getGroup_id() {
-		return group_id;
-	}
-
-	public void setGroup_id(int group_id) {
-		this.group_id = group_id;
 	}
 
 }

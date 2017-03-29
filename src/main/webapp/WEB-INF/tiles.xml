@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
-	<definition name="base_layout" template="/WEB-INF/pages/tiles-layout/site_layout.jsp">
+	<definition name="base_layout"
+		template="/WEB-INF/pages/tiles-layout/site_layout.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/pages/header.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/pages/footer.jsp" />
 	</definition>
-	<definition name="login1" extends="base_layout">
+	<definition name="login" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Login" />
 		<put-attribute name="body" value="/WEB-INF/pages/login.jsp" />
 	</definition>
-		<definition name="dashboard" extends="base_layout">
+	<definition name="dashboard" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Dashboard" />
 		<put-attribute name="body" value="/WEB-INF/pages/dashboard.jsp" />
+	</definition>
+	<definition name="register" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: Register User" />
+		<put-attribute name="body" value="/WEB-INF/pages/register.jsp" />
 	</definition>
 </tiles-definitions>

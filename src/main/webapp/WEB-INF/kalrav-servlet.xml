@@ -13,7 +13,7 @@
 		tests and should be free of beans related to mvc and the web -->
 	<import resource="classpath:appcontext.xml" />
 	<import resource="classpath:datasource-context.xml" />
-
+	<import resource="classpath:spring-security.xml"></import>	
 
 	<!-- **************************************************************** -->
 	<!-- RESOURCE FOLDERS CONFIGURATION -->
