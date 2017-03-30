@@ -43,7 +43,7 @@
 							Remember me
 						</label>
 					</div>
-					<button type="submit" class="btn btn btn-primary">Log In</button>
+					<button type="submit" class="btn btn btn-primary" >Log In</button>
 					<div class="form-group">
 						<p>
 							<a class="pull-right"

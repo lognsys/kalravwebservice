@@ -1,0 +1,183 @@
+package com.lognsys.util;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+
+import com.lognsys.model.Users;
+
+/**
+ * 
+ * @author pdoshi
+ * 
+ *TODO : Use this class for validation of forms attributes
+ */
+
+public class FormValidator implements Validator{
+
+	 private Pattern pattern;
+	 private Matcher matcher;
+	 private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+			   + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	 String ID_PATTERN = "[0-9]+";
+	 String STRING_PATTERN = "[a-zA-Z]+";
+	 String MOBILE_PATTERN = "[0-9]{10}";
+	 String ZIPCODE_PATTERN = "[0-9]{6}";
+	@Override
+	public boolean supports(Class<?> clazz) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void validate(Object target, Errors errors) {
+		// TODO Auto-generated method stub
+		Users users=(Users)target;
+		
+		validateFirstName(users,errors);
+		validateLastName(users,errors);
+		validateAddress(users,errors);
+		validateCity(users,errors);
+		validateState(users,errors);
+		validateZipcode(users,errors);
+		validatePhonenumber(users,errors);
+		validateEmail(users,errors);
+		
+		
+		
+	
+	
+	
+	}
+
+	private void validateEmail(Users users, Errors errors) {
+		  ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email",
+				    "required.email", "Email is required.");
+
+				// email validation in spring
+				  if (!(users.getEmail() != null && users.getEmail().isEmpty())) {
+				   pattern = Pattern.compile(EMAIL_PATTERN);
+				   matcher = pattern.matcher(users.getEmail());
+				   if (!matcher.matches()) {
+				    errors.rejectValue("email", "email.incorrect",
+				      "Enter a correct Email");
+				   }
+				  }
+	}
+
+	private void validatePhonenumber(Users users, Errors errors) {
+		  ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone",
+				    "required.phone", "Phone is required.");
+
+				// phone number validation
+				  if (!(users.getPhone() != null && users.getPhone().isEmpty())) {
+				   pattern = Pattern.compile(MOBILE_PATTERN);
+				   matcher = pattern.matcher(users.getPhone());
+				   if (!matcher.matches()) {
+				    errors.rejectValue("phone", "phone.incorrect",
+				      "Enter a correct phone number");
+				   }
+				  }
+	}
+
+	private void validateZipcode(Users users, Errors errors) {
+		  ValidationUtils.rejectIfEmptyOrWhitespace(errors, "zipcode",
+				    "required.zipcode", "Zipcode is required.");
+
+				// phone number validation
+				  if (!(users.getZipcode()!= null && users.getZipcode().isEmpty())) {
+				   pattern = Pattern.compile(ZIPCODE_PATTERN);
+				   matcher = pattern.matcher(users.getZipcode());
+				   if (!matcher.matches()) {
+				    errors.rejectValue("zipcode", "zipcode.incorrect",
+				      "Enter a correct Zipcode");
+				   }
+				  }
+		
+	}
+
+	private void validateState(Users users, Errors errors) {
+		ValidationUtils.rejectIfEmpty(errors, "state", "required.state",
+			    "State is required.");
+
+	// input string conatains characters only
+	if (!(users.getState() != null && users.getState().isEmpty())) {
+		pattern = Pattern.compile(STRING_PATTERN);
+		matcher = pattern.matcher((users.getState()));
+		
+		if (!matcher.matches())
+		{
+			errors.rejectValue("state", "state.containNonChar",
+			"Enter a valid State");
+		}
+	}
+		
+	}
+
+	private void validateCity(Users users, Errors errors) {
+		// TODO Auto-generated method stub
+		ValidationUtils.rejectIfEmpty(errors, "city", "required.city",
+			    "City is required.");
+
+	// input string conatains characters only
+	if (!(users.getCity() != null && users.getCity().isEmpty())) {
+		pattern = Pattern.compile(STRING_PATTERN);
+		matcher = pattern.matcher((users.getCity()));
+		
+		if (!matcher.matches())
+		{
+			errors.rejectValue("city", "city.containNonChar",
+			"Enter a valid City");
+		}
+	}
+		
+	}
+
+	private void validateAddress(Users users, Errors errors) {
+		// text area validation 
+		  ValidationUtils.rejectIfEmpty(errors, "address", "required.address",
+		    "Address is required.");
+
+		
+	}
+
+	private void validateLastName(Users users, Errors errors) {
+		ValidationUtils.rejectIfEmpty(errors, "lastname", "required.lastname",
+			    "Last Name is required.");
+
+	// input string conatains characters only
+	if (!(users.getLastname() != null && users.getLastname().isEmpty())) {
+		pattern = Pattern.compile(STRING_PATTERN);
+		matcher = pattern.matcher((users.getLastname()));
+		
+		if (!matcher.matches())
+		{
+			errors.rejectValue("lastname", "lastname.containNonChar",
+			"Enter a valid Last name");
+		}
+	}
+		
+	}
+
+	private void validateFirstName(Users users,Errors errors) {
+		ValidationUtils.rejectIfEmpty(errors, "firstname", "required.firstname",
+			    "First Name is required.");
+
+	// input string conatains characters only
+	if (!(users.getFirstname() != null && users.getFirstname().isEmpty())) {
+		pattern = Pattern.compile(STRING_PATTERN);
+		matcher = pattern.matcher((users.getFirstname()));
+		
+		if (!matcher.matches())
+		{
+			errors.rejectValue("firstname", "firstname.containNonChar",
+			"Enter a valid First name");
+		}
+	}
+		
+	}
+
+}
