@@ -2,7 +2,7 @@ package com.lognsys.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -13,11 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lognsys.dao.users.JdbcUserRepository;
 import com.lognsys.model.Users;
 import com.lognsys.util.FormValidator;
 
+
 @Controller
 public class BaseController {
+	
+	@Autowired
+	JdbcUserRepository userRep;
 
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public String showLogin(Model model, HttpServletRequest request) {
@@ -60,7 +65,7 @@ public class BaseController {
 
 	// monika added for register submit click validation 30/03/17
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String saveForm(@ModelAttribute("users") User user, BindingResult result, ModelMap model) {
+	public String saveForm(@ModelAttribute("users") Users user, BindingResult result, ModelMap model) {
 		System.out.println("Going insaveForm ");
 		
 		FormValidator formValidator = new FormValidator();
@@ -69,9 +74,12 @@ public class BaseController {
 
 		if (result.hasErrors()) {
 			return "register";
+		} else 
+			
+		{
+			userRep.addUser(user);
 		}
-
-		System.out.println(user.getName());
+		System.out.println(user.getFirstname());
 		return "registered  successfully ";
 	}
 }

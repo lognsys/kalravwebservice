@@ -5,10 +5,10 @@
 # TODO : configure my.cnf
 #
 
-mysql -u kalravdba -p kalrav < user.sql 
-mysql -u kalravdba -p kalrav < drama.sql 
-mysql -u kalravdba -p kalrav < group.sql 
+mysql -u kalravdba -p kalrav < users.sql 
+mysql -u kalravdba -p kalrav < dramas.sql 
+mysql -u kalravdba -p kalrav < groups.sql 
 mysql -u kalravdba -p kalrav < ratings.sql 
-mysql -u kalravdba -p kalrav < auditorium.sql 
+mysql -u kalravdba -p kalrav < auditoriums.sql 
 mysql -u kalravdba -p kalrav < admob_adverts.sql 
-mysql -u kalravdba -p kalrav < adverts_type.sql 
+mysql -u kalravdba -p kalrav < adverts_types.sql 

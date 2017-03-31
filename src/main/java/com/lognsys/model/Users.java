@@ -18,18 +18,18 @@ public class Users {
 	private boolean notification = false;
 	private double avg_rating;
 
-	
-//	Monika added 30/03/17
+	// Monika added 30/03/17
 	private String address = "";
 	private String city = "";
 	private String state = "";
-	private String zipcode = "" ;
-	private String companyname = "";
+	private String zipcode = "";
+	private String company_name = "";
 	private String firstname = "";
 	private String lastname = "";
 	private String email = "";
 	private String title = "";
-	
+	private String device;
+
 	public String getTitle() {
 		return title;
 	}
@@ -38,31 +38,6 @@ public class Users {
 		this.title = title;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getFirstname() {
-		return firstname;
-	}
-
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	
 	public String getAddress() {
 		return address;
 	}
@@ -95,16 +70,6 @@ public class Users {
 		this.zipcode = zipcode;
 	}
 
-	public String getCompanyname() {
-		return companyname;
-	}
-
-	public void setCompanyname(String companyname) {
-		this.companyname = companyname;
-	}
-
-	
-	
 	public double getAvg_rating() {
 		return avg_rating;
 	}
@@ -120,6 +85,7 @@ public class Users {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -182,6 +148,46 @@ public class Users {
 
 	public void setProvenance(String provenance) {
 		this.provenance = provenance;
+	}
+
+	public String getCompany_name() {
+		return company_name;
+	}
+
+	public void setCompany_name(String company_name) {
+		this.company_name = company_name;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setlastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getDevice() {
+		return device;
+	}
+
+	public void setDevice(String device) {
+		this.device = device;
 	}
 
 }

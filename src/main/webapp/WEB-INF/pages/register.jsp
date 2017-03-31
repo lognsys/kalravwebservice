@@ -55,7 +55,7 @@
 						<div class="col-sm-6 form-group">
 							<label>Company</label>
 							 <form:input type="text"
-								placeholder="Enter Company Name Here.." class="form-control" path="companyname" />
+								placeholder="Enter Company Name Here.." class="form-control" path="company_name" />
 						</div>
 					</div>
 					<div class="form-group">
