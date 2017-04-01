@@ -20,4 +20,12 @@
 		<put-attribute name="title" value="Kalrav: Register User" />
 		<put-attribute name="body" value="/WEB-INF/pages/register.jsp" />
 	</definition>
+	<definition name="drama" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: Drama" />
+		<put-attribute name="body" value="/WEB-INF/pages/drama.jsp" />
+	</definition>	
+	<definition name="user_grid" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: Grid User" />
+		<put-attribute name="body" value="/WEB-INF/pages/user_grid.jsp" />
+	</definition>
 </tiles-definitions>

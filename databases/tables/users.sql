@@ -32,18 +32,22 @@ CREATE TABLE users
 	
     #Required address
     address varchar(255) not null default '',
+ 
+    #Optional location
+    address varchar(255) not null default '',
+ 
     
     # optional state 
-    state varchar(32) not null default '' after phone,
+    state varchar(32) not null default '',
  
     #optional city
-    city varchar(32) not null default '' after state,
+    city varchar(32) not null default '',
     
     #optional zip
-  	zipcode varchar(8) not null default '' after city,
+  	zipcode varchar(8) not null default '',
   	
   	#required device_token 
-  	device varchar(255) not null default '' after city;
+  	device varchar(255) not null default '',
 	
 	#optional provenance
 	provenance varchar(16) not null default '',
@@ -61,6 +65,9 @@ CREATE TABLE users
 	avg_rating double(2,1) not null default 0,
 
 	last_edit timestamp not null default current_timestamp on update current_timestamp
+
+	#available in alter table email 	
+	email varchar(50) default not null,
 
 ) ENGINE = InnoDB default CHARSET=utf8;
 

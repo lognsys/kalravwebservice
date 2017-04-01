@@ -1,5 +1,7 @@
 package com.lognsys.util;
 
+import java.util.Date;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +38,25 @@ public class FormValidator implements Validator{
 	public void validate(Object target, Errors errors) {
 		// TODO Auto-generated method stub
 		Users users=(Users)target;
+		String device = UUID.randomUUID().toString();
+		users.setDevice(device);
+		System.out.println("device = " + device);
+
+		java.util.Date dt = new java.util.Date();
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String currentTime = sdf.format(dt);
+
+		users.setBirthdate(currentTime);
+		System.out.println("currentTime = " + currentTime);
+		
+		if(users.getFirstname()!=null && users.getLastname()!=null){
+			users.setRealname(users.getFirstname()+" "+users.getLastname());
+			System.out.println("Real name = " + users.getRealname());
+			String username=users.getLastname()+users.getFirstname();
+			users.setUsername(username.toLowerCase());
+			System.out.println("username = " + users.getUsername());
+
+		}
 		
 		validateFirstName(users,errors);
 		validateLastName(users,errors);

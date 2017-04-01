@@ -39,6 +39,9 @@ CREATE TABLE dramas
 	
 	last_edit TIMESTAMP not null default current_timestamp on update current_timestamp
 
+--	added by monika 1/04/17 see alter_table_drama in sql folder
+	imageurl varchar(150) not null default '',
+	
 ) ENGINE=InnoDB default CHARSET=utf8;
 
 create index dramas_title_idx 

@@ -7,6 +7,16 @@ package com.lognsys.model;
  *
  */
 public class Users {
+
+	private int id;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	private String auth_id = "";
 	private String username = "";
 	private String realname = "";
@@ -29,7 +39,7 @@ public class Users {
 	private String email = "";
 	private String title = "";
 	private String device;
-
+	
 	public String getTitle() {
 		return title;
 	}

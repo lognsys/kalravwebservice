@@ -22,6 +22,15 @@ public class Drama {
 	private int auditorium_id;
 	private Date date;
 	private int avg_rating;
+	private String imageurl;
+
+	public String getImageurl() {
+		return imageurl;
+	}
+
+	public void setImageurl(String imageurl) {
+		this.imageurl = imageurl;
+	}
 
 	private String place;
 

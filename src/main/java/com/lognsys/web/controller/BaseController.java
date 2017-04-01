@@ -1,5 +1,8 @@
 package com.lognsys.web.controller;
 
+import java.util.List;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.lognsys.dao.users.JdbcUserRepository;
+import com.lognsys.model.Drama;
 import com.lognsys.model.Users;
 import com.lognsys.util.FormValidator;
 
@@ -38,7 +42,10 @@ public class BaseController {
 			model.addObject("error", "Invalid username and password!");
 			model.setViewName("login");
 		} else {
+			
 			model.setViewName("dashboard");
+		
+			return model;
 		}
 
 		// if (logout != null) {
@@ -50,11 +57,48 @@ public class BaseController {
 	}
 
 	@RequestMapping(value = "/dashboard")
-	public String showDashboard(Model model, HttpServletRequest request) {
+	public ModelAndView showDashboard(Model model1A, HttpServletRequest request) {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("drama");
 		System.out.println("Going in Dashbaord controller");
-		return "dashboard";
+		if(userRep.getAllUsers()!=null && userRep.getAllUsers().size()>0){
+			List<Users> listContact = userRep.getAllUsers();
+		    model.addObject("listUsers", listContact);
+		    model.setViewName("user_grid");
+			return model;
+				
+		}
+		return model;
+		
 	}
+	
 
+	@RequestMapping(value = "/user_grid", method = RequestMethod.GET)
+	public ModelAndView showGridUser(Model model, HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView();
+		System.out.println("Going in grid controller");
+		Users user_grid = new Users();
+		if(userRep.getAllUsers()!=null && userRep.getAllUsers().size()>0){
+			List<Users> listContact = userRep.getAllUsers();
+			modelAndView.addObject("listUsers", listContact);
+			modelAndView.setViewName("user_grid");
+			return modelAndView;
+				
+		}
+		return modelAndView;
+	}
+	
+	
+	
+	@RequestMapping(value = "/drama", method = RequestMethod.GET)
+	public String showDrama(Model model, HttpServletRequest request) {
+		System.out.println("Going in drama controller");
+		Drama drama = new Drama();
+		model.addAttribute("drama", drama);
+		return "drama";
+	}
+	
+	
 	@RequestMapping(value = "/register" ,  method = RequestMethod.GET)
 	public String showRegister(Model model, HttpServletRequest request) {
 		System.out.println("Going in Registration controller");
@@ -71,15 +115,15 @@ public class BaseController {
 		FormValidator formValidator = new FormValidator();
 
 		formValidator.validate(user, result);
-
+	
 		if (result.hasErrors()) {
 			return "register";
 		} else 
-			
 		{
+			
 			userRep.addUser(user);
 		}
 		System.out.println(user.getFirstname());
-		return "registered  successfully ";
+		return "register";
 	}
 }

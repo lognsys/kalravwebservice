@@ -4,6 +4,8 @@
 #
 # CHNAGE LOG :
 # monika -  30-03-2017
+# CHNAGE LOG :
+# monika -  1-04-2017 added email
 
 #alter table user drop column user_id;
 alter table users add column location varchar(255) not null default '' after phone;
@@ -16,3 +18,5 @@ ALTER TABLE kalrav.users
   ADD city varchar(60) not null default '' after state,
   ADD zipcode varchar(8) not null default '' after city,
   ADD device varchar(255) not null default '' after city;
+  ALTER TABLE kalrav.users
+  ADD email varchar(50) not null default '' after device, 
