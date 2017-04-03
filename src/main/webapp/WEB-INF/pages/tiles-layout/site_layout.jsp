@@ -24,22 +24,26 @@
 <!-- css/stylesheet -->
 <link rel="stylesheet" href="static/css/styles.css">
 
+
+
 <!-- jquery -->
 <script src="webjars/jquery/2.2.3/jquery.min.js"></script>
 <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
+<!-- load kalrav.js after jquery -->
+<script type="text/javascript" src="static/js/kalrav.js"></script>
 
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
 </head>
 <body>
-	<header>
+	<div id="site_header">
 		<tiles:insertAttribute name="header" />
-	</header>
-	<div id="main_body">
+	</div>
+	<div  id="site_body">
 		<tiles:insertAttribute name="body" />
 	</div>
-	<footer>
+	<div id="site_footer">
 		<tiles:insertAttribute name="footer" />
-	</footer>
+	</div>
 </body>
 </html>

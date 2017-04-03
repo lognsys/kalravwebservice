@@ -2,9 +2,7 @@ package com.lognsys.model;
 
 /**
  * 
- * 
  * @author pdoshi
- *
  */
 public class Users {
 

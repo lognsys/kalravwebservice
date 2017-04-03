@@ -3,44 +3,46 @@
 html, body {
 	height: 100%;
 	margin: 0;
+	padding: 0;
 	overflow: hidden;
-	background: url("../images/stage_backdrop.jpg") no-repeat center center
-		fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
+	
 }
 
-header {
+/** start header **/
+#site_header {
 	display: block;
 	background-color: transparent;
-	height: 10%;
-}
-
-footer {
+	height: auto;
 	display: block;
-	bottom:0;
-	position: fixed;
-	background-color: transparent;
-	height: 10%;
+	position: relative;
+	overflow: hidden;
 }
 
-#main_body {
-	height: 80%;
-	display: block;
-	overflow: auto;
+#site_header center {
+	margin: 0;
+	padding: 0;
+	height: 100px;
 }
 
+/** end of header **/
 
+/** body **/
+#site_body {
+	padding: 0;
+	margin: 0;
+	height: auto;
+	position: relative;
+	height: auto;
+}
+/** end of body **/
 
-/**login start**/
-.main {
+/** start of login start **/
+.login_main {
 	max-width: 320px;
-	margin: 0 auto;
+	margin: 20px auto;
 }
 
-.login-or {
+/* .login-or {
 	position: relative;
 	font-size: 18px;
 	color: #aaa;
@@ -66,26 +68,37 @@ footer {
 	height: 1px;
 	margin-top: 0px !important;
 	margin-bottom: 0px !important;
+} */
+.container_login {
+	height: 525px;
+	margin: auto;
+	padding: 50% auto;
 }
 
 .login_label_color {
 	color: #cdcdcd;
 	margin: 0;
 	padding: 0;
-}
-
-h3 {
 	text-align: center;
 	line-height: 300%;
-	margin: 0;
 }
 
-/**Login-body end**/
+/** end of login**/
 
-/** footer start **/
+/** start of footer **/
+#site_footer .container_footer {
+	margin: 0;
+	width: 100%;
+	background-color: #000;
+	opacity: 0.5;
+	height: 50px;
+	overflow: hidden;
+	width: 100%;
+}
+
 .social-icon {
 	list-style: none;
-	padding: 0;
+	padding: 2px;
 	margin: 0;
 }
 
@@ -115,18 +128,6 @@ h3 {
 	color: #fff; /* social icon hover color */
 }
 
-#footer {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	padding: 5px;
-	height: 60px;
-	background-color: #000;
-	opacity: 0.6;
-}
-
 .footer_text {
 	color: #FFF;
 	list-style: none;
@@ -134,18 +135,17 @@ h3 {
 	float: left;
 	margin-left: 42%;
 }
-
-/** footer end **/
+/** end of footer **/
 
 /** Registration Form**/
 @import "font-awesome.min.css";
 
 @import "font-awesome-ie7.min.css";
 /* Space out content a bit */
-body {
+/* body {
 	padding-top: 20px;
 	padding-bottom: 20px;
-}
+} */
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header, .marketing, .footer {
@@ -172,7 +172,7 @@ body {
 	border-top: 1px solid #e5e5e5;
 }
 
-/* Customize container */
+/*Customize container*/
 @media ( min-width : 768px) {
 	.container {
 		max-width: 730px;
@@ -209,10 +209,14 @@ body {
 	.header, .marketing, .footer {
 		padding-right: 0;
 		padding-left: 0;
-	/* }
+		/* }
 	Space out the masthead */
-	.header {
-		margin-bottom: 30px;
+		.
+		header
+		{
+		margin-bottom
+		:
+		30px;
 	}
 	/* Remove the bottom border on the jumbotron for visual effect */
 	.jumbotron {
@@ -222,8 +226,7 @@ body {
 
 /** end of Registration Form **/
 
-
-/**Login Form**/
+/**Login Form Error css**/
 .error {
 	padding: 15px;
 	margin-bottom: 20px;

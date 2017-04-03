@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div class="container" onload='document.loginForm.username.focus();'>
+<div class="container_login" onload='document.loginForm.username.focus();'>
 	<div class="row">
-		<div class="main">
+		<div class="login_main">
 			<h3 class="login_label_color">Please Log In</h3>
 			<div class="row">
 				<c:if test="${not empty error}">
@@ -10,6 +10,8 @@
 				<c:if test="${not empty msg}">
 					<div class="msg">${msg}</div>
 				</c:if>
+
+				<!-- Removing google / facebook authentication -->
 				<%-- <div class="col-xs-6 col-sm-6 col-md-6">
 					<a class="btn btn-lg btn-primary btn-block dashboard"
 						href="${pageContext.request.contextPath}/dashboard">Facebook</a>
@@ -23,6 +25,7 @@
 				<hr class="hr-or">
 				<span class="span-or">or</span>
 			</div> --%>
+				<!-- End of Removing google / facebook authentication -->
 				<form name='loginForm' action="<c:url value='/login' />"
 					method='POST'>
 					<div class="form-group">
@@ -43,7 +46,7 @@
 							Remember me
 						</label>
 					</div>
-					<button type="submit" class="btn btn btn-primary" >Log In</button>
+					<button type="submit" class="btn btn btn-primary">Log In</button>
 					<div class="form-group">
 						<p>
 							<a class="pull-right"
@@ -56,3 +59,4 @@
 			</div>
 		</div>
 	</div>
+</div>

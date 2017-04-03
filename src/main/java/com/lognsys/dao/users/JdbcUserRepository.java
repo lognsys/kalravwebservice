@@ -26,12 +26,19 @@ public class JdbcUserRepository implements UserRespository {
 		this.namedParamJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	}
 
+	/**
+	 * Add users object into database
+	 * @param users
+	 */
 	@Override
 	public void addUser(Users users) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(users);
 		namedParamJdbcTemplate.update(sqlProperties.getProperty(USER_QUERIES.insert_users.name()), params);
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public void updateUser(Users users) {
 		// TODO Auto-generated method stub

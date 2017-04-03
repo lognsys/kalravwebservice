@@ -1,6 +1,7 @@
-# dramasi.sql 
+# dramas.sql 
+#  @author - PJD 04/04/17 created table dramas
 #  
-#
+# CHANGE LOG : MS - 04/04/17 add column imageurl
 #
 
 DROP TABLE IF EXISTS dramas;
@@ -36,11 +37,10 @@ CREATE TABLE dramas
 
 	#Optional avg_rating
 	avg_rating double(2,1) not null default 0,
-	
-	last_edit TIMESTAMP not null default current_timestamp on update current_timestamp
 
---	added by monika 1/04/17 see alter_table_drama in sql folder
-	imageurl varchar(150) not null default '',
+	imageurl varchar(128) not null default '',
+
+	last_edit TIMESTAMP not null default current_timestamp on update current_timestamp
 	
 ) ENGINE=InnoDB default CHARSET=utf8;
 

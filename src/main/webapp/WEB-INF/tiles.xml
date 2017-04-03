@@ -4,7 +4,7 @@
 	<definition name="base_layout"
 		template="/WEB-INF/pages/tiles-layout/site_layout.jsp">
 		<put-attribute name="title" value="" />
-		<put-attribute name="header" value="/WEB-INF/pages/header.jsp" />
+		<put-attribute name="header" value="/WEB-INF/pages/header.jsp" /> 
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/pages/footer.jsp" />
 	</definition>

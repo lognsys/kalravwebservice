@@ -14,6 +14,12 @@ public class JdbcUserRepositoryTest {
 
 	@Autowired
 	private JdbcUserRepository userRepo;
+	
+	
+	public void setUp(){
+		
+	}
+	
 
 	// TODO transaction test
 	@Test
