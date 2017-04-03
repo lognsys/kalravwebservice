@@ -12,7 +12,7 @@
 <div class="container">
 	<h1 class="well">This is dashboard!</h1>
   <input type="submit" onclick="location.href='${pageContext.request.contextPath}/drama'" name="drama" value="drama" /></div>	
-  <input type="submit" onclick="location.href='${pageContext.request.contextPath}/user_grid'" name="user_grid" value="user_grid" /></div>	
+  <input type="submit" onclick="location.href='${pageContext.request.contextPath}/user_listitems'" name="user_listitems" value="user_grid" /></div>	
 
 </form></body>
 </html>

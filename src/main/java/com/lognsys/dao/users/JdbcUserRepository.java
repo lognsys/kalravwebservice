@@ -9,6 +9,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.lognsys.model.Users;
@@ -37,7 +38,14 @@ public class JdbcUserRepository implements UserRespository {
 		// TODO Auto-generated method stub
 
 	}
+@Override
+public void delete(Integer id) {
+	// TODO Auto-generated method stub
+	String sql = "DELETE FROM USERS WHERE id= :id";
+	namedParamJdbcTemplate.update( sqlProperties.getProperty(USER_QUERIES.delete_users.name()),
+			new MapSqlParameterSource("id", id));
 
+}
 	@Override
 	public Users findUserByEmailId(String emailId) {
 		// TODO Auto-generated method stub
@@ -80,6 +88,7 @@ public class JdbcUserRepository implements UserRespository {
 	 */
 	private enum USER_QUERIES {
 		insert_users,
-		select_users
+		select_users,
+		delete_users
 	}
 }

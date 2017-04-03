@@ -61,33 +61,53 @@ public class BaseController {
 		ModelAndView model = new ModelAndView();
 		model.setViewName("drama");
 		System.out.println("Going in Dashbaord controller");
-		if(userRep.getAllUsers()!=null && userRep.getAllUsers().size()>0){
+		/*if(userRep.getAllUsers()!=null && userRep.getAllUsers().size()>0){
 			List<Users> listContact = userRep.getAllUsers();
 		    model.addObject("listUsers", listContact);
-		    model.setViewName("user_grid");
-			return model;
+		    model.setViewName("user_listitems");
+			
+		    return model;
 				
-		}
+		}*/
 		return model;
 		
 	}
 	
-
-	@RequestMapping(value = "/user_grid", method = RequestMethod.GET)
-	public ModelAndView showGridUser(Model model, HttpServletRequest request) {
-		ModelAndView modelAndView = new ModelAndView();
-		System.out.println("Going in grid controller");
-		Users user_grid = new Users();
-		if(userRep.getAllUsers()!=null && userRep.getAllUsers().size()>0){
-			List<Users> listContact = userRep.getAllUsers();
-			modelAndView.addObject("listUsers", listContact);
-			modelAndView.setViewName("user_grid");
-			return modelAndView;
-				
-		}
-		return modelAndView;
-	}
+// monika added to  list the users in listview
+//	@RequestMapping(value = "/user_listitems")
+//	public String showGridUser(Model model, HttpServletRequest request) {
+//		System.out.println("Going in grid controller");
+//		if(userRep.getAllUsers()!=null && userRep.getAllUsers().size()>0){
+//			List<Users> user_listitems = userRep.getAllUsers();
+//			model.addAttribute("user_listitems", user_listitems);
+//			return  "user_listitems";
+//		}
+//		return "user_listitems";
+//	}
 	
+	
+	
+//	@RequestMapping(method = RequestMethod.POST)
+//	public String DeleteUser(@ModelAttribute("users") Users users,Model model, HttpServletRequest request) {
+//		try {
+//			System.out.println("Going in DeleteUser controller");
+//			
+//			String []userID = request.getParameterValues("id");
+//			
+//			
+//			for(int i=0;i<userID.length;i++){
+//				int userId = Integer.parseInt(request.getParameter("id")); 
+//				 users = new Users();
+//				users.setId(userId);
+//				userRep.delete(users.getId());}
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			System.out.println("Going in DeleteUser Exception "+e);
+//			
+//		}
+//		return "user_listitems";
+//	}
 	
 	
 	@RequestMapping(value = "/drama", method = RequestMethod.GET)
@@ -107,6 +127,9 @@ public class BaseController {
 		return "register";
 	}
 
+	
+	
+	
 	// monika added for register submit click validation 30/03/17
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String saveForm(@ModelAttribute("users") Users user, BindingResult result, ModelMap model) {
