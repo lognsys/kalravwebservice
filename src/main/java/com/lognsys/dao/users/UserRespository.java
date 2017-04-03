@@ -32,4 +32,6 @@ public interface UserRespository {
 	 */
 	public List<Users> getAllUsers();
 
+
+	public void delete(Integer id);
 }
