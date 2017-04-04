@@ -2,6 +2,8 @@ package com.lognsys.dao.users;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.User;
+
 import com.lognsys.model.Users;
 
 public interface UserRespository {
@@ -33,5 +35,5 @@ public interface UserRespository {
 	public List<Users> getAllUsers();
 
 
-	public void delete(Integer id);
+	public void delete(Integer id,Users usr);
 }

@@ -1,0 +1,78 @@
+/**** users table **/
+# user.sql
+# Use:  User registration.
+# 
+# Initialization for testing : tbd
+#
+# Change History: 
+# 	3/15/17 - pjd ADD: make username, realname index  
+#   31/03/17 - pjd UPDATE: set default notification, enabled = 1 
+
+drop table if exists users;
+
+CREATE TABLE users  
+(
+	# Surrogate Primary Key	
+	id integer auto_increment primary key,
+    	
+	# oauth id from (Facebook or google)
+	auth_id varchar(45) not null default '',
+       
+    # username is an email address
+	username varchar(64) not null default '',
+
+	# Optional realname
+	realname varchar(64) not null default '',
+
+	# Optional phone
+	phone varchar(32) not null default '',
+	
+	#Optional company_name
+    company_name varchar(100) not null default '', 
+	
+    #Required address
+    address varchar(255) not null default '',
+ 
+    #Optional location
+    address varchar(255) not null default '',
+ 
+    
+    # optional state 
+    state varchar(32) not null default '',
+ 
+    #optional city
+    city varchar(32) not null default '',
+    
+    #optional zip
+  	zipcode varchar(8) not null default '',
+  	
+  	#required device_token 
+  	device varchar(255) not null default '',
+	
+	#optional provenance
+	provenance varchar(16) not null default '',
+		  
+	#required by spring security enabled =1 , disabled=0 
+	enabled tinyint  not null default 1,
+		        
+	# Optional notification to users 
+	notification tinyint not null default 1,
+			        
+	#Optional birthdate 	
+	birthdate datetime default null,
+
+	#drama average rating
+	avg_rating double(2,1) not null default 0,
+
+	last_edit timestamp not null default current_timestamp on update current_timestamp
+
+
+) ENGINE = InnoDB default CHARSET=utf8;
+
+create index users_username_idx on users(username);
+create index users_realname_idx on users(realname(16));
+create index users_birthdate_idx on users(birthdate);
+create index users_city_idx on users(city);
+create index users_address_idx on users(address);
+
+

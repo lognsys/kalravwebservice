@@ -34,7 +34,6 @@ public class Users {
 	private String company_name = "";
 	private String firstname = "";
 	private String lastname = "";
-	private String email = "";
 	private String title = "";
 	private String device;
 	
@@ -182,13 +181,6 @@ public class Users {
 		this.lastname = lastname;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
 	public String getDevice() {
 		return device;

@@ -10,23 +10,26 @@
         <title>User Manager </title>
      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript">
-	function selectAllCheckBox() {
-
-        if (document.getElementById('select_all').checked == true) {
-            $('.user_data').each(function() {
-                this.checked = true;
-            });
-        } else {
-            $('.user_data').each(function() {
-                this.checked = false;
-            });
-        }
-
-    }
+	
+	
+	
+	function getCheckedCheckboxesFor(checkboxName) {
+	    var checkboxes = document.querySelectorAll('input[name="' + checkboxName + '"]:checked'), values = [];
+	    var x = document.getElementById("demo");
+	    x.innerHTML=checkboxes;
+	       
+        Array.prototype.forEach.call(checkboxes, function(el) {
+        		
+	        values.push(el.value);
+	        x.innerHTML=checkboxes+ "   "+el.value+ "  "+values;
+		    
+	    });
+	    return values;}
 </script>
     </head>
 <body>
-
+<form name="myform" method="post" ></form>
+   
     <div align="center">
             <h1>User List</h1>
             <h3>
@@ -34,10 +37,8 @@
     <div class="row">
         <nav class="navbar navbar-default">
             <div class="container">
-               <!--  <div class="navbar-header">
-                    <span class="navbar-brand">Bootstrap Table Panel</span>
-                </div> -->
-                <p class="navbar-text, text-center">User List Form</p>
+             
+                <p  id="demo" class="navbar-text, text-center">User List Form</p>
             </div>
         </n/av>
     </div>
@@ -71,7 +72,7 @@
                     <table id="mytable" class="table table-striped table-bordered table-list">
                         <thead>
                         <tr>
-                            <th class="col-check"><input type="checkbox" name="Select All" id="select_all" onclick="selectAllCheckBox();"/>
+                          <th class="col-check"><input type="checkbox" name="Select All" id="select_all" onclick="selectAllCheckBox();"/>
                             </th>
                             <th class="hidden-xs">ID</th>
                             <th class="col-text">Name</th>
@@ -85,11 +86,13 @@
                       
                         <c:forEach var="users" items="${user_listitems}">   
                         <tr data-status="completed">
-                            <td align="center"><input type="checkbox" path="selectedCheckBox" class="user_data" value="${users.id} " name="id"/></td>
-                            <td class="hidden-xs">${users.id}</td>
+                            <td align="center"><input name="users" type="checkbox" value="${users.id}" /></td>
+                            
+                             <td class="hidden-xs">${users.id}</td>
                             <td>${users.realname}</td>
-                            <td>${users.email}</td>
+                            <td>${users.username}</td>
                             <td>${users.phone}</td>
+                          <td><a href="deleteemp/${users.id}">Delete</a></td> 
                             <td>
                             
                                  <div class="btn-group">
@@ -139,15 +142,7 @@
                                 </ul>
                             </nav>
                         </div>
-                       <!-- <div class="col col-xs-3">
-                            <div class="pull-right">
-                                <button type="button" class="btn btn-primary">
-                                    <span class="glyphicon glyphicon-plus"
-                                          aria-hidden="true"></span>
-                                    Add row
-                                </button>
-                            </div>
-                        </div>-->
+                     
                     </div>
                 </div>
             </div>
@@ -169,19 +164,19 @@
                                           aria-hidden="true"></span>
                                     Edit
                                 </button>   
-                                    <button type="button" class="btn btn-primary">
-                                    <span class="glyphicon glyphicon-plus"
+                                    <input type="submit" class="btn btn-primary" value="Add" href="${pageContext.request.contextPath}/register" />
+                                    <span class="glyphicon "
                                           aria-hidden="true"></span>
-                                    Add
-                                </button>   
-                                    <button type="button" class="btn btn-primary">
-                                    <span class="glyphicon glyphicon-plus"
+                                       
+                                    <input type="submit" class="btn btn-primary" value="Delete" name="submit" onclick="alert(getCheckedCheckboxesFor('users'));"  />
+                                 
+                                    <span class="glyphicon "
                                           aria-hidden="true"></span>
-                                    Delete
-                                </button>   
+                                    
             </div>
         </nav>
     </div>
 </div>
+</form>
 </body>
 </html>

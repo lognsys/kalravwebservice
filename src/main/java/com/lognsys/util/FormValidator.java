@@ -52,10 +52,7 @@ public class FormValidator implements Validator{
 		if(users.getFirstname()!=null && users.getLastname()!=null){
 			users.setRealname(users.getFirstname()+" "+users.getLastname());
 			System.out.println("Real name = " + users.getRealname());
-			String username=users.getLastname()+users.getFirstname();
-			users.setUsername(username.toLowerCase());
-			System.out.println("username = " + users.getUsername());
-
+			
 		}
 		
 		validateFirstName(users,errors);
@@ -75,15 +72,15 @@ public class FormValidator implements Validator{
 	}
 
 	private void validateEmail(Users users, Errors errors) {
-		  ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email",
-				    "required.email", "Email is required.");
-
+		  ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username",
+				    "required.username", "Email is required.");
+		 
 				// email validation in spring
-				  if (!(users.getEmail() != null && users.getEmail().isEmpty())) {
+				  if (!(users.getUsername() != null && users.getUsername().isEmpty())) {
 				   pattern = Pattern.compile(EMAIL_PATTERN);
-				   matcher = pattern.matcher(users.getEmail());
+				   matcher = pattern.matcher(users.getUsername());
 				   if (!matcher.matches()) {
-				    errors.rejectValue("email", "email.incorrect",
+				    errors.rejectValue("username", "username.incorrect",
 				      "Enter a correct Email");
 				   }
 				  }

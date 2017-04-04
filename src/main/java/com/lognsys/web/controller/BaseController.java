@@ -1,9 +1,13 @@
 package com.lognsys.web.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,6 +61,15 @@ public class BaseController {
 
 	}
 
+	@RequestMapping(method = RequestMethod.POST)
+	public String submitForm(Model model, Users userslistcheck,
+		
+		BindingResult result) {
+		System.out.println("Going in ubmitForm");
+		model.addAttribute("userslistcheck", userslistcheck);
+		return "success";
+
+	}
 	@RequestMapping(value = "/dashboard")
 	public ModelAndView showDashboard(Model model1A, HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
@@ -74,41 +88,37 @@ public class BaseController {
 	}
 	
 // monika added to  list the users in listview
-//	@RequestMapping(value = "/user_listitems")
-//	public String showGridUser(Model model, HttpServletRequest request) {
-//		System.out.println("Going in grid controller");
-//		if(userRep.getAllUsers()!=null && userRep.getAllUsers().size()>0){
-//			List<Users> user_listitems = userRep.getAllUsers();
-//			model.addAttribute("user_listitems", user_listitems);
-//			return  "user_listitems";
-//		}
-//		return "user_listitems";
-//	}
+	@RequestMapping(value = "/user_listitems")
+	public String showGridUser(Model model, HttpServletRequest request) {
+		System.out.println("Going in grid controller");
+		System.out.println("Going in grid controller +userRep.getAllUsers() "+userRep.getAllUsers().size());
+		
+		if(userRep.getAllUsers()!=null && userRep.getAllUsers().size()>0){
+			List<Users> user_listitems = userRep.getAllUsers();
+			model.addAttribute("user_listitems", user_listitems);
+			return  "user_listitems";
+		}
+		return "user_listitems";
+	}
 	
-	
-	
-//	@RequestMapping(method = RequestMethod.POST)
-//	public String DeleteUser(@ModelAttribute("users") Users users,Model model, HttpServletRequest request) {
-//		try {
-//			System.out.println("Going in DeleteUser controller");
-//			
-//			String []userID = request.getParameterValues("id");
-//			
-//			
-//			for(int i=0;i<userID.length;i++){
-//				int userId = Integer.parseInt(request.getParameter("id")); 
-//				 users = new Users();
-//				users.setId(userId);
-//				userRep.delete(users.getId());}
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			System.out.println("Going in DeleteUser Exception "+e);
-//			
-//		}
-//		return "user_listitems";
-//	}
-	
+	   /* It deletes record for the given id in URL and redirects to /viewemp */  
+    @RequestMapping(value="/deleteemp/{id}",method = RequestMethod.GET)  
+    public ModelAndView delete(@PathVariable int id){  
+    	System.out.println("Going in delete  ");
+		
+    	List<Users> list=userRep.getAllUsers();
+    	for(int i=0;i<list.size();i++){
+    		Users usr=list.get(i);
+        	System.out.println("Going in delete usr.getId() "+usr.getId());
+    		if(usr.getId()==id){
+    			userRep.delete(id,usr);
+        	 	return new ModelAndView("redirect:/user_listitems");  
+        	}
+    		     		
+    	}
+    	return new ModelAndView("redirect:/user_listitems");  
+    }  
+
 	
 	@RequestMapping(value = "/drama", method = RequestMethod.GET)
 	public String showDrama(Model model, HttpServletRequest request) {
