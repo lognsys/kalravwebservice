@@ -1,21 +1,37 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-2">
-            <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#"><i class="fa fa-home fa-fw"></i>Home</a></li>
-                <li><a href=""><i class="fa fa-list-alt fa-fw"></i>Widgets</a></li>
-                <li><a href=""><i class="fa fa-file-o fa-fw"></i>Pages</a></li>
-                <li><a href=""><i class="fa fa-bar-chart-o fa-fw"></i>Charts</a></li>
-                <li><a href=""><i class="fa fa-table fa-fw"></i>Table</a></li>
-                <li><a href=""><i class="fa fa-tasks fa-fw"></i>Forms</a></li>
-                <li><a href=""><i class="fa fa-calendar fa-fw"></i>Calender</a></li>
-                <li><a href=""><i class="fa fa-book fa-fw"></i>Library</a></li>
-                <li><a href=""><i class="fa fa-pencil fa-fw"></i>Applications</a></li>
-                <li><a href=""><i class="fa fa-cogs fa-fw"></i>Settings</a></li>
-            </ul>
-        </div>
-<!--         <div class="col-md-9 well">
-            Vertical admin menu
-        </div> -->
-    </div>
+
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar collapse in"">
+	<!-- <form role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Search">
+			</div>
+		</form> -->
+	<ul class="nav menu">
+		<li class="active"><a href="${pageContext.request.contextPath}/dashboard"> <svg
+					class="glyph stroked dashboard-dial">
+			<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard
+		</a></li>
+<li><a href="${pageContext.request.contextPath}/userlist"> <svg
+					class="glyph stroked calendar">
+			<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#stroked-calendar"></use></svg> Settings
+		</a></li>
+		<li><a href="${pageContext.request.contextPath}/userlist"> <svg
+					class="glyph stroked calendar">
+			<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#stroked-calendar"></use></svg> User Lists
+		</a></li>
+		<li><a href="${pageContext.request.contextPath}/drama"> <svg
+					class="glyph stroked line-graph">
+			<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#stroked-calendar"></use></svg> Drama Lists
+		</a></li>
+		<li><a href="${pageContext.request.contextPath}/adverts.html"> <svg class="glyph stroked line-graph">
+					<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#stroked-line-graph"></use></svg> Advertisements
+		</a></li>
+		<li><a href="${pageContext.request.contextPath}/userlist"> <svg class="glyph stroked line-graph">
+					<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#stroked-line-graph"></use></svg> Ticket Booking
+		</a></li>
 </div>

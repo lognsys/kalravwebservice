@@ -5,12 +5,17 @@
 		template="/WEB-INF/pages/tiles-layout/site_layout.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/pages/header.jsp" /> 
+		 <put-attribute name="menu" value="/WEB-INF/pages/menu.jsp" /> 
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/pages/footer.jsp" />
 	</definition>
+	
 	<definition name="login" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Login" />
 		<put-attribute name="body" value="/WEB-INF/pages/login.jsp" />
+		 <put-attribute name="header" value="" /> 
+		  <put-attribute name="menu" value="" /> 
+		   <put-attribute name="footer" value="" /> 
 	</definition>
 	<definition name="dashboard" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Dashboard" />
@@ -24,9 +29,20 @@
 		<put-attribute name="title" value="Kalrav: Drama" />
 		<put-attribute name="body" value="/WEB-INF/pages/drama.jsp" />
 	</definition>	
-<definition name="user_listitems" extends="base_layout">
+<!-- <definition name="user_listitems" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Grid User" />
 		<put-attribute name="body" value="/WEB-INF/pages/user_listitems.jsp" />
+	</definition>  -->
+<definition name="userlist" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: Users" />
+		<put-attribute name="body" value="/WEB-INF/pages/userlist.jsp" />
 	</definition> 
-	
+	<definition name="updateuser" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: Users" />
+		<put-attribute name="body" value="/WEB-INF/pages/updateuser.jsp" />
+	</definition> 
+	<definition name="adverts" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: Adverts" />
+		<put-attribute name="body" value="/WEB-INF/pages/adverts.html" />
+	</definition> 
 </tiles-definitions>

@@ -4,7 +4,7 @@ html, body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	overflow: hidden;
+	overflow: auto;
 	
 }
 
@@ -30,10 +30,9 @@ html, body {
 #site_body {
 	padding: 0;
 	margin: 0;
+	position: auto;
 	height: auto;
-	position: relative;
-	height: auto;
-}
+	}
 /** end of body **/
 
 /** start of login start **/

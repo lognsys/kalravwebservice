@@ -7,13 +7,6 @@ package com.lognsys.model;
 public class Users {
 
 	private int id;
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	private String auth_id = "";
 	private String username = "";
@@ -36,7 +29,15 @@ public class Users {
 	private String lastname = "";
 	private String title = "";
 	private String device;
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -180,7 +181,6 @@ public class Users {
 	public void setlastname(String lastname) {
 		this.lastname = lastname;
 	}
-
 
 	public String getDevice() {
 		return device;

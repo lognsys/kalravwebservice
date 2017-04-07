@@ -35,5 +35,14 @@ public interface UserRespository {
 	public List<Users> getAllUsers();
 
 
-	public void delete(Integer id,Users usr);
+	public void delete(Integer id);
+	
+
+	/**
+	 * Get User by Id
+	 * @param id
+	 * @return
+	 */
+	public Users findUserById(Integer id);
+
 }

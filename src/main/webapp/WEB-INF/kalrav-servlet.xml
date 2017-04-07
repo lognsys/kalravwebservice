@@ -8,7 +8,6 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-
 	<!-- Load an external mvn config file; appcontext.xml is loaded by unit 
 		tests and should be free of beans related to mvc and the web -->
 	<import resource="classpath:appcontext.xml" />
@@ -19,10 +18,14 @@
 	<!-- RESOURCE FOLDERS CONFIGURATION -->
 	<!-- Dispatcher configuration for serving static resources -->
 	<!-- **************************************************************** -->
-
+<!-- 
+	<mvc:resources mapping="/static/**" location="/resources/csshome" />
+	<mvc:resources mapping="/static/**" location="/resources/js" /> -->
 	<mvc:resources mapping="/static/**" location="/resources/" />
 	<mvc:resources mapping="/webjars/**" location="/webjars/" />
 
+<mvc:resources mapping="/resources/**" location="/resources/csshome" />
+<mvc:resources mapping="/resources/**" location="/resources/js" />
 	<!-- Default handler -->
 	<mvc:default-servlet-handler />
 
