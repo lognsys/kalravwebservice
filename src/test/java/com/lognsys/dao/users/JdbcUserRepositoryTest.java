@@ -14,18 +14,17 @@ public class JdbcUserRepositoryTest {
 
 	@Autowired
 	private JdbcUserRepository userRepo;
-	
-	
-	public void setUp(){
-		
+
+	public void setUp() {
+
 	}
-	
 
 	// TODO transaction test
 	@Test
 	public void testCreateUser() {
 		Users users = new Users();
 
+		users.setId(123);
 		users.setAuth_id("123456789");
 
 		users.setRealname("Priyank Doshi");
@@ -35,17 +34,17 @@ public class JdbcUserRepositoryTest {
 		users.setPhone("9867544359");
 
 		users.setState("Maharashtra");
-		
+
 		users.setCity("Mumbai");
-		
+
 		users.setDevice("ABXCS67868");
-		
+
 		users.setZipcode("400067");
-		
+
 		users.setCompany_name("LognSystems");
-		
+
 		users.setAddress("Kandivali West");
-		
+
 		users.setLocation("Kandivali West Again...");
 
 		users.setProvenance("Web");
@@ -57,8 +56,7 @@ public class JdbcUserRepositoryTest {
 		String currentTime = sdf.format(dt);
 
 		users.setBirthdate(currentTime);
-		users.setAvg_rating(3.2);
-		
+
 		userRepo.addUser(users);
 
 	}

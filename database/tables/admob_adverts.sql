@@ -25,8 +25,11 @@ CREATE TABLE IF NOT EXISTS admob_adverts
   text2 varchar(35) not null default '',
   
   #Optional depending on the add
-  image_url varchar(128) not null default '',
-
+  image_url varchar(164) not null default '',
+  
+  #Optional depending on the add
+  video_url varchar(164) not null default '',
+  
   #Foreign key adverts_types.id
   adverts_type_id integer not null,
 
@@ -35,3 +38,7 @@ CREATE TABLE IF NOT EXISTS admob_adverts
     
   last_edit TIMESTAMP not null default CURRENT_TIMESTAMP on update current_timestamp
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+alter table admob_adverts add foreign key (adverts_type_id)
+  references adverts_types(id) on delete cascade;
+

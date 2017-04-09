@@ -1,5 +1,9 @@
 package com.lognsys.web.controller;
 
+
+
+
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -63,6 +67,7 @@ public class BaseController {
 
 	}
 
+
 	@RequestMapping(value = "/dashboard")
 	public ModelAndView showDashboard(Model model1A, HttpServletRequest request) {
 		ModelAndView model = new ModelAndView();
@@ -93,6 +98,7 @@ public class BaseController {
 		}
 
 		return "userlist";
+
 	}
 
 	// monika added to list the users in listview
@@ -207,6 +213,43 @@ public class BaseController {
 		return "updateuser";
 
 	}
+
+
+
+
+	// /* It deletes record for the given id in URL and redirects to /viewemp */
+	// /**
+	// *
+	// * @param id
+	// * @return
+	// */
+	// @RequestMapping(value = "/deleteemp/{id}", method = RequestMethod.POST)
+	// public ModelAndView delete(@PathVariable int id) {
+	// System.out.println("Going in delete ");
+	//
+	// List<Users> list = userRep.getAllUsers();
+	// for (int i = 0; i < list.size(); i++) {
+	// Users usr = list.get(i);
+	// System.out.println("Going in delete usr.getId() " + usr.getId());
+	// if (usr.getId() == id) {
+	// userRep.delete(id, usr);
+	// return new ModelAndView("redirect:/user_listitems");
+	// }
+	//
+	// }
+	// return new ModelAndView("redirect:/user_listitems");
+	// }
+	//
+	// @RequestMapping(value = "/drama", method = RequestMethod.GET)
+	// public String showDrama(Model model, HttpServletRequest request) {
+	// System.out.println("Going in drama controller");
+	// Drama drama = new Drama();
+	// model.addAttribute("drama", drama);
+	// return "drama";
+	// }
+
+
+
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String showRegister(Model model, HttpServletRequest request) {

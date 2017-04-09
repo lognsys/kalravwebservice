@@ -36,6 +36,7 @@
 <definition name="userlist" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Users" />
 		<put-attribute name="body" value="/WEB-INF/pages/userlist.jsp" />
+<<<<<<< Updated upstream
 	</definition> 
 	<definition name="updateuser" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Users" />
@@ -44,5 +45,7 @@
 	<definition name="adverts" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Adverts" />
 		<put-attribute name="body" value="/WEB-INF/pages/adverts.html" />
+=======
+>>>>>>> Stashed changes
 	</definition> 
 </tiles-definitions>

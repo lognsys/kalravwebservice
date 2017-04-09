@@ -18,7 +18,7 @@ CREATE TABLE users
 	# oauth id from (Facebook or google)
 	auth_id varchar(45) not null default '',
        
-       # username is an email address
+    # username is an email address
 	username varchar(64) not null default '',
 
 	# Optional realname
@@ -28,21 +28,21 @@ CREATE TABLE users
 	phone varchar(32) not null default '',
 	
 	#Optional company_name
-        company_name varchar(100) not null default '', 
+    company_name varchar(100) not null default '', 
 	
-        #Required address
-        address varchar(255) not null default '',
+    #Required address
+    address varchar(255) not null default '',
  
-    	#Optional location
-    	location varchar(255) not null default '',
+    #Optional location
+    location varchar(255) not null default '',
     
-    	# optional state 
-    	state varchar(32) not null default '',
+    # optional state 
+    state varchar(32) not null default '',
  
-    	#optional city
-    	city varchar(32) not null default '',
+    #optional city
+    city varchar(32) not null default '',
     
-    	#optional zip
+    #optional zip
   	zipcode varchar(8) not null default '',
   	
   	#required device_token 

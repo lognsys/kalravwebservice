@@ -56,40 +56,40 @@ public class JdbcUserRepository implements UserRespository {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	@Override
 	public Users findUserById(Integer id) {
-		Users useritem	 = new Users();
+		Users useritem = new Users();
 		try {
 			SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
-						
-				namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(
-						USER_QUERIES.select_users_id.name()), parameter,new RowMapper<Users>() {
 
-							@Override
-							public Users mapRow(ResultSet rs, int arg1) throws SQLException {
-							
+			namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(USER_QUERIES.select_users_id.name()),
+					parameter, new RowMapper<Users>() {
 
-								useritem.setId(rs.getInt("id"));
-								useritem.setUsername(rs.getString("username"));
-								useritem.setRealname(rs.getString("realname"));
-								useritem.setPhone(rs.getString("birthdate"));
-								useritem.setEnabled(rs.getBoolean("enabled"));
-								useritem.setAddress(rs.getString("address"));
-								useritem.setPhone(rs.getString("phone"));
-								useritem.setCity(rs.getString("city"));
-								useritem.setState(rs.getString("state"));
-								useritem.setZipcode(rs.getString("zipcode"));
-								useritem.setAuth_id(rs.getString("auth_id"));
-								return useritem;
-							}
-						});
+						@Override
+						public Users mapRow(ResultSet rs, int arg1) throws SQLException {
+
+							useritem.setId(rs.getInt("id"));
+							useritem.setUsername(rs.getString("username"));
+							useritem.setRealname(rs.getString("realname"));
+							useritem.setPhone(rs.getString("birthdate"));
+							useritem.setEnabled(rs.getBoolean("enabled"));
+							useritem.setAddress(rs.getString("address"));
+							useritem.setPhone(rs.getString("phone"));
+							useritem.setCity(rs.getString("city"));
+							useritem.setState(rs.getString("state"));
+							useritem.setZipcode(rs.getString("zipcode"));
+							useritem.setAuth_id(rs.getString("auth_id"));
+							return useritem;
+						}
+					});
 		} catch (DataAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return useritem;
 	}
-	
+
 	@Override
 	public List<Users> getAllUsers() {
 		List<Users> listUsers = namedParamJdbcTemplate
@@ -124,18 +124,28 @@ public class JdbcUserRepository implements UserRespository {
 	 */
 	private enum USER_QUERIES {
 		insert_users, select_users, delete_users, select_users_id
+
 	}
 
 	@Override
 	public void delete(Integer id) {
+		MapSqlParameterSource param = new MapSqlParameterSource("id", id);
+
 		try {
 			SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
-						
-				namedParamJdbcTemplate.update(sqlProperties.getProperty(
-						USER_QUERIES.delete_users.name()), parameter);
+
+			namedParamJdbcTemplate.update(sqlProperties.getProperty(USER_QUERIES.delete_users.name()), parameter);
 		} catch (DataAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		}
+	}
+
+	
+	// TODO Auto-generated method stub
+	// String sql = "DELETE FROM Users WHERE id=" + id + "";
+	// BeanPropertySqlParameterSource params = new
+	// BeanPropertySqlParameterSource(usr);
+	// namedParamJdbcTemplate.update(sql, param)
+
 }

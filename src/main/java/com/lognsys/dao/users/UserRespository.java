@@ -36,7 +36,7 @@ public interface UserRespository {
 
 
 	public void delete(Integer id);
-	
+
 
 	/**
 	 * Get User by Id
@@ -44,5 +44,6 @@ public interface UserRespository {
 	 * @return
 	 */
 	public Users findUserById(Integer id);
+
 
 }
