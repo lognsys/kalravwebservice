@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.lognsys.dao.jdbc.users.JdbcUserRepository;
 import com.lognsys.model.Users;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:datasource-context.xml")
-public class JdbcUserRepositoryTest {
+@ContextConfiguration(locations = { "classpath:datasource-context.xml", "classpath:appcontext.xml" })
+public class TestJdbcUserRepository {
 
 	@Autowired
 	private JdbcUserRepository userRepo;
@@ -24,7 +25,6 @@ public class JdbcUserRepositoryTest {
 	public void testCreateUser() {
 		Users users = new Users();
 
-		users.setId(123);
 		users.setAuth_id("123456789");
 
 		users.setRealname("Priyank Doshi");

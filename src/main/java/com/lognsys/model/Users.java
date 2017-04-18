@@ -1,9 +1,11 @@
 package com.lognsys.model;
 
+
 /**
  * 
  * @author pdoshi
  */
+
 public class Users {
 
 	private int id;
@@ -18,6 +20,7 @@ public class Users {
 	private boolean enabled = false;
 	private boolean notification = false;
 	private double avg_rating;
+	private String device;
 
 	// Monika added 30/03/17
 	private String address = "";
@@ -28,7 +31,7 @@ public class Users {
 	private String firstname = "";
 	private String lastname = "";
 	private String title = "";
-	private String device;
+	
 
 	public int getId() {
 		return id;

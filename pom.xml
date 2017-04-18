@@ -10,20 +10,18 @@
 	<properties>
 		<jdk.version>1.8</jdk.version>
 		<jstl.version>1.2</jstl.version>
-		<junit.version>4.11</junit.version>
+		<junit.version>4.12</junit.version>
 		<logback.version>1.0.13</logback.version>
 		<jcl-over-slf4j.version>1.7.5</jcl-over-slf4j.version>
 		<spring.security.version>4.2.2.RELEASE</spring.security.version>
 		<spring.version>4.3.7.RELEASE</spring.version>
 		<apache.titles.version>3.0.3</apache.titles.version>
+		<jackson.version>2.7.5</jackson.version>
+		<mysql.connector.version>6.0.6</mysql.connector.version>
+		<c3pO.version>0.9.1.2</c3pO.version>
+		<mongo.version>1.9.5.RELEASE</mongo.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
 
 		<!-- Adding spring jars -->
 		<dependency>
@@ -43,6 +41,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+
 
 
 		<!-- javax servlet -->
@@ -133,19 +132,39 @@
 			<version>${spring.security.version}</version>
 		</dependency>
 
-
+		<!-- json jackson -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
 
 		<!-- Database c3p0 connection -->
 		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
+			<version>${c3pO.version}</version>
 		</dependency>
-		<dependency>
+	
 
+		<!-- Spring JDBC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<!-- mysql connector- -->
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>6.0.6</version>
+			<version>${mysql.connector.version}</version>
 		</dependency>
 
 		<!-- test -->
@@ -158,11 +177,29 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
+		</dependency>
+
+		<!-- mongodb java driver -->
+
+		<!-- Spring data mongodb -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>${mongo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-dao</artifactId>
+			<version>2.0.8</version>
 		</dependency>
 
 	</dependencies>
-
 	<build>
 		<finalName>kalravweb</finalName>
 		<plugins>

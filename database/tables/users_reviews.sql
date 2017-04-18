@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS users_reviews
   users_id integer not null default 0,
   
   #foreign key dramas.id
-  dramas_id not null default 0,
+  dramas_id integer not null default 0,
   
   last_edit timestamp not null default current_timestamp on update current_timestamp
   

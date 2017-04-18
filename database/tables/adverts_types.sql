@@ -3,8 +3,8 @@
 # 
 #
 
-DROP TABLE IF EXISTS advert_types;
-CREATE TABLE advert_types 
+DROP TABLE IF EXISTS adverts_types;
+CREATE TABLE adverts_types
 (  
    # Surrogate primary key
    id integer auto_increment primary key,

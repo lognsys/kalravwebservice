@@ -9,14 +9,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<!-- favicon  -->
+<link rel="icon" type="image/png" sizes="32x32" href="static/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="static/images/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="static/images/favicon-16x16.png">
+<link rel='shortcut icon' type='image/x-icon' href='static/images/favicon.ico'> <!-- IE -->
+<link rel='apple-touch-icon' type='image/png' href='static/images/apple-icon-57x57.png'> <!-- iPhone -->
+<link rel='apple-touch-icon' type='image/png' sizes='72x72' href='static/images/apple-icon-57x57.png'> <!-- iPad -->
+<link rel='apple-touch-icon' type='image/png' sizes='114x114' href='static/images/apple-icon-114x114.png'> <!-- iPhone4 -->
+
 <!-- Bootstrap  -->
-<link rel="stylesheet"
-	href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
-<link
-	href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
 <!-- css/stylesheet -->
 <link rel="stylesheet" href="static/css/styles.css">
@@ -55,31 +61,29 @@
 <script type="text/javascript" src="static/js/lumino.glyphs.js"></script>
 <script type="text/javascript" src="static/js/respond.js"></script>
 
+<!-- glyph icons from https://glyphs.co/docs/getting-started/installation  -->
+<script type="text/javascript" src="//kit.glyphs.co/4uq709.js"></script>
+
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
 </head>
+
 <body>
+	<!-- header -->
 	<div id="site_header">
 		<tiles:insertAttribute name="header" />
 	</div>
-	  <!-- Menu Page -->
-       <div id="site_menu">
-            <tiles:insertAttribute name="menu" />
-        </div> 
-	<div  id="site_body">
+	<!-- Menu Page -->
+	<div id="site_menu">
+		<tiles:insertAttribute name="menu" />
+	</div>
+	<!-- body -->
+	<div id="site_body">
 		<tiles:insertAttribute name="body" />
 	</div>
+	<!-- footer -->
 	<div id="site_footer">
 		<tiles:insertAttribute name="footer" />
 	</div>
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 </body>
 </html>

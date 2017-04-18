@@ -9,8 +9,16 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
-	<!-- context component scan for autowiring -->
-	<context:component-scan base-package="com.lognsys.dao" />
+
+
+	<!-- scans packages to find and register beans within the application context -->
+	<context:component-scan base-package="com.lognsys.dao.jdbc" />
+	<context:annotation-config/>
+
+	<!-- jdbcTemplate uses dataSource -->
+	<bean id="namedParamJdbcTemplate"   class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
+		<constructor-arg ref="dataSource"/>
+	</bean>
 
 	<!-- Ensures that configuration properties are read from a property file -->
 	<context:property-placeholder location="classpath:database.properties"
@@ -34,5 +42,6 @@
 		<property name="idleConnectionTestPeriod" value="300"></property>
 		<property name="maxIdleTimeExcessConnections" value="240"></property>
 	</bean>
+
 
 </beans>

@@ -1,37 +1,38 @@
 
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar collapse in"">
-	<!-- <form role="search">
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
-			</div>
-		</form> -->
+
 	<ul class="nav menu">
-		<li class="active"><a href="${pageContext.request.contextPath}/dashboard"> <svg
+		<li class="active"><a
+			href="${pageContext.request.contextPath}/dashboard"> <svg
 					class="glyph stroked dashboard-dial">
 			<use xmlns:xlink="http://www.w3.org/1999/xlink"
 						xlink:href="#stroked-dashboard-dial"></use></svg> Dashboard
 		</a></li>
-<li><a href="${pageContext.request.contextPath}/userlist"> <svg
-					class="glyph stroked calendar">
-			<use xmlns:xlink="http://www.w3.org/1999/xlink"
-						xlink:href="#stroked-calendar"></use></svg> Settings
-		</a></li>
+
 		<li><a href="${pageContext.request.contextPath}/userlist"> <svg
-					class="glyph stroked calendar">
+					class="glyph stroked male user">
 			<use xmlns:xlink="http://www.w3.org/1999/xlink"
-						xlink:href="#stroked-calendar"></use></svg> User Lists
+						xlink:href="#stroked-male-user"></use></svg> Users
 		</a></li>
 		<li><a href="${pageContext.request.contextPath}/drama"> <svg
-					class="glyph stroked line-graph">
+					class="glyph stroked video">
 			<use xmlns:xlink="http://www.w3.org/1999/xlink"
-						xlink:href="#stroked-calendar"></use></svg> Drama Lists
+						xlink:href="#stroked-video"></use></svg> Dramas
 		</a></li>
-		<li><a href="${pageContext.request.contextPath}/adverts.html"> <svg class="glyph stroked line-graph">
+		<li><a href="${pageContext.request.contextPath}/adverts.html">
+				<svg class="glyph stroked camcorder">
 					<use xmlns:xlink="http://www.w3.org/1999/xlink"
-						xlink:href="#stroked-line-graph"></use></svg> Advertisements
+						xlink:href="#stroked-camcorder"></use></svg> Advertisements
 		</a></li>
-		<li><a href="${pageContext.request.contextPath}/userlist"> <svg class="glyph stroked line-graph">
+		<li><a href="${pageContext.request.contextPath}/userlist"> <svg
+					class="glyph stroked app window with content">
 					<use xmlns:xlink="http://www.w3.org/1999/xlink"
-						xlink:href="#stroked-line-graph"></use></svg> Ticket Booking
+						xlink:href="#stroked-app-window-with-content"></use></svg> Ticket
+				Booking
+		</a></li>
+		<li><a href="${pageContext.request.contextPath}/userlist"> <svg
+					class="glyph stroked gear">
+			<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#stroked-gear"></use></svg> Settings
 		</a></li>
 </div>
