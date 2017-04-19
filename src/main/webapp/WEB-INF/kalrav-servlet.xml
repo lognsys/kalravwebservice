@@ -10,7 +10,7 @@
 
 	<!-- Load an external mvn config file; appcontext.xml is loaded by unit 
 		tests and should be free of beans related to mvc and the web -->
-	<import resource="classpath:appcontext.xml" />
+	<import resource="classpath:application-context.xml" />
 	<import resource="classpath:datasource-context.xml" />
 	<import resource="classpath:spring-security.xml"></import>
 	<import resource="classpath:mongo-context.xml" />
@@ -22,8 +22,8 @@
 
 	<mvc:resources mapping="/static/**" location="/resources/" />
 	<mvc:resources mapping="/webjars/**" location="/webjars/" />
-	<mvc:resources mapping="/resources/**" location="/resources/csshome" />
-	<mvc:resources mapping="/resources/**" location="/resources/js" />
+<!-- 	<mvc:resources mapping="/resources/**" location="/resources/csshome" />
+	<mvc:resources mapping="/resources/**" location="/resources/js" /> -->
 
 	<!-- Default handler -->
 	<mvc:default-servlet-handler />

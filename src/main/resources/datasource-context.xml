@@ -13,11 +13,12 @@
 
 	<!-- scans packages to find and register beans within the application context -->
 	<context:component-scan base-package="com.lognsys.dao.jdbc" />
-	<context:annotation-config/>
+	<context:annotation-config />
 
 	<!-- jdbcTemplate uses dataSource -->
-	<bean id="namedParamJdbcTemplate"   class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
-		<constructor-arg ref="dataSource"/>
+	<bean id="namedParamJdbcTemplate"
+		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+		<constructor-arg ref="dataSource" />
 	</bean>
 
 	<!-- Ensures that configuration properties are read from a property file -->
@@ -43,5 +44,12 @@
 		<property name="maxIdleTimeExcessConnections" value="240"></property>
 	</bean>
 
+	<!-- Enable Annotation based Declarative Transaction Management -->
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
 
 </beans>

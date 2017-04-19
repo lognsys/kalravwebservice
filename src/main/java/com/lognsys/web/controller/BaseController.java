@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.model.Users;
 import com.lognsys.service.UserService;
 import com.lognsys.util.CommonUtilities;
@@ -65,7 +67,7 @@ public class BaseController {
 	 */
 	@RequestMapping(value = "/userlist", method = RequestMethod.GET)
 	public String showUsers(Model model, HttpServletRequest request) {
-		List<Users> listOfUsers = userService.getUsers();
+		List<UsersDTO> listOfUsers = userService.getUsers();
 		model.addAttribute("listOfUsers", listOfUsers);
 		return "userlist";
 	}
@@ -94,7 +96,7 @@ public class BaseController {
 				if (null != checkboxvalues)
 					userService.deleteUsers(CommonUtilities.parseIntArray(checkboxvalues));
 
-				List<Users> listOfUsers = userService.getUsers();
+				List<UsersDTO> listOfUsers = userService.getUsers();
 				model.addAttribute("listOfUsers", listOfUsers);
 				return "userlist";
 
@@ -105,7 +107,7 @@ public class BaseController {
 					// UI.
 					int id = Integer.parseInt(checkboxvalues[0]);
 
-					Users users = userService.findByUser(id);
+					UsersDTO users = userService.findByUser(id);
 					model.addAttribute("users", users);
 				}
 				return "register";

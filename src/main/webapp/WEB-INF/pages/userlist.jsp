@@ -23,13 +23,13 @@
 				<div class="panel panel-default">
 					<div class="panel-heading"><svg class="glyph stroked male user"><use xlink:href="#stroked-male-user"></use></svg> 9 /128</div>
 					<div class="panel-body">
-						<table data-toggle="table" data-url="static/tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+						<table data-toggle="table" data-url="static/tables/users.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 						    <thead>
 						    <tr>
 						        <th data-field="id" data-checkbox="true" >ID</th>
 						        <th data-field="name" data-sortable="true">Name</th>
 						        <th data-field="email" data-sortable="true">Email</th>
-						        <th data-field="group" data-sortable="true">Group</th>
+						       <!--  <th data-field="group" data-sortable="true">Group</th> -->
 						        <th data-field="status" data-sortable="true">Status</th>
 						    </tr>
 						    </thead>

@@ -7,16 +7,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.lognsys.dao.dto.UsersDTO;
-import com.lognsys.dao.jdbc.users.JdbcUserRepository;
+import com.lognsys.dao.mongo.MongoUserRepository;
 import com.lognsys.model.Users;
 import com.lognsys.util.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:datasource-context.xml" })
-public class TestJdbcUserRepository {
+@ContextConfiguration(locations = { "classpath:mongo-context.xml" })
+public class TestMongoUsersRepository {
 
 	@Autowired
-	private JdbcUserRepository userRepo;
+	private MongoUserRepository mongoUserRepo;
 
 	public void setUp() {
 
@@ -58,10 +58,16 @@ public class TestJdbcUserRepository {
 		String currentTime = sdf.format(dt);
 
 		users.setBirthdate(currentTime);
-		
-		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
 
-		userRepo.addUser(usersDTO);
+		mongoUserRepo.addUser(ObjectMapper.mapToUsersDTO(users));
+
+		Users u2 = new Users();
+		u2.setId(1);
+		u2.setRealname("Jelly Vora");
+		u2.setNotification(false);
+		u2.setUsername("jvora");
+
+		mongoUserRepo.addUser(ObjectMapper.mapToUsersDTO(u2));
 
 	}
 

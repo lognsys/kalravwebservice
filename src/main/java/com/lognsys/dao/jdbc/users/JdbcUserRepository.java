@@ -13,8 +13,11 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.lognsys.model.Users;
+import com.lognsys.dao.UserRespository;
+import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.util.Constants;
 
 @Repository("userRepository")
 public class JdbcUserRepository implements UserRespository {
@@ -28,17 +31,16 @@ public class JdbcUserRepository implements UserRespository {
 	@Resource(name = "sqlProperties")
 	private Properties sqlProperties;
 
-
-
 	/**
 	 * Add users object into database
 	 * 
 	 * @param users
 	 */
 	@Override
-	public void addUser(Users users) {
+	@Transactional
+	public void addUser(UsersDTO users) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(users);
-		namedParamJdbcTemplate.update(sqlProperties.getProperty(USER_QUERIES.insert_users.name()), params);
+		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.insert_users.name()), params);
 	}
 
 	/**
@@ -52,15 +54,15 @@ public class JdbcUserRepository implements UserRespository {
 	public boolean isExists(String username) {
 
 		SqlParameterSource param = new MapSqlParameterSource("username", username);
-		return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(USER_QUERIES.select_users_exists.name()),
-				param, Integer.class) > 0;
+		return namedParamJdbcTemplate.queryForObject(
+				sqlProperties.getProperty(Constants.USER_QUERIES.select_users_exists.name()), param, Integer.class) > 0;
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public void updateUser(Users users) {
+	public void updateUser(UsersDTO users) {
 
 	}
 
@@ -71,16 +73,16 @@ public class JdbcUserRepository implements UserRespository {
 	 *            - Integer
 	 */
 	@Override
-	public Users findUserById(Integer id) {
+	public UsersDTO findUserById(Integer id) {
 
 		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
 
-		Users useritem = new Users();
-		namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(USER_QUERIES.select_users_id.name()), parameter,
-				new RowMapper<Users>() {
+		UsersDTO useritem = new UsersDTO();
+		namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_id.name()),
+				parameter, new RowMapper<UsersDTO>() {
 
 					@Override
-					public Users mapRow(ResultSet rs, int arg1) throws SQLException {
+					public UsersDTO mapRow(ResultSet rs, int arg1) throws SQLException {
 
 						useritem.setId(rs.getInt("id"));
 						useritem.setUsername(rs.getString("username"));
@@ -104,10 +106,10 @@ public class JdbcUserRepository implements UserRespository {
 	 * Returns List<Users> from database
 	 */
 	@Override
-	public List<Users> getAllUsers() {
-		List<Users> listUsers = namedParamJdbcTemplate.query(
-				sqlProperties.getProperty(USER_QUERIES.select_users.name()),
-				new BeanPropertyRowMapper<Users>(Users.class));
+	public List<UsersDTO> getAllUsers() {
+		List<UsersDTO> listUsers = namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.USER_QUERIES.select_users.name()),
+				new BeanPropertyRowMapper<UsersDTO>(UsersDTO.class));
 
 		return listUsers;
 	}
@@ -121,18 +123,20 @@ public class JdbcUserRepository implements UserRespository {
 	@Override
 	public boolean deleteUserBy(Integer id) {
 		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
-		return namedParamJdbcTemplate.update(sqlProperties.getProperty(USER_QUERIES.delete_users.name()),
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.delete_users.name()),
 				parameter) == 1;
 	}
 
-	/**
-	 * enum contains keys of queries defined in sql.properties.
-	 * 
-	 * Note: All queries should be added in sql.properties and all keys should
-	 * be added to USER_QUERIES enum
-	 */
-	private enum USER_QUERIES {
-		insert_users, select_users, delete_users, select_users_exists, select_users_id
+	@Override
+	public boolean deleteUserBy(String emailID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public UsersDTO findUserById(String emailID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -1,7 +1,8 @@
-package com.lognsys.dao.jdbc.users;
+package com.lognsys.dao;
 
 import java.util.List;
-import com.lognsys.model.Users;
+
+import com.lognsys.dao.dto.UsersDTO;
 
 public interface UserRespository {
 
@@ -10,7 +11,7 @@ public interface UserRespository {
 	 * 
 	 * @param users
 	 */
-	public void addUser(Users users);
+	public void addUser(UsersDTO users);
 	
 	
 	/**
@@ -25,7 +26,7 @@ public interface UserRespository {
 	 * 
 	 * @param users
 	 */
-	public void updateUser(Users users);
+	public void updateUser(UsersDTO users);
 
 
 	/**
@@ -33,7 +34,7 @@ public interface UserRespository {
 	 * 
 	 * @return
 	 */
-	public List<Users> getAllUsers();
+	public List<UsersDTO> getAllUsers();
 
 	/**
 	 * Delete user by id
@@ -47,6 +48,20 @@ public interface UserRespository {
 	 * @param id
 	 * @return
 	 */
-	public Users findUserById(Integer id);
+	public UsersDTO findUserById(Integer id);
+	
+	/**
+	 * Delete user by email|D
+	 * @param id
+	 */
+	public boolean deleteUserBy(String emailID);
+
+	/**
+	 * Get User by emailId
+	 * 
+	 * @param emailid
+	 * @return UsersDTO
+	 */
+	public UsersDTO findUserById(String emailID);
 
 }

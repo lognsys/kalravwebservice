@@ -7,9 +7,9 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>src/main/resources/appcontext.xml</config>
 		<config>src/main/resources/datasource-context.xml</config>
 		<config>src/main/resources/mongo-context.xml</config>
+		<config>src/main/resources/application-context.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/kalrav-servlet.xml</config>
