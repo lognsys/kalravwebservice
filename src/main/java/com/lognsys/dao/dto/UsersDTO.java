@@ -1,9 +1,7 @@
 package com.lognsys.dao.dto;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import com.lognsys.dao.dto.GroupsDTO;
 
 /**
  * Database object
@@ -16,8 +14,8 @@ import com.lognsys.dao.dto.GroupsDTO;
 public class UsersDTO {
 	@Id
 	private int id;
-	private String realname;
-	private String username;
+	private String realname = "";
+	private String username = "";
 	private String auth_id = "";
 	private String phone = "";
 	private String location = "";
@@ -25,26 +23,21 @@ public class UsersDTO {
 	private String birthdate = "";
 	private boolean enabled = false;
 	private boolean notification = false;
-	private double avg_rating;
-	private String device;
+
+	private String device = "";
 	private String address = "";
 	private String city = "";
 	private String state = "";
 	private String zipcode = "";
 	private String company_name = "";
-	private String title = "";
 
 	public UsersDTO() {
 		super();
 	}
 
-	
-	
-	
 	public UsersDTO(int id, String realname, String username, String auth_id, String phone, String location,
-			String provenance, String birthdate, boolean enabled, boolean notification, double avg_rating,
-			String device, String address, String city, String state, String zipcode, String company_name, String title,
-			GroupsDTO group) {
+			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
+			String city, String state, String zipcode, String company_name) {
 		super();
 		this.id = id;
 		this.realname = realname;
@@ -56,17 +49,13 @@ public class UsersDTO {
 		this.birthdate = birthdate;
 		this.enabled = enabled;
 		this.notification = notification;
-		this.avg_rating = avg_rating;
 		this.device = device;
 		this.address = address;
 		this.city = city;
 		this.state = state;
 		this.zipcode = zipcode;
 		this.company_name = company_name;
-		this.title = title;
-		this.group = group;
 	}
-
 
 	public String getAuth_id() {
 		return auth_id;
@@ -124,14 +113,6 @@ public class UsersDTO {
 		this.notification = notification;
 	}
 
-	public double getAvg_rating() {
-		return avg_rating;
-	}
-
-	public void setAvg_rating(double avg_rating) {
-		this.avg_rating = avg_rating;
-	}
-
 	public String getDevice() {
 		return device;
 	}
@@ -180,17 +161,6 @@ public class UsersDTO {
 		this.company_name = company_name;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	@DBRef
-	private GroupsDTO group;
-
 	public int getId() {
 		return id;
 	}
@@ -215,12 +185,16 @@ public class UsersDTO {
 		this.username = username;
 	}
 
-	public GroupsDTO getGroup() {
-		return group;
+	public enum USER_FIELD_NAMES {
+		usersId, realname, username, auth_id, phone, location, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, company_name, title
 	}
 
-	public void setGroup(GroupsDTO group) {
-		this.group = group;
+	@Override
+	public String toString() {
+		return "UsersDTO [id=" + id + ", realname=" + realname + ", username=" + username + ", auth_id=" + auth_id
+				+ ", phone=" + phone + ", location=" + location + ", provenance=" + provenance + ", birthdate="
+				+ birthdate + ", enabled=" + enabled + ", notification=" + notification + ", device=" + device
+				+ ", address=" + address + ", city=" + city + ", state=" + state + ", zipcode=" + zipcode
+				+ ", company_name=" + company_name + "]";
 	}
-
 }

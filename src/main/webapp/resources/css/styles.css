@@ -302,3 +302,5 @@ html, body {
     margin: 0;
 }
 
+/** form multiple bootstrap buttons **/
+.rbtnMargin { margin-left: 5px; }

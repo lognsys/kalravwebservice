@@ -26,7 +26,7 @@ public interface UserRespository {
 	 * 
 	 * @param users
 	 */
-	public void updateUser(UsersDTO users);
+	public void updateUser(String usersname);
 
 
 	/**

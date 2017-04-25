@@ -7,8 +7,8 @@ public class UsersTable {
 	}
 
 	private int id;
-	private String realname;
-	private String username;
+	private String name;
+	private String email;
 	private String group;
 	public String getGroup() {
 		return group;
@@ -20,20 +20,20 @@ public class UsersTable {
 
 	private String status;
 
-	public UsersTable(int id, String realname, String username, String group, String status) {
+	public UsersTable(int id, String name, String email, String group, String status) {
 		super();
 		this.id = id;
-		this.realname = realname;
-		this.username = username;
+		this.name = name;
+		this.email = email;
 		this.group = group;
 		this.status = status;
 	}
 
-	public UsersTable(int id, String realname, String username, String group, boolean enabled) {
+	public UsersTable(int id, String name, String email, String group, boolean enabled) {
 		super();
 		this.id = id;
-		this.realname = realname;
-		this.username = username;
+		this.name = name;
+		this.email = email;
 		this.group = group;
 		setStatus(enabled);
 		this.status = getStatus();
@@ -63,20 +63,20 @@ public class UsersTable {
 		this.id = id;
 	}
 
-	public String getRealname() {
-		return realname;
+	public String getName() {
+		return name;
 	}
 
-	public void setRealname(String realname) {
-		this.realname = realname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

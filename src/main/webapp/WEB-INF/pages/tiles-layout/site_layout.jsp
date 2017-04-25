@@ -42,9 +42,10 @@
 <!-- jquery -->
 <script src="webjars/jquery/2.2.3/jquery.min.js"></script>
 <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
-<!-- load kalrav.js after jquery -->
-<script type="text/javascript" src="static/js/kalrav.js"></script>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
 
 <!-- lumino javascript in js  -->
 <script type="text/javascript" src="static/js/bootstrap-datepicker.js"></script>
@@ -56,7 +57,7 @@
 <script type="text/javascript" src="static/js/easypiechart-data.js"></script>
 <script type="text/javascript" src="static/js/easypiechart.js"></script>
 <script type="text/javascript" src="static/js/html5shiv.min.js"></script>
-<script type="text/javascript" src="static/js/jquery-1.11.1.min.js"></script>
+<!-- <script type="text/javascript" src="static/js/jquery-1.11.1.min.js"></script> -->
 <script type="text/javascript" src="static/js/kalrav.glyphs.js"></script>
 <script type="text/javascript" src="static/js/lumino.glyphs.js"></script>
 <script type="text/javascript" src="static/js/respond.js"></script>
@@ -64,6 +65,8 @@
 <!-- glyph icons from https://glyphs.co/docs/getting-started/installation  -->
 <script type="text/javascript" src="//kit.glyphs.co/4uq709.js"></script>
 
+<!-- load kalrav.js after jquery -->
+<script type="text/javascript" src="static/js/kalrav.js"></script>
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
 </head>
 

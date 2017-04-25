@@ -1,14 +1,16 @@
 package com.lognsys.dao.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document
 public class GroupsDTO {
 
-	@Id
 	private int id;
-	private String groupName;
+	private String group_name;
+	
+	public GroupsDTO(int id, String group_name) {
+		super();
+		this.id = id;
+		this.group_name = group_name;
+	}
+
 
 	public int getId() {
 		return id;
@@ -18,12 +20,16 @@ public class GroupsDTO {
 		this.id = id;
 	}
 
-	public String getGroupName() {
-		return groupName;
+	public String getGroup_name() {
+		return group_name;
 	}
 
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
+	public void setGroup_name(String group_name) {
+		this.group_name = group_name;
+	}
+
+	public enum GROUPS_FIELDNAME {
+		groupsId, group_name
 	}
 
 }

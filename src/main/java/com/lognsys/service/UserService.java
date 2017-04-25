@@ -11,8 +11,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.lognsys.dao.dto.UsersDTO;
-import com.lognsys.dao.jdbc.users.JdbcUserRepository;
+import com.lognsys.dao.jdbc.JdbcGroupRepository;
+import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 import com.lognsys.util.CommonUtilities;
@@ -28,13 +30,11 @@ public class UserService {
 	@Autowired
 	private JdbcUserRepository jdbcUserRepository;
 
-	//putting it on hold for now
-	// @Autowired
-	// private MongoUserRepository mongoUserRepository;
+	@Autowired
+	private JdbcGroupRepository jdbcGroupRepository;
 
-	/**
-	 * Injecting resource sql.properties.
-	 */
+	// Injecting resource sql.properties.
+
 	@Autowired
 	@Qualifier("applicationProperties")
 	private Properties applicationProperties;
@@ -44,6 +44,7 @@ public class UserService {
 	 * 
 	 * @return
 	 */
+	@Transactional
 	public void addUser(Users users) {
 		String username = users.getUsername();
 
@@ -68,13 +69,13 @@ public class UserService {
 	}
 
 	/**
-	 * Synchronize users from mysql to mongo
-	 * 
+	 * Synchronize users from mysql to json files.
+	 *
 	 * @return
 	 * @throws IOException
 	 */
 	public void refreshUserList() throws IOException {
-		List<UsersTable> users = ObjectMapper.mapToUserTable(getUsers());
+		List<UsersTable> users = ObjectMapper.mapToUserTable(jdbcGroupRepository.getAllUsersAndGroup());
 		ResourceLoader resourceLoader = new FileSystemResourceLoader();
 		Resource resource = resourceLoader
 				.getResource(applicationProperties.getProperty(Constants.JSON_FILES.user_filename.name()));

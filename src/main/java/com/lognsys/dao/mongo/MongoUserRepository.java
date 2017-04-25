@@ -10,54 +10,49 @@ import org.springframework.stereotype.Repository;
 
 import com.lognsys.dao.UserRespository;
 import com.lognsys.dao.dto.UsersDTO;
-import com.lognsys.model.Users;
+;
 
 @Repository
-public class MongoUserRepository implements UserRespository  {
+public class MongoUserRepository implements UserRespository {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
 
-
+	@Override
 	public void addUser(UsersDTO users) {
-		this.mongoTemplate.insert(users);
-
+		// TODO Auto-generated method stub
+		
 	}
 
-	
+	@Override
 	public boolean isExists(String username) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-
-	public void updateUser(Users users) {
-
+	@Override
+	public void updateUser(String usersname) {
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
 	public List<UsersDTO> getAllUsers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-
+	@Override
 	public boolean deleteUserBy(Integer id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public UsersDTO findUserById(Integer id) {
-		Query query = new Query(Criteria.where("_id").is(id));
-		return this.mongoTemplate.findOne(query, UsersDTO.class);
-	}
-
-
 	@Override
-	public void updateUser(UsersDTO users) {
+	public UsersDTO findUserById(Integer id) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
-
 
 	@Override
 	public boolean deleteUserBy(String emailID) {
@@ -65,11 +60,14 @@ public class MongoUserRepository implements UserRespository  {
 		return false;
 	}
 
-
 	@Override
 	public UsersDTO findUserById(String emailID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+
 
 }

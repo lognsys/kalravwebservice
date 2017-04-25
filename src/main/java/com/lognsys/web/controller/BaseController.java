@@ -8,11 +8,15 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.model.Users;
 import com.lognsys.service.UserService;
@@ -77,54 +81,121 @@ public class BaseController {
 	 * @param userAction
 	 * @param checkboxvalues
 	 * @return
+//	 */
+//	@RequestMapping(value = "/userlist", params = "userAction", method = RequestMethod.POST)
+//	public String manageUser(Model model, @RequestParam("userAction") String userAction,
+//			@RequestParam(value = "checkboxname", required = false) String[] checkboxvalues) {
+//
+//		try {
+//
+//			switch (userAction) {
+//
+//			case "Add":
+//
+//				model.addAttribute("users", new Users());
+//				return "register";
+//
+//			case "Delete":
+//
+//				if (null != checkboxvalues)
+//					userService.deleteUsers(CommonUtilities.parseIntArray(checkboxvalues));
+//
+//				List<UsersDTO> listOfUsers = userService.getUsers();
+//				model.addAttribute("listOfUsers", listOfUsers);
+//				return "userlist";
+//
+//			case "Edit":
+//
+//				if (null != checkboxvalues) {
+//					// Assumption User can select only 1 item from user list in
+//					// UI.
+//					int id = Integer.parseInt(checkboxvalues[0]);
+//
+//					UsersDTO users = userService.findByUser(id);
+//					model.addAttribute("users", users);
+//				}
+//				return "register";
+//
+//			case "Cancel":
+//				return "dashboard";
+//
+//			default:
+//
+//				return "dashboard";
+//
+//			}
+//
+//		} catch (Exception e) {
+//			System.out.println("manage user Exception " + e);
+//
+//		}
+//		return "dashboard";
+//	}
+	/**
+	 * 
+	 * @param userAction
+	 * @param checkboxvalues
+	 * @return
 	 */
-	@RequestMapping(value = "/userlist", params = "userAction", method = RequestMethod.POST)
-	public String manageUser(Model model, @RequestParam("userAction") String userAction,
-			@RequestParam(value = "checkboxname", required = false) String[] checkboxvalues) {
-
+	@RequestMapping(value = "/userlist",  method = RequestMethod.POST)
+	public String manageUser(Model model, 
+			@RequestParam String[] userIds, @RequestParam String userAction) {
+		
 		try {
-
 			switch (userAction) {
-
-			case "Add":
-
-				model.addAttribute("users", new Users());
-				return "register";
-
-			case "Delete":
-
-				if (null != checkboxvalues)
-					userService.deleteUsers(CommonUtilities.parseIntArray(checkboxvalues));
-
-				List<UsersDTO> listOfUsers = userService.getUsers();
-				model.addAttribute("listOfUsers", listOfUsers);
-				return "userlist";
-
-			case "Edit":
-
-				if (null != checkboxvalues) {
-					// Assumption User can select only 1 item from user list in
-					// UI.
-					int id = Integer.parseInt(checkboxvalues[0]);
-
-					UsersDTO users = userService.findByUser(id);
-					model.addAttribute("users", users);
-				}
-				return "register";
-
-			case "Cancel":
-				return "dashboard";
-
-			default:
-
-				return "dashboard";
-
+			
 			}
-
-		} catch (Exception e) {
-			System.out.println("manage user Exception " + e);
-
+		}catch (Exception e ) {
+			
 		}
+
+
+		
+		
+		//System.out.println(userAction.toString());
+//		try {
+//			
+//			switch (userAction) {
+//			
+//			case "Add":
+//				
+//				model.addAttribute("users", new Users());
+//				return "register";
+//				
+//			case "Delete":
+//				
+//				if (null != checkboxvalues)
+//					userService.deleteUsers(CommonUtilities.parseIntArray(checkboxvalues));
+//				
+//				List<UsersDTO> listOfUsers = userService.getUsers();
+//				model.addAttribute("listOfUsers", listOfUsers);
+//				return "userlist";
+//				
+//			case "Edit":
+//				
+//				if (null != checkboxvalues) {
+//					// Assumption User can select only 1 item from user list in
+//					// UI.
+//					int id = Integer.parseInt(checkboxvalues[0]);
+//					
+//					UsersDTO users = userService.findByUser(id);
+//					model.addAttribute("users", users);
+//				}
+//				return "register";
+//				
+//			case "Cancel":
+//				return "dashboard";
+//				
+//			default:
+//				
+//				return "dashboard";
+//				
+//			}
+			
+//		} catch (Exception e) {
+//			System.out.println("manage user Exception " + e);
+//			
+//		}
 		return "dashboard";
 	}
 

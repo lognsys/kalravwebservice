@@ -1,4 +1,4 @@
-package com.lognsys.dao.users;
+package com.lognsys.dao;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.lognsys.dao.dto.UsersDTO;
-import com.lognsys.dao.jdbc.users.JdbcUserRepository;
+import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.model.Users;
 import com.lognsys.util.ObjectMapper;
 
@@ -22,7 +22,7 @@ public class TestJdbcUserRepository {
 
 	}
 
-	// TODO transaction test
+
 	@Test
 	public void testCreateUser() {
 		Users users = new Users();

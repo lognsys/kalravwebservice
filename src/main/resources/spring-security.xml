@@ -33,8 +33,9 @@
 			password-parameter="password" />
 
 		<security:logout logout-success-url="/login" />
-		<!-- enable csrf protection -->
-		<security:csrf />
+ 	<!-- enable csrf protection -->
+		<!--	<security:csrf / -->
+		<security:csrf disabled="true"/>
 	</security:http>
 
 	<security:authentication-manager>
