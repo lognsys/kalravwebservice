@@ -72,8 +72,11 @@ $(document)
             $('#userdelete').click(
                 function(event) {
 
-                    console.log(JSON.stringify(checkedRows));
-                    var params = {
+                	if ($('#eventsTable tr:has(:checkbox:checked)').length == 0) {
+                		$('<a href="#" class="close" data-dismiss="alert">'+'Please select one or more user</a>').appendTo('#eventsResult').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
+                	} else {
+          
+                	var params = {
                         "userIds": JSON.stringify(checkedRows),
                         "userAction" : "delete"
                     }
@@ -81,14 +84,47 @@ $(document)
                         url: '/userlist',
                         type: "POST",
                         data: params,
-//                        beforeSend: function(xhr) {
-//                            xhr.setRequestHeader("Accept",
-//                                "application/json");
-//                            xhr.setRequestHeader("Content-Type",
-//                                "application/json");
-//                        },
                         success: function(data) {
-                            alert(data);
+                          
+                        }
+                    });
+
+                     event.preventDefault();
+                	}
+                });
+            
+            // Userlist delete function
+            $('#useradd').click(
+                function(event) {
+                    var params = {
+                        "userIds": "na",
+                        "userAction" : "add"
+                    }
+                    $.ajax({
+                        url: '/userlist',
+                        type: "POST",
+                        data: params,
+                        success: function(data) {
+                        	 window.location.href="http://localhost:8080/register";
+                        }
+                    });
+
+                    event.preventDefault();
+                });
+
+            // Userlist delete function
+            $('#useredit').click(
+                function(event) {
+                    var params = {
+                        "userIds": JSON.stringify(checkedRows),
+                        "userAction" : "edit"
+                    }
+                    $.ajax({
+                        url: '/userlist',
+                        type: "POST",
+                        data: params,
+                        success: function(data) {
+                            
                         }
                     });
 

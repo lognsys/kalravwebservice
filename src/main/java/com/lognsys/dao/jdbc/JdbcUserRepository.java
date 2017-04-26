@@ -124,10 +124,16 @@ public class JdbcUserRepository implements UserRespository {
 				parameter) == 1;
 	}
 
+	/**
+	 * delete user by emailID
+	 * 
+	 * @param id - emailID
+	 */
 	@Override
 	public boolean deleteUserBy(String emailID) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlParameterSource parameter = new MapSqlParameterSource("emailID", emailID);
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.delete_users_email.name()),
+				parameter) == 1;
 	}
 
 	@Override

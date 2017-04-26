@@ -9,7 +9,7 @@ public class Constants {
 	 * be added to USER_QUERIES enum
 	 */
 	public enum USER_QUERIES {
-		insert_users, select_users, delete_users, select_users_exists, select_users_id
+		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email
 	}
 
 	/**
@@ -32,6 +32,14 @@ public class Constants {
 	 */
 	public enum JSON_FILES {
 		user_filename, drama_filename, adverts_filename, booking_filename,
+	}
+	
+	public enum USER_FIELD_NAMES {
+		usersId, realname, username, auth_id, phone, location, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, company_name, title
+	}
+
+	public enum GROUPS_FIELDNAME {
+		groupsId, group_name
 	}
 
 }

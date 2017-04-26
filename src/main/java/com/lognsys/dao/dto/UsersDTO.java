@@ -185,10 +185,7 @@ public class UsersDTO {
 		this.username = username;
 	}
 
-	public enum USER_FIELD_NAMES {
-		usersId, realname, username, auth_id, phone, location, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, company_name, title
-	}
-
+	
 	@Override
 	public String toString() {
 		return "UsersDTO [id=" + id + ", realname=" + realname + ", username=" + username + ", auth_id=" + auth_id

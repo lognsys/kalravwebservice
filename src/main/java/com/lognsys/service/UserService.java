@@ -112,6 +112,31 @@ public class UserService {
 
 		}
 	}
+	
+	/**
+	 * Delete users from database
+	 * @param String emailID
+	 * @return
+	 */
+	public void deleteUsers(String[] emailIDs) {
+		LOG.info("#deleteUser - " + "Deleting total number of users from database - " + emailIDs.length);
+
+		for (String emailID : emailIDs) {
+			try {
+
+				boolean isDelete = jdbcUserRepository.deleteUserBy(emailID);
+
+				if (!isDelete)
+					LOG.info("#deleteUser - " + "failed to delete user with ID - " + emailID);
+
+			} catch (DataAccessException dae) {
+
+				LOG.error(dae.getMessage());
+				throw new IllegalStateException("Error : Failed to delete user!");
+			}
+
+		}
+	}
 
 	/**
 	 * @param user
@@ -152,4 +177,6 @@ public class UserService {
 		}
 	}
 
+	
+	
 }

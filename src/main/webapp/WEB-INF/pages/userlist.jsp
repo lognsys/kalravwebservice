@@ -18,8 +18,7 @@
 		<!--/.row-->
 
 
-		<div class="alert alert-success" id="eventsResult">Here is the
-			result of event.</div>
+		<div class="" id="eventsResult"></div>
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">

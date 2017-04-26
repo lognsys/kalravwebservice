@@ -28,8 +28,4 @@ public class GroupsDTO {
 		this.group_name = group_name;
 	}
 
-	public enum GROUPS_FIELDNAME {
-		groupsId, group_name
-	}
-
 }
