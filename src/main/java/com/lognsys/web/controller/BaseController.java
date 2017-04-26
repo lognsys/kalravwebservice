@@ -61,22 +61,16 @@ public class BaseController {
 
 	}
 
-	
 	/**
 	 * 
 	 * @param error
 	 * @return
 	 */
-	@RequestMapping(value = "/dashbord", method = RequestMethod.GET)
-	public ModelAndView login() {
-		
-		ModelAndView model = new ModelAndView();
-				
-			model.setViewName("dashboard");
-			
-		
-		return model;
-		
+	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+	public String dashboard(Model model, HttpServletRequest request) {
+
+		return "dashboard";
+
 	}
 
 	/**
@@ -151,42 +145,40 @@ public class BaseController {
 	// return "dashboard";
 	// }
 
+	/**
+	 * 
+	 * @param model
+	 * @param userIds
+	 * @param userAction
+	 * @return
+	 */
 	@RequestMapping(value = "/userlist", method = RequestMethod.POST)
 	public String manageUser(Model model, @RequestParam(value = "userIds", required = false) String userIds,
 			@RequestParam String userAction) {
-		
+
 		switch (userAction) {
-		
-		case "add":
-			
-			System.out.println("UserAction - "+userAction);
-			
-			return "dashboard";
-			
+
 		case "delete":
 			JSONParser parser = new JSONParser();
 			try {
 				Object obj = parser.parse(userIds);
-				
+
 				JSONArray arr = (JSONArray) obj;
 				String[] userIDs = new String[arr.size()];
-				
+
 				for (int i = 0; i < arr.size(); i++) {
-					
+
 					userIDs[i] = arr.get(i).toString();
 				}
-				
-				for(String str : userIDs) {
-				System.out.println(str);
-				}
-				//userService.deleteUsers(userIDs);
+
+				 userService.deleteUsers(userIDs);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			return "userlist";
-			
+
 		case "edit":
-			
+
 			JSONParser p = new JSONParser();
 			try {
 				Object obj = p.parse(userIds);
@@ -199,14 +191,11 @@ public class BaseController {
 				e.printStackTrace();
 			}
 			return "userlist";
-			
-		case "cancel":
-			return "dashboard";
-			
+
 		}
-		
+
 		return "dashboard";
-		
+
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)

@@ -26,6 +26,10 @@
 
 		<security:intercept-url access="permitAll"
 			pattern="/userlist" />
+			
+		<security:intercept-url access="permitAll"
+			pattern="/dashboard" />
+						
 
 		<security:form-login login-page="/login"
 			default-target-url="/login" always-use-default-target="true"

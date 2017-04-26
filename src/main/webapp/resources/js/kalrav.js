@@ -49,10 +49,10 @@ $(document)
 
             // check all rows
             $('#eventsTable').on('check-all.bs.table', function(e) {
-            		$("#eventsTable tr:has(:checkbox:checked) td:nth-child(3)").each(function() {
-            			checkedRows.push($(this).text());
-            		});
-             });
+                $("#eventsTable tr:has(:checkbox:checked) td:nth-child(3)").each(function() {
+                    checkedRows.push($(this).text());
+                });
+            });
 
             // toggle button to disable add/edit button for multiple
             // checkbox select
@@ -72,62 +72,62 @@ $(document)
             $('#userdelete').click(
                 function(event) {
 
-                	if ($('#eventsTable tr:has(:checkbox:checked)').length == 0) {
-                		$('<a href="#" class="close" data-dismiss="alert">'+'Please select one or more user</a>').appendTo('#eventsResult').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
-                	} else {
-          
-                	var params = {
-                        "userIds": JSON.stringify(checkedRows),
-                        "userAction" : "delete"
-                    }
-                    $.ajax({
-                        url: '/userlist',
-                        type: "POST",
-                        data: params,
-                        success: function(data) {
-                          
-                        }
-                    });
+                    if ($('#eventsTable tr:has(:checkbox:checked)').length == 0) {
+                        $('<a href="#" class="close" data-dismiss="alert">' + 'Please select one or more user</a>').appendTo('#eventsResult').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
+                    } else {
 
-                     event.preventDefault();
-                	}
+                        var params = {
+                            "userIds": JSON.stringify(checkedRows),
+                            "userAction": "delete"
+                        }
+                        $.ajax({
+                            url: '/userlist',
+                            type: "POST",
+                            data: params,
+                            success: function(data) {
+
+                            }
+                        });
+
+                        event.preventDefault();
+                    }
                 });
-            
+
+
+
             // Userlist delete function
             $('#useradd').click(
                 function(event) {
-                    var params = {
-                        "userIds": "na",
-                        "userAction" : "add"
-                    }
-                    $.ajax({
-                        url: '/userlist',
-                        type: "POST",
-                        data: params,
-                        success: function(data) {
-                        	 window.location.href="http://localhost:8080/register";
-                        }
-                    });
-
+                    window.location.href = "http://localhost:8080/register";
                     event.preventDefault();
                 });
 
             // Userlist delete function
             $('#useredit').click(
                 function(event) {
-                    var params = {
-                        "userIds": JSON.stringify(checkedRows),
-                        "userAction" : "edit"
-                    }
-                    $.ajax({
-                        url: '/userlist',
-                        type: "POST",
-                        data: params,
-                        success: function(data) {
-                            
-                        }
-                    });
 
+                    if ($('#eventsTable tr:has(:checkbox:checked)').length != 1) {
+                        $('<a href="#" class="close" data-dismiss="alert">' + 'Please select single user for edit</a>').appendTo('#eventsResult').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
+                    } else {
+
+                        var params = {
+                            "userIds": JSON.stringify(checkedRows),
+                            "userAction": "edit"
+                        }
+                        $.ajax({
+                            url: '/userlist',
+                            type: "POST",
+                            data: params,
+                            success: function(data) {}
+                        });
+                    }
+                    event.preventDefault();
+                });
+
+            // Userlist delete function
+            $('#usercancel').click(
+                function(event) {
+                    window.location.href = "http://localhost:8080/dashboard";
                     event.preventDefault();
                 });
 

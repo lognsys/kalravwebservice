@@ -39,7 +39,7 @@
 		<put-attribute name="footer" value="" />
 	</definition>
 	<definition name="updateuser" extends="base_layout">
-		<put-attribute name="title" value="Kalrav: Users" />
+		<put-attribute name="title" value="Kalrav: Edit User" />
 		<put-attribute name="body" value="/WEB-INF/pages/updateuser.jsp" />
 		<put-attribute name="footer" value="" />
 	</definition>
