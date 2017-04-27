@@ -1,37 +1,59 @@
 [
-    {
-        "id": 0,
-        "name": "Item 0",
-        "price": "$0"
-    },
-    {
-        "id": 1,
-        "name": "Item 1",
-        "price": "$1"
-    },
-    {
-        "id": 2,
-        "name": "Item 2",
-        "price": "$2"
-    },
-    {
-        "id": 3,
-        "name": "Item 3",
-        "price": "$3"
-    },
-    {
-        "id": 4,
-        "name": "Item 4",
-        "price": "$4"
-    },
-    {
-        "id": 5,
-        "name": "Item 5",
-        "price": "$5"
-    },
-    {
-        "id": 6,
-        "name": "Item 6",
-        "price": "$6"
-    }
+	{
+		"id": 1,
+		"dramaname": "Jelly Doshi",
+		"groupname": "couple",
+		"auditoriumname": "Kalrav",
+		"datetime": "3rd March  2017  10 am"
+	},
+	{
+		"id": 2,
+		"dramaname": "Priyank Doshi",
+		"groupname": "ladies",
+		"group": "Kalrav",
+		"datetime": "3rd March  2017  5 pm"
+	},
+	{
+		"id": 3,
+		"dramaname": "Monika Sharma",
+		"groupname": "couple",
+		"auditoriumname": "Kalrav",
+		"datetime": "3rd March  2017  7 pm"
+	},
+	{
+		"id": 4,
+		"dramaname": "Jitu Doshi",
+		"groupname": "couple",
+		"auditoriumname": "Kalrav",
+		"status": "ACTIVE",
+		"datetime": "5th March  2017  10 am"
+	},
+	{
+		"id": 5,
+		"dramaname": "Nayana Doshi",
+		"groupname": "ladies",
+		"auditoriumname": "Kalrav",
+		"datetime": "5th March  2017  3 pm"
+	},
+	{
+		"id": 6,
+		"dramaname": "John Chambers",
+		"groupname": "couple",
+		"auditoriumname": "Kalrav",
+		"datetime": "7th March  2017  3 pm"
+	},
+	{
+		"id": 7,
+		"dramaname": "Sergey Brin",
+		"groupname": "ladies",
+		"auditoriumname": "Kalrav",
+		"datetime": "7th March  2017  6 pm"
+	},
+	{
+		"id": 8,
+		"dramaname": "Mark Zuckerburg",
+		"groupname": "couple",
+		"auditoriumname": "Kalrav",
+		"datetime": "7th March  2017  10 am"
+	}
 ]

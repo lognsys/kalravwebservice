@@ -1,5 +1,5 @@
 
-<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar collapse in"">
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar collapse in">
 
 	<ul class="nav menu">
 		<li class="active"><a
@@ -14,7 +14,7 @@
 			<use xmlns:xlink="http://www.w3.org/1999/xlink"
 						xlink:href="#stroked-male-user"></use></svg> Users
 		</a></li>
-		<li><a href="${pageContext.request.contextPath}/drama"> <svg
+		<li><a href="${pageContext.request.contextPath}/dramalist"> <svg
 					class="glyph stroked video">
 			<use xmlns:xlink="http://www.w3.org/1999/xlink"
 						xlink:href="#stroked-video"></use></svg> Dramas
