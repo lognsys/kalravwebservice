@@ -1,7 +1,7 @@
 # dramas.sql 
 #  @author - PJD 04/04/17 created table dramas
 #  
-# CHANGE LOG : MS - 04/04/17 add column imageurl
+# CHANGE LOG : MS - 27/04/17 add column drama_length,music
 #
 
 DROP TABLE IF EXISTS dramas;
@@ -39,6 +39,10 @@ CREATE TABLE dramas
 	avg_rating double(2,1) not null default 0,
 
 	imageurl varchar(128) not null default '',
+	
+	drama_length varchar(128) not null default '',
+    
+	music varchar(128) not null default '',
 
 	last_edit TIMESTAMP not null default current_timestamp on update current_timestamp
 	

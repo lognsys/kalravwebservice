@@ -11,8 +11,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.lognsys.dao.GroupRepository;
+import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
+import com.lognsys.dao.jdbc.resultset.DramaGroupsResultSetExtractor;
 import com.lognsys.dao.jdbc.resultset.UserGroupsResultSetExtractor;
 import com.lognsys.util.Constants;
 
@@ -96,6 +98,32 @@ public class JdbcGroupRepository implements GroupRepository {
 	public int findIDBy(String groupname) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public String findGroupByDramaId(int drama_id) {
+		SqlParameterSource param = new MapSqlParameterSource("drama_id", drama_id);
+		return namedParamJdbcTemplate.queryForObject(
+				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_groupname_bydramaid.name()), param,
+				String.class);
+	}
+
+	@Override
+	public List<DramasGroupsDTO> getDramasByGroup(String group_name) {
+
+		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
+		return namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_dramasbygroups.name()), param,
+				new DramaGroupsResultSetExtractor());
+
+	
+	}
+
+	@Override
+	public List<DramasGroupsDTO> getAllDramasAndGroup() {
+		return namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_dramasgroups_all.name()),
+				new DramaGroupsResultSetExtractor());
 	}
 
 }

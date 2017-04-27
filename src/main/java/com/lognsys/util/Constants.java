@@ -11,6 +11,9 @@ public class Constants {
 	public enum USER_QUERIES {
 		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email
 	}
+	public enum DRAMA_QUERIES {
+		insert_dramas, select_dramas, delete_dramas, select_dramas_exists, select_dramas_id, delete_dramas_title
+	}
 
 	/**
 	 * enum contains keys of queries defined in sql.properties.
@@ -20,7 +23,15 @@ public class Constants {
 	 */
 	public enum GROUP_QUERIES {
 
-		insert_user_groups, select_groups_all, select_groupname_byuserid, select_id_bygroupname, select_usersbygroups, select_usersgroups_all
+		insert_user_groups,
+		select_groups_all,
+		select_groupname_byuserid,
+		select_id_bygroupname,
+		select_usersbygroups,
+		select_usersgroups_all,
+		select_groupname_bydramaid,
+		select_dramasbygroups,
+		select_dramasgroups_all
 
 	}
 
@@ -37,9 +48,13 @@ public class Constants {
 	public enum USER_FIELD_NAMES {
 		usersId, realname, username, auth_id, phone, location, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, company_name, title
 	}
-
+	public enum DRAMA_FIELD_NAMES {
+		dramasId, title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating
+	}
 	public enum GROUPS_FIELDNAME {
 		groupsId, group_name
 	}
-
+	public enum AUDITORIUMS_FIELDNAME {
+		auditoriumsId, auditorium_name,address,lat_lon
+	}
 }
