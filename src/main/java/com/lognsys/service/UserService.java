@@ -124,6 +124,7 @@ public class UserService {
 		for (String emailID : emailIDs) {
 			try {
 
+				System.out.println("Email-ID"+emailID);
 				boolean isDelete = jdbcUserRepository.deleteUserBy(emailID);
 
 				if (!isDelete)

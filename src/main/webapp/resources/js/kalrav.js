@@ -85,7 +85,7 @@ $(document)
                             type: "POST",
                             data: params,
                             success: function(data) {
-
+                            	 window.location.href = "http://localhost:8080/userlist"
                             }
                         });
 
@@ -95,21 +95,21 @@ $(document)
 
 
 
-            // Userlist delete function
+            // Userlist add function
             $('#useradd').click(
                 function(event) {
                     window.location.href = "http://localhost:8080/register";
                     event.preventDefault();
                 });
 
-            // Userlist delete function
+            // Userlist edit function
             $('#useredit').click(
                 function(event) {
 
                     if ($('#eventsTable tr:has(:checkbox:checked)').length != 1) {
                         $('<a href="#" class="close" data-dismiss="alert">' + 'Please select single user for edit</a>').appendTo('#eventsResult').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
                     } else {
-
+                    	console.log(JSON.stringify(checkedRows));
                         var params = {
                             "userIds": JSON.stringify(checkedRows),
                             "userAction": "edit"
@@ -118,7 +118,9 @@ $(document)
                             url: '/userlist',
                             type: "POST",
                             data: params,
-                            success: function(data) {}
+                            success: function(data) {
+                            	console.log(data);
+                            }
                         });
                     }
                     event.preventDefault();
@@ -129,6 +131,10 @@ $(document)
                 function(event) {
                     window.location.href = "http://localhost:8080/dashboard";
                     event.preventDefault();
-                });
+             });
+            
+            
+            
+            
 
-        });
+  });

@@ -20,7 +20,9 @@ import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.model.Users;
 import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
+import com.lognsys.util.ObjectMapper;
 
+//TODO Logging required for base controller
 @Controller
 public class BaseController {
 
@@ -58,7 +60,6 @@ public class BaseController {
 		}
 
 		return model;
-
 	}
 
 	/**
@@ -88,65 +89,6 @@ public class BaseController {
 
 	/**
 	 * 
-	 * @param userAction
-	 * @param checkboxvalues
-	 * @return //
-	 */
-	// @RequestMapping(value = "/userlist", params = "userAction", method =
-	// RequestMethod.POST)
-	// public String manageUser(Model model, @RequestParam("userAction") String
-	// userAction,
-	// @RequestParam(value = "checkboxname", required = false) String[]
-	// checkboxvalues) {
-	//
-	// try {
-	//
-	// switch (userAction) {
-	//
-	// case "Add":
-	//
-	// model.addAttribute("users", new Users());
-	// return "register";
-	//
-	// case "Delete":
-	//
-	// if (null != checkboxvalues)
-	// userService.deleteUsers(CommonUtilities.parseIntArray(checkboxvalues));
-	//
-	// List<UsersDTO> listOfUsers = userService.getUsers();
-	// model.addAttribute("listOfUsers", listOfUsers);
-	// return "userlist";
-	//
-	// case "Edit":
-	//
-	// if (null != checkboxvalues) {
-	// // Assumption User can select only 1 item from user list in
-	// // UI.
-	// int id = Integer.parseInt(checkboxvalues[0]);
-	//
-	// UsersDTO users = userService.findByUser(id);
-	// model.addAttribute("users", users);
-	// }
-	// return "register";
-	//
-	// case "Cancel":
-	// return "dashboard";
-	//
-	// default:
-	//
-	// return "dashboard";
-	//
-	// }
-	//
-	// } catch (Exception e) {
-	// System.out.println("manage user Exception " + e);
-	//
-	// }
-	// return "dashboard";
-	// }
-
-	/**
-	 * 
 	 * @param model
 	 * @param userIds
 	 * @param userAction
@@ -159,6 +101,7 @@ public class BaseController {
 		switch (userAction) {
 
 		case "delete":
+			System.out.println("UserAction : "+userAction);
 			JSONParser parser = new JSONParser();
 			try {
 				Object obj = parser.parse(userIds);
@@ -182,10 +125,17 @@ public class BaseController {
 			JSONParser p = new JSONParser();
 			try {
 				Object obj = p.parse(userIds);
-				JSONObject jsonObject = (JSONObject) obj;
-				String id = (String) jsonObject.get("id");
-				UsersDTO users = userService.findByUser(Integer.parseInt(id));
-				model.addAttribute("users", users);
+				JSONArray arr = (JSONArray) obj;
+				String id = "";
+				for (int i = 0; i < arr.size(); i++) {
+
+					JSONObject jsonObject = (JSONObject)arr.get(i);
+					id =jsonObject.get("id").toString();
+				}
+			
+				UsersDTO usersDTO = userService.findByUser(Integer.parseInt(id));
+				Users newUsers = ObjectMapper.mapToUsers(usersDTO);
+				model.addAttribute("users", newUsers);
 				return "register";
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -198,6 +148,12 @@ public class BaseController {
 
 	}
 
+	/**
+	 * 
+	 * @param model
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String showRegister(Model model, HttpServletRequest request) {
 		System.out.println("Going in Registration controller");
@@ -217,7 +173,6 @@ public class BaseController {
 	public String saveForm(@ModelAttribute("users") Users user, BindingResult result, ModelMap model) {
 
 		FormValidator formValidator = new FormValidator();
-
 		formValidator.validate(user, result);
 
 		if (result.hasErrors()) {
@@ -226,7 +181,6 @@ public class BaseController {
 
 			userService.addUser(user);
 		}
-
 		return "register";
 	}
 }

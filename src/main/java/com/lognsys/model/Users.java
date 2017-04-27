@@ -19,7 +19,7 @@ public class Users {
 	private String birthdate = "";
 	private boolean enabled = false;
 	private boolean notification = false;
-	private double avg_rating;
+	
 	private String device;
 
 	// Monika added 30/03/17
@@ -32,6 +32,37 @@ public class Users {
 	private String lastname = "";
 	private String title = "";
 	
+	
+	public Users() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Users(int id, String auth_id, String username, String realname, String phone, String location,
+			String provenance, String birthdate, boolean enabled, boolean notification,
+			String device, String address, String city, String state, String zipcode, String company_name,
+			String firstname, String lastname, String title) {
+		super();
+		this.id = id;
+		this.auth_id = auth_id;
+		this.username = username;
+		this.realname = realname;
+		this.phone = phone;
+		this.location = location;
+		this.provenance = provenance;
+		this.birthdate = birthdate;
+		this.enabled = enabled;
+		this.notification = notification;
+
+		this.device = device;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.zipcode = zipcode;
+		this.company_name = company_name;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.title = title;
+	}
 
 	public int getId() {
 		return id;
@@ -79,14 +110,6 @@ public class Users {
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
-	}
-
-	public double getAvg_rating() {
-		return avg_rating;
-	}
-
-	public void setAvg_rating(double avg_rating) {
-		this.avg_rating = avg_rating;
 	}
 
 	public boolean isEnabled() {
