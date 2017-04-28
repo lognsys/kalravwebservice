@@ -27,11 +27,6 @@
 		<put-attribute name="body" value="/WEB-INF/pages/register.jsp" />
 		<put-attribute name="footer" value="" />
 	</definition>
-	<definition name="dramalist" extends="base_layout">
-		<put-attribute name="title" value="Kalrav: Drama" />
-		<put-attribute name="body" value="/WEB-INF/pages/dramalist.jsp" />
-		<put-attribute name="footer" value="" />
-	</definition>
 
 	<definition name="userlist" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: Users" />
@@ -48,5 +43,17 @@
 		<put-attribute name="body" value="/WEB-INF/pages/adverts.html" />
 		<put-attribute name="footer" value="" />
 
+	</definition>
+	
+	<definition name="dramalist" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: Drama" />
+		<put-attribute name="body" value="/WEB-INF/pages/dramalist.jsp" />
+		<put-attribute name="footer" value="" />
+	</definition>
+	
+	<definition name="dramaDetail" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: DramaDetail" />
+		<put-attribute name="body" value="/WEB-INF/pages/dramaDetail.jsp" />
+		<put-attribute name="footer" value="" />
 	</definition>
 </tiles-definitions>

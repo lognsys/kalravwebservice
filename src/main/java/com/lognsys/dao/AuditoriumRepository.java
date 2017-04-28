@@ -13,9 +13,10 @@ public interface AuditoriumRepository {
 
 	public String findAuditoriumBy(int drama_id);
 
-	public List<DramasAuditoriumsDTO> getDramasByAuditorium(String auditoriumname);
+	public List<DramasAuditoriumsDTO> getDramasByAuditorium(String auditorium_name);
 
-	public boolean adddAuditorium(String audi_id);
+//	public boolean adddAuditorium(String audi_id);
+	public void adddAuditorium(AuditoriumsDTO auditoriumsDTO);
 
 	
 	public int findIDBy(String auditoriumname);

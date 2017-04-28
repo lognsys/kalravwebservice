@@ -2,9 +2,15 @@ package com.lognsys.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.lognsys.dao.dto.DramasAuditoriumsDTO;
+import com.lognsys.dao.dto.DramasDTO;
+import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
+import com.lognsys.model.Drama;
+import com.lognsys.model.DramasTable;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 
@@ -65,4 +71,31 @@ public class ObjectMapper {
 		
 	}
 
+	
+	public static DramasDTO mapToDramasDTO(Drama dramas) {
+		// TODO: Current setting of group to null, but need to change to value
+
+		return new DramasDTO(dramas.getId(), dramas.getTitle(), dramas.getImageurl(), dramas.getDrama_length(),
+				dramas.getDate(), dramas.getGenre(), dramas.getStar_cast(), dramas.getDescription(), dramas.getDirector(),
+				dramas.getWriter(), dramas.getMusic(), dramas.getAvg_rating());
+
+	}
+
+	public static List<DramasTable> mapToDramasTable(List<DramasGroupsDTO> dramaGroups) {
+		List<DramasTable> list = new ArrayList<>();
+		for (DramasGroupsDTO g : dramaGroups) {
+			list.add(new DramasTable(g.getDrama().getId(), g.getDrama().getTitle(),
+					g.getGroups().getGroup_name(), null, null));
+		}
+		return list;
+	}
+	
+	public static List<DramasTable> mapToDramasAuditoriumTable(List<DramasAuditoriumsDTO> dramaAuditorium) {
+		List<DramasTable> list = new ArrayList<>();
+		for (DramasAuditoriumsDTO a : dramaAuditorium) {
+			list.add(new DramasTable(a.getDrama().getId(), a.getDrama().getTitle(),
+					a.getAuditoriums().getAuditorium_name(), null, null));
+		}
+		return list;
+	}
 }

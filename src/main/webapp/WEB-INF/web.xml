@@ -36,6 +36,14 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/kalrav-servlet.xml</param-value>
 	</context-param>
+	<!-- file upload path  -->
+	<context-param> 
+    <description>Location to store uploaded file</description> 
+    <param-name>file-upload</param-name> 
+    <param-value>
+         c:\monika\
+     </param-value> 
+</context-param>
 	
 	
 	<!-- Spring Security -->

@@ -12,9 +12,19 @@ public class Constants {
 		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email
 	}
 	public enum DRAMA_QUERIES {
-		insert_dramas, select_dramas, delete_dramas, select_dramas_exists, select_dramas_id, delete_dramas_title
+		insert_dramas, select_dramas, delete_dramas, select_dramas_exists, select_dramas_id,
+		delete_dramas_title,select_dramas_title
+	}
+	public enum AUDITORIUM_QUERIES {
+		insert_auditoriums,
+		select_auditoriums,
+		select_auditorium_name_bydramaid,
+		select_dramabyauditorium,
+		select_dramasauditoriums_all
+		
 	}
 
+	
 	/**
 	 * enum contains keys of queries defined in sql.properties.
 	 * 

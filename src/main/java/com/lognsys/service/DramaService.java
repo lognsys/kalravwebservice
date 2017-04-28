@@ -12,10 +12,15 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.dao.jdbc.JdbcAuditoriumRepository;
+import com.lognsys.dao.jdbc.JdbcDramaRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.model.Drama;
+import com.lognsys.model.DramasTable;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 import com.lognsys.util.CommonUtilities;
@@ -28,11 +33,14 @@ public class DramaService {
 
 	Logger LOG = Logger.getLogger(this.getClass());
 
-/*	@Autowired
+	@Autowired
 	private JdbcDramaRepository jdbcDramaRepository;
 
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
+	
+	@Autowired
+	private JdbcAuditoriumRepository jdbcAuditoriumRepository;
 
 	// Injecting resource sql.properties.
 
@@ -40,145 +48,169 @@ public class DramaService {
 	@Qualifier("applicationProperties")
 	private Properties applicationProperties;
 
-	*//**
-	 * Add user to database.. Check if user already exists in db
+	/**
+	 * Add drama to database.. Check if user already exists in db
 	 * 
 	 * @return
-	 *//*
+	 */
 	@Transactional
 	public void addDrama(Drama dramas) {
-		String username = dramas.getUsername();
-
-		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
-
+		String dramaTitle = dramas.getTitle();
+		System.out.println("DramaService addDrama  dramaTitle "+dramaTitle);
+		
+		DramasDTO dramasDTO = ObjectMapper.mapToDramasDTO(dramas);
+		System.out.println("DramaService addDrama  dramasDTO "+dramasDTO);
+		
 		try {
-			boolean isExists = jdbcUserRepository.isExists(username);
-
+			boolean isExists = jdbcDramaRepository.isExists(dramaTitle);
+			System.out.println("DramaService addDrama  isExists "+isExists);
+			
 			if (isExists) {
-				LOG.info("Found user in database with username - " + username);
+				LOG.info("Found drama in database with dramaTitle - " + dramaTitle);
 
 			} else {
-
-				LOG.info("#addUser - " + "Adding user in database with - " + username);
-				jdbcUserRepository.addUser(usersDTO);
+				System.out.println("DramaService addDrama  Adding drama in database with "+dramaTitle);
+				
+				LOG.info("#addUser - " + "Adding drama in database with - " + dramaTitle);
+				jdbcDramaRepository.addDrama(dramasDTO);
 
 			}
 		} catch (DataAccessException dae) {
-			LOG.error(dae.getMessage());
-			throw new IllegalStateException("Error : Failed to add user!");
+			System.out.println("DramaService addDrama  Exception "+dae);
+			
+			throw new IllegalStateException("Error : Failed to add drama!");
 		}
 	}
-
-	*//**
-	 * Synchronize users from mysql to json files.
+	
+	/**
+	 * Synchronize drama from mysql to json files.
 	 *
 	 * @return
 	 * @throws IOException
-	 *//*
-	public void refreshUserList() throws IOException {
-		List<UsersTable> users = ObjectMapper.mapToUserTable(jdbcGroupRepository.getAllUsersAndGroup());
+	 */
+	public void refreshDramaList() throws IOException {
+		List<DramasTable> dramas = ObjectMapper.mapToDramasTable(jdbcGroupRepository.getAllDramasAndGroup());
 		ResourceLoader resourceLoader = new FileSystemResourceLoader();
 		Resource resource = resourceLoader
-				.getResource(applicationProperties.getProperty(Constants.JSON_FILES.user_filename.name()));
+				.getResource(applicationProperties.getProperty(Constants.JSON_FILES.drama_filename.name()));
 
-		String list = CommonUtilities.convertToJSON(users);
+		String list = CommonUtilities.convertToJSON(dramas);
 		try {
 			WriteJSONToFile.getInstance().write(resource, list);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Synchronize drama from mysql to json files.
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	public void refreshDramaListForAuditorium() throws IOException {
+		List<DramasTable> dramas = ObjectMapper.mapToDramasAuditoriumTable(jdbcAuditoriumRepository.getAllDramasAndAuditorium());
+		ResourceLoader resourceLoader = new FileSystemResourceLoader();
+		Resource resource = resourceLoader
+				.getResource(applicationProperties.getProperty(Constants.JSON_FILES.drama_filename.name()));
 
+		String list = CommonUtilities.convertToJSON(dramas);
+		try {
+			WriteJSONToFile.getInstance().write(resource, list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/*
 	*//**
-	 * Delete users from database
+	 * Delete drama from database
 	 * 
 	 * @return
-	 *//*
-	public void deleteUsers(int[] ids) {
-		LOG.info("#deleteUser - " + "Deleting total number of users from database - " + ids.length);
+	 */
+	public void deleteDramas(int[] ids) {
+		LOG.info("#deleteDrama - " + "Deleting total number of dramas from database - " + ids.length);
 
 		for (int id : ids) {
 			try {
 
-				boolean isDelete = jdbcUserRepository.deleteUserBy(id);
+				boolean isDelete = jdbcDramaRepository.deleteDramaBy(id);
 
 				if (!isDelete)
-					LOG.info("#deleteUser - " + "failed to delete user with ID - " + id);
+					LOG.info("#deleteDrama - " + "failed to delete dramas with ID - " + id);
 
 			} catch (DataAccessException dae) {
 
 				LOG.error(dae.getMessage());
-				throw new IllegalStateException("Error : Failed to delete user!");
+				throw new IllegalStateException("Error : Failed to delete dramas!");
 			}
 
 		}
 	}
-	
+	/*
 	*//**
-	 * Delete users from database
-	 * @param String emailID
+	 * Delete drama from database
+	 * @param String title
 	 * @return
-	 *//*
-	public void deleteUsers(String[] emailIDs) {
-		LOG.info("#deleteUser - " + "Deleting total number of users from database - " + emailIDs.length);
+	 */
+	public void deleteDramas(String[] titles) {
+		LOG.info("#deleteDrama - " + "Deleting total number of dramas from database - " + titles.length);
 
-		for (String emailID : emailIDs) {
+		for (String title : titles) {
 			try {
 
-				System.out.println("Email-ID"+emailID);
-				boolean isDelete = jdbcUserRepository.deleteUserBy(emailID);
+				System.out.println("title "+title);
+				boolean isDelete = jdbcDramaRepository.deleteDramaBy(title);
 
 				if (!isDelete)
-					LOG.info("#deleteUser - " + "failed to delete user with ID - " + emailID);
+					LOG.info("#deleteDrama - " + "failed to delete dramas with title - " + title);
 
 			} catch (DataAccessException dae) {
 
 				LOG.error(dae.getMessage());
-				throw new IllegalStateException("Error : Failed to delete user!");
+				throw new IllegalStateException("Error : Failed to delete dramas!");
 			}
 
 		}
 	}
+	/*
+	 * update drama
+	 */
 
-	*//**
-	 * @param user
-	 *//*
-	public void updateUser(Users user) {
+	public void updateDrama(Drama drama) {
 
 	}
-
+	/*
 	*//**
-	 * @return returns the list of users from database
-	 *//*
-	public List<UsersDTO> getUsers() {
+	 * @return returns the list of drama from database
+	 */
+	public List<DramasDTO> getDramas() {
 
-		LOG.info("#getUsers - Get All Users from database");
-		List<UsersDTO> userList;
+		LOG.info("#getDramas - Get All Dramas from database");
+		List<DramasDTO> dramaList;
 
 		try {
-			userList = jdbcUserRepository.getAllUsers();
+			dramaList = jdbcDramaRepository.getAllDramas();
 		} catch (DataAccessException dae) {
 			LOG.error(dae.getMessage());
-			throw new IllegalStateException("Error : Failed to add user!");
+			throw new IllegalStateException("Error : Failed to add dramaList !");
 		}
-		return userList;
+		return dramaList;
 	}
 
-	*//**
+	/**
 	 * 
 	 * @param id
 	 * @return
-	 *//*
-	public UsersDTO findByUser(int id) {
+	 */
+	public DramasDTO findByDrama(int id) {
 
 		try {
-			return jdbcUserRepository.findUserById(id);
+			return jdbcDramaRepository.findDramaById(id);
 		} catch (DataAccessException dae) {
 			LOG.error(dae.getMessage());
-			throw new IllegalAccessError("Failed to get user from database with ID - " + id);
+			throw new IllegalAccessError("Failed to get drama from database with ID - " + id);
 		}
 	}
 
-	*/
 	
 }

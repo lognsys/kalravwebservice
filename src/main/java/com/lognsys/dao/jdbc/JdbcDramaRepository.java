@@ -68,119 +68,42 @@ public class JdbcDramaRepository implements DramaRespository {
 
 	@Override
 	public List<DramasDTO> getAllDramas() {
-		// TODO Auto-generated method stub
-		return null;
+		List<DramasDTO> listdramas = namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.DRAMA_QUERIES.select_dramas.name()),
+				new BeanPropertyRowMapper<DramasDTO>(DramasDTO.class));
+
+		return listdramas;
 	}
 
 	@Override
 	public boolean deleteDramaBy(Integer id) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DRAMA_QUERIES.delete_dramas.name()),
+				parameter) == 1;
 	}
 
 	@Override
 	public DramasDTO findDramaById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		SqlParameterSource param = new MapSqlParameterSource("id", id);
+		return namedParamJdbcTemplate.queryForObject(
+				sqlProperties.getProperty(Constants.DRAMA_QUERIES.select_dramas_id.name()), param,
+				DramasDTO.class);
+	
 	}
 
 	@Override
 	public boolean deleteDramaBy(String title) {
-		// TODO Auto-generated method stub
-		return false;
+		SqlParameterSource parameter = new MapSqlParameterSource("title",title);
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DRAMA_QUERIES.delete_dramas_title.name()),
+				parameter) == 1;
 	}
 
 	@Override
 	public DramasDTO findDramaById(String title) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	/**
-	 * 
-	 */
-/*	@Override
-	public void updateUser(String username) {
-
-	}
-
-	*//**
-	 * Returns Users object by id
-	 * 
-	 * @param id
-	 *            - Integer
-	 *//*
-	@Override
-	public UsersDTO findUserById(Integer id) {
-
-		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
-
-		UsersDTO useritem = new UsersDTO();
-		namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_id.name()),
-				parameter, new RowMapper<UsersDTO>() {
-
-					@Override
-					public UsersDTO mapRow(ResultSet rs, int arg1) throws SQLException {
-
-						useritem.setId(rs.getInt("id"));
-						useritem.setUsername(rs.getString("username"));
-						useritem.setRealname(rs.getString("realname"));
-						useritem.setPhone(rs.getString("birthdate"));
-						useritem.setEnabled(rs.getBoolean("enabled"));
-						useritem.setAddress(rs.getString("address"));
-						useritem.setPhone(rs.getString("phone"));
-						useritem.setCity(rs.getString("city"));
-						useritem.setState(rs.getString("state"));
-						useritem.setZipcode(rs.getString("zipcode"));
-						useritem.setAuth_id(rs.getString("auth_id"));
-						return useritem;
-					}
-				});
-
-		return useritem;
-	}
-
-	*//**
-	 * Returns List<Users> from database
-	 *//*
-	@Override
-	public List<UsersDTO> getAllUsers() {
-		List<UsersDTO> listUsers = namedParamJdbcTemplate.query(
-				sqlProperties.getProperty(Constants.USER_QUERIES.select_users.name()),
-				new BeanPropertyRowMapper<UsersDTO>(UsersDTO.class));
-
-		return listUsers;
-	}
-
-	*//**
-	 * delete user by user_id
-	 * 
-	 * @param id
-	 *            - integer
-	 *//*
-	@Override
-	public boolean deleteUserBy(Integer user_id) {
-		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(user_id));
-		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.delete_users.name()),
-				parameter) == 1;
-	}
-
-	*//**
-	 * delete user by emailID
-	 * 
-	 * @param id - emailID
-	 *//*
-	@Override
-	public boolean deleteUserBy(String emailID) {
-		SqlParameterSource parameter = new MapSqlParameterSource("emailID", emailID);
-		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.delete_users_email.name()),
-				parameter) == 1;
-	}
-
-	@Override
-	public UsersDTO findUserById(String emailID) {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
+		SqlParameterSource param = new MapSqlParameterSource("title", title);
+		return namedParamJdbcTemplate.queryForObject(
+				sqlProperties.getProperty(Constants.DRAMA_QUERIES.select_dramas_title.name()), param,
+				DramasDTO.class);	}
 
 }

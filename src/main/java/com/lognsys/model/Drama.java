@@ -20,9 +20,37 @@ public class Drama {
 	private String writer;
 	private String description;
 	private int auditorium_id;
-	private Date date;
-	private int avg_rating;
+	private String date;
 	private String imageurl;
+    private String drama_length;
+    private String music;
+    private String avg_rating;
+    
+    
+    
+    public String getMusic() {
+		return music;
+	}
+
+	public void setMusic(String music) {
+		this.music = music;
+	}
+
+	public String getAvg_rating() {
+		return avg_rating;
+	}
+
+	public void setAvg_rating(String avg_rating) {
+		this.avg_rating = avg_rating;
+	}
+
+	public String getDrama_length() {
+		return drama_length;
+	}
+
+	public void setDrama_length(String drama_length) {
+		this.drama_length = drama_length;
+	}
 
 	public String getImageurl() {
 		return imageurl;
@@ -58,22 +86,15 @@ public class Drama {
 		this.auditorium_id = auditorium_id;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
-	public int getAvg_rating() {
-		return avg_rating;
-	}
-
-	public void setAvg_rating(int avg_rating) {
-		this.avg_rating = avg_rating;
-	}
-
+	
 	public String getGenre() {
 		return genre;
 	}
