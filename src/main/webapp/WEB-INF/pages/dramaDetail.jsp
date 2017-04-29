@@ -1,13 +1,4 @@
-<%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Drama Details</title>
-</head>
-<body class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main" > --%>
+
 <div style="overflow: scroll;">
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
@@ -17,9 +8,7 @@
 		</div>
 		<div >
 			<form method="post" action="dramaDetail" modelAttribute="drama">
-				
-
-
+	
 				<div class="row">
 					<div class="col-sm-6 form-group">
 						<label>Drama Name </label> <input type="text" name="title"
@@ -31,11 +20,28 @@
 							name="drama_length" class="form-control" />
 
 					</div>
-					<div class="col-sm-6 form-group">
-						<label>Drama Date </label> <input type="text" name="date"
-							class="form-control" />
+					 <div class="form-group">
+                <label for="dtp_input1" class="col-md-2 control-label">DateTime Picking</label>
+                <div class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                    <input class="form-control"  type="text" value="" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                </div>
+				<input type="hidden" id="dtp_input1" value="" name="date" /><br/>
+            <!-- <script type="text/javascript">
+				  $('.form_datetime').datetimepicker({
+					    //language:  'fr',
+					    weekStart: 1,
+					    todayBtn:  1,
+						autoclose: 1,
+						todayHighlight: 1,
+						startView: 2,
+						forceParse: 0,
+					    showMeridian: 1
+					});
+				</script> -->
+            </div>
 
-					</div>
 				</div>
 
 				<div class="row">
@@ -94,5 +100,3 @@
 		</div>
 	</div>
 	</div>
-	</body>
-	</html>

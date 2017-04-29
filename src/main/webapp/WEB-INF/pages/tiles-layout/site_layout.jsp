@@ -22,11 +22,10 @@
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-
 <!-- css/stylesheet -->
 <link rel="stylesheet" href="static/css/styles.css">
 
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 <!-- lumino stylesheet in csshome  -->
 <link rel="stylesheet" href="static/csshome/bootstrap-table.css">
 <link rel="stylesheet" href="static/csshome/bootstrap-theme.css">
@@ -34,12 +33,9 @@
 <link rel="stylesheet" href="static/csshome/bootstrap-theme.min.css">
 <link rel="stylesheet" href="static/csshome/bootstrap.css">
 <link rel="stylesheet" href="static/csshome/bootstrap.css.map">
-<link rel="stylesheet" href="static/csshome/bootstrap.min.css">
-<link rel="stylesheet" href="static/csshome/datepicker.css">
-<link rel="stylesheet" href="static/csshome/datepicker3.css">
+<link rel="stylesheet" href="static/csshome/bootstrap.min.css"media="screen">
 <link rel="stylesheet" href="static/csshome/styles.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-
+<link rel="stylesheet" href="static/csshome/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 
 <!-- jquery -->
 <script src="webjars/jquery/2.2.3/jquery.min.js"></script>
@@ -48,26 +44,31 @@
   src="https://code.jquery.com/jquery-2.2.4.min.js"
   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
   crossorigin="anonymous"></script>
-
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
 <!-- lumino javascript in js  -->
 <script type="text/javascript" src="static/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="static/js/bootstrap-table.js"></script>
 <script type="text/javascript" src="static/js/bootstrap.js"></script>
 <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
-
+<script type="text/javascript" src="static/js/chart-data.js"></script>
 <script type="text/javascript" src="static/js/chart-min.js"></script>
 <script type="text/javascript" src="static/js/easypiechart-data.js"></script>
 <script type="text/javascript" src="static/js/easypiechart.js"></script>
 <script type="text/javascript" src="static/js/html5shiv.min.js"></script>
+<!-- <script type="text/javascript" src="static/js/jquery-1.11.1.min.js"></script> -->
 <script type="text/javascript" src="static/js/kalrav.glyphs.js"></script>
 <script type="text/javascript" src="static/js/lumino.glyphs.js"></script>
-<script type="text/javascript" src="static/js/respond_min.js"></script>
-<script type="text/javascript" src="static/js/chart-data.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-
+<script type="text/javascript" src="static/js/respond.js"></script>
+<script type="text/javascript" src="static/js/jquery.js"></script>
 <!-- glyph icons from https://glyphs.co/docs/getting-started/installation  -->
 <script type="text/javascript" src="//kit.glyphs.co/4uq709.js"></script>
+
+<script type="text/javascript" src="static/js/jquery-1.8.3.min.js" ></script>
+<script type="text/javascript" src="static/js/bootstrap-datetimepicker.js" ></script>
+<script type="text/javascript" src="static/js/bootstrap-datetimepicker.fr.js" ></script>	
+	
+	
 
 <!-- load kalrav.js after jquery -->
 <script type="text/javascript" src="static/js/kalrav.js"></script>
