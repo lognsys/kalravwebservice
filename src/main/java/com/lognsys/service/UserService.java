@@ -22,6 +22,7 @@ import com.lognsys.util.Constants;
 import com.lognsys.util.ObjectMapper;
 import com.lognsys.util.WriteJSONToFile;
 
+//TODO 2: Add logging at service level
 @Service("userService")
 public class UserService {
 
@@ -44,6 +45,8 @@ public class UserService {
 	 * 
 	 * @return
 	 */
+	// TODO 3: Add users and get ID which needs to be added to the group as well
+	// as roles
 	@Transactional
 	public void addUser(Users users) {
 		String username = users.getUsername();
@@ -59,7 +62,8 @@ public class UserService {
 			} else {
 
 				LOG.info("#addUser - " + "Adding user in database with - " + username);
-				jdbcUserRepository.addUser(usersDTO);
+				System.out.println("#addUser - " + "Adding user in database with - " + username);
+				 jdbcUserRepository.addUser(usersDTO);
 
 			}
 		} catch (DataAccessException dae) {
@@ -79,7 +83,6 @@ public class UserService {
 		ResourceLoader resourceLoader = new FileSystemResourceLoader();
 		Resource resource = resourceLoader
 				.getResource(applicationProperties.getProperty(Constants.JSON_FILES.user_filename.name()));
-
 		String list = CommonUtilities.convertToJSON(users);
 		try {
 			WriteJSONToFile.getInstance().write(resource, list);
@@ -112,29 +115,32 @@ public class UserService {
 
 		}
 	}
-	
+
 	/**
 	 * Delete users from database
-	 * @param String emailID
+	 * 
+	 * @param String
+	 *            emailID
 	 * @return
+	 * @throws IOException
 	 */
-	public void deleteUsers(String[] emailIDs) {
+	public void deleteUsers(String[] emailIDs) throws IOException {
 		LOG.info("#deleteUser - " + "Deleting total number of users from database - " + emailIDs.length);
 
 		for (String emailID : emailIDs) {
 			try {
-
-				System.out.println("Email-ID"+emailID);
 				boolean isDelete = jdbcUserRepository.deleteUserBy(emailID);
 
-				if (!isDelete)
+				if (!isDelete) {
 					LOG.info("#deleteUser - " + "failed to delete user with ID - " + emailID);
-
+				} 
 			} catch (DataAccessException dae) {
 
 				LOG.error(dae.getMessage());
 				throw new IllegalStateException("Error : Failed to delete user!");
 			}
+
+			//
 
 		}
 	}
@@ -147,9 +153,20 @@ public class UserService {
 	}
 
 	/**
+	 * 
+	 * This method updates json and refreshed the list of Users
 	 * @return returns the list of users from database
 	 */
 	public List<UsersDTO> getUsers() {
+		
+		//Refresh list after deletion of user 
+		try {
+			refreshUserList();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 
 		LOG.info("#getUsers - Get All Users from database");
 		List<UsersDTO> userList;
@@ -178,6 +195,4 @@ public class UserService {
 		}
 	}
 
-	
-	
 }

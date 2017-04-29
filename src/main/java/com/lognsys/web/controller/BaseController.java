@@ -1,5 +1,6 @@
 package com.lognsys.web.controller;
 
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
@@ -74,6 +75,17 @@ public class BaseController {
 
 	}
 
+	@RequestMapping(value = { "/edituser" }, method = RequestMethod.GET)
+	public String editUsers(Model model, HttpServletRequest request) {
+		return "edituser";
+	}
+
+	@RequestMapping(value = { "/edituser" }, method = RequestMethod.POST)
+	public String editUsers(@ModelAttribute("editUser") Users users) {
+
+		return "userlist";
+	}
+
 	/**
 	 * 
 	 * @param model
@@ -101,21 +113,21 @@ public class BaseController {
 		switch (userAction) {
 
 		case "delete":
-			System.out.println("UserAction : "+userAction);
 			JSONParser parser = new JSONParser();
 			try {
 				Object obj = parser.parse(userIds);
 
 				JSONArray arr = (JSONArray) obj;
+
 				String[] userIDs = new String[arr.size()];
 
 				for (int i = 0; i < arr.size(); i++) {
-
-					userIDs[i] = arr.get(i).toString();
+					JSONObject jsonObject = (JSONObject) arr.get(i);
+					String email = jsonObject.get("email").toString();
+					userIDs[i] = email;
 				}
-
-				 userService.deleteUsers(userIDs);
-			} catch (ParseException e) {
+				userService.deleteUsers(userIDs);
+			} catch (ParseException | IOException e) {
 				e.printStackTrace();
 			}
 			return "userlist";
@@ -129,10 +141,10 @@ public class BaseController {
 				String id = "";
 				for (int i = 0; i < arr.size(); i++) {
 
-					JSONObject jsonObject = (JSONObject)arr.get(i);
-					id =jsonObject.get("id").toString();
+					JSONObject jsonObject = (JSONObject) arr.get(i);
+					id = jsonObject.get("id").toString();
 				}
-			
+
 				UsersDTO usersDTO = userService.findByUser(Integer.parseInt(id));
 				Users newUsers = ObjectMapper.mapToUsers(usersDTO);
 				model.addAttribute("users", newUsers);
@@ -176,11 +188,13 @@ public class BaseController {
 		formValidator.validate(user, result);
 
 		if (result.hasErrors()) {
+			System.out.println("Adding Errors - " + user.toString());
 			return "register";
 		} else {
 
+			System.out.println("Adding User - " + user.toString());
 			userService.addUser(user);
 		}
-		return "register";
+		return "userlist";
 	}
 }

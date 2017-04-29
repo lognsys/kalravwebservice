@@ -5,8 +5,8 @@
 Dashdoard Admin
 
 </title>
-<link href="<c:url value="/resources/style.css" />" rel="stylesheet">
-<script src="<c:url value="/resources/js/easypiechart-data.js" />"></script>
+<link href="<c:url value="/static/css/style.css" />" rel="stylesheet">
+<script src="<c:url value="/static/js/easypiechart-data.js" />"></script>
 </head>
 <body>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			

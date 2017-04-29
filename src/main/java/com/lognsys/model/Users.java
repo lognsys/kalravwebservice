@@ -30,7 +30,6 @@ public class Users {
 	private String company_name = "";
 	private String firstname = "";
 	private String lastname = "";
-	private String title = "";
 	
 	
 	public Users() {
@@ -40,7 +39,7 @@ public class Users {
 	public Users(int id, String auth_id, String username, String realname, String phone, String location,
 			String provenance, String birthdate, boolean enabled, boolean notification,
 			String device, String address, String city, String state, String zipcode, String company_name,
-			String firstname, String lastname, String title) {
+			String firstname, String lastname) {
 		super();
 		this.id = id;
 		this.auth_id = auth_id;
@@ -61,7 +60,6 @@ public class Users {
 		this.company_name = company_name;
 		this.firstname = firstname;
 		this.lastname = lastname;
-		this.title = title;
 	}
 
 	public int getId() {
@@ -70,14 +68,6 @@ public class Users {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getAddress() {

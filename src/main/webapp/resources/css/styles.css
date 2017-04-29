@@ -5,7 +5,6 @@ html, body {
 	margin: 0;
 	padding: 0;
 	overflow: auto;
-	
 }
 
 /** start header **/
@@ -32,7 +31,7 @@ html, body {
 	margin: 0;
 	position: auto;
 	height: auto;
-	}
+}
 /** end of body **/
 
 /** start of login start **/
@@ -140,6 +139,7 @@ html, body {
 @import "font-awesome.min.css";
 
 @import "font-awesome-ie7.min.css";
+
 Space out content a bit
 body {
 	padding-top: 20px;
@@ -156,6 +156,7 @@ Custom page header
 .header {
 	border-bottom: 1px solid #e5e5e5;
 }
+
 Make the masthead heading the same height as the navigation
 .header h3 {
 	padding-bottom: 19px;
@@ -171,7 +172,15 @@ Custom page footer
 	border-top: 1px solid #e5e5e5;
 }
 
-Customize container
+Customize
+
+ 
+
+container
+
+
+
+
 @media ( min-width : 768px) {
 	.container {
 		max-width: 730px;
@@ -202,30 +211,49 @@ Supporting marketing content
 	margin-top: 28px;
 }
 
-Responsive: Portrait tablets and up
+Responsive
+
+
+:
+
+ 
+
+Portrait
+
+ 
+
+tablets
+
+ 
+
+and
+
+ 
+
+up
+
+
+
+
 @media screen and (min-width: 768px) {
 	Remove the padding we set earlier
 	.header, .marketing, .footer {
 		padding-right: 0;
 		padding-left: 0;
-		}
+	}
 	Space out the masthead
-		.
-		header
-		{
-		margin-bottom
-		:
-		30px;
+		 . header {
+		margin-bottom: 30px;
 	}
 	Remove the bottom border on the jumbotron for visual effect
 	.jumbotron {
 		border-bottom: 0;
 	}
-} */
+}
 
-/** end of Registration Form **/
-
-/**Login Form Error css**/
+* /
+	/** end of Registration Form **/
+	/**Login Form Error css**/  
 .error {
 	padding: 15px;
 	margin-bottom: 20px;
@@ -246,61 +274,80 @@ Responsive: Portrait tablets and up
 	border-color: #bce8f1;
 }
 
-
 /** User List form by monika**/
 .btn-group .btn {
-    transition: background-color .3s ease;
+	transition: background-color .3s ease;
 }
 
 .panel-table .panel-body {
-    padding: 0;
+	padding: 0;
 }
 
-.table > thead > tr > th {
-    border-bottom: none;
+.table>thead>tr>th {
+	border-bottom: none;
 }
 
 .panel-footer, .panel-table .panel-body .table-bordered {
-    border-style: none;
-    margin:10;
+	border-style: none;
+	margin: 10;
 }
 
-.panel-table .panel-body .table-bordered > thead > tr > th:first-of-type {
-    text-align: center;
-    width: 50px;
+.panel-table .panel-body .table-bordered>thead>tr>th:first-of-type {
+	text-align: center;
+	width: 50px;
 }
 
-.panel-table .panel-body .table-bordered > thead > tr > th.col-tools {
-    text-align: center;
-    width: 120px;
+.panel-table .panel-body .table-bordered>thead>tr>th.col-tools {
+	text-align: center;
+	width: 120px;
 }
 
-.panel-table .panel-body .table-bordered > thead > tr > th:last-of-type,
-.panel-table .panel-body .table-bordered > tbody > tr > td:last-of-type {
-    border-right: 0;
+.panel-table .panel-body .table-bordered>thead>tr>th:last-of-type,
+	.panel-table .panel-body .table-bordered>tbody>tr>td:last-of-type {
+	border-right: 0;
 }
 
-.panel-table .panel-body .table-bordered > thead > tr > th:first-of-type,
-.panel-table .panel-body .table-bordered > tbody > tr > td:first-of-type {
-    border-left: 0;
+.panel-table .panel-body .table-bordered>thead>tr>th:first-of-type,
+	.panel-table .panel-body .table-bordered>tbody>tr>td:first-of-type {
+	border-left: 0;
 }
 
-.panel-table .panel-body .table-bordered > tbody > tr:first-of-type > td {
-    border-bottom: 0;
+.panel-table .panel-body .table-bordered>tbody>tr:first-of-type>td {
+	border-bottom: 0;
 }
 
-.panel-table .panel-body .table-bordered > thead > tr:first-of-type > th {
-    border-top: 0;
+.panel-table .panel-body .table-bordered>thead>tr:first-of-type>th {
+	border-top: 0;
 }
 
-.pagination > li > a, .pagination > li > span {
-    border-radius: 50% !important;
-    margin: 0 5px;
+.pagination>li>a, .pagination>li>span {
+	border-radius: 50% !important;
+	margin: 0 5px;
 }
 
 .pagination {
-    margin: 0;
+	margin: 0;
 }
 
 /** form multiple bootstrap buttons **/
-.rbtnMargin { margin-left: 5px; }
+.rbtnMargin {
+	margin-left: 5px;
+}
+
+/** for userlist, dramalist  Overlay Background Color **/
+.ui-widget-overlay {
+	opacity: .50 !important;
+	/* Make sure to change both of these, as IE only sees the second one */
+	filter: Alpha(Opacity = 50) !important;
+	background-color: rgb(50, 50, 50) !important;
+	/* This will make it darker */
+}
+
+.ui-dialog .ui-state-error {
+	padding: .3em;
+	margin: 5em;
+}
+
+.ui-draggable, .ui-droppable {
+	background-position: top;
+}
