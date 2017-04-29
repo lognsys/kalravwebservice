@@ -67,7 +67,7 @@ public class ObjectMapper {
 		return new Users(users.getId(),  users.getAuth_id(), users.getUsername(),users.getRealname(), 
 				users.getPhone(), users.getLocation(), users.getProvenance(), users.getBirthdate(), users.isEnabled(),
 				users.isNotification(), users.getDevice(), users.getAddress(), users.getCity(),
-				users.getState(), users.getZipcode(), users.getCompany_name(), firstname, lastname,"");
+				users.getState(), users.getZipcode(), users.getCompany_name(), firstname, lastname);
 		
 	}
 

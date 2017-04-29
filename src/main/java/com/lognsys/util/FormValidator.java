@@ -40,18 +40,15 @@ public class FormValidator implements Validator {
 		Users users = (Users) target;
 		String device = UUID.randomUUID().toString();
 		users.setDevice(device);
-		System.out.println("device = " + device);
-
+	
 		java.util.Date dt = new java.util.Date();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(dt);
 
 		users.setBirthdate(currentTime);
-		System.out.println("currentTime = " + currentTime);
 
 		if (users.getFirstname() != null && users.getLastname() != null) {
 			users.setRealname(users.getFirstname() + " " + users.getLastname());
-			System.out.println("Real name = " + users.getRealname());
 
 		}
 

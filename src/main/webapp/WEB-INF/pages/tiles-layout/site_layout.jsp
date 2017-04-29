@@ -38,6 +38,8 @@
 <link rel="stylesheet" href="static/csshome/datepicker.css">
 <link rel="stylesheet" href="static/csshome/datepicker3.css">
 <link rel="stylesheet" href="static/csshome/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+
 
 <!-- jquery -->
 <script src="webjars/jquery/2.2.3/jquery.min.js"></script>
@@ -52,15 +54,17 @@
 <script type="text/javascript" src="static/js/bootstrap-table.js"></script>
 <script type="text/javascript" src="static/js/bootstrap.js"></script>
 <script type="text/javascript" src="static/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="static/js/chart-data.js"></script>
+
 <script type="text/javascript" src="static/js/chart-min.js"></script>
 <script type="text/javascript" src="static/js/easypiechart-data.js"></script>
 <script type="text/javascript" src="static/js/easypiechart.js"></script>
 <script type="text/javascript" src="static/js/html5shiv.min.js"></script>
-<!-- <script type="text/javascript" src="static/js/jquery-1.11.1.min.js"></script> -->
 <script type="text/javascript" src="static/js/kalrav.glyphs.js"></script>
 <script type="text/javascript" src="static/js/lumino.glyphs.js"></script>
-<script type="text/javascript" src="static/js/respond.js"></script>
+<script type="text/javascript" src="static/js/respond_min.js"></script>
+<script type="text/javascript" src="static/js/chart-data.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
 
 <!-- glyph icons from https://glyphs.co/docs/getting-started/installation  -->
 <script type="text/javascript" src="//kit.glyphs.co/4uq709.js"></script>

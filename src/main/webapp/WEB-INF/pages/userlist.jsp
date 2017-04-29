@@ -1,4 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"  isELIgnored="false"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"
+	isELIgnored="false"%>
 <div style="overflow: scroll;">
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
@@ -65,4 +66,13 @@
 	</div>
 
 	<ul id="output"></ul>
+</div>
+
+<!-- modal form for edit user -->
+<div id="dialog-form" title="Edit User">
+	<p class="validateTips"></p>
+
+	<form id="editUser" action="/edituser" method="post">
+		<div id="editform" class="col-sm-12 panel panel-default"></div>
+	</form>
 </div>
