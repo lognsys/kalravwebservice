@@ -28,7 +28,7 @@
 					</div>
 					<div class="panel-body">
 						<table id="eventsTable" data-toggle="table"
-							data-url="static/tables/dramas.json" data-show-refresh="true"
+							data-url="static/tables/dramas.json"  data-show-refresh="true"
 							data-show-toggle="true" data-show-columns="true"
 							data-search="true" data-select-item-name="toolbar1"
 							data-pagination="true" data-sort-name="name"
@@ -46,7 +46,7 @@
 						</table>
 						<div class="action_buttons">
 							<hr>
-							<button id="useradd" type="submit"
+							<button id="dramaadd" type="submit"
 								class="btn btn-primary pull-right rbtnMargin">Add</button>
 							<button id="userdelete" type="submit"
 								class="btn btn-danger pull-right rbtnMargin">Delete</button>

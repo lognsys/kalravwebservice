@@ -56,9 +56,9 @@
 		<put-attribute name="footer" value="" />
 	</definition>
 	
-	<definition name="dramaDetail" extends="base_layout">
+	<definition name="dramadetail" extends="base_layout">
 		<put-attribute name="title" value="Kalrav: DramaDetail" />
-		<put-attribute name="body" value="/WEB-INF/pages/dramaDetail.jsp" />
+		<put-attribute name="body" value="/WEB-INF/pages/dramadetail.jsp" />
 		<put-attribute name="footer" value="" />
 	</definition>
 </tiles-definitions>

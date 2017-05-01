@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.model.Drama;
 import com.lognsys.model.Users;
@@ -27,7 +28,7 @@ import com.lognsys.service.DramaService;
 import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
 
-@WebServlet("/dramaDetail")
+@WebServlet("/dramadetail")
 @MultipartConfig(maxFileSize = 16177215) 
 @Controller
 public class DramaController {
@@ -38,22 +39,40 @@ public class DramaController {
 	public String showDramas(Model model, HttpServletRequest request) {
 		/*List<UsersDTO> listOfUsers = userService.getUsers();
 		model.addAttribute("listOfUsers", listOfUsers);*/
+		List<DramasDTO> listOfDramas = dramaService.getDramas();
+		model.addAttribute("listOfDramas", listOfDramas);
+		
 		return "dramalist";
 	}
-	@RequestMapping(value = "/dramaDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "/dramadetail", method = RequestMethod.GET)
 	public String showDramaDetail(Model model, HttpServletRequest request) {
-		System.out.println("Going in dramaDetail controller");
+		System.out.println("Going in dramadetail controller");
 		Drama drama = new Drama();
 		model.addAttribute("drama", drama);
-		return "dramaDetail";
+		return "dramadetail";
 	}
-	@RequestMapping(value = "/dramaDetail", method = RequestMethod.POST)
+	
+	
+	
+	
+	
+	@RequestMapping(value = "/dramadetail", method = RequestMethod.POST)
 	public String saveDramaDetail(@ModelAttribute("drama") Drama dramas,BindingResult result, ModelMap model) {
 	
-		System.out.println(" saveDramaDetail controller dramas "+dramas);
-		System.out.println(" saveDramaDetail controller dramas getGenre "+dramas.getGenre());
+		FormValidator formValidator = new FormValidator();
+		formValidator.validate(dramas, result);
+
+		if (result.hasErrors()) {
+			System.out.println("Adding dramas - " + dramas.toString());
+				
+			return "dramadetail";
+		} else {
+
+		System.out.println("Adding dramas - " + dramas.toString());
 		dramaService.addDrama(dramas);
-	
-		return "dramaDetail";
+		}
+		
+		
+		return "dramadetail";
 	}
 }
