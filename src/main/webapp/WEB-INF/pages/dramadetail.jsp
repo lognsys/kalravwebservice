@@ -45,6 +45,8 @@
 							  <option>1:00:00 - 2:00:00</option>
 							  <option>2:00:00 - 2:30:00</option>
 							  <option>2:30:00 - 3:00:00</option>
+							  <option>3:00:00 - 3:30:00</option>
+							  <option>3:30:00 - 4:00:00</option>
 							  
 							</form:select>
 							</div>
