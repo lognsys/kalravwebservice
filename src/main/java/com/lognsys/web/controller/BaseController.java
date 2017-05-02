@@ -83,6 +83,7 @@ public class BaseController {
 	@RequestMapping(value = { "/edituser" }, method = RequestMethod.POST)
 	public String editUsers(@ModelAttribute("editUser") Users users) {
 
+		System.out.println("User - "+ users.getCompany_name());
 		return "userlist";
 	}
 

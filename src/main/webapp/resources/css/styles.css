@@ -174,9 +174,13 @@ Custom page footer
 
 Customize
 
+
  
 
+
 container
+
+
 
 
 
@@ -214,23 +218,35 @@ Supporting marketing content
 Responsive
 
 
+
+
 :
 
+
  
+
 
 Portrait
 
+
  
+
 
 tablets
 
+
  
+
 
 and
 
+
  
 
+
 up
+
+
 
 
 
@@ -253,7 +269,7 @@ up
 
 * /
 	/** end of Registration Form **/
-	/**Login Form Error css**/  
+	/**Login Form Error css**/   
 .error {
 	padding: 15px;
 	margin-bottom: 20px;
@@ -345,9 +361,17 @@ up
 
 .ui-dialog .ui-state-error {
 	padding: .3em;
-	margin: 5em;
+
+}
+
+.validateTips {
+	border: 1px solid transparent;
+	padding: 0.3em;
 }
 
 .ui-draggable, .ui-droppable {
 	background-position: top;
+}
+
+
 }

@@ -1,1 +1,5 @@
+<<<<<<< Updated upstream
 []
+=======
+[{"id":2,"name":"Priyank Doshi","email":"pdoshi","group":"ladies","status":"ACTIVE"},{"id":3,"name":"Monika Sharma","email":"msharma","group":"couple","status":"ACTIVE"},{"id":5,"name":"Nayana Doshi","email":"ndoshi","group":"ladies","status":"ACTIVE"},{"id":8,"name":"Mark Zuckerburg","email":"mburg","group":"couple","status":"INACTIVE"},{"id":10,"name":"Mark Cuban","email":"mcuban","group":"ladies","status":"ACTIVE"},{"id":11,"name":"Mike Shephard","email":"mshephard","group":"couple","status":"ACTIVE"},{"id":13,"name":"Patricia Matrtin","email":"pmartin","group":"ladies","status":"ACTIVE"},{"id":14,"name":"Mike Thwaites","email":"mthwaites","group":"couple","status":"ACTIVE"}]
+>>>>>>> Stashed changes
