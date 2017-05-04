@@ -30,34 +30,50 @@
 
 				</div>
 				<div class="col-sm-12 panel panel-default">
-					<div id="register_user" class="col-sm-12 panel panel-default">
+				<fieldset>
+					<div id="dramadetail_dramas" class="col-sm-12 panel panel-default">
 						<div class="row">
 							<div class="col-sm-6 form-group">
 								<label>Drama Name </label>
-								<form:input type="text" name="title" path="title"
+								<form:input id="title" type="text" name="title" path="title"
 									placeholder="Enter Drama Name Here...." class="form-control"></form:input>
 							</div>
 							<div class="col-sm-6 form-group">
 								<label>Drama Length </label>
-							 
-							 <form:select name="drama_length" path="drama_length" placeholder="Enter Drama Length Here...." class="form-control">
-							  <option>1:00:00 - 1:30:00</option>
-							  <option>1:00:00 - 2:00:00</option>
-							  <option>2:00:00 - 2:30:00</option>
-							  <option>2:30:00 - 3:00:00</option>
-							  <option>3:00:00 - 3:30:00</option>
-							  <option>3:30:00 - 4:00:00</option>
-							  
-							</form:select>
+								<form:input  id="drama_length"  type="text" name="drama_length" path="drama_length"
+									placeholder="Enter Drama Genre Here...." class="form-control" />
+							<%--  
+							 <form:select  name="drama_length" path="drama_length" placeholder="Enter Drama Length Here...." class="form-control">
+							  <option  id="drama_length" >1:00:00 - 1:30:00</option>
+							  <option id="drama_length" >1:00:00 - 2:00:00</option>
+							  <option id="drama_length" >2:00:00 - 2:30:00</option>
+							  <option  id="drama_length" >2:30:00 - 3:00:00</option>
+							  <option  id="drama_length" >3:00:00 - 3:30:00</option>
+							  <option id="drama_length" >3:30:00 - 4:00:00</option>
+							</form:select> --%>
 							</div>
-							<div class="form-group">
+							
+							<div class="row">
+							<div class="col-sm-6 form-group">
+								<label>Drama Genre </label>
+								<form:input  id="genre"  type="text" name="genre" path="genre"
+									placeholder="Enter Drama Genre Here...." class="form-control" />
+							</div>
+							<div class="col-sm-6 form-group">
+								<label>Star Cast </label>
+								<form:input id="star_cast" type="text" name="star_cast" path="star_cast"
+									placeholder="Enter Star Cast Name Here...."
+									class="form-control" />
+							</div>
+						</div>
+							<div   class="form-group">
 								<label for="dtp_input1" class="col-md-2 control-label">Select
 									DateTime </label> <br />
 								<div class="input-group date form_datetime col-md-5"
 									data-date="2017-05-16T05:25:07Z"
 									data-date-format="dd MM yyyy - HH:ii p"
 									data-link-field="dtp_input1">
-									<input type="text" path="date"
+									<input   type="text" path="date"
 										placeholder="Select Drama DateTime Length Here...."
 										class="form-control" value="" readonly /> <span
 										class="input-group-addon"><span
@@ -70,36 +86,24 @@
 								<br />
 							</div>
 						</div>
-						<div class="row">
-							<div class="col-sm-6 form-group">
-								<label>Drama Genre </label>
-								<form:input type="text" name="genre" path="genre"
-									placeholder="Enter Drama Genre Here...." class="form-control" />
-							</div>
-							<div class="col-sm-6 form-group">
-								<label>Star Cast </label>
-								<form:input type="text" name="star_cast" path="star_cast"
-									placeholder="Enter Star Cast Name Here...."
-									class="form-control" />
-							</div>
-						</div>
+						
 						<div class="form-group">
 							<label>Description</label>
-							<form:textarea placeholder="Enter Description Here.."
-								path="description" name="description" rows="3"
+							<form:textarea id="description" placeholder="Enter Description Here.."
+								path="description" name="description" rows="2"
 								class="form-control"></form:textarea>
 						</div>
 						<div class="row">
 							<div class="col-sm-6 form-group">
 								<label>Director Name </label>
-								<form:input type="text" path="director"
+								<form:input type="text" id="director" path="director"
 									placeholder="Enter Director Name Here...." name="director"
 									class="form-control" />
 
 							</div>
 							<div class="col-sm-6 form-group">
 								<label>Writer Name </label>
-								<form:input type="text" name="writer" path="writer"
+								<form:input id="writer" type="text" name="writer" path="writer"
 									placeholder="Enter Writer Name Here...." class="form-control" />
 
 							</div>
@@ -107,13 +111,13 @@
 						<div class="row">
 							<div class="col-sm-6 form-group">
 								<label>Music By </label>
-								<form:input type="text" name="music" path="music"
+								<form:input id="music" type="text" name="music" path="music"
 									placeholder="Enter Music By Here...." class="form-control" />
 
 							</div>
 							<div class="col-sm-6 form-group">
 								<label>Drama Average Rating </label>
-								<form:input type="text"
+								<form:input id="avg_rating" type="text"
 									placeholder="Enter Drama Average Rating  Here...."
 									path="avg_rating" name="avg_rating" class="form-control" />
 
@@ -122,7 +126,7 @@
 						<div class="row">
 							<div class="col-sm-6 form-group">
 								<label>Group Name </label>
- <form:select  name="groupname" path="" placeholder="Enter Group Name Here...." class="form-control">
+ <form:select   id="groupname" name="groupname" path="" placeholder="Enter Group Name Here...." class="form-control">
 							  <option>Ladies</option>
 							  <option>Youth</option>
 							  <option>Couple</option>						  
@@ -130,7 +134,7 @@
 							</div>
 							<div class="col-sm-6 form-group">
 								<label>Auditorium Name </label>
- <form:select  name="auditoriumname" path="" placeholder="Enter Auditorium Name Here...." class="form-control">
+ <form:select id="auditoriumname"  name="auditoriumname" path="" placeholder="Enter Auditorium Name Here...." class="form-control">
 							  <option>Kalrav Malad</option>
 							  <option>Kalrav Kandivali</option>			  
 							</form:select>
@@ -151,6 +155,7 @@
 						</div>
 						<form:button type="submit" class="btn btn-lg btn-info">Submit</form:button>
 					</div>
+				</fieldset>
 				</div>
 
 			</form:form>

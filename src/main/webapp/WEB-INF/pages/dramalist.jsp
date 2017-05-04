@@ -37,10 +37,10 @@
 								<tr>
 									<th data-field="checked" data-checkbox="true"></th>
 									<th data-field="id" data-sortable="true" data-visible="false">ID</th>
-									<th data-field="dramaname" data-sortable="true">Drama Name</th>
-									<th data-field="groupname" data-sortable="true">Group Name</th>
-									<th data-field="auditoriumname" data-sortable="true">Auditorium Name</th>
-									<th data-field="datetime" data-sortable="true">DateTime</th>
+									<th data-field="title" data-sortable="true">Drama Name</th>
+									<th data-field="group_name" data-sortable="true">Group Name</th>
+									<th data-field="auditorium_name" data-sortable="true">Auditorium Name</th>
+									<th data-field="date" data-sortable="true">DateTime</th>
 								</tr>
 							</thead>
 						</table>
@@ -48,11 +48,11 @@
 							<hr>
 							<button id="dramaadd" type="submit"
 								class="btn btn-primary pull-right rbtnMargin">Add</button>
-							<button id="userdelete" type="submit"
+							<button id="dramadelete" type="submit"
 								class="btn btn-danger pull-right rbtnMargin">Delete</button>
-							<button id="useredit" type="submit"
+							<button id="dramaedit" type="submit"
 								class="btn btn-warning pull-right rbtnMargin">Edit</button>
-							<button id="usercancel" type="reset"
+							<button id="dramacancel" type="reset"
 								class="btn btn-default pull-right rbtnMargin">Cancel</button>
 						</div>
 					</div>
@@ -65,4 +65,13 @@
 	</div>
 
 	<ul id="output"></ul>
+</div>
+
+<!-- modal form for edit user -->
+<div id="dialog-form" title="Edit User">
+	<p class="validateTips"></p>
+
+	<form id="editUser" action="/edituser" method="post">
+		<div id="editform" class="col-sm-12 panel panel-default"></div>
+	</form>
 </div>

@@ -59,7 +59,7 @@ public class Constants {
 		usersId, realname, username, auth_id, phone, location, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, company_name, title
 	}
 	public enum DRAMA_FIELD_NAMES {
-		dramasId, title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating
+		dramasId, title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating, group_name,auditorium_name, group_id,auditorium_id
 	}
 	public enum GROUPS_FIELDNAME {
 		groupsId, group_name

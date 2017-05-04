@@ -26,9 +26,17 @@ public class DramasDTO {
     private String writer="";
     private String music="";
     private String avg_rating="";
+
+    private String group_name="";
+    private String auditorium_name="";
+    private int group_id;
+    private int auditorium_id;
     
-    public DramasDTO(int id, String title, String imageurl, String drama_length, String date, String genre,
-			String star_cast, String description, String director, String writer, String music, String avg_rating) {
+    
+
+	public DramasDTO(int id, String title, String imageurl, String drama_length, String date, String genre,
+			String star_cast, String description, String director, String writer, String music, String avg_rating,
+			String group_name, String auditorium_name, int group_id, int auditorium_id) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -42,10 +50,46 @@ public class DramasDTO {
 		this.writer = writer;
 		this.music = music;
 		this.avg_rating = avg_rating;
+		this.group_name = group_name;
+		this.auditorium_name = auditorium_name;
+		this.group_id = group_id;
+		this.auditorium_id = auditorium_id;
 	}
 
 	public DramasDTO() {
 		super();
+	}
+
+	public String getGroup_name() {
+		return group_name;
+	}
+
+	public void setGroup_name(String group_name) {
+		this.group_name = group_name;
+	}
+
+	public String getAuditorium_name() {
+		return auditorium_name;
+	}
+
+	public void setAuditorium_name(String auditorium_name) {
+		this.auditorium_name = auditorium_name;
+	}
+
+	public int getGroup_id() {
+		return group_id;
+	}
+
+	public void setGroup_id(int group_id) {
+		this.group_id = group_id;
+	}
+
+	public int getAuditorium_id() {
+		return auditorium_id;
+	}
+
+	public void setAuditorium_id(int auditorium_id) {
+		this.auditorium_id = auditorium_id;
 	}
 
 	public int getId() {
@@ -146,11 +190,14 @@ public class DramasDTO {
 
 	@Override
 	public String toString() {
-		return "DramasDTO [id=" + id + ", title=" + title + ", imageurl=" + imageurl + ", drama_length="
-				+ drama_length + ", date=" + date + ", genre=" + genre + ", star_cast=" + star_cast
-				+ ", description=" + description + ", director=" + director + ", writer=" + writer + ", music=" + music
-				+ ", avg_rating=" + avg_rating + "]";
+		return "DramasDTO [id=" + id + ", title=" + title + ", imageurl=" + imageurl + ", drama_length=" + drama_length
+				+ ", date=" + date + ", genre=" + genre + ", star_cast=" + star_cast + ", description=" + description
+				+ ", director=" + director + ", writer=" + writer + ", music=" + music + ", avg_rating=" + avg_rating
+				+ ", group_name=" + group_name + ", auditorium_name=" + auditorium_name + ", group_id=" + group_id
+				+ ", auditorium_id=" + auditorium_id + "]";
 	}
+
+
 
 
 }
