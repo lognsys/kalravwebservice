@@ -78,6 +78,14 @@ public class ObjectMapper {
 				users.getState(), users.getZipcode(), users.getCompany_name(), firstname, lastname);
 		
 	}
+	public static Drama mapToDramas(DramasDTO dramas) {
+		// TODO: Current setting of group to null, but need to change to value
+		return new Drama(dramas.getId(), dramas.getTitle(), dramas.getImageurl(), dramas.getDrama_length(),
+				dramas.getDate(), dramas.getGenre(), dramas.getStar_cast(), dramas.getDescription(), dramas.getDirector(),
+				dramas.getWriter(), dramas.getMusic(), dramas.getAvg_rating(),
+				dramas.getGroup_name(),dramas.getAuditorium_name(),dramas.getGroup_id(),dramas.getAuditorium_id());
+
+	}
 
 	
 	public static DramasDTO mapToDramasDTO(Drama dramas) {
@@ -85,7 +93,8 @@ public class ObjectMapper {
 
 		return new DramasDTO(dramas.getId(), dramas.getTitle(), dramas.getImageurl(), dramas.getDrama_length(),
 				dramas.getDate(), dramas.getGenre(), dramas.getStar_cast(), dramas.getDescription(), dramas.getDirector(),
-				dramas.getWriter(), dramas.getMusic(), dramas.getAvg_rating());
+				dramas.getWriter(), dramas.getMusic(), dramas.getAvg_rating(),
+				dramas.getGroup_name(),dramas.getAuditorium_name(),dramas.getGroup_id(),dramas.getAuditorium_id());
 
 	}
 

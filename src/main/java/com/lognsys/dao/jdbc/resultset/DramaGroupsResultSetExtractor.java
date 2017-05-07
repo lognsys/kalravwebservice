@@ -42,14 +42,18 @@ public class DramaGroupsResultSetExtractor implements ResultSetExtractor<List<Dr
 					rs.getString(Constants.DRAMA_FIELD_NAMES.director.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.writer.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.music.name()),
-					rs.getString(Constants.DRAMA_FIELD_NAMES.avg_rating.name()));
+					rs.getString(Constants.DRAMA_FIELD_NAMES.avg_rating.name()),
+					rs.getString(Constants.DRAMA_FIELD_NAMES.group_name.name()),
+					rs.getString(Constants.DRAMA_FIELD_NAMES.auditorium_name.name()),
+					rs.getInt(Constants.DRAMA_FIELD_NAMES.group_id.name()),
+					rs.getInt(Constants.DRAMA_FIELD_NAMES.auditorium_id.name()));
 
-			GroupsDTO g = new GroupsDTO(rs.getInt(Constants.GROUPS_FIELDNAME.groupsId.name()),
-					rs.getString(Constants.GROUPS_FIELDNAME.group_name.name()));
+//			GroupsDTO g = new GroupsDTO(rs.getInt(Constants.GROUPS_FIELDNAME.groupsId.name()),
+//					rs.getString(Constants.GROUPS_FIELDNAME.group_name.name()));
 
 			// users & groups
 			dg.setDrama(d);
-			dg.setGroups(g);
+//			dg.setGroups(g);
 
 			listOfDramasGroupsDTO.add(dg);
 		}

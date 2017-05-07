@@ -127,14 +127,16 @@ public class DramaService {
 	 * 
 	 * @return
 	 */
-	public void deleteDramas(int[] ids) {
-		LOG.info("#deleteDrama - " + "Deleting total number of dramas from database - " + ids.length);
-
+	public void deleteDramas(Integer[] ids) {
+		System.out.println("manageDrama deleteDramas ids length "+ids.length);
+		
 		for (int id : ids) {
 			try {
-
+				System.out.println("manageDrama deleteDramas id "+id);
+				
 				boolean isDelete = jdbcDramaRepository.deleteDramaBy(id);
-
+				System.out.println("manageDrama deleteDramas isDelete "+isDelete);
+				
 				if (!isDelete)
 					LOG.info("#deleteDrama - " + "failed to delete dramas with ID - " + id);
 
@@ -190,7 +192,27 @@ public class DramaService {
 
 		try {
 			dramaList = jdbcDramaRepository.getAllDramas();
+			System.out.println("showDramas --> getDramas dramaList.size()  "+dramaList.size());
+			
+			
+			ResourceLoader resourceLoader = new FileSystemResourceLoader();
+			Resource resource = resourceLoader
+					.getResource(applicationProperties.getProperty(Constants.JSON_FILES.drama_filename.name()));
+			String list = CommonUtilities.convertToJSON(dramaList);
+			System.out.println("showDramas --> getDramas list  "+list);
+			
+			try {
+				System.out.println("showDramas --> getDramas WriteJSONToFile  ");
+				
+				WriteJSONToFile.getInstance().write(resource, list);
+			} catch (IOException e) {
+				System.out.println("showDramas --> getDramas IOException  "+e);
+				
+				e.printStackTrace();
+			}
 		} catch (DataAccessException dae) {
+			System.out.println("showDramas --> getDramas DataAccessException  "+dae);
+			
 			LOG.error(dae.getMessage());
 			throw new IllegalStateException("Error : Failed to add dramaList !");
 		}
@@ -205,11 +227,16 @@ public class DramaService {
 	public DramasDTO findByDrama(int id) {
 
 		try {
+			System.out.println("manageDrama findByDrama id "+id);
+			
 			return jdbcDramaRepository.findDramaById(id);
 		} catch (DataAccessException dae) {
-			LOG.error(dae.getMessage());
+			System.out.println("manageDrama findByDrama DataAccessException ===== "+dae);
+			
 			throw new IllegalAccessError("Failed to get drama from database with ID - " + id);
 		}
+		
+
 	}
 
 	

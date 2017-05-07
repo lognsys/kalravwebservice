@@ -1,7 +1,11 @@
 
+# drop procedure
+DROP PROCEDURE drama_data;
+
 #create procedure using drama, group , and auditorium
 CREATE PROCEDURE drama_data()
 Select
+drama.id,
 drama.title,
 grp.group_name,
 a.auditorium_name,
