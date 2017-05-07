@@ -54,6 +54,14 @@ public class ObjectMapper {
 
 	}
 
+	/**
+	 * Map UsersDTO with Users object in model directory
+	 * 
+	 * NOTE: Sync Users.java fields with this method
+	 * 
+	 * @param users
+	 * @return
+	 */
 	public static Users mapToUsers(UsersDTO users) {
 		// TODO: Current setting of group to null, but need to change to value
 		

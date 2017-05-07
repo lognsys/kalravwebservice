@@ -1,6 +1,8 @@
 package com.lognsys.web.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.lognsys.dao.dto.GroupsDTO;
+import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.model.Users;
 import com.lognsys.service.UserService;
@@ -75,15 +80,26 @@ public class BaseController {
 
 	}
 
+	/**
+	 * 
+	 * @param model
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = { "/edituser" }, method = RequestMethod.GET)
 	public String editUsers(Model model, HttpServletRequest request) {
 		return "edituser";
 	}
 
+	/**
+	 * 
+	 * @param users
+	 * @return
+	 */
 	@RequestMapping(value = { "/edituser" }, method = RequestMethod.POST)
 	public String editUsers(@ModelAttribute("editUser") Users users) {
 
-		System.out.println("User - "+ users.getCompany_name());
+		userService.updateUser(users);
 		return "userlist";
 	}
 
@@ -120,14 +136,15 @@ public class BaseController {
 
 				JSONArray arr = (JSONArray) obj;
 
-				String[] userIDs = new String[arr.size()];
+				List<String> emailIDs = new ArrayList<String>();
 
-				for (int i = 0; i < arr.size(); i++) {
-					JSONObject jsonObject = (JSONObject) arr.get(i);
-					String email = jsonObject.get("email").toString();
-					userIDs[i] = email;
+				Iterator<String> iterator = arr.iterator();
+				while (iterator.hasNext()) {
+					emailIDs.add(iterator.next());
 				}
-				userService.deleteUsers(userIDs);
+
+				userService.deleteUsers(emailIDs.toArray(new String[arr.size()]));
+
 			} catch (ParseException | IOException e) {
 				e.printStackTrace();
 			}
@@ -169,9 +186,28 @@ public class BaseController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String showRegister(Model model, HttpServletRequest request) {
-		System.out.println("Going in Registration controller");
+
+		// CALL database to get roles & groups
+		List<RolesDTO> listOfRolesDTO = userService.getAllRoles();
+		List<GroupsDTO> listOfGroupsDTO = userService.getAllGroups();
+
+		// Adding data to list from RolesDTO
+		List<String> rolesList = new ArrayList<String>();
+		for (RolesDTO role : listOfRolesDTO) {
+			rolesList.add(role.getRole());
+		}
+
+		// Adding data to list from GroupsDTO
+		List<String> groupsList = new ArrayList<String>();
+		for (GroupsDTO group : listOfGroupsDTO) {
+			groupsList.add(group.getGroup_name());
+		}
+
 		Users user = new Users();
 		model.addAttribute("users", user);
+		model.addAttribute("rolesList", rolesList);
+		model.addAttribute("groupsList", groupsList);
+
 		return "register";
 	}
 
@@ -190,9 +226,26 @@ public class BaseController {
 
 		if (result.hasErrors()) {
 			System.out.println("Adding Errors - " + user.toString());
+			// CALL database to get roles
+			List<RolesDTO> listOfRolesDTO = userService.getAllRoles();
+			// Adding data to list from RolesDTO
+			List<String> rolesList = new ArrayList<String>();
+			for (RolesDTO role : listOfRolesDTO) {
+				rolesList.add(role.getRole());
+			}
+
+			// Adding data to list from GroupsDTO
+			// CALL database to get groups
+			List<GroupsDTO> listOfGroupsDTO = userService.getAllGroups();
+			List<String> groupsList = new ArrayList<String>();
+			for (GroupsDTO group : listOfGroupsDTO) {
+				groupsList.add(group.getGroup_name());
+			}
+
+			model.addAttribute("rolesList", rolesList);
+			model.addAttribute("groupsList", groupsList);
 			return "register";
 		} else {
-
 			System.out.println("Adding User - " + user.toString());
 			userService.addUser(user);
 		}

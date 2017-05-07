@@ -1,7 +1,13 @@
 package com.lognsys.model;
 
-
 /**
+ * 
+ * Description: User class is Value Object which populates client side object.
+ * This takes care of client side validation.
+ * 
+ * Change LOG :
+ * 
+ * 1) PJD - 04/05/17  Added Fields String role, String group
  * 
  * @author pdoshi
  */
@@ -19,10 +25,8 @@ public class Users {
 	private String birthdate = "";
 	private boolean enabled = false;
 	private boolean notification = false;
-	
-	private String device;
 
-	// Monika added 30/03/17
+	private String device;
 	private String address = "";
 	private String city = "";
 	private String state = "";
@@ -30,16 +34,13 @@ public class Users {
 	private String company_name = "";
 	private String firstname = "";
 	private String lastname = "";
-	
-	
-	public Users() {
-		// TODO Auto-generated constructor stub
-	}
+	private String role="";
+	private String group="";
 
 	public Users(int id, String auth_id, String username, String realname, String phone, String location,
-			String provenance, String birthdate, boolean enabled, boolean notification,
-			String device, String address, String city, String state, String zipcode, String company_name,
-			String firstname, String lastname) {
+			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
+			String city, String state, String zipcode, String company_name, String firstname, String lastname,
+			String group, String role) {
 		super();
 		this.id = id;
 		this.auth_id = auth_id;
@@ -51,7 +52,6 @@ public class Users {
 		this.birthdate = birthdate;
 		this.enabled = enabled;
 		this.notification = notification;
-
 		this.device = device;
 		this.address = address;
 		this.city = city;
@@ -60,6 +60,46 @@ public class Users {
 		this.company_name = company_name;
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.group = group;
+		this.role = role;
+	}
+	
+	//for mapping UsersDTO to Users
+	public Users(int id, String auth_id, String username, String realname, String phone, String location,
+			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
+			String city, String state, String zipcode, String company_name, String firstname, String lastname) {
+		super();
+		this.id = id;
+		this.auth_id = auth_id;
+		this.username = username;
+		this.realname = realname;
+		this.phone = phone;
+		this.location = location;
+		this.provenance = provenance;
+		this.birthdate = birthdate;
+		this.enabled = enabled;
+		this.notification = notification;
+		this.device = device;
+		this.address = address;
+		this.city = city;
+		this.state = state;
+		this.zipcode = zipcode;
+		this.company_name = company_name;
+		this.firstname = firstname;
+		this.lastname = lastname;
+
+	}
+
+
+
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+
+	public Users() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {
@@ -196,6 +236,22 @@ public class Users {
 
 	public void setlastname(String lastname) {
 		this.lastname = lastname;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
 	}
 
 	public String getDevice() {

@@ -25,8 +25,8 @@ last_edit timestamp not null default current_timestamp on update current_timesta
 
 alter table users_roles add index (users_id);
 alter table users_roles add foreign key (users_id)
-  references users (id) on delete cascade;
+  references users (id) on update cascade on delete cascade;
 
 alter table users_roles add index (roles_id);
 alter table users_roles add foreign key (roles_id)
-  references roles (id) on delete cascade;
+  references roles (id) on update cascade on delete cascade;

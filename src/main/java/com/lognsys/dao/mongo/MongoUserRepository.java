@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.lognsys.dao.UserRespository;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.model.Users;
 ;
 
 @Repository
@@ -19,7 +20,8 @@ public class MongoUserRepository implements UserRespository {
 	private MongoTemplate mongoTemplate;
 
 	@Override
-	public void addUser(UsersDTO users) {
+	public int addUser(UsersDTO users) {
+		return 0;
 		// TODO Auto-generated method stub
 		
 	}
@@ -30,11 +32,8 @@ public class MongoUserRepository implements UserRespository {
 		return false;
 	}
 
-	@Override
-	public void updateUser(String usersname) {
-		// TODO Auto-generated method stub
-		
-	}
+
+	
 
 	@Override
 	public List<UsersDTO> getAllUsers() {
@@ -64,6 +63,12 @@ public class MongoUserRepository implements UserRespository {
 	public UsersDTO findUserById(String emailID) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean updateUser(Users user) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

@@ -17,9 +17,12 @@ CREATE TABLE IF NOT EXISTS users_groups
 
 ) ENGINE =InnoDB default CHARSET=utf8;
 alter table users_groups add index (users_id);
-alter table users_groups add index (groups_id);
 alter table users_groups add constraint constr_usersid UNIQUE (users_id);
 alter table users_groups add foreign key (users_id) 
    references users (id) on delete cascade
+   			 on update cascade;
+alter table users_groups add index (groups_id);
+alter table users_groups add foreign key (groups_id) 
+   references groups (id) on delete cascade
    			 on update cascade;
 

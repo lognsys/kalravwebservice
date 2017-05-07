@@ -1,25 +1,17 @@
 package com.lognsys.dao.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
-
 import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
-
 import com.lognsys.dao.DramaRespository;
-import com.lognsys.dao.UserRespository;
 import com.lognsys.dao.dto.DramasDTO;
-import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.util.Constants;
 
 @Repository("dramaRepository")

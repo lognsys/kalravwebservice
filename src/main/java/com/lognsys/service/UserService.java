@@ -12,8 +12,12 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.lognsys.dao.dto.GroupsDTO;
+import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
+import com.lognsys.dao.jdbc.JdbcRolesRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
@@ -34,8 +38,10 @@ public class UserService {
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
 
-	// Injecting resource sql.properties.
+	@Autowired
+	private JdbcRolesRepository jdbcRolesRepository;
 
+	// Injecting resource sql.properties.
 	@Autowired
 	@Qualifier("applicationProperties")
 	private Properties applicationProperties;
@@ -45,8 +51,6 @@ public class UserService {
 	 * 
 	 * @return
 	 */
-	// TODO 3: Add users and get ID which needs to be added to the group as well
-	// as roles
 	@Transactional
 	public void addUser(Users users) {
 		String username = users.getUsername();
@@ -57,16 +61,26 @@ public class UserService {
 			boolean isExists = jdbcUserRepository.isExists(username);
 
 			if (isExists) {
-				LOG.info("Found user in database with username - " + username);
+				LOG.warn("User exists in database with username - " + username);
 
 			} else {
 
-				LOG.info("#addUser - " + "Adding user in database with - " + username);
-				System.out.println("#addUser - " + "Adding user in database with - " + username);
-				 jdbcUserRepository.addUser(usersDTO);
+				LOG.info("#addUser - " + "Adding USER in database with - " + username);
+				int userID = jdbcUserRepository.addUser(usersDTO);
+				
+				LOG.error("USER-ID - "+userID);
+				System.out.println("USER-ID - "+userID);
+
+				LOG.info("#addUser - " + "Adding USER to corresponding GROUP - " + users.getGroup());
+				jdbcUserRepository.addUserAndGroup(userID, users.getGroup());
+
+				LOG.info("#addUser - " + "Adding USER to corresponding ROLE - " + users.getRole());
+				jdbcUserRepository.addUserAndRole(userID, users.getRole());
+
+				refreshUserList();
 
 			}
-		} catch (DataAccessException dae) {
+		} catch (DataAccessException | IOException dae) {
 			LOG.error(dae.getMessage());
 			throw new IllegalStateException("Error : Failed to add user!");
 		}
@@ -104,10 +118,12 @@ public class UserService {
 
 				boolean isDelete = jdbcUserRepository.deleteUserBy(id);
 
-				if (!isDelete)
+				if (!isDelete) {
 					LOG.info("#deleteUser - " + "failed to delete user with ID - " + id);
-
-			} catch (DataAccessException dae) {
+				} else {
+					refreshUserList();
+				}
+			} catch (DataAccessException | IOException dae) {
 
 				LOG.error(dae.getMessage());
 				throw new IllegalStateException("Error : Failed to delete user!");
@@ -133,7 +149,9 @@ public class UserService {
 
 				if (!isDelete) {
 					LOG.info("#deleteUser - " + "failed to delete user with ID - " + emailID);
-				} 
+				} else {
+					refreshUserList();
+				}
 			} catch (DataAccessException dae) {
 
 				LOG.error(dae.getMessage());
@@ -148,25 +166,32 @@ public class UserService {
 	/**
 	 * @param user
 	 */
-	public void updateUser(Users user) {
-
+	public void updateUser(Users users) {
+		boolean isUpdated = false;
+		try {
+			isUpdated = jdbcUserRepository.updateUser(users);
+			LOG.info("INFO: updation successful for user - " + users.getUsername());
+		} catch (DataAccessException dae) {
+			LOG.error(dae.getMessage());
+			throw new IllegalStateException("Failed user update : status - " + isUpdated);
+		}
 	}
 
 	/**
 	 * 
 	 * This method updates json and refreshed the list of Users
+	 * 
 	 * @return returns the list of users from database
 	 */
 	public List<UsersDTO> getUsers() {
-		
-		//Refresh list after deletion of user 
+
+		// Refresh list after deletion of user
 		try {
 			refreshUserList();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
 
 		LOG.info("#getUsers - Get All Users from database");
 		List<UsersDTO> userList;
@@ -193,6 +218,36 @@ public class UserService {
 			LOG.error(dae.getMessage());
 			throw new IllegalAccessError("Failed to get user from database with ID - " + id);
 		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public List<GroupsDTO> getAllGroups() {
+
+		try {
+			return jdbcGroupRepository.getAllGroups();
+		} catch (DataAccessException dae) {
+			LOG.error(dae.getMessage());
+			throw new IllegalAccessError("Error: All groups cannot be retrieved");
+		}
+
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public List<RolesDTO> getAllRoles() {
+
+		try {
+			return jdbcRolesRepository.getAllRoles();
+		} catch (DataAccessException dae) {
+			LOG.error(dae.getMessage());
+			throw new IllegalAccessError("Error: All roles cannot be retrieved");
+		}
+
 	}
 
 }

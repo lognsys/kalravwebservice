@@ -102,7 +102,20 @@
 									placeholder="Enter Email Address Here.."
 									class="form-control text ui-widget-content ui-corner-all"
 									path="username" />
-
+							</div>
+							<div class="form-group">
+								<label>Groups</label>
+								<form:select path="group">
+									<form:option value="NONE" label="--- Select ---" />
+									<form:options items="${groupsList}" />
+								</form:select>
+							</div>
+							<div class="form-group">
+								<label>Roles</label>
+								<form:select path="role">
+									<form:option value="NONE" label="--- Select ---" />
+									<form:options items="${rolesList}" />
+								</form:select>
 							</div>
 
 							<form:button id="edit_button" type="submit"

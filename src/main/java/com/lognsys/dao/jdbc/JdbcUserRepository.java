@@ -12,9 +12,12 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import com.lognsys.dao.UserRespository;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.model.Users;
 import com.lognsys.util.Constants;
 
 @Repository("userRepository")
@@ -35,9 +38,12 @@ public class JdbcUserRepository implements UserRespository {
 	 * @param users
 	 */
 	@Override
-	public void addUser(UsersDTO users) {
+	public int addUser(UsersDTO users) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(users);
-		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.insert_users.name()), params);
+		final KeyHolder keyHolder = new GeneratedKeyHolder();
+		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.insert_users.name()),
+				params, keyHolder);
+		return keyHolder.getKey().intValue();
 	}
 
 	/**
@@ -59,7 +65,10 @@ public class JdbcUserRepository implements UserRespository {
 	 * 
 	 */
 	@Override
-	public void updateUser(String username) {
+	public boolean updateUser(Users users) {
+
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(users);
+		return namedParamJdbcTemplate.update(Constants.USER_QUERIES.update_users.name(), params) == 1;
 
 	}
 
@@ -127,19 +136,51 @@ public class JdbcUserRepository implements UserRespository {
 	/**
 	 * delete user by emailID
 	 * 
-	 * @param id - emailID
+	 * @param id
+	 *            - emailID
 	 */
 	@Override
 	public boolean deleteUserBy(String emailID) {
 		SqlParameterSource parameter = new MapSqlParameterSource("emailID", emailID);
-		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.delete_users_email.name()),
-				parameter) == 1;
+		return namedParamJdbcTemplate
+				.update(sqlProperties.getProperty(Constants.USER_QUERIES.delete_users_email.name()), parameter) == 1;
 	}
 
 	@Override
 	public UsersDTO findUserById(String emailID) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	/**
+	 * 
+	 * @param users_id
+	 * @param role
+	 */
+	public void addUserAndRole(int users_id, String role) {
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("users_id", users_id).addValue("role", role);
+		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.ROLES_QUERIES.insert_users_roles.name()),
+				param);
+		
+		
+	}
+
+	/**
+	 * 
+	 * @param users_id
+	 * @param role
+	 */
+	public void addUserAndGroup(int users_id, String group_name) {
+
+		try {
+			SqlParameterSource param = new MapSqlParameterSource().addValue("users_id", users_id).addValue("group_name",
+					group_name);
+			namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_user_groups.name()),
+					param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

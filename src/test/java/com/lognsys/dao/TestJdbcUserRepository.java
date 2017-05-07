@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.model.Users;
@@ -23,46 +22,63 @@ public class TestJdbcUserRepository {
 	}
 
 
-	@Test
-	public void testCreateUser() {
-		Users users = new Users();
-
-		users.setAuth_id("123456789");
-
-		users.setRealname("Priyank Doshi");
-
-		users.setUsername("doshipriyank");
-
-		users.setPhone("9867544359");
-
-		users.setState("Maharashtra");
-
-		users.setCity("Mumbai");
-
-		users.setDevice("ABXCS67868");
-
-		users.setZipcode("400067");
-
-		users.setCompany_name("LognSystems");
-
-		users.setAddress("Kandivali West");
-
-		users.setLocation("Kandivali West Again...");
-
-		users.setProvenance("Web");
-
-		users.setNotification(true);
-
-		java.util.Date dt = new java.util.Date();
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String currentTime = sdf.format(dt);
-
-		users.setBirthdate(currentTime);
-		
-		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
-
-		userRepo.addUser(usersDTO);
-
-	}
+//	@Test
+//	public void testCreateUser() {
+//		Users users = new Users();
+//
+//		users.setAuth_id("123456789");
+//
+//		users.setRealname("Priyank Doshi");
+//
+//		users.setUsername("doshipriyank");
+//
+//		users.setPhone("9867544359");
+//
+//		users.setState("Maharashtra");
+//
+//		users.setCity("Mumbai");
+//
+//		users.setDevice("ABXCS67868");
+//
+//		users.setZipcode("400067");
+//
+//		users.setCompany_name("LognSystems");
+//
+//		users.setAddress("Kandivali West");
+//
+//		users.setLocation("Kandivali West Again...");
+//
+//		users.setProvenance("Web");
+//
+//		users.setNotification(true);
+//
+//		java.util.Date dt = new java.util.Date();
+//		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		String currentTime = sdf.format(dt);
+//		users.setBirthdate(currentTime);	
+//		
+//		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
+//		userRepo.addUser(usersDTO);
+//
+//	}
+//	
+//	/**
+//	 * This test will only run once successfully.
+//	 * TODO: Need to test against test data using hsqldb
+//	 */
+//	@Test
+//	public void testaddUserAndGroup() {
+//		
+//		userRepo.addUserAndGroup(23, "ladies");
+//	}
+	/**
+	 * This test will only run once successfully.
+	 * TODO: Need to test against test data using hsqldb
+	 */
+//	@Test
+//	public void testaddUserAndRole() {
+//		
+//		userRepo.addUserAndRole(23, "Admin");
+//	}
 
 }

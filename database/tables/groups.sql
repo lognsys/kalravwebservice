@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS groups
  insert into groups (group_name)
  values
  ('couple'),
- ('ladies');
+ ('ladies'),
+ ('none');
  
  alter table groups add index (id);

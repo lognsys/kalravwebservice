@@ -11,6 +11,9 @@ public class GroupsDTO {
 		this.group_name = group_name;
 	}
 
+	public GroupsDTO() {
+		// TODO no-arg constructor
+	}
 
 	public int getId() {
 		return id;

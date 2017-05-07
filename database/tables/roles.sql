@@ -25,4 +25,5 @@ insert into roles (role)
 values
 ('Admin'),
 ('Critics'),
-('User');
+('User'),
+('Guest');
