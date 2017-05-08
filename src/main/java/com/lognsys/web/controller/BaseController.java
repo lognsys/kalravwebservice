@@ -1,8 +1,19 @@
 package com.lognsys.web.controller;
 
+/**
+ * Description : This is Base controller which serves the handling of 
+ * login, users request and responds to appropriate view.
+ * 
+ * NOTE : No global variable should be defined!!!
+ * 
+ * Default: Spring mvc Controller is Singleton Class. 
+ * 
+ * @author pdoshi
+ * 
+ */
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
@@ -19,14 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.model.Users;
 import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
-import com.lognsys.util.ObjectMapper;
 
 //TODO Logging required for base controller
 @Controller
@@ -132,20 +141,24 @@ public class BaseController {
 		case "delete":
 			JSONParser parser = new JSONParser();
 			try {
+
 				Object obj = parser.parse(userIds);
 
 				JSONArray arr = (JSONArray) obj;
 
-				List<String> emailIDs = new ArrayList<String>();
+				String[] emailIDs = new String[arr.size()];
+				for (int i = 0; i < arr.size(); i++) {
 
-				Iterator<String> iterator = arr.iterator();
-				while (iterator.hasNext()) {
-					emailIDs.add(iterator.next());
+					JSONObject jsonObject = (JSONObject) arr.get(i);
+					emailIDs[i] = jsonObject.get("email").toString();
+
 				}
 
-				userService.deleteUsers(emailIDs.toArray(new String[arr.size()]));
+				userService.deleteUsers(emailIDs);
 
-			} catch (ParseException | IOException e) {
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			return "userlist";
@@ -163,8 +176,7 @@ public class BaseController {
 					id = jsonObject.get("id").toString();
 				}
 
-				UsersDTO usersDTO = userService.findByUser(Integer.parseInt(id));
-				Users newUsers = ObjectMapper.mapToUsers(usersDTO);
+				Users newUsers = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
 				model.addAttribute("users", newUsers);
 				return "register";
 			} catch (ParseException e) {

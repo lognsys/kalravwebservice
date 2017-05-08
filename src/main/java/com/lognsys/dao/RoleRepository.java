@@ -8,6 +8,7 @@ public interface RoleRepository {
 
 	public List<RolesDTO> getAllRoles();
 
+	public String getRoleBy(int userId);
 	
 	
 

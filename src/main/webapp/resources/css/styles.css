@@ -175,10 +175,14 @@ Custom page footer
 Customize
 
 
+
  
 
 
+
 container
+
+
 
 
 
@@ -220,31 +224,43 @@ Responsive
 
 
 
+
+
 :
 
 
+
  
+
 
 
 Portrait
 
 
+
  
+
 
 
 tablets
 
 
+
  
+
 
 
 and
 
 
+
  
 
 
+
 up
+
+
 
 
 
@@ -269,7 +285,7 @@ up
 
 * /
 	/** end of Registration Form **/
-	/**Login Form Error css**/   
+	/**Login Form Error css**/    
 .error {
 	padding: 15px;
 	margin-bottom: 20px;
@@ -350,7 +366,7 @@ up
 	margin-left: 5px;
 }
 
-/** for userlist, dramalist  Overlay Background Color **/
+/** Dialog Modal for userlist, dramalist  Overlay Background Color **/
 .ui-widget-overlay {
 	opacity: .50 !important;
 	/* Make sure to change both of these, as IE only sees the second one */
@@ -361,7 +377,6 @@ up
 
 .ui-dialog .ui-state-error {
 	padding: .3em;
-
 }
 
 .validateTips {
@@ -374,4 +389,10 @@ up
 }
 
 
+/**for errors**/
+#errors ul {
+list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
 }

@@ -12,7 +12,7 @@ public class Constants {
 		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email,update_users
 	}
 	public enum ROLES_QUERIES {
-		insert_users_roles, insert_users_roleid, select_roles_all
+		insert_users_roles, insert_users_roleid, select_roles_all, select_role_byuserid
 	}
 	public enum DRAMA_QUERIES {
 		insert_dramas, select_dramas, delete_dramas, select_dramas_exists, select_dramas_id,

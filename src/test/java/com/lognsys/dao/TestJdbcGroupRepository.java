@@ -1,5 +1,7 @@
 package com.lognsys.dao;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import org.junit.Test;
@@ -42,4 +44,13 @@ public class TestJdbcGroupRepository {
 		org.junit.Assert.assertEquals("No of Users in Couple Group", 4, ug2.size());
 	}
 
+	
+	@Test
+	public void testfindGroupBy(){
+		int user_id = 15;
+		
+		String expected = "ladies";
+		String actual = groupRepo.findGroupBy(user_id);
+		assertEquals(expected, actual);
+	}
 }

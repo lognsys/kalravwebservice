@@ -23,7 +23,7 @@ $(document)
             var checkedRows = [];
 
             // check individual row
-            $('#eventsTable').on('check.bs.table', function(e, row) {
+            $('#userTable').on('check.bs.table', function(e, row) {
                 checkedRows.push({
                     id: row.id,
                     email: row.email
@@ -32,7 +32,7 @@ $(document)
             });
 
             // uncheck individual row
-            $('#eventsTable').on('uncheck.bs.table', function(e, row) {
+            $('#userTable').on('uncheck.bs.table', function(e, row) {
 
                 $.each(checkedRows, function(index, value) {
                     if (value.id === row.id) {
@@ -43,28 +43,32 @@ $(document)
             });
 
             // remove all checked rows
-            $('#eventsTable').on('uncheck-all.bs.table', function(e) {
+            $('#userTable').on('uncheck-all.bs.table', function(e) {
                 checkedRows.splice(0, checkedRows.length);
+                console.log(JSON.stringify(checkedRows));
             });
 
             // check all rows
-            $('#eventsTable').on('check-all.bs.table', function(e) {
-                $("#eventsTable tr:has(:checkbox:checked) td:nth-child(3)").each(function() {
-                    checkedRows.push($(this).text());
+            $('#userTable').on('check-all.bs.table', function(e) {
+            	//Assumption if one or multiple row is checked
+            	checkedRows.splice(0, checkedRows.length);
+                $("#userTable tr:has(:checkbox:checked) td:nth-child(3)").each(function() {
+                	checkedRows.push({email:$(this).text()});
                 });
                 console.log(JSON.stringify(checkedRows));
             });
 
             // toggle button to disable add/edit button for multiple
             // checkbox select
-            $('#eventsTable tr').find('input:checkbox:first').change(
+            $('#userTable tr').find('input:checkbox:first').change(
                 function() {
-                    // this will contain a reference to the checkbox
+                    
+                	// this will contain a reference to the checkbox
                     if (this.checked) {
                         $('#useradd').prop('disabled', true);
                         $('#useredit').prop('disabled', true);
-     
-//                      monika 4/5/2017 add   drama add & edit buttons disable 
+             
+                        // monika 4/5/2017 add   drama add & edit buttons disable 
                         $('#dramaadd').prop('disabled', true);
                         $('#dramaedit').prop('disabled', true);
                         
@@ -72,19 +76,22 @@ $(document)
                         $('#useradd').prop('disabled', false);
                         $('#useredit').prop('disabled', false);
                         
-//                      monika 4/5/2017 add   drama add & edit buttons disable 
+                      //monika 4/5/2017 add   drama add & edit buttons disable 
                         $('#dramaadd').prop('disabled', false);
                         $('#dramaedit').prop('disabled', false);
                     }
+                    
+                    
                 });
 
+      
 
             // Userlist delete function
             $('#userdelete').click(
                 function(event) {
 
-                    if ($('#eventsTable tr:has(:checkbox:checked)').length == 0) {
-                        $('<a href="#" class="close" data-dismiss="alert">' + 'Please select one or more user</a>').appendTo('#eventsResult').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
+                    if ($('#userTable tr:has(:checkbox:checked)').length == 0) {
+                        $('<a href="#" class="close" data-dismiss="alert">' + 'Please select one or more user</a>').appendTo('#error_list').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
                     } else {
 
                         var params = {
@@ -116,8 +123,8 @@ $(document)
             $('#useredit').click(
                 function(event) {
 
-                    if ($('#eventsTable tr:has(:checkbox:checked)').length != 1) {
-                        $('<a href="#" class="close" data-dismiss="alert">' + 'Please select single user for edit</a>').appendTo('#eventsResult').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
+                    if ($('#userTable tr:has(:checkbox:checked)').length == 0) {
+                        $('<li class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + '<strong>Error</strong> Please select a user from the list...</a></li>').appendTo('#error_list');
                     } else {
                         console.log(JSON.stringify(checkedRows));
                         var params = {
@@ -140,8 +147,6 @@ $(document)
 
                                 //append html subelements
                                 $(regUserElements).appendTo("#editform");
-
-                              
 
                                 dialog = $("#dialog-form").dialog({
                                     autoOpen: false,
@@ -263,77 +268,9 @@ $(document)
                     event.preventDefault();
                 });
 
-<<<<<<< HEAD
-//            
-////            dramadetail form  datetime picker
-//            $('.form_datetime').datetimepicker({
-//                //language:  'fr',
-//                weekStart: 1,
-//                todayBtn:  1,
-//            	autoclose: 1,
-//            	todayHighlight: 1,
-//            	startView: 2,
-//            	forceParse: 0,
-//                showMeridian: 1
-//            });
-//
-//            
-//         // Dramalist add function
-//            $('#dramaadd').click(
-//                function(event) {
-//                    window.location.href = "http://localhost:8080/dramadetail";
-//                    event.preventDefault();
-//                });
-//
-////           dramadetail form  for image preview
-//          /*  function readURL(input) {
-//                if (input.files && input.files[0]) {
-//                    var reader = new FileReader();
-//                    
-//                    reader.onload = function (e) {
-//                        $('#imgpreview').attr('src', e.target.result);
-//                    }
-//                    
-//                    reader.readAsDataURL(input.files[0]);
-//                }
-//            }
-//            
-//            $("#imgInp").change(function(){
-//                readURL(this);
-//            });*/
-//            function handleFileSelect(evt) {
-//                var files = evt.target.files; // FileList object
-//
-//                // Loop through the FileList and render image files as thumbnails.
-//                for (var i = 0, f; f = files[i]; i++) {
-//
-//                  // Only process image files.
-//                  if (!f.type.match('image.*')) {
-//                    continue;
-//                  }
-//
-//                  var reader = new FileReader();
-//
-//                  // Closure to capture the file information.
-//                  reader.onload = (function(theFile) {
-//                    return function(e) {
-//                      // Render thumbnail.
-//                      var span = document.createElement('span');
-//                      span.innerHTML = ['<img class="thumb" src="', e.target.result,
-//                                        '" title="', escape(theFile.name), '"/>'].join('');
-//                      document.getElementById('list').insertBefore(span, null);
-//                    };
-//                  })(f);
-//
-//                  // Read in the image file as a data URL.
-//                  reader.readAsDataURL(f);
-//                }
-//              }
+   /***********************end of user table*****************************/
             
-             
-           // document.getElementById('files').addEventListener('change', handleFileSelect, false);
-        });
-=======
+            
             /*
              * DRAMA DETAILS  STARTS 
              */
@@ -349,7 +286,7 @@ $(document)
                 showMeridian: 1
             });
 
-//          IMAGE PREVIEW
+            //IMAGE PREVIEW
            function handleFileSelect(evt) {
                var files = evt.target.files; // FileList object
 
@@ -405,8 +342,8 @@ $(document)
             $('#dramadelete').click(
                 function(event) {
 
-                    if ($('#eventsTable tr:has(:checkbox:checked)').length == 0) {
-                        $('<a href="#" class="close" data-dismiss="alert">' + 'Please select one or more user</a>').appendTo('#eventsResult').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
+                    if ($('#dramaTable tr:has(:checkbox:checked)').length == 0) {
+                        $('<a href="#" class="close" data-dismiss="alert">' + 'Please select one or more user</a>').appendTo('#error_list').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
                     } else {
 
                         var params = {
@@ -432,7 +369,7 @@ $(document)
             $('#dramaedit').click(
                 function(event) {
 
-                    if ($('#eventsTable tr:has(:checkbox:checked)').length != 1) {
+                    if ($('#dramaTable tr:has(:checkbox:checked)').length != 1) {
                         $('<a href="#" class="close" data-dismiss="alert">' + 'Please select single user for edit</a>').appendTo('#eventsResult').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
                     } else {
                         console.log(JSON.stringify(checkedRows));
@@ -579,5 +516,7 @@ $(document)
                 });
             
             
-            });
->>>>>>> bfb4c16c2a8a2facd39b44641f7dcc03b612a445
+            
+       });
+            
+

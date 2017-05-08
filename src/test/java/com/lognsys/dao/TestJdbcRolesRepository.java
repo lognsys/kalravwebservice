@@ -1,5 +1,7 @@
 package com.lognsys.dao;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import org.junit.Test;
@@ -25,11 +27,17 @@ public class TestJdbcRolesRepository {
 	@Test
 	public void testGetUsersByGroup() {
 		List<RolesDTO> ug = rolesRepo.getAllRoles();
-
-		
-
 		Assert.notNull(ug, "Check list of Users NOT NULL");
 		Assert.notEmpty(ug, "Collection not empty..list of Users and Group object");
+	}
+
+	
+	@Test
+	public void testgetRoleBy() {
+		int user_id = 15;
+		String expected = "Critics";
+		String actual = rolesRepo.getRoleBy(user_id);
+		assertEquals(expected, actual);
 	}
 	
 

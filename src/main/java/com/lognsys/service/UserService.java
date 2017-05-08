@@ -68,9 +68,6 @@ public class UserService {
 				LOG.info("#addUser - " + "Adding USER in database with - " + username);
 				int userID = jdbcUserRepository.addUser(usersDTO);
 				
-				LOG.error("USER-ID - "+userID);
-				System.out.println("USER-ID - "+userID);
-
 				LOG.info("#addUser - " + "Adding USER to corresponding GROUP - " + users.getGroup());
 				jdbcUserRepository.addUserAndGroup(userID, users.getGroup());
 
@@ -157,9 +154,6 @@ public class UserService {
 				LOG.error(dae.getMessage());
 				throw new IllegalStateException("Error : Failed to delete user!");
 			}
-
-			//
-
 		}
 	}
 
@@ -189,7 +183,6 @@ public class UserService {
 		try {
 			refreshUserList();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -206,17 +199,34 @@ public class UserService {
 	}
 
 	/**
+	 * This is the service layer with users and its role and Group
 	 * 
-	 * @param id
+	 * @param userId
 	 * @return
 	 */
-	public UsersDTO findByUser(int id) {
+	@Transactional
+	public Users getUserWithRoleAndGroup(int userId) {
 
 		try {
-			return jdbcUserRepository.findUserById(id);
+			//get Users information from user table
+			Users users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(userId));
+			
+			//get Role information with role table
+			String role = jdbcRolesRepository.getRoleBy(userId);
+			System.out.println(role);
+			
+		//	users.setRole(role);
+			
+			//get Group information 
+			String groupName = jdbcGroupRepository.findGroupBy(userId);
+			System.out.println(groupName);
+		//	users.setGroup(groupName);
+			
+			
+			return users;
 		} catch (DataAccessException dae) {
 			LOG.error(dae.getMessage());
-			throw new IllegalAccessError("Failed to get user from database with ID - " + id);
+			throw new IllegalAccessError("Failed to get user from database with ID - " + userId);
 		}
 	}
 

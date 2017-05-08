@@ -3,7 +3,7 @@ package com.lognsys.model;
 public class UsersTable {
 
 	private static enum STATUS {
-		ACTIVE, INACTIVE
+		Active, Passive
 	}
 
 	private int id;
@@ -49,9 +49,9 @@ public class UsersTable {
 
 	public void setStatus(boolean enabled) {
 		if (enabled) {
-			this.status = STATUS.ACTIVE.name();
+			this.status = STATUS.Active.name();
 		} else {
-			this.status = STATUS.INACTIVE.name();
+			this.status = STATUS.Passive.name();
 		}
 	}
 

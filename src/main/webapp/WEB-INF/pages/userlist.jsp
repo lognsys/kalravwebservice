@@ -19,7 +19,9 @@
 		<!--/.row-->
 
 
-		<div class="" id="eventsResult"></div>
+		<div id="errors">
+			<ul id="error_list"></ul>
+		</div>
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
@@ -28,7 +30,7 @@
 							<use xlink:href="#stroked-male-user"></use></svg>
 					</div>
 					<div class="panel-body">
-						<table id="eventsTable" data-toggle="table"
+						<table id="userTable" data-toggle="table"
 							data-url="static/tables/users.json" data-show-refresh="true"
 							data-show-toggle="true" data-show-columns="true"
 							data-search="true" data-select-item-name="toolbar1"
