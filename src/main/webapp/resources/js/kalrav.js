@@ -18,7 +18,7 @@ $(document)
                     "overflow": "auto"
                 });
 
-            /**********  userlist table function ***********/
+            /*********************************** userlist table function ***********************************/
             // userlist tables 
             var checkedRows = [];
 
@@ -50,10 +50,12 @@ $(document)
 
             // check all rows
             $('#userTable').on('check-all.bs.table', function(e) {
-            	//Assumption if one or multiple row is checked
-            	checkedRows.splice(0, checkedRows.length);
+                //Assumption if one or multiple row is checked
+                checkedRows.splice(0, checkedRows.length);
                 $("#userTable tr:has(:checkbox:checked) td:nth-child(3)").each(function() {
-                	checkedRows.push({email:$(this).text()});
+                    checkedRows.push({
+                        email: $(this).text()
+                    });
                 });
                 console.log(JSON.stringify(checkedRows));
             });
@@ -62,29 +64,29 @@ $(document)
             // checkbox select
             $('#userTable tr').find('input:checkbox:first').change(
                 function() {
-                    
-                	// this will contain a reference to the checkbox
+
+                    // this will contain a reference to the checkbox
                     if (this.checked) {
                         $('#useradd').prop('disabled', true);
                         $('#useredit').prop('disabled', true);
-             
+
                         // monika 4/5/2017 add   drama add & edit buttons disable 
                         $('#dramaadd').prop('disabled', true);
                         $('#dramaedit').prop('disabled', true);
-                        
+
                     } else {
                         $('#useradd').prop('disabled', false);
                         $('#useredit').prop('disabled', false);
-                        
-                      //monika 4/5/2017 add   drama add & edit buttons disable 
+
+                        //monika 4/5/2017 add   drama add & edit buttons disable 
                         $('#dramaadd').prop('disabled', false);
                         $('#dramaedit').prop('disabled', false);
                     }
-                    
-                    
+
+
                 });
 
-      
+
 
             // Userlist delete function
             $('#userdelete').click(
@@ -154,14 +156,16 @@ $(document)
                                     height: 525,
                                     width: 600,
                                     modal: true,
-                                    
+
                                     position: {
-                                        my: "right",
-                                        at: "top+320 left+400",
+                                        my: "center+50",
+                                        at: "center+50",
                                         of: "body"
+                                        	
+                                        	
                                     },
                                     close: function() {
-                                       form[ 0 ].reset();
+                                        form[0].reset();
                                         allFields.removeClass("ui-state-error");
                                     }
                                 });
@@ -170,18 +174,18 @@ $(document)
                                 dialog.dialog("open");
 
                                 form = dialog.find("form").on("submit", function(event) {
-                                	
-                                	 var isValid = editUser();
-                                	 if(isValid) {
-                                		 console.log("VALID - "+isValid);
-                                		 return; 
-                                	 }
+
+                                    var isValid = editUser();
+                                    if (isValid) {
+                                        console.log("VALID - " + isValid);
+                                        return;
+                                    }
                                     event.preventDefault();
-                                    
-                                    
-                                    
+
+
+
                                 });
-                                
+
                                 /*** edit user dialog form validation *****/
                                 var dialog, form;
 
@@ -258,9 +262,9 @@ $(document)
                     event.preventDefault();
                 });
 
-          
-            
-            
+
+
+
             // Userlist delete function
             $('#usercancel').click(
                 function(event) {
@@ -268,77 +272,72 @@ $(document)
                     event.preventDefault();
                 });
 
-   /***********************end of user table*****************************/
-            
-            
+            /*********************************** Drama table function ***********************************/
+
+
             /*
              * DRAMA DETAILS  STARTS 
              */
-//           DATETIME PICKER
             $('.form_datetime').datetimepicker({
                 //language:  'fr',
                 weekStart: 1,
-                todayBtn:  1,
-            	autoclose: 1,
-            	todayHighlight: 1,
-            	startView: 2,
-            	forceParse: 0,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
                 showMeridian: 1
             });
 
             //IMAGE PREVIEW
-           function handleFileSelect(evt) {
-               var files = evt.target.files; // FileList object
+            function handleFileSelect(evt) {
+                var files = evt.target.files; // FileList object
 
-               // Loop through the FileList and render image files as thumbnails.
-               for (var i = 0, f; f = files[i]; i++) {
+                // Loop through the FileList and render image files as thumbnails.
+                for (var i = 0, f; f = files[i]; i++) {
 
-                 // Only process image files.
-                 if (!f.type.match('image.*')) {
-                   continue;
-                 }
+                    // Only process image files.
+                    if (!f.type.match('image.*')) {
+                        continue;
+                    }
 
-                 var reader = new FileReader();
+                    var reader = new FileReader();
 
-                 // Closure to capture the file information.
-                 reader.onload = (function(theFile) {
-                   return function(e) {
-                     // Render thumbnail.
-                     var span = document.createElement('span');
-                     span.innerHTML = ['<img class="thumb" style="width:304px;height:228px;" src="', e.target.result,
-                                       '" title="', escape(theFile.name), '"/>'].join('');
-                     document.getElementById('list').insertBefore(span, null);
-                   };
-                 })(f);
+                    // Closure to capture the file information.
+                    reader.onload = (function(theFile) {
+                        return function(e) {
+                            // Render thumbnail.
+                            var span = document.createElement('span');
+                            span.innerHTML = ['<img class="thumb" style="width:304px;height:228px;" src="', e.target.result,
+                                '" title="', escape(theFile.name), '"/>'
+                            ].join('');
+                            document.getElementById('list').insertBefore(span, null);
+                        };
+                    })(f);
 
-                 // Read in the image file as a data URL.
-                 reader.readAsDataURL(f);
-               }
-             }
-           var el = document.getElementById('files');
-           if(el){
-             el.addEventListener('change', handleFileSelect, false);
-           }
-//          document.getElementById('files').addEventListener('change', handleFileSelect, false);
-            
-            /*
-             * DRAMA DETAILS ENDS HERE
-             */
-            
-             
+                    // Read in the image file as a data URL.
+                    reader.readAsDataURL(f);
+                }
+            }
+            var el = document.getElementById('files');
+            if (el) {
+                el.addEventListener('change', handleFileSelect, false);
+            }
+
+
             /*
              * DRAMA LIST STARTS HERE
              */
-            
-         // ADD function
+
+            // ADD function
             $('#dramaadd').click(
                 function(event) {
-                	console.log("Event === "+event);
+                    console.log("Event === " + event);
                     window.location.href = "http://localhost:8080/dramadetail";
                     event.preventDefault();
                 });
 
-//            DELETE FUNCTION
+            //            DELETE FUNCTION
             $('#dramadelete').click(
                 function(event) {
 
@@ -362,9 +361,9 @@ $(document)
                         event.preventDefault();
                     }
                 });
-            
-//            EDIT FUNCTION
-         
+
+            //            EDIT FUNCTION
+
             // Userlist edit function
             $('#dramaedit').click(
                 function(event) {
@@ -394,7 +393,7 @@ $(document)
                                 //append html subelements
                                 $(regUserElements).appendTo("#editform");
 
-                              
+
 
                                 dialog = $("#dialog-form").dialog({
                                     autoOpen: false,
@@ -402,14 +401,14 @@ $(document)
                                     height: 525,
                                     width: 600,
                                     modal: true,
-                                    
+
                                     position: {
                                         my: "right",
                                         at: "top+320 left+400",
                                         of: "body"
                                     },
                                     close: function() {
-                                       form[ 0 ].reset();
+                                        form[0].reset();
                                         allFields.removeClass("ui-state-error");
                                     }
                                 });
@@ -418,18 +417,18 @@ $(document)
                                 dialog.dialog("open");
 
                                 form = dialog.find("form").on("submit", function(event) {
-                                	
-                                	 var isValid = editUser();
-                                	 if(isValid) {
-                                		 console.log("VALID - "+isValid);
-                                		 return; 
-                                	 }
+
+                                    var isValid = editUser();
+                                    if (isValid) {
+                                        console.log("VALID - " + isValid);
+                                        return;
+                                    }
                                     event.preventDefault();
-                                    
-                                    
-                                    
+
+
+
                                 });
-                                
+
                                 /*** edit user dialog form validation *****/
                                 var dialog, form;
 
@@ -482,14 +481,14 @@ $(document)
                                     allFields.removeClass("ui-state-error");
 
                                     valid = valid && checkLength(title, "title", 3, 80);
-//                                    valid = valid && checkLength(lname, "lastname", 3, 80);
-//                                    valid = valid && checkLength(address, "address", 3, 80);
-//                                    valid = valid && checkLength(city, "city", 3, 80);
-//                                    valid = valid && checkLength(state, "state", 3, 80);
-//                                    valid = valid && checkLength(zipcode, "zipcode", 6, 6);
-//                                    valid = valid && checkLength(company_name, "company", 3, 80);
-//                                    valid = valid && checkLength(phone, "phone", 10, 10);
-//                                    valid = valid && checkRegexp(username, emailRegex, "eg. pdoshi@yahoo.com");
+                                    //                                    valid = valid && checkLength(lname, "lastname", 3, 80);
+                                    //                                    valid = valid && checkLength(address, "address", 3, 80);
+                                    //                                    valid = valid && checkLength(city, "city", 3, 80);
+                                    //                                    valid = valid && checkLength(state, "state", 3, 80);
+                                    //                                    valid = valid && checkLength(zipcode, "zipcode", 6, 6);
+                                    //                                    valid = valid && checkLength(company_name, "company", 3, 80);
+                                    //                                    valid = valid && checkLength(phone, "phone", 10, 10);
+                                    //                                    valid = valid && checkRegexp(username, emailRegex, "eg. pdoshi@yahoo.com");
 
                                     //valid = valid && checkLength( password, "password", 5, 16 );
                                     //valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
@@ -504,19 +503,17 @@ $(document)
                     }
                     event.preventDefault();
                 });
-// ends edit
-          
-            
-            
+            // ends edit
+
+
+
             // Userlist delete function
             $('#dramacancel').click(
                 function(event) {
                     window.location.href = "http://localhost:8080/dashboard";
                     event.preventDefault();
                 });
-            
-            
-            
-       });
-            
 
+
+
+        });

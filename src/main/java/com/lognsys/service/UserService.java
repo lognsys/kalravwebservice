@@ -213,15 +213,11 @@ public class UserService {
 			
 			//get Role information with role table
 			String role = jdbcRolesRepository.getRoleBy(userId);
-			System.out.println(role);
-			
-		//	users.setRole(role);
+			users.setRole(role);
 			
 			//get Group information 
 			String groupName = jdbcGroupRepository.findGroupBy(userId);
-			System.out.println(groupName);
-		//	users.setGroup(groupName);
-			
+			users.setGroup(groupName);
 			
 			return users;
 		} catch (DataAccessException dae) {

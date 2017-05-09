@@ -106,15 +106,15 @@
 							<div class="form-group">
 								<label>Groups</label>
 								<form:select path="group">
-									<form:option value="NONE" label="--- Select ---" />
-									<form:options items="${groupsList}" />
+									<option value="NONE">--- Select ---</option>
+									<form:options items="${groupsList}"></form:options>
 								</form:select>
 							</div>
 							<div class="form-group">
 								<label>Roles</label>
 								<form:select path="role">
-									<form:option value="NONE" label="--- Select ---" />
-									<form:options items="${rolesList}" />
+									<option value="NONE">--- Select ---</option>
+									<form:options items="${rolesList}"></form:options>
 								</form:select>
 							</div>
 

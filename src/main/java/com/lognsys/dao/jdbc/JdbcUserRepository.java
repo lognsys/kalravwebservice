@@ -1,13 +1,10 @@
 package com.lognsys.dao.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -17,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import com.lognsys.dao.UserRespository;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.dao.jdbc.rowmapper.UserByUserIDRowMapper;
 import com.lognsys.model.Users;
 import com.lognsys.util.Constants;
 
@@ -83,31 +81,11 @@ public class JdbcUserRepository implements UserRespository {
 
 		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
 
-		UsersDTO useritem = new UsersDTO();
-		namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_id.name()),
-				parameter, new RowMapper<UsersDTO>() {
-
-					@Override
-					public UsersDTO mapRow(ResultSet rs, int arg1) throws SQLException {
-
-						useritem.setId(rs.getInt("id"));
-						useritem.setUsername(rs.getString("username"));
-						useritem.setRealname(rs.getString("realname"));
-						useritem.setPhone(rs.getString("birthdate"));
-						useritem.setEnabled(rs.getBoolean("enabled"));
-						useritem.setAddress(rs.getString("address"));
-						useritem.setPhone(rs.getString("phone"));
-						useritem.setCity(rs.getString("city"));
-						useritem.setState(rs.getString("state"));
-						useritem.setZipcode(rs.getString("zipcode"));
-						useritem.setAuth_id(rs.getString("auth_id"));
-						return useritem;
-					}
-				});
-
-		return useritem;
+		return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_id.name()),
+				parameter, new UserByUserIDRowMapper());
 	}
 
+	
 	/**
 	 * Returns List<Users> from database
 	 */

@@ -177,6 +177,25 @@ public class BaseController {
 				}
 
 				Users newUsers = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
+				
+				// CALL database to get roles & groups
+				List<RolesDTO> listOfRolesDTO = userService.getAllRoles();
+				List<GroupsDTO> listOfGroupsDTO = userService.getAllGroups();
+
+				// Adding data to list from RolesDTO
+				List<String> rolesList = new ArrayList<String>();
+				for (RolesDTO role : listOfRolesDTO) {
+					rolesList.add(role.getRole());
+				}
+
+				// Adding data to list from GroupsDTO
+				List<String> groupsList = new ArrayList<String>();
+				for (GroupsDTO group : listOfGroupsDTO) {
+					groupsList.add(group.getGroup_name());
+				}
+		
+				model.addAttribute("rolesList", rolesList);
+				model.addAttribute("groupsList", groupsList);
 				model.addAttribute("users", newUsers);
 				return "register";
 			} catch (ParseException e) {
