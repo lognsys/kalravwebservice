@@ -1,4 +1,5 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"  isELIgnored="false"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"
+	isELIgnored="false"%>
 <div style="overflow: scroll;">
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
@@ -17,8 +18,9 @@
 		</div>
 		<!--/.row-->
 
-
-		<div class="" id="eventsResult"></div>
+		<div id="errors">
+			<ul id="error_list"></ul>
+		</div>
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
@@ -27,8 +29,8 @@
 							<use xlink:href="#stroked-male-user"></use></svg>
 					</div>
 					<div class="panel-body">
-						<table id="eventsTable" data-toggle="table"
-							data-url="static/tables/dramas.json"  data-show-refresh="true"
+						<table id="dramaTable" data-toggle="table"
+							data-url="static/tables/dramas.json" data-show-refresh="true"
 							data-show-toggle="true" data-show-columns="true"
 							data-search="true" data-select-item-name="toolbar1"
 							data-pagination="true" data-sort-name="name"
@@ -38,8 +40,10 @@
 									<th data-field="checked" data-checkbox="true"></th>
 									<th data-field="id" data-sortable="true" data-visible="false">ID</th>
 									<th data-field="title" data-sortable="true">Drama Name</th>
-									<th data-field="group_name" data-sortable="true">Group Name</th>
-									<th data-field="auditorium_name" data-sortable="true">Auditorium Name</th>
+									<th data-field="group_name" data-sortable="true">Group
+										Name</th>
+									<th data-field="auditorium_name" data-sortable="true">Auditorium
+										Name</th>
 									<th data-field="date" data-sortable="true">DateTime</th>
 								</tr>
 							</thead>

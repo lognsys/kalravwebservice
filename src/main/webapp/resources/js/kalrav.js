@@ -69,23 +69,23 @@ $(document)
                     if (this.checked) {
                         $('#useradd').prop('disabled', true);
                         $('#useredit').prop('disabled', true);
-
-                        // monika 4/5/2017 add   drama add & edit buttons disable 
-                        $('#dramaadd').prop('disabled', true);
-                        $('#dramaedit').prop('disabled', true);
-
                     } else {
                         $('#useradd').prop('disabled', false);
                         $('#useredit').prop('disabled', false);
-
-                        //monika 4/5/2017 add   drama add & edit buttons disable 
-                        $('#dramaadd').prop('disabled', false);
-                        $('#dramaedit').prop('disabled', false);
                     }
 
 
                 });
 
+            // check if more than one checkbox checked
+            if ($('#userTable tr:has(:checkbox:checked)').length > 1) {
+                 $('#useradd').prop('disabled', true);
+                 $('#useredit').prop('disabled', true);
+            } else {
+                 $('#useradd').prop('disabled', false);
+                 $('#useredit').prop('disabled', false);
+            }
+            
 
 
             // Userlist delete function
@@ -93,7 +93,7 @@ $(document)
                 function(event) {
 
                     if ($('#userTable tr:has(:checkbox:checked)').length == 0) {
-                        $('<a href="#" class="close" data-dismiss="alert">' + 'Please select one or more user</a>').appendTo('#error_list').addClass('alert alert-danger fade in').attr('data-dismiss="alert"');
+                    	  $('<li class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + '<strong>Error</strong> Please select one or more user from the list...</a></li>').appendTo('#error_list');
                     } else {
 
                         var params = {
@@ -274,7 +274,68 @@ $(document)
 
             /*********************************** Drama table function ***********************************/
 
+            // dramalist tables 
+            var checkedRows = [];
 
+            // check individual row
+            $('#dramaTable').on('check.bs.table', function(e, row) {
+                checkedRows.push({
+                    id: row.id,
+                    title: row.title
+                });
+                console.log(JSON.stringify(checkedRows));
+            });
+
+            // uncheck individual row
+            $('#dramaTable').on('uncheck.bs.table', function(e, row) {
+
+                $.each(checkedRows, function(index, value) {
+                    if (value.id === row.id) {
+                        checkedRows.splice(index, 1);
+                    }
+                });
+                console.log(JSON.stringify(checkedRows));
+            });
+
+            // remove all checked rows
+            $('#dramaTable').on('uncheck-all.bs.table', function(e) {
+                checkedRows.splice(0, checkedRows.length);
+                console.log(JSON.stringify(checkedRows));
+            });
+
+            // check all rows
+            $('#dramaTable').on('check-all.bs.table', function(e) {
+                //Assumption if one or multiple row is checked
+                checkedRows.splice(0, checkedRows.length);
+                $("#dramaTable tr:has(:checkbox:checked) td:nth-child(3)").each(function() {
+                    checkedRows.push({
+                        title: $(this).text()
+                    });
+                });
+                console.log(JSON.stringify(checkedRows));
+            });
+
+            // toggle button to disable add/edit button for multiple
+            // checkbox select
+            $('#dramaTable tr').find('input:checkbox:first').change(
+                function() {
+
+                    // this will contain a reference to the checkbox
+                    if (this.checked) {
+                        $('#dramaadd').prop('disabled', true);
+                        $('#dramaedit').prop('disabled', true);
+
+                    } else {
+                        $('#dramaadd').prop('disabled', false);
+                        $('#dramaedit').prop('disabled', false);
+                    }
+
+
+                });
+
+            
+            
+            
             /*
              * DRAMA DETAILS  STARTS 
              */

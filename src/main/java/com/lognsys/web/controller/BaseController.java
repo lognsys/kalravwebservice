@@ -117,11 +117,11 @@ public class BaseController {
 	 * @param model
 	 * @param request
 	 * @return
+	 * @throws IOException 
 	 */
 	@RequestMapping(value = "/userlist", method = RequestMethod.GET)
-	public String showUsers(Model model, HttpServletRequest request) {
-		List<UsersDTO> listOfUsers = userService.getUsers();
-		model.addAttribute("listOfUsers", listOfUsers);
+	public String showUsers(Model model, HttpServletRequest request) throws IOException {
+		userService.refreshUserList();
 		return "userlist";
 	}
 
