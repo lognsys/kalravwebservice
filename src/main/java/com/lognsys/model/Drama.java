@@ -26,18 +26,16 @@ public class Drama {
     private String avg_rating;
 
 
-    private String group_name="";
-    private String auditorium_name="";
-    private int group_id;
-    private int auditorium_id;
-	
+
+	private String group="";
+	private String auditorium="";
     
     
     
 
 	public Drama(int id, String title, String genre, String star_cast, String director, String writer,
-			String description, String date, String imageurl, String drama_length, String music, String avg_rating,
-			String group_name, String auditorium_name, int group_id, int auditorium_id) {
+			String description, String date, String imageurl, String drama_length, String music,
+			String avg_rating,String group,String auditorium) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -51,39 +49,40 @@ public class Drama {
 		this.drama_length = drama_length;
 		this.music = music;
 		this.avg_rating = avg_rating;
-		this.group_name = group_name;
-		this.auditorium_name = auditorium_name;
-		this.group_id = group_id;
-		this.auditorium_id = auditorium_id;
+		this.group = group;
+		this.auditorium = auditorium;
 
+	}
+
+	public Drama(int id, String title, String genre, String star_cast, String director, String writer,
+			String description, String date, String imageurl, String drama_length, String music, String avg_rating) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.genre = genre;
+		this.star_cast = star_cast;
+		this.director = director;
+		this.writer = writer;
+		this.description = description;
+		this.date = date;
+		this.imageurl = imageurl;
+		this.drama_length = drama_length;
+		this.music = music;
+		this.avg_rating = avg_rating;
 	}
 
 	public Drama() {
 	}
 
-	public String getGroup_name() {
-		return group_name;
+	public String getAuditorium() {
+		return auditorium;
 	}
 
-	public void setGroup_name(String group_name) {
-		this.group_name = group_name;
+	public void setAuditorium(String auditorium) {
+		this.auditorium = auditorium;
 	}
 
-	public String getAuditorium_name() {
-		return auditorium_name;
-	}
-
-	public void setAuditorium_name(String auditorium_name) {
-		this.auditorium_name = auditorium_name;
-	}
-
-	public int getGroup_id() {
-		return group_id;
-	}
-
-	public void setGroup_id(int group_id) {
-		this.group_id = group_id;
-	}
+	
 
 	public String getMusic() {
 		return music;
@@ -117,8 +116,7 @@ public class Drama {
 		this.imageurl = imageurl;
 	}
 
-	private String place;
-
+	
 	public int getId() {
 		return id;
 	}
@@ -135,13 +133,7 @@ public class Drama {
 		this.title = title;
 	}
 
-	public int getAuditorium_id() {
-		return auditorium_id;
-	}
-
-	public void setAuditorium_id(int auditorium_id) {
-		this.auditorium_id = auditorium_id;
-	}
+	
 
 	public String getDate() {
 		return date;
@@ -192,6 +184,12 @@ public class Drama {
 		this.description = description;
 	}
 
-	
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
 
 }

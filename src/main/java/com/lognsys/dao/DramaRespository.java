@@ -12,7 +12,7 @@ public interface DramaRespository {
 	 * 
 	 * @param dramas
 	 */
-	public void addDrama(DramasDTO dramas);
+	public int addDrama(DramasDTO dramas);
 	
 	
 	/**
@@ -27,7 +27,7 @@ public interface DramaRespository {
 	 * 
 	 * @param drama
 	 */
-	public void updateDrama(String title);
+	public int updateDrama(int id,DramasDTO dramasDTO);
 
 
 	/**

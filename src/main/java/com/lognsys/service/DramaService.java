@@ -13,7 +13,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
+import com.lognsys.dao.dto.GroupsDTO;
+import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcAuditoriumRepository;
 import com.lognsys.dao.jdbc.JdbcDramaRepository;
@@ -69,10 +72,14 @@ public class DramaService {
 				LOG.info("Found drama in database with dramaTitle - " + dramaTitle);
 
 			} else {
-				System.out.println("DramaService addDrama  Adding drama in database with "+dramaTitle);
+				int dramaID =jdbcDramaRepository.addDrama(dramasDTO);
+				System.out.println("#addUser - " + "Adding drama in database with dramaID - " + dramaID);
 				
-				LOG.info("#addUser - " + "Adding drama in database with - " + dramaTitle);
-				jdbcDramaRepository.addDrama(dramasDTO);
+				System.out.println("#addUser - " + "Adding DRAMA to corresponding GROUP - " + dramas.getGroup());
+				jdbcDramaRepository.addDramaAndGroup(dramaID, dramas.getGroup());
+
+				System.out.println("#addUser - " + "Adding DRAMA to corresponding Auditorium - " + dramas.getAuditorium());
+				jdbcDramaRepository.addDramaAndAuditorium(dramaID, dramas.getAuditorium());
 
 			}
 		} catch (DataAccessException dae) {
@@ -178,7 +185,9 @@ public class DramaService {
 	 * update drama
 	 */
 
-	public void updateDrama(Drama drama) {
+	public int updateDrama(int id,DramasDTO drama) {
+		
+		return jdbcDramaRepository.updateDrama(id,drama);
 
 	}
 	/*
@@ -192,14 +201,12 @@ public class DramaService {
 
 		try {
 			dramaList = jdbcDramaRepository.getAllDramas();
-			System.out.println("showDramas --> getDramas dramaList.size()  "+dramaList.size());
-			
 			
 			ResourceLoader resourceLoader = new FileSystemResourceLoader();
 			Resource resource = resourceLoader
 					.getResource(applicationProperties.getProperty(Constants.JSON_FILES.drama_filename.name()));
 			String list = CommonUtilities.convertToJSON(dramaList);
-			System.out.println("showDramas --> getDramas list  "+list);
+//			System.out.println("showDramas --> getDramas list  "+list);
 			
 			try {
 				System.out.println("showDramas --> getDramas WriteJSONToFile  ");
@@ -239,5 +246,33 @@ public class DramaService {
 
 	}
 
-	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<GroupsDTO> getAllGroups() {
+
+		try {
+			return jdbcGroupRepository.getAllGroups();
+		} catch (DataAccessException dae) {
+			LOG.error(dae.getMessage());
+			throw new IllegalAccessError("Error: All groups cannot be retrieved");
+		}
+
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public List<AuditoriumsDTO> getAllAuditoriums() {
+
+		try {
+			return jdbcAuditoriumRepository.getAllAuditoriums();
+		} catch (DataAccessException dae) {
+			LOG.error(dae.getMessage());
+			throw new IllegalAccessError("Error: All Auditoriums cannot be retrieved");
+		}
+
+	}
 }

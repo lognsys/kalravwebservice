@@ -20,15 +20,11 @@ public class DramaUserIDRowMapper implements RowMapper<DramasDTO> {
 		dramasDTO.setDirector(rs.getString("director"));
 		dramasDTO.setWriter(rs.getString("writer"));
 		dramasDTO.setDescription(rs.getString("description"));
-		dramasDTO.setAuditorium_id(rs.getInt("auditorium_id"));
 		dramasDTO.setDate(rs.getString("date"));
 		dramasDTO.setAvg_rating(rs.getString("avg_rating"));
 		dramasDTO.setImageurl(rs.getString("imageurl"));
 		dramasDTO.setDrama_length(rs.getString("drama_length"));
 		dramasDTO.setMusic(rs.getString("music"));
-		dramasDTO.setGroup_id(rs.getInt("group_id"));
-		dramasDTO.setGroup_name(rs.getString("group_name"));
-		dramasDTO.setAuditorium_name(rs.getString("auditorium_name"));
 		return dramasDTO;
 	}
 

@@ -7,6 +7,9 @@ public class AuditoriumsDTO {
 	private String address;
 	private String last_edit;
 	
+	public AuditoriumsDTO() {
+	}
+
 	public AuditoriumsDTO(int id, String auditorium_name,String address,String last_edit) {
 		super();
 		this.id = id;

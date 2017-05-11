@@ -15,7 +15,7 @@
 		</div>
 		<div class="panel panel-default">
 
-			<form:form method="post" action="dramadetail" modelAttribute="drama">
+			<form:form method="post" action="dramadetail" modelAttribute="drama" enctype="multipart/form-data" >
 				<div class="panel-body" Class="error">
 					<form:errors path="title" element="div" />
 					<form:errors path="drama_length" element="div" />
@@ -69,20 +69,22 @@
 							<div   class="form-group">
 								<label for="dtp_input1" class="col-md-2 control-label">Select
 									DateTime </label> <br />
-								<div class="input-group date form_datetime col-md-5"
-									data-date="2017-05-16T05:25:07Z"
-									data-date-format="dd MM yyyy - HH:ii p"
-									data-link-field="dtp_input1">
-									<input   type="text" path="date"
-										placeholder="Select Drama DateTime Length Here...."
-										class="form-control" value="" readonly /> <span
-										class="input-group-addon"><span
-										class="glyphicon glyphicon-remove"></span></span> <span
-										class="input-group-addon"><span
-										class="glyphicon glyphicon-th"></span></span>
-								</div>
-								<form:input type="hidden" id="dtp_input1" value="" name="date"
-									path="" />
+								
+										<div class="input-group date form_datetime col-md-5"
+								id="dtp_input1"
+								data-date-format="yyyy-mm-dd  hh:ii"
+								data-link-field="dtp_input1">
+								<form:input id="date" type="text" path="date"
+									placeholder="Select Drama DateTime Length Here...."
+									class="form-control" value=""  /> <span
+									class="input-group-addon"><span
+									class="glyphicon glyphicon-remove"></span></span>
+									 <span
+									class="input-group-addon"><span
+									class="glyphicon glyphicon-th"></span></span>
+							</div>
+							<form:input type="hidden" id="dtp_input1" value="" name="date"
+								path="" />
 								<br />
 							</div>
 						</div>
@@ -126,31 +128,28 @@
 						<div class="row">
 							<div class="col-sm-6 form-group">
 								<label>Group Name </label>
- <form:select   id="groupname" name="groupname" path="" placeholder="Enter Group Name Here...." class="form-control">
-							  <option>Ladies</option>
-							  <option>Youth</option>
-							  <option>Couple</option>						  
-							</form:select>
+							<form:select path="group">
+									<option value="NONE">--- Select ---</option>
+									<form:options items="${groupsList}"></form:options>
+								</form:select>
 							</div>
 							<div class="col-sm-6 form-group">
 								<label>Auditorium Name </label>
- <form:select id="auditoriumname"  name="auditoriumname" path="" placeholder="Enter Auditorium Name Here...." class="form-control">
-							  <option>Kalrav Malad</option>
-							  <option>Kalrav Kandivali</option>			  
-							</form:select>
+						<form:select path="auditorium">
+									<option value="NONE">--- Select ---</option>
+									<form:options items="${auditoriumList}"></form:options>
+								</form:select>
 							</div>
 						</div>
 						<div class="row">
 
 							<div class="col-sm-6 form-group">
 								<label>Upload Drama Image </label>
-								<%-- <form:input type="file" name="imageurl" id="imgInp"  class="form-control"
-									path=""></form:input>
-								<img id="imgpreview" src="#" height="50%" width="50%" />
-								 --%>
-								<input type="file" id="files" name="files[]"  multiple  />
+								
+								<!-- <input type="file" id="files" name="files[]"  multiple  />
 								<output id="list"></output>
-									
+								 -->
+								  <input type="file" name="file" />
 							</div>
 						</div>
 						<form:button type="submit" class="btn btn-lg btn-info">Submit</form:button>

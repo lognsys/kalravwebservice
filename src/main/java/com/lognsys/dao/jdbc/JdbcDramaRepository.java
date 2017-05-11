@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import com.lognsys.dao.DramaRespository;
 import com.lognsys.dao.dto.DramasDTO;
@@ -33,9 +35,12 @@ public class JdbcDramaRepository implements DramaRespository {
 	 * @param users
 	 */
 	@Override
-	public void addDrama(DramasDTO dramas) {
+	public int addDrama(DramasDTO dramas) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(dramas);
-		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DRAMA_QUERIES.insert_dramas.name()), params);
+		final KeyHolder keyHolder = new GeneratedKeyHolder();
+		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DRAMA_QUERIES.insert_dramas.name()),
+				params, keyHolder);
+		return keyHolder.getKey().intValue();
 	}
 
 	/**
@@ -55,11 +60,14 @@ public class JdbcDramaRepository implements DramaRespository {
 
 	/**
 	 * @param title
+	 * @return 
 	 */
 	@Override
-	public void updateDrama(String title) {
-		// TODO Auto-generated method stub
-		
+	public int updateDrama(int id,DramasDTO dramasDTO) {
+		System.out.println("manageDrama deleteDramas deleteDramaBy id "+id);
+		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DRAMA_QUERIES.update_dramas.name()),
+				parameter);
 	}
 
 	/**
@@ -110,5 +118,37 @@ public class JdbcDramaRepository implements DramaRespository {
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.DRAMA_QUERIES.select_dramas_title.name()), param,
 				DramasDTO.class);	}
+	
+	/**
+	 * 
+	 * @param drama_id
+	 * @param group
+	 */
+	public void addDramaAndGroup(int dramas_id, String group_name) {
 
+		try {
+			SqlParameterSource param = new MapSqlParameterSource().addValue("dramas_id", dramas_id).addValue("group_name",
+					group_name);
+			namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_dramas_groups.name()),
+					param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 
+	 * @param drama_id
+	 * @param group
+	 */
+	public void addDramaAndAuditorium(int dramas_id, String auditorium_name) {
+
+		try {
+			SqlParameterSource param = new MapSqlParameterSource().addValue("dramas_id", dramas_id).addValue("auditorium_name",
+					auditorium_name);
+			namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.insert_dramas_auditoriums.name()),
+					param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

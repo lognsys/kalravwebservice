@@ -16,11 +16,11 @@ public class Constants {
 	}
 	public enum DRAMA_QUERIES {
 		insert_dramas, select_dramas, delete_dramas, select_dramas_exists, select_dramas_id,
-		delete_dramas_title,select_dramas_title
+		delete_dramas_title,select_dramas_title,update_dramas
 	}
 	public enum AUDITORIUM_QUERIES {
 		insert_auditoriums,
-		select_auditoriums,
+		select_auditoriums,insert_dramas_auditoriums,
 		select_auditorium_name_bydramaid,
 		select_dramabyauditorium,
 		select_dramasauditoriums_all
@@ -37,6 +37,8 @@ public class Constants {
 	public enum GROUP_QUERIES {
 
 		insert_user_groups,
+		insert_dramas_groups,
+		insert_drama_auditoriums,
 		select_groups_all,
 		select_groupname_byuserid,
 		select_id_bygroupname,
@@ -70,5 +72,8 @@ public class Constants {
 	public enum AUDITORIUMS_FIELDNAME {
 		auditoriumsId, auditorium_name,address,lat_lon
 	}
+	
+	public static final String DRAMA_LIST_URL="/dramalist";
+	
 }
 

@@ -59,7 +59,7 @@ public class RestDramaController {
 		return new ResponseEntity(dramas, HttpStatus.OK);
 	}
 	@DeleteMapping("/deletedrama/{dramaIds}")
-	public ResponseEntity deleteDrama(@PathVariable("dramaIds") String[] dramaIds) {
+	public ResponseEntity deleteDrama(@PathVariable("dramaIds") String dramaIds) {
 		{
 			System.out.println("RestDramaController deleteDrama "+dramaIds);
 		
