@@ -38,7 +38,7 @@ CREATE TABLE dramas
 	#Optional avg_rating
 	avg_rating double(2,1) not null default 0,
 
-	imageurl varchar(128) not null default '',
+	imageurl varchar(255) not null default '',
 	
 	drama_length varchar(128) not null default '',
     

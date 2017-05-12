@@ -20,4 +20,6 @@ alter table  dramas_groups add constraint constr_dramasid UNIQUE (dramas_id);
 alter table  dramas_groups add foreign key (dramas_id) 
    references  dramas (id) on delete cascade
    			 on update cascade;
-
+alter table  dramas_groups add foreign key (groups_id) 
+   references  groups (id) on delete cascade
+   			 on update cascade;

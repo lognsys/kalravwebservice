@@ -14,19 +14,15 @@
 			</div>
 		</div>
 		<div class="panel panel-default">
-			<form:form method="POST" action="groupdetails" modelAttribute="groups">
+			<form:form method="POST" action="/groupedit" modelAttribute="groups" >
 
 				<div class="col-sm-12 panel panel-default">
 
 					<div class="row">
-						<div class="col-sm-6 form-group">
-							<label>Group Name</label>
-							<form:input id="firstname" type="text"
-								placeholder="Enter First Name Here.."
-								class="form-control text ui-widget-content ui-corner-all"
-								path="" />
-
-						</div>
+						<div class="form-group">
+								<label>Groups</label>
+								
+							</div>
 
 					</div>
 
@@ -47,20 +43,13 @@
 							</p>
 						</div>
 					</div>
-					<div class="action_buttons">
 	<div class="row">
 								<div class="col-sm-4 form-group">
 									<form:button id="add_button" type="submit"
 						class="btn btn-lg btn-info">Add</form:button>
 								</div>
-								<div class="col-sm-4 form-group">
-								<form:button id="edit_button" type="submit"
-						class="btn btn-lg btn-info" >Edit</form:button>
-								</div>
 								
-							</div>
-
-					</div>
+					
 				</div>
 			</form:form>
 		</div>

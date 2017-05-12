@@ -11,6 +11,7 @@ import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
 import com.lognsys.model.Drama;
 import com.lognsys.model.DramasTable;
+import com.lognsys.model.Groups;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 
@@ -112,5 +113,12 @@ public class ObjectMapper {
 					a.getAuditoriums().getAuditorium_name(), null, null));
 		}
 		return list;
+	}
+	
+//	mapToGroupsDTO
+	public static GroupsDTO mapToGroupsDTO(Groups groups) {
+	
+		return new GroupsDTO(groups.getId(), groups.getGroup_name());
+
 	}
 }

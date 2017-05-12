@@ -497,19 +497,7 @@ $(document)
                                     allFields.removeClass("ui-state-error");
 
                                     valid = valid && checkLength(title, "title", 3, 80);
-                                    //                                    valid = valid && checkLength(lname, "lastname", 3, 80);
-                                    //                                    valid = valid && checkLength(address, "address", 3, 80);
-                                    //                                    valid = valid && checkLength(city, "city", 3, 80);
-                                    //                                    valid = valid && checkLength(state, "state", 3, 80);
-                                    //                                    valid = valid && checkLength(zipcode, "zipcode", 6, 6);
-                                    //                                    valid = valid && checkLength(company_name, "company", 3, 80);
-                                    //                                    valid = valid && checkLength(phone, "phone", 10, 10);
-                                    //                                    valid = valid && checkRegexp(username, emailRegex, "eg. pdoshi@yahoo.com");
-
-                                    //valid = valid && checkLength( password, "password", 5, 16 );
-                                    //valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-                                    //valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
-                                    return valid;
+                                   return valid;
                                 }
 
 
@@ -530,6 +518,163 @@ $(document)
                     event.preventDefault();
                 });
 
+// groupdetail to add subgroup on click of plus
+            $('#myTable').on('click', 'input[type="button"]', function () {
+                $(this).closest('tr').remove();
+            })
+            $('p input[type="button"]').click(function () {
+                $('#myTable').append('<tr><td><input type="text" class="fname" /></td><td><input type="button" class="buttonDelete" " /></td></tr>')
+            });
+            
+         /*   // Userlist add function
+            $('#edit_button').click(
+                function(event) {
+                    window.location.href = "http://localhost:8080/groupedit";
+                    event.preventDefault();
+                });
+*/
+
+            // groupdetail edit function
+            $('#edit_button').click(
+                function(event) {
+
+                    if ($('#userTable tr:has(:checkbox:checked)').length == 0) {
+                        $('<li class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + '<strong>Error</strong> Please select a user from the list...</a></li>').appendTo('#error_list');
+                    } else {
+                        console.log(JSON.stringify(checkedRows));
+                        var params = {
+                            "userIds": JSON.stringify(checkedRows),
+                            "userAction": "edit"
+                        }
+                        var regUser = "";
+                        $.ajax({
+                            url: '/userlist',
+                            type: "POST",
+                            data: params,
+
+                            success: function(data) {
+
+                                //get subelements from div('#register_user')
+                                regUserElements = $(data).find("#register_user").html();
+
+                                //clear previous added html elements
+                                $('#editform').empty();
+
+                                //append html subelements
+                                $(regUserElements).appendTo("#editform");
+
+                                dialog = $("#dialog-form").dialog({
+                                    autoOpen: false,
+                                    resizable: false,
+                                    height: 525,
+                                    width: 600,
+                                    modal: true,
+
+                                    position: {
+                                        my: "center+50",
+                                        at: "center+50",
+                                        of: "body"
+                                        	
+                                        	
+                                    },
+                                    close: function() {
+                                        form[0].reset();
+                                        allFields.removeClass("ui-state-error");
+                                    }
+                                });
+
+                                //default open dialog on ajax success
+                                dialog.dialog("open");
+
+                                form = dialog.find("form").on("submit", function(event) {
+
+                                    var isValid = editUser();
+                                    if (isValid) {
+                                        console.log("VALID - " + isValid);
+                                        return;
+                                    }
+                                    event.preventDefault();
 
 
+
+                                });
+
+                                /*** edit user dialog form validation *****/
+                                var dialog, form;
+
+                                // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+                                emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+                                    fname = $("#firstname"),
+                                    lname = $("#lastname"),
+                                    username = $("#username"),
+                                    address = $("#address"),
+                                    city = $("#city"),
+                                    state = $("#state"),
+                                    zipcode = $("#zipcode"),
+                                    company_name = $("#company_name"),
+                                    phone = $("#phone"),
+                                    allFields = $([]).add(fname).add(lname).add(username).add(address).
+                                add(city).add(state).add(zipcode).add(company_name).add(phone),
+                                    tips = $(".validateTips");
+
+                                function updateTips(t) {
+                                    tips
+                                        .text(t)
+                                        .addClass("ui-state-highlight");
+                                    setTimeout(function() {
+                                        tips.removeClass("ui-state-highlight", 1500);
+                                    }, 500);
+                                }
+
+                                function checkLength(o, n, min, max) {
+                                    if (o.val().length > max || o.val().length < min) {
+                                        o.addClass("ui-state-error");
+                                        updateTips("Length of " + n + " must be between " +
+                                            min + " and " + max + ".");
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+
+                                function checkRegexp(o, regexp, n) {
+                                    if (!(regexp.test(o.val()))) {
+                                        o.addClass("ui-state-error");
+                                        updateTips(n);
+                                        return false;
+                                    } else {
+                                        return true;
+                                    }
+                                }
+
+                                function editUser() {
+                                    var valid = true;
+                                    allFields.removeClass("ui-state-error");
+
+                                    valid = valid && checkLength(fname, "firstname", 3, 80);
+                                    valid = valid && checkLength(lname, "lastname", 3, 80);
+                                    valid = valid && checkLength(address, "address", 3, 80);
+                                    valid = valid && checkLength(city, "city", 3, 80);
+                                    valid = valid && checkLength(state, "state", 3, 80);
+                                    valid = valid && checkLength(zipcode, "zipcode", 6, 6);
+                                    valid = valid && checkLength(company_name, "company", 3, 80);
+                                    valid = valid && checkLength(phone, "phone", 10, 10);
+                                    valid = valid && checkRegexp(username, emailRegex, "eg. pdoshi@yahoo.com");
+
+                                    //valid = valid && checkLength( password, "password", 5, 16 );
+                                    //valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+                                    //valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+                                    return valid;
+                                }
+
+
+                            }
+
+                        });
+                    }
+                    event.preventDefault();
+                });
+
+
+            
         });

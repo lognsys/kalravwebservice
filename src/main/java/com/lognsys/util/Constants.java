@@ -36,17 +36,18 @@ public class Constants {
 	 */
 	public enum GROUP_QUERIES {
 
-		insert_user_groups,
+		insert_user_groups,insert_groups,
 		insert_dramas_groups,
 		insert_drama_auditoriums,
-		select_groups_all,
+		select_groups_all,insert_subgroups_groups,
 		select_groupname_byuserid,
 		select_id_bygroupname,
 		select_usersbygroups,
 		select_usersgroups_all,
 		select_groupname_bydramaid,
 		select_dramasbygroups,
-		select_dramasgroups_all
+		select_dramasgroups_all,
+		select_groups_exists
 
 	}
 

@@ -61,4 +61,17 @@
 		<put-attribute name="body" value="/WEB-INF/pages/dramadetail.jsp" />
 		<put-attribute name="footer" value="" />
 	</definition>
+	
+	
+	<definition name="groupdetails" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: GroupDetail" />
+		<put-attribute name="body" value="/WEB-INF/pages/groupdetails.jsp" />
+		<put-attribute name="footer" value="" />
+	</definition>
+	
+	<definition name="groupedit" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: GroupEdit" />
+		<put-attribute name="body" value="/WEB-INF/pages/groupedit.jsp" />
+		<put-attribute name="footer" value="" />
+	</definition>
 </tiles-definitions>
