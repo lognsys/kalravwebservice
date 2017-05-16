@@ -19,7 +19,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
-src/main/webapp/tables/
+src/main/webapp/resources/tables/
 # External tool builders
 .externalToolBuilders/
 

@@ -5,9 +5,12 @@ import java.util.Properties;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.lognsys.dao.GroupRepository;
@@ -126,4 +129,39 @@ public class JdbcGroupRepository implements GroupRepository {
 				new DramaGroupsResultSetExtractor());
 	}
 
+	@Override
+	public boolean isExists(String group_name) {
+
+		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
+		return namedParamJdbcTemplate.queryForObject(
+				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_groups_exists.name()), param, Integer.class) > 0;
+
+	
+	}
+
+	@Override
+	public int addGroup(GroupsDTO groupsDTO) {
+		// TODO Auto-generated method stub
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(groupsDTO);
+		final KeyHolder keyHolder = new GeneratedKeyHolder();
+		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_groups.name()),
+				params, keyHolder);
+		return keyHolder.getKey().intValue();
+	}
+	/**
+	 * 
+	 * @param drama_id
+	 * @param group
+	 */
+	public void addGroupAndSubGroup(int group_id, String sub_group_name) {
+
+		try {
+			SqlParameterSource param = new MapSqlParameterSource().addValue("group_id", group_id).addValue("sub_group_name",
+					sub_group_name);
+			namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_subgroups_groups.name()),
+					param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

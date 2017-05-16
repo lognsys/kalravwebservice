@@ -19,6 +19,12 @@
 			<use xmlns:xlink="http://www.w3.org/1999/xlink"
 						xlink:href="#stroked-video"></use></svg> Dramas
 		</a></li>
+		
+		<li><a href="${pageContext.request.contextPath}/groupdetails"> <svg
+					class="glyph stroked video">
+			<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#stroked-video"></use></svg> Group
+		</a></li>
 		<li><a href="${pageContext.request.contextPath}/adverts.html">
 				<svg class="glyph stroked camcorder">
 					<use xmlns:xlink="http://www.w3.org/1999/xlink"

@@ -1,33 +1,52 @@
-insert into kalrav.dramas values (7, "The Woman", "Tragedy", "star_cast", "director","writer","description",
-						2, '2017-05-17 09:25:07', "4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 2, "ladies","kalrav Malad");
-insert into dramas values (8, "The Farytail", "Action", "star_cast", "director","writer","description",
-						2, '2017-05-17 09:25:07', "4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 2, "ladies","kalrav Malad");
-insert into dramas values (9, "Nine Tails", "Tragedy", "star_cast", "director","writer","description",
-						1, '2017-05-17 09:25:07', "4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 1, "couple","kalrav Kandivali");
-insert into dramas values (10, "The Mummy", "Action", "star_cast", "director","writer","description",
-						2, '2017-05-17 09:25:07', "4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 2, "ladies","kalrav Malad");
-insert into dramas values (11, "Anaconda", "Tragedy", "star_cast", "director","writer","description",
-						1, '2017-05-17 09:25:07', "4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 1, "couple","kalrav Kandivali");
-insert into dramas values (12, "Classical Act", "Action", "star_cast", "director","writer","description",
-						2, '2017-05-17 09:25:07', "4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 2, "ladies","kalrav Malad");
-insert into dramas values (13, "Sara bhai  vs Sara Bhai", "Tragedy", "star_cast", "director","writer","description",
-						1, '2017-05-17 09:25:07', "4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 1, "couple","kalrav Kandivali");
-insert into dramas values (14, "Fast N furious", "Action", "star_cast", "director","writer","description",
-						2, '2017-05-17 09:25:07', "4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 2, "ladies","kalrav Malad");
-insert into dramas values (15, "Ramayan Mythology", "Tragedy", "star_cast", "director","writer","description",
-						1, '2017-05-17 09:25:07', "4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 1, "couple","kalrav Kandivali");
-insert into dramas values (16, "Krishna Rasleela", "Action", "star_cast", "director","writer","description",
-						2, '2017-05-17 09:25:07',"4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 2, "ladies","kalrav Malad");
-insert into dramas values (17, "Big Ban ", "Tragedy", "star_cast", "director","writer","description",
-						1, '2017-05-17 09:25:07',"4", "abcIMAGE", '2017-02-05 00:00:00',"1:00:00 - 2:00:00",
-                        "music", 1, "couple","kalrav Kandivali");
+
+insert into kalrav.dramas values (1, "Romeo and Juliet", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (2, "The Kite Runner", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (3, "The Time Traveler's Wife", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (4, "A Midsummer Night's Dream", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (5, "The Adventures of Tom Sawyer", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (6, "Lost & Found", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (7, "Nineteen Minutes", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (8, "To Kill a Mockingbird", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (9, "A Thousand Splendid Suns", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (10, "Les Misérables", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (11, "Brave New World ", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (12, "Romeo and Juliet", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (13, "A Christmas Carol", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (14, "White Fang", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (15, "Chocolat", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (16, "Lord of the Flies", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
+insert into kalrav.dramas values (17, "All Quiet on the Western Front ", "Tragedy", "star_cast", "director","writer",
+									"description",'2017-05-17 09:25:07', "4", "abcIMAGE","1:00:00 - 2:00:00",
+									"music",  '2017-02-05 00:00:00');
