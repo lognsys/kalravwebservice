@@ -47,7 +47,7 @@ public class TestJdbcGroupRepository {
 	
 	@Test
 	public void testfindGroupBy(){
-		int user_id = 15;
+		int user_id = 6;
 		
 		String expected = "ladies";
 		String actual = groupRepo.findGroupBy(user_id);

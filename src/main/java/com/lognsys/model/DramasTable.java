@@ -2,15 +2,12 @@ package com.lognsys.model;
 
 public class DramasTable {
 
-//	private static enum STATUS {
-//		ACTIVE, INACTIVE
-//	}
-
 	private int id;
 	private String title;
 	private String auditorium_name;
 	private String group;
 	private String date;
+
 	public String getGroup() {
 		return group;
 	}
@@ -18,7 +15,6 @@ public class DramasTable {
 	public void setGroup(String group) {
 		this.group = group;
 	}
-
 
 	public DramasTable(int id, String title, String auditorium_name, String group, String date) {
 		super();
@@ -29,7 +25,6 @@ public class DramasTable {
 		this.date = date;
 	}
 
-	
 	public int getId() {
 		return id;
 	}
@@ -62,4 +57,4 @@ public class DramasTable {
 		this.date = date;
 	}
 
-	}
+}

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Properties;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import com.lognsys.dao.UserRespository;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.rowmapper.UserByUserIDRowMapper;
-import com.lognsys.model.Users;
 import com.lognsys.util.Constants;
 
 @Repository("userRepository")
@@ -63,11 +63,17 @@ public class JdbcUserRepository implements UserRespository {
 	 * 
 	 */
 	@Override
-	public boolean updateUser(Users users) {
+	public boolean updateUser(UsersDTO users) {
 
+		boolean isUpdate = false;
+		try {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(users);
-		return namedParamJdbcTemplate.update(Constants.USER_QUERIES.update_users.name(), params) == 1;
-
+		 isUpdate = namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.update_users.name()), params) == 1;
+		} catch(DataAccessException dae) {
+			dae.printStackTrace();
+		}
+		
+		return isUpdate;
 	}
 
 	/**

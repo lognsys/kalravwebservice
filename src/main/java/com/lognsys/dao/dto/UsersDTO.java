@@ -20,7 +20,7 @@ public class UsersDTO {
 	private String phone = "";
 	private String location = "";
 	private String provenance = "";
-	private String birthdate = "";
+	private String birthdate = null;
 	private boolean enabled = false;
 	private boolean notification = false;
 

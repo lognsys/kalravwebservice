@@ -163,8 +163,11 @@ public class UserService {
 	public void updateUser(Users users) {
 		boolean isUpdated = false;
 		try {
-			isUpdated = jdbcUserRepository.updateUser(users);
+			
+			UsersDTO u = ObjectMapper.mapToUsersDTO(users);
+			isUpdated = jdbcUserRepository.updateUser(u);
 			LOG.info("INFO: updation successful for user - " + users.getUsername());
+			System.out.println("INFO: updation successful for user - " + isUpdated);
 		} catch (DataAccessException dae) {
 			LOG.error(dae.getMessage());
 			throw new IllegalStateException("Failed user update : status - " + isUpdated);

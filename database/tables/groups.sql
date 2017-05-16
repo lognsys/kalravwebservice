@@ -15,11 +15,5 @@ CREATE TABLE IF NOT EXISTS groups
 	UNIQUE(group_name)
 
 ) ENGINE =InnoDB default CHARSET=utf8;
-
- insert into groups (group_name)
- values
- ('couple'),
- ('ladies'),
- ('none');
  
  alter table groups add index (id);
