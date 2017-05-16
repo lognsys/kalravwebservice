@@ -1,17 +1,11 @@
 package com.lognsys.dao.mongo;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
-
 import com.lognsys.dao.UserRespository;
 import com.lognsys.dao.dto.UsersDTO;
-import com.lognsys.model.Users;
-;
 
 @Repository
 public class MongoUserRepository implements UserRespository {
@@ -65,8 +59,10 @@ public class MongoUserRepository implements UserRespository {
 		return null;
 	}
 
+
+
 	@Override
-	public boolean updateUser(Users user) {
+	public boolean updateUser(UsersDTO user) {
 		// TODO Auto-generated method stub
 		return false;
 	}

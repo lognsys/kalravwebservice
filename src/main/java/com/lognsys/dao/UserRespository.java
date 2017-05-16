@@ -62,6 +62,6 @@ public interface UserRespository {
 	 * 
 	 * @param users
 	 */
-	 public boolean updateUser(Users user);
+	 public boolean updateUser(UsersDTO user);
 
 }

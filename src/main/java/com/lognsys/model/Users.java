@@ -7,7 +7,7 @@ package com.lognsys.model;
  * 
  * Change LOG :
  * 
- * 1) PJD - 04/05/17  Added Fields String role, String group
+ * 1) PJD - 04/05/17 Added Fields String role, String group
  * 
  * @author pdoshi
  */
@@ -22,11 +22,11 @@ public class Users {
 	private String phone = "";
 	private String location = "";
 	private String provenance = "";
-	private String birthdate = "";
+	private String birthdate = null;
 	private boolean enabled = false;
 	private boolean notification = false;
 
-	private String device;
+	private String device = "";
 	private String address = "";
 	private String city = "";
 	private String state = "";
@@ -34,8 +34,8 @@ public class Users {
 	private String company_name = "";
 	private String firstname = "";
 	private String lastname = "";
-	private String role="";
-	private String group="";
+	private String role = "";
+	private String group = "";
 
 	public Users(int id, String auth_id, String username, String realname, String phone, String location,
 			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
@@ -63,8 +63,8 @@ public class Users {
 		this.group = group;
 		this.role = role;
 	}
-	
-	//for mapping UsersDTO to Users
+
+	// for mapping UsersDTO to Users
 	public Users(int id, String auth_id, String username, String realname, String phone, String location,
 			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
 			String city, String state, String zipcode, String company_name, String firstname, String lastname) {
@@ -90,13 +90,9 @@ public class Users {
 
 	}
 
-
-
-
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-
 
 	public Users() {
 		// TODO Auto-generated constructor stub
