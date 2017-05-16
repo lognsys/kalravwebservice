@@ -21,10 +21,10 @@
 					<div class="row">
 						<div class="col-sm-6 form-group">
 							<label>Group Name</label>
-							<form:input id="firstname" type="text"
-								placeholder="Enter First Name Here.."
+							<form:input id="group_name" type="text" name=group_name
+								placeholder="Enter Group Name Here.."
 								class="form-control text ui-widget-content ui-corner-all"
-								path="" />
+								path="group_name" />
 
 						</div>
 

@@ -675,6 +675,27 @@ $(document)
                     event.preventDefault();
                 });
 
+            
+//            GROUP LIST
+            $('#add_button').click(
+                    function(event) {
+
+                            var params = {
+                                "groupAction": "add"
+                            }
+                            $.ajax({
+                                url: '/groupdetails',
+                                type: "POST",
+                                data: params,
+                                success: function(data) {
+                                    window.location.href = "http://localhost:8080/groupdetails"
+                                }
+                            });
+
+                            event.preventDefault();
+                       
+                    });
+            
 
             
         });

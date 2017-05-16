@@ -63,7 +63,7 @@ public class GroupController {
 
 	@RequestMapping(value = "/grouplist", method = RequestMethod.GET)
 	public String showGroupsList(Model model, HttpServletRequest request) throws IOException {
-		groupService.refreshUserList();
+//		groupService.refreshUserList();
 		return "userlist";
 	}
 	@RequestMapping(value = { "/groupedit" }, method = RequestMethod.POST)
@@ -81,7 +81,8 @@ public class GroupController {
 	@RequestMapping(value = "/groupdetails", method = RequestMethod.POST)
 	public String manageGroup(Model model,@ModelAttribute("groups") Groups groups,BindingResult result,
 			@RequestParam String groupAction) {
-		System.out.println("Going in editUsers controller add groupAction "+groupAction);
+		System.out.println("Going in manageGroup controller add groupAction "+groupAction);
+		System.out.println("Going in manageGroup controller add groups "+groups);
 		
 		switch (groupAction) {
 		case "add":

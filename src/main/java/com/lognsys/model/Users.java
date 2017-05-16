@@ -262,4 +262,14 @@ public class Users {
 		this.device = device;
 	}
 
+	@Override
+	public String toString() {
+		return "Users [id=" + id + ", auth_id=" + auth_id + ", username=" + username + ", realname=" + realname
+				+ ", phone=" + phone + ", location=" + location + ", provenance=" + provenance + ", birthdate="
+				+ birthdate + ", enabled=" + enabled + ", notification=" + notification + ", device=" + device
+				+ ", address=" + address + ", city=" + city + ", state=" + state + ", zipcode=" + zipcode
+				+ ", company_name=" + company_name + ", firstname=" + firstname + ", lastname=" + lastname + ", role="
+				+ role + ", group=" + group + "]";
+	}
+
 }
