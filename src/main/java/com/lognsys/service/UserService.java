@@ -56,6 +56,7 @@ public class UserService {
 		String username = users.getUsername();
 
 		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
+		System.out.println("USERSERVICE#ADDUSER");
 
 		try {
 			boolean isExists = jdbcUserRepository.isExists(username);
@@ -74,11 +75,14 @@ public class UserService {
 				LOG.info("#addUser - " + "Adding USER to corresponding ROLE - " + users.getRole());
 				jdbcUserRepository.addUserAndRole(userID, users.getRole());
 
+				
+				
 				refreshUserList();
 
 			}
 		} catch (DataAccessException | IOException dae) {
 			LOG.error(dae.getMessage());
+			System.out.println(dae.getMessage());
 			throw new IllegalStateException("Error : Failed to add user!");
 		}
 	}
@@ -213,17 +217,29 @@ public class UserService {
 		try {
 			//get Users information from user table
 			Users users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(userId));
-			
+			System.out.println("getUserWithRoleAndGroup users main "+users.toString());
+		
 			//get Role information with role table
 			String role = jdbcRolesRepository.getRoleBy(userId);
-			users.setRole(role);
+			if(role!=null){
+				users.setRole(role);
+			}
+			else{
+				users.setRole("");
+			}
 			
 			//get Group information 
 			String groupName = jdbcGroupRepository.findGroupBy(userId);
-			users.setGroup(groupName);
+			if(groupName!=null){
+				users.setGroup(groupName);
+			}
+			else{
+				users.setGroup("");
+			}
 			
 			return users;
 		} catch (DataAccessException dae) {
+			System.out.println("getUserWithRoleAndGroup DataAccessException "+dae);
 			LOG.error(dae.getMessage());
 			throw new IllegalAccessError("Failed to get user from database with ID - " + userId);
 		}

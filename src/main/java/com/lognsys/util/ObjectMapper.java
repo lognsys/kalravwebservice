@@ -65,18 +65,28 @@ public class ObjectMapper {
 	 */
 	public static Users mapToUsers(UsersDTO users) {
 		// TODO: Current setting of group to null, but need to change to value
+		String[] splited=null;
+		String firstname ,lastname;
 		
-		//Split realname to firstname and lastname to map in Users  Object
-		String[] splited = users.getRealname().split(" ");
-		String firstname = splited[0]==null?"":splited[0];
-		String lastname = splited[1]==null?"":splited[1] ;
+		if( users.getRealname()!=null &&  users.getRealname().length()>0)
+		{
+			//Split realname to firstname and lastname to map in Users  Object
 		
-		
-		
-		return new Users(users.getId(),  users.getAuth_id(), users.getUsername(),users.getRealname(), 
+		splited = users.getRealname().split(" ");
+		 firstname = splited[0]==null?"":splited[0];
+		 lastname = splited[1]==null?"":splited[1] ;
+		}
+		else{
+			firstname = null;
+			lastname = null;
+		}
+		Users newusers= new Users(users.getId(),  users.getAuth_id(), users.getUsername(),users.getRealname(), 
 				users.getPhone(), users.getLocation(), users.getProvenance(), users.getBirthdate(), users.isEnabled(),
 				users.isNotification(), users.getDevice(), users.getAddress(), users.getCity(),
 				users.getState(), users.getZipcode(), users.getCompany_name(), firstname, lastname);
+		System.out.println(" mapToUsers newusers toString "+newusers.toString());
+		
+		return newusers;
 		
 	}
 	public static Drama mapToDramas(DramasDTO dramas) {

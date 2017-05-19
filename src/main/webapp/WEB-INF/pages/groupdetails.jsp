@@ -24,7 +24,7 @@
 							<form:input id="group_name" type="text" name=group_name
 								placeholder="Enter Group Name Here.."
 								class="form-control text ui-widget-content ui-corner-all"
-								path="group_name" />
+								path="" />
 
 						</div>
 

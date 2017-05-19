@@ -118,7 +118,7 @@
 								</form:select>
 							</div>
 
-							<form:button id="edit_button" type="submit"
+							<form:button  type="submit"
 								class="btn btn-lg btn-info">Submit</form:button>
 						</div>
 					</fieldset>

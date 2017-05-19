@@ -37,11 +37,21 @@ public class JdbcUserRepository implements UserRespository {
 	 */
 	@Override
 	public int addUser(UsersDTO users) {
+		
+		int user_id = 0;
+		try {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(users);
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
 		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.insert_users.name()),
 				params, keyHolder);
-		return keyHolder.getKey().intValue();
+		
+		user_id  = keyHolder.getKey().intValue();
+		}
+		catch(DataAccessException dae) {
+			dae.printStackTrace();
+		}
+		
+		return user_id;
 	}
 
 	/**
@@ -84,7 +94,8 @@ public class JdbcUserRepository implements UserRespository {
 	 */
 	@Override
 	public UsersDTO findUserById(Integer id) {
-
+		System.out.println("getUserWithRoleAndGroup findUserById id "+id);
+		
 		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
 
 		return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_id.name()),
@@ -142,10 +153,13 @@ public class JdbcUserRepository implements UserRespository {
 	 * @param role
 	 */
 	public void addUserAndRole(int users_id, String role) {
-
+		try {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("users_id", users_id).addValue("role", role);
 		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.ROLES_QUERIES.insert_users_roles.name()),
 				param);
+	} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		
 	}

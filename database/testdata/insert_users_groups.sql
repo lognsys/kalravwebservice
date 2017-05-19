@@ -25,6 +25,6 @@ values (12, 1);
 insert into users_groups (users_id,groups_id)
 values (13, 2);
 insert into users_groups (users_id,groups_id)
-values (14, 1);
+values (34, 1);
 insert into users_groups (users_id,groups_id)
-values (15, 2);
+values (35, 2);

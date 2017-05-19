@@ -275,4 +275,36 @@ public class DramaService {
 		}
 
 	}
+	
+	public List<DramasDTO> getDramasByGroup() {
+
+		LOG.info("#getDramas - Get All Dramas from database");
+		List<DramasDTO> dramaList;
+
+		try {
+			dramaList = jdbcDramaRepository.getAllDramas();
+			
+			ResourceLoader resourceLoader = new FileSystemResourceLoader();
+			Resource resource = resourceLoader
+					.getResource(applicationProperties.getProperty(Constants.JSON_FILES.drama_filename.name()));
+			String list = CommonUtilities.convertToJSON(dramaList);
+//			System.out.println("showDramas --> getDramas list  "+list);
+			
+			try {
+				System.out.println("showDramas --> getDramas WriteJSONToFile  ");
+				
+				WriteJSONToFile.getInstance().write(resource, list);
+			} catch (IOException e) {
+				System.out.println("showDramas --> getDramas IOException  "+e);
+				
+				e.printStackTrace();
+			}
+		} catch (DataAccessException dae) {
+			System.out.println("showDramas --> getDramas DataAccessException  "+dae);
+			
+			LOG.error(dae.getMessage());
+			throw new IllegalStateException("Error : Failed to add dramaList !");
+		}
+		return dramaList;
+	}
 }

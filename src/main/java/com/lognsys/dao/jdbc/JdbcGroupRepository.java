@@ -124,6 +124,7 @@ public class JdbcGroupRepository implements GroupRepository {
 
 	@Override
 	public List<DramasGroupsDTO> getAllDramasAndGroup() {
+		
 		return namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_dramasgroups_all.name()),
 				new DramaGroupsResultSetExtractor());

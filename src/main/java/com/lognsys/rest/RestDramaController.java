@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lognsys.dao.dto.DramasDTO;
+import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.model.Drama;
 import com.lognsys.service.DramaService;
 
@@ -28,12 +29,24 @@ public class RestDramaController {
 
 	@Autowired
 	private DramaService dramaService;
+	@Autowired
+	private JdbcGroupRepository jdbcGroupRepository;
 	
 	@GetMapping("/listalldrama")
 	public List getDramas() {
 
 		System.out.println("RestDramaController getDramas ");
 		return dramaService.getDramas();
+	
+	}
+	
+	@GetMapping("/getalldramaandgroup")
+	public List getAllDramasAndGroup() {
+		{
+			System.out.println("RestDramaController getAllDramasAndGroup ");
+			return jdbcGroupRepository.getAllDramasAndGroup();
+				
+		}
 	
 	}
 

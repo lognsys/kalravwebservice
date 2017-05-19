@@ -15,6 +15,8 @@ package com.lognsys.web.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -38,7 +40,7 @@ import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
 
 //TODO Logging required for base controller
-@Controller
+//@Controller
 public class BaseController {
 
 	@Autowired
@@ -251,6 +253,7 @@ public class BaseController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String saveForm(@ModelAttribute("users") Users user, BindingResult result, ModelMap model) {
+		System.out.println("Adding User - " + user.toString());
 
 		FormValidator formValidator = new FormValidator();
 		formValidator.validate(user, result);

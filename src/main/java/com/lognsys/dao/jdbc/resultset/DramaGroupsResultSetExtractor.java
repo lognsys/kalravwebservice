@@ -30,10 +30,10 @@ public class DramaGroupsResultSetExtractor implements ResultSetExtractor<List<Dr
 		while (rs.next()) {
 			DramasGroupsDTO dg = new DramasGroupsDTO();
 
-			DramasDTO d = new DramasDTO(
+			/*DramasDTO d = new DramasDTO(
 					rs.getInt(Constants.DRAMA_FIELD_NAMES.dramasId.name()),
-					rs.getString(Constants.DRAMA_FIELD_NAMES.imageurl.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.title.name()),
+					rs.getString(Constants.DRAMA_FIELD_NAMES.imageurl.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.drama_length.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.date.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.genre.name()),
@@ -43,13 +43,21 @@ public class DramaGroupsResultSetExtractor implements ResultSetExtractor<List<Dr
 					rs.getString(Constants.DRAMA_FIELD_NAMES.writer.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.music.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.avg_rating.name()));
+*/
+			
+			DramasDTO d = new DramasDTO(
+					rs.getInt(Constants.DRAMA_FIELD_NAMES.dramasId.name()),
+					rs.getString(Constants.DRAMA_FIELD_NAMES.title.name()),
+					rs.getString(Constants.DRAMA_FIELD_NAMES.imageurl.name()));
 
 //			GroupsDTO g = new GroupsDTO(rs.getInt(Constants.GROUPS_FIELDNAME.groupsId.name()),
 //					rs.getString(Constants.GROUPS_FIELDNAME.group_name.name()));
+			GroupsDTO g = new GroupsDTO(rs.getInt(Constants.GROUPS_FIELDNAME.groupsId.name()),
+					rs.getString(Constants.GROUPS_FIELDNAME.group_name.name()));
 
-			// users & groups
+			// drama & groups
 			dg.setDrama(d);
-//			dg.setGroups(g);
+			dg.setGroups(g);
 
 			listOfDramasGroupsDTO.add(dg);
 		}

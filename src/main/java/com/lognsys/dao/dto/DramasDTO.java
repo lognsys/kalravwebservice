@@ -29,6 +29,13 @@ public class DramasDTO {
 
     
     
+public DramasDTO(int id, String title, String imageurl) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.imageurl = imageurl;
+	}
+
 public DramasDTO(int id, String title, String imageurl, String drama_length, String date, String genre,
 			String star_cast, String description, String director, String writer, String music, String avg_rating) {
 		super();
