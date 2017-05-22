@@ -1,6 +1,7 @@
 package com.lognsys.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import org.apache.log4j.Logger;
@@ -212,37 +213,44 @@ public class UserService {
 	 * @return
 	 */
 	@Transactional
-	public Users getUserWithRoleAndGroup(int userId) {
+	public List<Users> getUserWithRoleAndGroup(int userId) {
 
 		try {
+			List<Users> listUsers=new ArrayList<Users>();
+//			System.out.println("jdbcUserRepository.findUserById(userId) "+jdbcUserRepository.findUserById(userId));
+//			UsersDTO usersDTO=jdbcUserRepository.findUserById(userId);
+//			System.out.println("ObjectMapper.mapToUsers(usersDTO) "+ObjectMapper.mapToUsers(usersDTO));
+			
 			//get Users information from user table
 			Users users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(userId));
-			System.out.println("getUserWithRoleAndGroup users main "+users.toString());
-		
+			
 			//get Role information with role table
-			String role = jdbcRolesRepository.getRoleBy(userId);
-			if(role!=null){
+			String role = jdbcRolesRepository.getRoleBy(users.getId());
+			if(role!=null ){
 				users.setRole(role);
 			}
 			else{
-				users.setRole("");
+				users.setRole("None");
 			}
 			
-			//get Group information 
-			String groupName = jdbcGroupRepository.findGroupBy(userId);
+//			//get Group information 
+			String groupName = jdbcGroupRepository.findGroupBy(users.getId());
+			System.out.println("getUserWithRoleAndGroup users groupName "+groupName);
 			if(groupName!=null){
 				users.setGroup(groupName);
 			}
 			else{
-				users.setGroup("");
+				users.setGroup("None");
 			}
-			
-			return users;
+			System.out.println("getUserWithRoleAndGroup groupName "+groupName);
+			listUsers.add(users);
+			return listUsers;
 		} catch (DataAccessException dae) {
 			System.out.println("getUserWithRoleAndGroup DataAccessException "+dae);
-			LOG.error(dae.getMessage());
-			throw new IllegalAccessError("Failed to get user from database with ID - " + userId);
+//			LOG.error(dae.getMessage());
+//			throw new IllegalAccessError("Failed to get user from database with ID - " + userId);
 		}
+		return null;
 	}
 
 	/**

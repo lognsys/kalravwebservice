@@ -25,6 +25,7 @@ public class Drama {
     private String music;
     private String avg_rating;
 
+    private String drama_language;
 
 
 	private String group="";
@@ -35,7 +36,7 @@ public class Drama {
 
 	public Drama(int id, String title, String genre, String star_cast, String director, String writer,
 			String description, String date, String imageurl, String drama_length, String music,
-			String avg_rating,String group,String auditorium) {
+			String avg_rating,String group,String auditorium,String drama_language) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -51,11 +52,12 @@ public class Drama {
 		this.avg_rating = avg_rating;
 		this.group = group;
 		this.auditorium = auditorium;
+		this.drama_language=drama_language;
 
 	}
 
 	public Drama(int id, String title, String genre, String star_cast, String director, String writer,
-			String description, String date, String imageurl, String drama_length, String music, String avg_rating) {
+			String description, String date, String imageurl, String drama_length, String music, String avg_rating,String drama_language) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -69,9 +71,18 @@ public class Drama {
 		this.drama_length = drama_length;
 		this.music = music;
 		this.avg_rating = avg_rating;
+		this.drama_language=drama_language;
 	}
 
 	public Drama() {
+	}
+
+	public String getDrama_language() {
+		return drama_language;
+	}
+
+	public void setDrama_language(String drama_language) {
+		this.drama_language = drama_language;
 	}
 
 	public String getAuditorium() {

@@ -9,7 +9,7 @@ public class Constants {
 	 * be added to USER_QUERIES enum
 	 */
 	public enum USER_QUERIES {
-		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email,update_users
+		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email,update_users,select_users_username
 	}
 	public enum ROLES_QUERIES {
 		insert_users_roles, insert_users_roleid, select_roles_all, select_role_byuserid
@@ -62,10 +62,10 @@ public class Constants {
 	}
 	
 	public enum USER_FIELD_NAMES {
-		usersId, realname, username, auth_id, phone, location, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, company_name, title
+		usersId, realname, username, auth_id, phone, location, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, company_name, title,role,group
 	}
 	public enum DRAMA_FIELD_NAMES {
-		dramasId, title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating, group_name,auditorium_name, group_id,auditorium_id
+		dramasId, title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating, group_name,auditorium_name, group_id,auditorium_id,dramas_language
 	}
 	public enum GROUPS_FIELDNAME {
 		groupsId, group_name

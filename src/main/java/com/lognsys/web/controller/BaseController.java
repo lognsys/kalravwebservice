@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -178,7 +177,8 @@ public class BaseController {
 					id = jsonObject.get("id").toString();
 				}
 
-				Users newUsers = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
+//				Users newUsers = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
+				List<Users> newUsers = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
 				
 				// CALL database to get roles & groups
 				List<RolesDTO> listOfRolesDTO = userService.getAllRoles();
@@ -198,7 +198,10 @@ public class BaseController {
 		
 				model.addAttribute("rolesList", rolesList);
 				model.addAttribute("groupsList", groupsList);
-				model.addAttribute("users", newUsers);
+				for(Users users:newUsers){
+					model.addAttribute("users", users);
+						
+				}
 				return "register";
 			} catch (ParseException e) {
 				e.printStackTrace();

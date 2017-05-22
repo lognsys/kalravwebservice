@@ -30,7 +30,8 @@ public class UsersDTO {
 	private String state = "";
 	private String zipcode = "";
 	private String company_name = "";
-
+    
+	
 	public UsersDTO() {
 		super();
 	}
@@ -57,6 +58,7 @@ public class UsersDTO {
 		this.company_name = company_name;
 	}
 
+	
 	public String getAuth_id() {
 		return auth_id;
 	}
@@ -185,13 +187,13 @@ public class UsersDTO {
 		this.username = username;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "UsersDTO [id=" + id + ", realname=" + realname + ", username=" + username + ", auth_id=" + auth_id
 				+ ", phone=" + phone + ", location=" + location + ", provenance=" + provenance + ", birthdate="
 				+ birthdate + ", enabled=" + enabled + ", notification=" + notification + ", device=" + device
 				+ ", address=" + address + ", city=" + city + ", state=" + state + ", zipcode=" + zipcode
-				+ ", company_name=" + company_name + "]";
+				+ ", company_name=" + company_name +  "]";
 	}
+
 }

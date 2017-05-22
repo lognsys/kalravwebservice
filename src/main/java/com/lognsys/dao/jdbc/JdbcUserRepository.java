@@ -142,9 +142,14 @@ public class JdbcUserRepository implements UserRespository {
 	}
 
 	@Override
-	public UsersDTO findUserById(String emailID) {
-		// TODO Auto-generated method stub
-		return null;
+	public UsersDTO findUserById(String username) {
+	System.out.println("getUserWithRoleAndGroup findUserById username "+username);
+		
+		SqlParameterSource parameter = new MapSqlParameterSource("username", username);
+
+		return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_username.name()),
+				parameter, new UserByUserIDRowMapper());
+	
 	}
 
 	/**

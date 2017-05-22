@@ -54,8 +54,8 @@ public class JdbcGroupRepository implements GroupRepository {
 	 *            - this is the user_id passed to retrieve the group_name
 	 */
 	@Override
-	public String findGroupBy(int user_id) {
-		SqlParameterSource param = new MapSqlParameterSource("user_id", user_id);
+	public String findGroupBy(int users_id) {
+		SqlParameterSource param = new MapSqlParameterSource("users_id", users_id);
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_groupname_byuserid.name()), param,
 				String.class);

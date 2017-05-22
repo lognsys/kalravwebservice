@@ -24,7 +24,8 @@ public class DramaUserIDRowMapper implements RowMapper<DramasDTO> {
 		dramasDTO.setAvg_rating(rs.getString("avg_rating"));
 		dramasDTO.setImageurl(rs.getString("imageurl"));
 		dramasDTO.setDrama_length(rs.getString("drama_length"));
-		dramasDTO.setMusic(rs.getString("music"));
+		dramasDTO.setMusic(rs.getString("music"));;
+		dramasDTO.setDrama_language(rs.getString("drama_language"));
 		return dramasDTO;
 	}
 

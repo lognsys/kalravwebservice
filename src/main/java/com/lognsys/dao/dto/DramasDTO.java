@@ -27,6 +27,7 @@ public class DramasDTO {
     private String music="";
     private String avg_rating="";
 
+    private String drama_language="";
     
     
 public DramasDTO(int id, String title, String imageurl) {
@@ -37,7 +38,7 @@ public DramasDTO(int id, String title, String imageurl) {
 	}
 
 public DramasDTO(int id, String title, String imageurl, String drama_length, String date, String genre,
-			String star_cast, String description, String director, String writer, String music, String avg_rating) {
+			String star_cast, String description, String director, String writer, String music, String avg_rating,String drama_language) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -51,6 +52,7 @@ public DramasDTO(int id, String title, String imageurl, String drama_length, Str
 		this.writer = writer;
 		this.music = music;
 		this.avg_rating = avg_rating;
+		this.drama_language=drama_language;
 	}
 
 	/*
@@ -76,11 +78,20 @@ public DramasDTO(int id, String title, String imageurl, String drama_length, Str
 		this.auditorium_id = auditorium_id;
 	}
 */
-	public DramasDTO() {
+	
+public DramasDTO() {
 		super();
 	}
 
 	
+
+	public String getDrama_language() {
+	return drama_language;
+}
+
+public void setDrama_language(String drama_language) {
+	this.drama_language = drama_language;
+}
 
 	public int getId() {
 		return id;

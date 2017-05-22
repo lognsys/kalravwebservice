@@ -24,6 +24,7 @@ public class UserByUserIDRowMapper implements RowMapper<UsersDTO> {
 		useritem.setState(rs.getString("state"));
 		useritem.setZipcode(rs.getString("zipcode"));
 		useritem.setAuth_id(rs.getString("auth_id"));
+		useritem.setCompany_name(rs.getString("company_name"));
 		return useritem;
 	}
 }

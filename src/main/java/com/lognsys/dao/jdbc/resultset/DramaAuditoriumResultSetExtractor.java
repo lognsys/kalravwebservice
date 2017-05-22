@@ -44,7 +44,8 @@ public class DramaAuditoriumResultSetExtractor implements ResultSetExtractor<Lis
 					rs.getString(Constants.DRAMA_FIELD_NAMES.director.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.writer.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.music.name()),
-					rs.getString(Constants.DRAMA_FIELD_NAMES.avg_rating.name()));
+					rs.getString(Constants.DRAMA_FIELD_NAMES.avg_rating.name()),
+			rs.getString(Constants.DRAMA_FIELD_NAMES.dramas_language.name()));
 
 			AuditoriumsDTO auditoriums = new AuditoriumsDTO(
 					rs.getInt(Constants.AUDITORIUMS_FIELDNAME.auditoriumsId.name()),

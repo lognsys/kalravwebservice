@@ -12,4 +12,7 @@ ALTER TABLE kalrav.dramas
   
 ALTER TABLE kalrav.dramas
   ADD music varchar(150) not null default '', 
+*/
 
+ALTER TABLE kalrav.dramas
+  ADD drama_language varchar(150) not null default '';

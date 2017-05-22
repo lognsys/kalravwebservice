@@ -57,12 +57,14 @@ public class RestUserController {
 	    @RequestMapping(value = "/getsingleuser/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<Users> getUser(@PathVariable("id") int id) {
 	        System.out.println("Fetching User with id " + id);
-	        Users user = userService.getUserWithRoleAndGroup(id);
-	        if (user == null) {
+	        List<Users> users = userService.getUserWithRoleAndGroup(id);
+	        if (users == null) {
 	            System.out.println("User with id " + id + " not found");
 	            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
 	        }
+	 	   for(Users user: users){
 	        return new ResponseEntity<Users>(user, HttpStatus.OK);
+	 	   }return null;
 	    }
 	 
 	     
@@ -92,19 +94,22 @@ public class RestUserController {
 	    	boolean isExists = jdbcUserRepository.isExists(usersDTO.getUsername());
 	    	System.out.println("Creating User isExists " +isExists);
 	    	 if (isExists) {
-		            System.out.println("A User with name " + usersDTO.getRealname() + " already exist");
-		            return new ResponseEntity<UsersDTO>(HttpStatus.CONFLICT);
+	    		 System.out.println(" isExists usersDTO.getUsername() " +usersDTO.getUsername());
+	 	    	
+	    		 usersDTO=(jdbcUserRepository.findUserById(usersDTO.getUsername()));
+	    		 System.out.println(" isExists usersDTO.tostring " +usersDTO.toString());
+		 	    	
+		            return new ResponseEntity<UsersDTO>(usersDTO,HttpStatus.CONFLICT);
 		        }
-	    	 else
+	    	 else{
 	    		 userId = jdbcUserRepository.addUser(usersDTO);
 	    	 	usersDTO.setId(userId);
 	    		System.out.println("Creating User userId " +userId);
 	    		System.out.println("Creating User usersDTO tostring after add " +usersDTO.toString());
 	    	  	 //	    		 userService.addUser(user);
-
-	    	 
-	    	 //		   CREATED====201
+	    		//		   CREATED====201
 	    	return new ResponseEntity<UsersDTO>(usersDTO, HttpStatus.CREATED);
+	    	}
 	    } 
 
 	     
@@ -114,20 +119,30 @@ public class RestUserController {
 	    public ResponseEntity<Users> updateUser(@PathVariable("id") int id, @RequestBody Users user) {
 	        System.out.println("Updating User " + id);
 	         
-	        Users currentUser = userService.getUserWithRoleAndGroup(id);
-	        System.out.println("Updating User currentUser toString " + currentUser.toString());
+//	        Users currentUser = userService.getUserWithRoleAndGroup(id);
+	        List<Users> currentUsers = userService.getUserWithRoleAndGroup(id);
+		       
 	          
-	        if (currentUser==null) {
+	        if (currentUsers==null) {
 	            System.out.println("User with id " + id + " not found");
 	            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
 	        }
 	        System.out.println("Updating User user.getCity()" + user.getCity());
 		     
-	        currentUser.setCity(user.getCity());
-	       
-	         
-	        userService.updateUser(currentUser);
-	        return new ResponseEntity<Users>(currentUser, HttpStatus.OK);
+	        Users obj=new Users(id,user.getAuth_id(), user.getUsername(), user.getRealname(), user.getPhone(), user.getLocation(),
+	        		user.getProvenance(),user.getBirthdate(), true, true, user.getDevice(), user.getAddress(), user.getCity(),user.getState(),
+	        		user.getZipcode(),user.getCompany_name(), user.getFirstname(),user.getLastname(), user.getGroup(),user.getRole());
+	        currentUsers.add(obj);
+	        for(Users u:currentUsers){
+	        	  userService.updateUser(u);
+	        	  return new ResponseEntity<Users>(u, HttpStatus.OK);
+	        }
+	        //	        currentUser.setCity(user.getCity());
+//	       
+//	         
+//	        userService.updateUser(currentUser);
+//	        return new ResponseEntity<Users>(currentUser, HttpStatus.OK);
+			return null;
 	    }
 	 
 	    //------------------- Delete a User --------------------------------------------------------
@@ -136,23 +151,26 @@ public class RestUserController {
 	    public ResponseEntity<Users> deleteUser(@PathVariable("id") int id) {
 	        System.out.println("Fetching & Deleting User with id " + id);
 	 
-	        Users user = userService.getUserWithRoleAndGroup(id);
-	        System.out.println("Fetching & Deleting User with user.getId " + user.getId());
-	        System.out.println("Fetching & Deleting User with user " + user);
-		   	 
+//	        Users user = userService.getUserWithRoleAndGroup(id);
+	        List<Users> user = userService.getUserWithRoleAndGroup(id);
+		       
+	        
+	         
 	        if (user == null) {
 	            System.out.println("Unable to delete. User with id " + id + " not found");
 	            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
 	        }
 	        else{
-	        	int [] ids={user.getId()};
+	        	int [] ids=new int[user.size()];
+	        	for(int i=0;i<user.size();i++){
+	        		ids[i]=user.get(i).getId();
+	        	}
 		        userService.deleteUsers(ids);
 		        
 	        }
 	        return new ResponseEntity<Users>(HttpStatus.NO_CONTENT);
 	    }
-	 
-	     
+	
 	    //------------------- Delete All Users --------------------------------------------------------
 	 /*    
 	    @RequestMapping(value = "/user/", method = RequestMethod.DELETE)

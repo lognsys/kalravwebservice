@@ -32,14 +32,8 @@ public class RestDramaController {
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
 	
-	@GetMapping("/listalldrama")
-	public List getDramas() {
-
-		System.out.println("RestDramaController getDramas ");
-		return dramaService.getDramas();
 	
-	}
-	
+//	list all  drama with group name  even if customer has not assign groupname
 	@GetMapping("/getalldramaandgroup")
 	public List getAllDramasAndGroup() {
 		{
@@ -49,8 +43,8 @@ public class RestDramaController {
 		}
 	
 	}
-
-	@GetMapping("/finddramabyid/{id}")
+// detail screen of drama with  respect to drama id
+	@GetMapping("/getdramadetailbyid/{id}")
 	public ResponseEntity getDramaById(@PathVariable("id") int id) {
 		System.out.println("RestDramaController getDramaById ");
 		System.out.println("RestDramaController getDramaById id "+id);
@@ -63,6 +57,16 @@ public class RestDramaController {
 		return new ResponseEntity(dramasDTO, HttpStatus.OK);
 	}
 
+	
+	// list all  drama with group name  
+		@GetMapping("/getalldramaandgroup/{group_name}")
+		public List getAllDramasAndGroup(@PathVariable("group_name") String group_name) {
+			
+			return  jdbcGroupRepository.getDramasByGroup(group_name);
+		}
+
+	
+	
 	@PostMapping(value = "/createdrama")
 	public ResponseEntity createDrama(@RequestBody Drama dramas) {
 		System.out.println("RestDramaController createDrama ");

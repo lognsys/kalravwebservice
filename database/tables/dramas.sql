@@ -43,6 +43,7 @@ CREATE TABLE dramas
 	drama_length varchar(128) not null default '',
     
 	music varchar(128) not null default '',
+	drama_language varchar(150) not null default '',
 
 	last_edit TIMESTAMP not null default current_timestamp on update current_timestamp
 	
