@@ -20,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
+import com.lognsys.dao.jdbc.JdbcRolesRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
@@ -27,12 +28,14 @@ import com.lognsys.service.UserService;
 import com.lognsys.util.ObjectMapper;
 
 @Produces("application/json")
-//@RestController
+@RestController
 public class RestUserController {
 
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	private JdbcRolesRepository jdbcRolesRepository;
 
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
@@ -170,8 +173,11 @@ public class RestUserController {
 	    }
 	  //-------------------Retrieve Single User-------------------------------------------------------
 	     
-	    @RequestMapping(value = "/getsingleuserbyusername/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    @RequestMapping(value = "/getusername/users/username/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	    public ResponseEntity<Users> getsingleuserbyusername(@PathVariable("username") String username) {
+	    	 
+		    System.out.println("username username from  sb ==== " + username);
+			    
 	        List<Users> users = userService.getUserByUsername(username);
 	        
 	        
@@ -180,8 +186,33 @@ public class RestUserController {
 	            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
 	        }
 	 	   for(Users user: users){
-	 		  System.out.println("username User with user " + user.toString());
-		         
+	 		  
+	 		  	    
+	 		  String group_name;
+			try {
+				group_name = jdbcGroupRepository.findGroupBy(user.getId());
+				if(group_name!=null && group_name.length()>0){
+					user.setGroup(group_name);
+				}
+				
+			} catch (Exception e) {
+				user.setGroup("None");
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} String role;
+			try {
+				role = jdbcRolesRepository.getRoleBy(user.getId());
+				if(role!=null && role.length()>0){
+					user.setRole(role);
+				}
+				
+			} catch (Exception e) {
+				user.setRole("User");
+				e.printStackTrace();
+			}
+	 		  
+			 System.out.println("user=== TOSTRING FOR ==== " + user.toString());
+		 		    
 	        return new ResponseEntity<Users>(user, HttpStatus.OK);
 	 	   }return null;
 	    }

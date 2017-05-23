@@ -11,6 +11,7 @@ import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -279,14 +280,55 @@ public class UserService {
 
 	}
 	
-	@Transactional
 	public List<Users> getUserByUsername(String username) {
 
 		try {
-			List<Users> listUsers=new ArrayList<Users>();
-			UsersDTO userDTo=jdbcUserRepository.findUserByUsername(username);
 			
-			System.out.println("getUserByUsername userDTo ====== "+userDTo.toString());
+			System.out.println("======= username=========="+username);
+			
+			Users users=null;
+			List<Users> listUsersdata=new ArrayList<Users>();
+			List<UsersDTO> listUsers=jdbcUserRepository.getAllUsers();
+			System.out.println("====== listUsers.size() ======"+listUsers.size());
+			for(int i=0;i<listUsers.size();i++){
+				System.out.println("====== listUsers ======"+listUsers.get(i).toString());
+				
+			}
+			for(UsersDTO usersDTO:listUsers){
+				
+//				System.out.println("====== usersDTO.getUsername().equalsIgnoreCase(username) ======"+(usersDTO.getUsername().equalsIgnoreCase(username)));
+				if(usersDTO.getUsername()!=null && usersDTO.getUsername().endsWith(".com")){
+//					System.out.println("======= usersDTO.getUsername() with  .com =========="+usersDTO.getUsername());
+					StringBuilder sb=new StringBuilder();
+					sb.append(username+".com");
+					if(usersDTO.getUsername().equalsIgnoreCase(sb.toString())){
+//						System.out.println("====== usersDTO TOSTRING ======"+usersDTO.toString());
+						
+						 users = ObjectMapper.mapToUsers(usersDTO);
+//						 System.out.println("====== users TOSTRING======"+users.toString());
+						 listUsersdata.add(users);
+						 return listUsersdata;	
+					}
+				}
+				else if(usersDTO.getUsername()!=null && usersDTO.getUsername().endsWith(".in")){
+//					System.out.println("======= usersDTO.getUsername() with sb.toString() .in =========="+usersDTO.getUsername());
+					StringBuilder sb=new StringBuilder();
+					sb.append(username+".in");
+//					System.out.println("======= usersDTO.getUsername() with sb.toString() .in =========="+sb.toString());
+					
+					if(usersDTO.getUsername().equalsIgnoreCase(sb.toString())){
+//						System.out.println("====== usersDTO TOSTRING ======"+usersDTO.toString());
+						
+						 users = ObjectMapper.mapToUsers(usersDTO);
+//						 System.out.println("====== users TOSTRING======"+users.toString());
+						 listUsersdata.add(users);
+						 return listUsersdata;	
+					}
+				}
+				
+				
+				
+			}
 			/*
 			//get Users information from user table
 			Users users = ObjectMapper.mapToUsers(userDTo);
@@ -295,11 +337,10 @@ public class UserService {
 			System.out.println("getUserByUsername users ====== "+users.toString());
 			listUsers.add(users);
 			return listUsers;*/
-		} catch (DataAccessException dae) {
+		} catch (EmptyResultDataAccessException  dae) {
 			System.out.println("getUserByUsername DataAccessException "+dae);
-//			LOG.error(dae.getMessage());
-//			throw new IllegalAccessError("Failed to get user from database with ID - " + userId);
-		}
+		return null;
+			}
 		return null;
 	}
 

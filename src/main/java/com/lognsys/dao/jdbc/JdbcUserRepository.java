@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -143,13 +144,22 @@ public class JdbcUserRepository implements UserRespository {
 
 	@Override
 	public UsersDTO findUserByUsername(String username) {
-		
-		SqlParameterSource parameter = new MapSqlParameterSource("username", username);
-		UsersDTO userDto=namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_username.name()),
-				parameter, new UserByUserIDRowMapper());
-		System.out.println("findUserById findUserById username "+username+"====userDto ===="+userDto.toString());
-		
-		return userDto;
+		try {
+			System.out.println("findUserByUsername  username "+username);
+			
+			SqlParameterSource parameter = new MapSqlParameterSource("username",username );
+			UsersDTO usersDto=namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_username.name()),
+					parameter, new UserByUserIDRowMapper());
+			System.out.println("findUserByUsername  usersDto "+usersDto.toString());
+			
+			
+					return usersDto ;
+		} catch (EmptyResultDataAccessException e) {
+			System.out.println("findUserByUsername  EmptyResultDataAccessException "+e);
+			
+			return null;
+		}
+
 	
 	}
 

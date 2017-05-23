@@ -47,11 +47,11 @@ public class TestUserService {
 
 		users.setZipcode("400067");
 
-		users.setCompany_name("LognSystems");
+//		users.setCompany_name("LognSystems");
 
 		users.setAddress("Kandivali West");
 
-		users.setLocation("Kandivali West Again...");
+//		users.setLocation("Kandivali West Again...");
 
 		users.setProvenance("Web");
 
