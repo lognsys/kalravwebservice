@@ -21,3 +21,5 @@
 #  ADD device varchar(255) not null default '';
   
 #ALTER TABLE kalrav.users ADD email varchar(50) not null default '' after device;
+alter table users drop column location;
+alter table users drop column company_name;

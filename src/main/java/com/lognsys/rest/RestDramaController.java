@@ -23,7 +23,7 @@ import com.lognsys.model.Drama;
 import com.lognsys.service.DramaService;
 
 
-@RestController
+//@RestController
 public class RestDramaController {
 
 

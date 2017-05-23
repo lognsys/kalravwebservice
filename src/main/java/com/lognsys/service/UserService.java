@@ -57,8 +57,7 @@ public class UserService {
 		String username = users.getUsername();
 
 		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
-		System.out.println("USERSERVICE#ADDUSER");
-
+		
 		try {
 			boolean isExists = jdbcUserRepository.isExists(username);
 
@@ -217,9 +216,6 @@ public class UserService {
 
 		try {
 			List<Users> listUsers=new ArrayList<Users>();
-//			System.out.println("jdbcUserRepository.findUserById(userId) "+jdbcUserRepository.findUserById(userId));
-//			UsersDTO usersDTO=jdbcUserRepository.findUserById(userId);
-//			System.out.println("ObjectMapper.mapToUsers(usersDTO) "+ObjectMapper.mapToUsers(usersDTO));
 			
 			//get Users information from user table
 			Users users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(userId));
@@ -230,7 +226,7 @@ public class UserService {
 				users.setRole(role);
 			}
 			else{
-				users.setRole("None");
+				users.setRole("User");
 			}
 			
 //			//get Group information 
@@ -281,6 +277,30 @@ public class UserService {
 			throw new IllegalAccessError("Error: All roles cannot be retrieved");
 		}
 
+	}
+	
+	@Transactional
+	public List<Users> getUserByUsername(String username) {
+
+		try {
+			List<Users> listUsers=new ArrayList<Users>();
+			UsersDTO userDTo=jdbcUserRepository.findUserByUsername(username);
+			
+			System.out.println("getUserByUsername userDTo ====== "+userDTo.toString());
+			/*
+			//get Users information from user table
+			Users users = ObjectMapper.mapToUsers(userDTo);
+			
+			
+			System.out.println("getUserByUsername users ====== "+users.toString());
+			listUsers.add(users);
+			return listUsers;*/
+		} catch (DataAccessException dae) {
+			System.out.println("getUserByUsername DataAccessException "+dae);
+//			LOG.error(dae.getMessage());
+//			throw new IllegalAccessError("Failed to get user from database with ID - " + userId);
+		}
+		return null;
 	}
 
 }

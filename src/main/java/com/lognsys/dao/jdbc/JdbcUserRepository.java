@@ -142,13 +142,14 @@ public class JdbcUserRepository implements UserRespository {
 	}
 
 	@Override
-	public UsersDTO findUserById(String username) {
-	System.out.println("getUserWithRoleAndGroup findUserById username "+username);
+	public UsersDTO findUserByUsername(String username) {
 		
 		SqlParameterSource parameter = new MapSqlParameterSource("username", username);
-
-		return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_username.name()),
+		UsersDTO userDto=namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.USER_QUERIES.select_users_username.name()),
 				parameter, new UserByUserIDRowMapper());
+		System.out.println("findUserById findUserById username "+username+"====userDto ===="+userDto.toString());
+		
+		return userDto;
 	
 	}
 

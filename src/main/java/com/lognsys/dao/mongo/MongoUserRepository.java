@@ -53,18 +53,18 @@ public class MongoUserRepository implements UserRespository {
 		return false;
 	}
 
-	@Override
-	public UsersDTO findUserById(String emailID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 
 	@Override
 	public boolean updateUser(UsersDTO user) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public UsersDTO findUserByUsername(String emailID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

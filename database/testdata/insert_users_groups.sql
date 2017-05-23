@@ -28,3 +28,6 @@ insert into users_groups (users_id,groups_id)
 values (34, 1);
 insert into users_groups (users_id,groups_id)
 values (35, 2);
+
+insert into users_groups (users_id,groups_id)
+values (36, 3);

@@ -39,7 +39,7 @@ import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
 
 //TODO Logging required for base controller
-//@Controller
+@Controller
 public class BaseController {
 
 	@Autowired

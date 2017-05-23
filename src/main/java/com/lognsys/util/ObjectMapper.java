@@ -49,9 +49,9 @@ public class ObjectMapper {
 		// TODO: Current setting of group to null, but need to change to value
 
 		return new UsersDTO(users.getId(), users.getRealname(), users.getUsername(), users.getAuth_id(),
-				users.getPhone(), users.getLocation(), users.getProvenance(), users.getBirthdate(), users.isEnabled(),
+				users.getPhone(), users.getProvenance(), users.getBirthdate(), users.isEnabled(),
 				users.isNotification(), users.getDevice(), users.getAddress(), users.getCity(),
-				users.getState(), users.getZipcode(), users.getCompany_name());
+				users.getState(), users.getZipcode());
 
 	}
 
@@ -68,7 +68,7 @@ public class ObjectMapper {
 		System.out.println(" mapToUsers users toString "+users.toString());
 		
 		String[] splited=null;
-		String firstname ,lastname;
+		String firstname=null,lastname=null;
 		
 		if( users.getRealname()!=null &&  users.getRealname().length()>0)
 		{
@@ -78,14 +78,11 @@ public class ObjectMapper {
 		 firstname = splited[0]==null?"":splited[0];
 		 lastname = splited[1]==null?"":splited[1] ;
 		}
-		else{
-			firstname = null;
-			lastname = null;
-		}
+		
 		Users newusers= new Users(users.getId(),  users.getAuth_id(), users.getUsername(),users.getRealname(), 
-				users.getPhone(), users.getLocation(), users.getProvenance(), users.getBirthdate(), users.isEnabled(),
+				users.getPhone(), users.getProvenance(), users.getBirthdate(), users.isEnabled(),
 				users.isNotification(), users.getDevice(), users.getAddress(), users.getCity(),
-				users.getState(), users.getZipcode(), users.getCompany_name(), firstname, lastname);
+				users.getState(), users.getZipcode(), firstname, lastname);
 		System.out.println(" mapToUsers newusers toString "+newusers.toString());
 		
 		return newusers;

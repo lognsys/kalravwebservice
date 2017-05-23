@@ -34,7 +34,6 @@ public class UserGroupsResultSetExtractor implements ResultSetExtractor<List<Use
 					rs.getString(Constants.USER_FIELD_NAMES.username.name()),
 					rs.getString(Constants.USER_FIELD_NAMES.auth_id.name()),
 					rs.getString(Constants.USER_FIELD_NAMES.phone.name()),
-					rs.getString(Constants.USER_FIELD_NAMES.location.name()),
 					rs.getString(Constants.USER_FIELD_NAMES.provenance.name()),
 					rs.getString(Constants.USER_FIELD_NAMES.birthdate.name()),
 					rs.getBoolean(Constants.USER_FIELD_NAMES.enabled.name()),
@@ -43,8 +42,7 @@ public class UserGroupsResultSetExtractor implements ResultSetExtractor<List<Use
 					rs.getString(Constants.USER_FIELD_NAMES.address.name()),
 					rs.getString(Constants.USER_FIELD_NAMES.city.name()),
 					rs.getString(Constants.USER_FIELD_NAMES.state.name()),
-					rs.getString(Constants.USER_FIELD_NAMES.zipcode.name()),
-					rs.getString(Constants.USER_FIELD_NAMES.company_name.name()));
+					rs.getString(Constants.USER_FIELD_NAMES.zipcode.name()));
 
 			GroupsDTO g = new GroupsDTO(rs.getInt(Constants.GROUPS_FIELDNAME.groupsId.name()),
 					rs.getString(Constants.GROUPS_FIELDNAME.group_name.name()));

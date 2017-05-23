@@ -88,12 +88,11 @@ public class SpringRestTestClient {
        RestTemplate restTemplate = new RestTemplate();
        Users user  = new Users(20,"xyzdta", 
     		   "rest@g.com","rest sharma",
-    		   "8097526387", "location", 
+    		   "8097526387",
     		   "provenance","2017-05-17 09:25:07",
 				true,true,"device",
 				"address","city",
 				"state","123456",
-				"company name",
 				"rest","sharma",
 				"critics","Admin");
        restTemplate.put(REST_SERVICE_URI+"/updateuser/20", user);
@@ -120,7 +119,7 @@ public class SpringRestTestClient {
 //       getUser();
 //       createUser();
 //       listAllUsers();
-       updateUser();
+//       updateUser();
 //       listAllUsers();
 //       deleteUser();
 //       listAllUsers();

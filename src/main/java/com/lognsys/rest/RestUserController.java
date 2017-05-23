@@ -27,7 +27,7 @@ import com.lognsys.service.UserService;
 import com.lognsys.util.ObjectMapper;
 
 @Produces("application/json")
-@RestController
+//@RestController
 public class RestUserController {
 
 	@Autowired
@@ -70,13 +70,12 @@ public class RestUserController {
 	     
 	     
 	    //-------------------Create a User--------------------------------------------------------
-	    @RequestMapping(value="/createuser/{id}/{realname}/{username}/{auth_id}/{phone}/{location}/{provenance}/{birthdate}/{enabled}/{notification}/{device}/{address}/{city}/{state}/{zipcode}/{company_name}/{firstname}/{lastname}/{group}/{role}", method = RequestMethod.POST)
+	    @RequestMapping(value="/createuser/{id}/{realname}/{username}/{auth_id}/{phone}/{provenance}/{birthdate}/{enabled}/{notification}/{device}/{address}/{city}/{state}/{zipcode}/{firstname}/{lastname}/{group}/{role}", method = RequestMethod.POST)
 	    public ResponseEntity<UsersDTO> createUser(@PathVariable(value = "id") int id,
 	    					@PathVariable(value = "realname") String realname,
 	    		           @PathVariable(value = "username") String username,
 	    		           @PathVariable(value = "auth_id") String auth_id,
 	    		           @PathVariable(value = "phone") String phone,
-	    		           @PathVariable(value = "location") String location,
 	    		           @PathVariable(value = "provenance") String provenance,
 	    		           @PathVariable(value = "birthdate") String birthdate,
 	    		           @PathVariable(value = "enabled") Boolean enabled,
@@ -84,11 +83,10 @@ public class RestUserController {
 	    		           @PathVariable(value = "device") String device, @PathVariable(value = "address") String address,
 	    		           @PathVariable(value = "city") String city,
 	    		           @PathVariable(value = "state") String state,
-	    		           @PathVariable(value = "zipcode") String zipcode,
-	    		           @PathVariable(value = "company_name") String company_name
+	    		           @PathVariable(value = "zipcode") String zipcode
 	    		          ) {
 	    	int userId;
-	    	UsersDTO usersDTO = new UsersDTO(id,realname, username,auth_id,phone,location,provenance,birthdate,enabled,notification,device,address,city,state,zipcode,company_name);
+	    	UsersDTO usersDTO = new UsersDTO(id,realname, username,auth_id,phone,provenance,birthdate,enabled,notification,device,address,city,state,zipcode);
 	    	System.out.println("Creating User toString " + usersDTO.toString());
 	    	
 	    	boolean isExists = jdbcUserRepository.isExists(usersDTO.getUsername());
@@ -96,10 +94,10 @@ public class RestUserController {
 	    	 if (isExists) {
 	    		 System.out.println(" isExists usersDTO.getUsername() " +usersDTO.getUsername());
 	 	    	
-	    		 usersDTO=(jdbcUserRepository.findUserById(usersDTO.getUsername()));
+	    		 usersDTO=(jdbcUserRepository.findUserByUsername(usersDTO.getUsername()));
 	    		 System.out.println(" isExists usersDTO.tostring " +usersDTO.toString());
 		 	    	
-		            return new ResponseEntity<UsersDTO>(usersDTO,HttpStatus.CONFLICT);
+		            return new ResponseEntity<UsersDTO>(usersDTO,HttpStatus.OK);
 		        }
 	    	 else{
 	    		 userId = jdbcUserRepository.addUser(usersDTO);
@@ -129,9 +127,9 @@ public class RestUserController {
 	        }
 	        System.out.println("Updating User user.getCity()" + user.getCity());
 		     
-	        Users obj=new Users(id,user.getAuth_id(), user.getUsername(), user.getRealname(), user.getPhone(), user.getLocation(),
+	        Users obj=new Users(id,user.getAuth_id(), user.getUsername(), user.getRealname(), user.getPhone(),
 	        		user.getProvenance(),user.getBirthdate(), true, true, user.getDevice(), user.getAddress(), user.getCity(),user.getState(),
-	        		user.getZipcode(),user.getCompany_name(), user.getFirstname(),user.getLastname(), user.getGroup(),user.getRole());
+	        		user.getZipcode(), user.getFirstname(),user.getLastname(), user.getGroup(),user.getRole());
 	        currentUsers.add(obj);
 	        for(Users u:currentUsers){
 	        	  userService.updateUser(u);
@@ -170,15 +168,22 @@ public class RestUserController {
 	        }
 	        return new ResponseEntity<Users>(HttpStatus.NO_CONTENT);
 	    }
-	
-	    //------------------- Delete All Users --------------------------------------------------------
-	 /*    
-	    @RequestMapping(value = "/user/", method = RequestMethod.DELETE)
-	    public ResponseEntity<Users> deleteAllUsers() {
-	        System.out.println("Deleting All Users");
-	        int [] ids={user.getId()};
-	        userService.deleteUsers(ids);
-//	        userService.deleteAllUsers();
-	        return new ResponseEntity<Users>(HttpStatus.NO_CONTENT);
-	    }*/
+	  //-------------------Retrieve Single User-------------------------------------------------------
+	     
+	    @RequestMapping(value = "/getsingleuserbyusername/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    public ResponseEntity<Users> getsingleuserbyusername(@PathVariable("username") String username) {
+	        List<Users> users = userService.getUserByUsername(username);
+	        
+	        
+	        if (users == null) {
+	            System.out.println("username with username " + username + " not found");
+	            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
+	        }
+	 	   for(Users user: users){
+	 		  System.out.println("username User with user " + user.toString());
+		         
+	        return new ResponseEntity<Users>(user, HttpStatus.OK);
+	 	   }return null;
+	    }
+	 
 }

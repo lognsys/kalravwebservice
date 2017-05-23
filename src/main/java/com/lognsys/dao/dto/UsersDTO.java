@@ -18,7 +18,6 @@ public class UsersDTO {
 	private String username = "";
 	private String auth_id = "";
 	private String phone = "";
-	private String location = "";
 	private String provenance = "";
 	private String birthdate = null;
 	private boolean enabled = false;
@@ -29,23 +28,21 @@ public class UsersDTO {
 	private String city = "";
 	private String state = "";
 	private String zipcode = "";
-	private String company_name = "";
     
 	
 	public UsersDTO() {
 		super();
 	}
 
-	public UsersDTO(int id, String realname, String username, String auth_id, String phone, String location,
+	public UsersDTO(int id, String realname, String username, String auth_id, String phone,
 			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
-			String city, String state, String zipcode, String company_name) {
+			String city, String state, String zipcode) {
 		super();
 		this.id = id;
 		this.realname = realname;
 		this.username = username;
 		this.auth_id = auth_id;
 		this.phone = phone;
-		this.location = location;
 		this.provenance = provenance;
 		this.birthdate = birthdate;
 		this.enabled = enabled;
@@ -55,7 +52,6 @@ public class UsersDTO {
 		this.city = city;
 		this.state = state;
 		this.zipcode = zipcode;
-		this.company_name = company_name;
 	}
 
 	
@@ -75,14 +71,7 @@ public class UsersDTO {
 		this.phone = phone;
 	}
 
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
+	
 	public String getProvenance() {
 		return provenance;
 	}
@@ -155,13 +144,6 @@ public class UsersDTO {
 		this.zipcode = zipcode;
 	}
 
-	public String getCompany_name() {
-		return company_name;
-	}
-
-	public void setCompany_name(String company_name) {
-		this.company_name = company_name;
-	}
 
 	public int getId() {
 		return id;
@@ -190,10 +172,11 @@ public class UsersDTO {
 	@Override
 	public String toString() {
 		return "UsersDTO [id=" + id + ", realname=" + realname + ", username=" + username + ", auth_id=" + auth_id
-				+ ", phone=" + phone + ", location=" + location + ", provenance=" + provenance + ", birthdate="
-				+ birthdate + ", enabled=" + enabled + ", notification=" + notification + ", device=" + device
-				+ ", address=" + address + ", city=" + city + ", state=" + state + ", zipcode=" + zipcode
-				+ ", company_name=" + company_name +  "]";
+				+ ", phone=" + phone + ", provenance=" + provenance + ", birthdate=" + birthdate + ", enabled="
+				+ enabled + ", notification=" + notification + ", device=" + device + ", address=" + address + ", city="
+				+ city + ", state=" + state + ", zipcode=" + zipcode + "]";
 	}
+
+	
 
 }

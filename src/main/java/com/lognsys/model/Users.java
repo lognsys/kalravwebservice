@@ -20,7 +20,6 @@ public class Users {
 	private String username = "";
 	private String realname = "";
 	private String phone = "";
-	private String location = "";
 	private String provenance = "";
 	private String birthdate = null;
 	private boolean enabled = false;
@@ -31,15 +30,14 @@ public class Users {
 	private String city = "";
 	private String state = "";
 	private String zipcode = "";
-	private String company_name = "";
 	private String firstname = "";
 	private String lastname = "";
 	private String role = "";
 	private String group = "";
 
-	public Users(int id, String auth_id, String username, String realname, String phone, String location,
+	public Users(int id, String auth_id, String username, String realname, String phone,
 			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
-			String city, String state, String zipcode, String company_name, String firstname, String lastname,
+			String city, String state, String zipcode, String firstname, String lastname,
 			String group, String role) {
 		super();
 		this.id = id;
@@ -47,7 +45,6 @@ public class Users {
 		this.username = username;
 		this.realname = realname;
 		this.phone = phone;
-		this.location = location;
 		this.provenance = provenance;
 		this.birthdate = birthdate;
 		this.enabled = enabled;
@@ -57,7 +54,6 @@ public class Users {
 		this.city = city;
 		this.state = state;
 		this.zipcode = zipcode;
-		this.company_name = company_name;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.group = group;
@@ -65,16 +61,15 @@ public class Users {
 	}
 
 	// for mapping UsersDTO to Users
-	public Users(int id, String auth_id, String username, String realname, String phone, String location,
+	public Users(int id, String auth_id, String username, String realname, String phone,
 			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
-			String city, String state, String zipcode, String company_name, String firstname, String lastname) {
+			String city, String state, String zipcode, String firstname, String lastname) {
 		super();
 		this.id = id;
 		this.auth_id = auth_id;
 		this.username = username;
 		this.realname = realname;
 		this.phone = phone;
-		this.location = location;
 		this.provenance = provenance;
 		this.birthdate = birthdate;
 		this.enabled = enabled;
@@ -84,7 +79,6 @@ public class Users {
 		this.city = city;
 		this.state = state;
 		this.zipcode = zipcode;
-		this.company_name = company_name;
 		this.firstname = firstname;
 		this.lastname = lastname;
 
@@ -170,14 +164,6 @@ public class Users {
 		this.auth_id = auth_id;
 	}
 
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
 	public String getPhone() {
 		return phone;
 	}
@@ -210,13 +196,6 @@ public class Users {
 		this.provenance = provenance;
 	}
 
-	public String getCompany_name() {
-		return company_name;
-	}
-
-	public void setCompany_name(String company_name) {
-		this.company_name = company_name;
-	}
 
 	public String getFirstname() {
 		return firstname;
@@ -261,11 +240,10 @@ public class Users {
 	@Override
 	public String toString() {
 		return "Users [id=" + id + ", auth_id=" + auth_id + ", username=" + username + ", realname=" + realname
-				+ ", phone=" + phone + ", location=" + location + ", provenance=" + provenance + ", birthdate="
-				+ birthdate + ", enabled=" + enabled + ", notification=" + notification + ", device=" + device
-				+ ", address=" + address + ", city=" + city + ", state=" + state + ", zipcode=" + zipcode
-				+ ", company_name=" + company_name + ", firstname=" + firstname + ", lastname=" + lastname + ", role="
-				+ role + ", group=" + group + "]";
+				+ ", phone=" + phone + ", provenance=" + provenance + ", birthdate=" + birthdate + ", enabled="
+				+ enabled + ", notification=" + notification + ", device=" + device + ", address=" + address + ", city="
+				+ city + ", state=" + state + ", zipcode=" + zipcode + ", firstname=" + firstname + ", lastname="
+				+ lastname + ", role=" + role + ", group=" + group + "]";
 	}
 
 }

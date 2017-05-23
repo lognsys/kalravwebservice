@@ -27,14 +27,8 @@ CREATE TABLE users
 	# Optional phone
 	phone varchar(32) not null default '',
 	
-	#Optional company_name
-    company_name varchar(100) not null default '', 
-	
     #Required address
     address varchar(255) not null default '',
- 
-    #Optional location
-    location varchar(255) not null default '',
     
     # optional state 
     state varchar(32) not null default '',

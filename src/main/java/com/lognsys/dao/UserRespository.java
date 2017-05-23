@@ -55,7 +55,7 @@ public interface UserRespository {
 	 * @param emailid
 	 * @return UsersDTO
 	 */
-	public UsersDTO findUserById(String emailID);
+	public UsersDTO findUserByUsername(String emailID);
 
 	/**
 	 * Update user information, enable/disable etc..
