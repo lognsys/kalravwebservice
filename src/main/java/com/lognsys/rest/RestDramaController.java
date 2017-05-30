@@ -23,7 +23,7 @@ import com.lognsys.model.Drama;
 import com.lognsys.service.DramaService;
 
 
-//@RestController
+@RestController
 public class RestDramaController {
 
 
@@ -126,5 +126,13 @@ public class RestDramaController {
 
 		return new ResponseEntity(Updatecount, HttpStatus.OK);
 	}
+	
+	// list all  drama with group name  
+	@GetMapping("/getaudidatetimebydramaid/{drama_id}/{datetime}")
+	public List getAudiDatetimeByDramaId(@PathVariable("group_name") String group_name) {
+		
+		return  jdbcGroupRepository.getDramasByGroup(group_name);
+	}
+
 
 }

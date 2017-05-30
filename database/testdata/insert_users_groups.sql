@@ -1,5 +1,5 @@
 insert into users_groups (users_id,groups_id)
-values (1, 1);
+values (1, 2);
 insert into users_groups (users_id,groups_id)
 values (2, 2);
 insert into users_groups (users_id,groups_id)

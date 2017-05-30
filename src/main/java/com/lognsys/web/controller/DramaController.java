@@ -44,7 +44,7 @@ import com.lognsys.util.ObjectMapper;
 
 @WebServlet("/dramadetail")
 @MultipartConfig(maxFileSize = 16177215) 
-@Controller
+//@Controller
 public class DramaController {
 	@Autowired
 	private DramaService dramaService;
