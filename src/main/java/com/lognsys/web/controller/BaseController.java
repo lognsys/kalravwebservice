@@ -15,7 +15,6 @@ package com.lognsys.web.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.RolesDTO;
-import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.model.Users;
 import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
@@ -177,7 +175,6 @@ public class BaseController {
 					id = jsonObject.get("id").toString();
 				}
 
-//				Users newUsers = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
 				List<Users> newUsers = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
 				
 				// CALL database to get roles & groups
@@ -283,8 +280,11 @@ public class BaseController {
 			model.addAttribute("groupsList", groupsList);
 			return "register";
 		} else {
-			System.out.println("Adding User - " + user.toString());
-			userService.addUser(user);
+			try {
+				userService.addUser(user);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return "userlist";
 	}

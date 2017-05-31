@@ -14,17 +14,18 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcRolesRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
+import com.lognsys.exception.UserDataAccessException;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 import com.lognsys.util.CommonUtilities;
 import com.lognsys.util.Constants;
+import com.lognsys.util.FormValidator;
 import com.lognsys.util.ObjectMapper;
 import com.lognsys.util.WriteJSONToFile;
 
@@ -43,7 +44,7 @@ public class UserService {
 	@Autowired
 	private JdbcRolesRepository jdbcRolesRepository;
 
-	// Injecting resource sql.properties.
+	// Injecting resource application.properties.
 	@Autowired
 	@Qualifier("applicationProperties")
 	private Properties applicationProperties;
@@ -52,54 +53,49 @@ public class UserService {
 	 * Add user to database.. Check if user already exists in db
 	 * 
 	 * @return
+	 * @throws IOException
 	 */
 	@Transactional
-	public void addUser(Users users) {
+	public void addUser(Users users) throws IOException {
 		String username = users.getUsername();
 
 		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
-		
+
+		boolean isExists = jdbcUserRepository.isExists(username);
+
+		if (isExists)
+			throw new IllegalArgumentException("User already exists in database with username - " + username);
+
+		LOG.info("#addUser - " + "Adding USER in database with - " + username);
+		int userID = jdbcUserRepository.addUser(usersDTO);
+
+		LOG.info("#addUser - " + "Adding USER to corresponding GROUP - " + users.getGroup());
+		jdbcUserRepository.addUserAndGroup(userID, users.getGroup());
+
+		LOG.info("#addUser - " + "Adding USER to corresponding ROLE - " + users.getRole());
+		jdbcUserRepository.addUserAndRole(userID, users.getRole());
+
 		try {
-			boolean isExists = jdbcUserRepository.isExists(username);
-
-			if (isExists) {
-				LOG.warn("User exists in database with username - " + username);
-
-			} else {
-
-				LOG.info("#addUser - " + "Adding USER in database with - " + username);
-				int userID = jdbcUserRepository.addUser(usersDTO);
-				
-				LOG.info("#addUser - " + "Adding USER to corresponding GROUP - " + users.getGroup());
-				jdbcUserRepository.addUserAndGroup(userID, users.getGroup());
-
-				LOG.info("#addUser - " + "Adding USER to corresponding ROLE - " + users.getRole());
-				jdbcUserRepository.addUserAndRole(userID, users.getRole());
-
-				
-				
-				refreshUserList();
-
-			}
-		} catch (DataAccessException | IOException dae) {
-			LOG.error(dae.getMessage());
-			System.out.println(dae.getMessage());
-			throw new IllegalStateException("Error : Failed to add user!");
+			refreshUserList();
+		} catch (IOException io) {
+			LOG.fatal("UserService#addUser refresUserList - " + io.getMessage());
 		}
 	}
 
 	/**
-	 * Synchronize users from mysql to json files.
+	 * Synchronize users with mysql database
 	 *
 	 * @return
 	 * @throws IOException
 	 */
 	public void refreshUserList() throws IOException {
 		List<UsersTable> users = ObjectMapper.mapToUserTable(jdbcGroupRepository.getAllUsersAndGroup());
+
 		ResourceLoader resourceLoader = new FileSystemResourceLoader();
 		Resource resource = resourceLoader
 				.getResource(applicationProperties.getProperty(Constants.JSON_FILES.user_filename.name()));
 		String list = CommonUtilities.convertToJSON(users);
+
 		try {
 			WriteJSONToFile.getInstance().write(resource, list);
 		} catch (IOException e) {
@@ -109,6 +105,8 @@ public class UserService {
 
 	/**
 	 * Delete users from database
+	 * 
+	 * @param
 	 * 
 	 * @return
 	 */
@@ -163,16 +161,18 @@ public class UserService {
 	}
 
 	/**
+	 * 
+	 * 
 	 * @param user
 	 */
 	public void updateUser(Users users) {
 		boolean isUpdated = false;
 		try {
-			
+
 			UsersDTO u = ObjectMapper.mapToUsersDTO(users);
 			isUpdated = jdbcUserRepository.updateUser(u);
 			LOG.info("INFO: updation successful for user - " + users.getUsername());
-			System.out.println("INFO: updation successful for user - " + isUpdated);
+
 		} catch (DataAccessException dae) {
 			LOG.error(dae.getMessage());
 			throw new IllegalStateException("Failed user update : status - " + isUpdated);
@@ -216,36 +216,35 @@ public class UserService {
 	public List<Users> getUserWithRoleAndGroup(int userId) {
 
 		try {
-			List<Users> listUsers=new ArrayList<Users>();
-			
-			//get Users information from user table
+			List<Users> listUsers = new ArrayList<Users>();
+
+			// get Users information from user table
 			Users users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(userId));
-			
-			//get Role information with role table
+
+			// get Role information with role table
 			String role = jdbcRolesRepository.getRoleBy(users.getId());
-			if(role!=null ){
+			if (role != null) {
 				users.setRole(role);
-			}
-			else{
+			} else {
 				users.setRole("User");
 			}
-			
-//			//get Group information 
+
+			// //get Group information
 			String groupName = jdbcGroupRepository.findGroupBy(users.getId());
-			System.out.println("getUserWithRoleAndGroup users groupName "+groupName);
-			if(groupName!=null){
+			System.out.println("getUserWithRoleAndGroup users groupName " + groupName);
+			if (groupName != null) {
 				users.setGroup(groupName);
-			}
-			else{
+			} else {
 				users.setGroup("None");
 			}
-			System.out.println("getUserWithRoleAndGroup groupName "+groupName);
+			System.out.println("getUserWithRoleAndGroup groupName " + groupName);
 			listUsers.add(users);
 			return listUsers;
 		} catch (DataAccessException dae) {
-			System.out.println("getUserWithRoleAndGroup DataAccessException "+dae);
-//			LOG.error(dae.getMessage());
-//			throw new IllegalAccessError("Failed to get user from database with ID - " + userId);
+			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
+			// LOG.error(dae.getMessage());
+			// throw new IllegalAccessError("Failed to get user from database
+			// with ID - " + userId);
 		}
 		return null;
 	}
@@ -279,69 +278,32 @@ public class UserService {
 		}
 
 	}
-	
-	public List<Users> getUserByUsername(String username) {
 
+	/**
+	 * Returns User object on success.
+	 * 
+	 * 
+	 * @param username
+	 * @return
+	 */
+	public Users getUserByUsername(String username) {
+
+		Users user = null;
+
+		// Throws user invalid on bad paramters
+		if (username.trim().isEmpty() || !CommonUtilities.isValidEmail(username))
+			throw new UserDataAccessException(
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userinvalid.name()));
+
+		// throws exception user not found
 		try {
-			
-			System.out.println("======= username=========="+username);
-			
-			Users users=null;
-			List<Users> listUsersdata=new ArrayList<Users>();
-			List<UsersDTO> listUsers=jdbcUserRepository.getAllUsers();
-			System.out.println("====== listUsers.size() ======"+listUsers.size());
-			for(int i=0;i<listUsers.size();i++){
-				System.out.println("====== listUsers ======"+listUsers.get(i).toString());
-				
-			}
-			for(UsersDTO usersDTO:listUsers){
-				
-//				System.out.println("====== usersDTO.getUsername().equalsIgnoreCase(username) ======"+(usersDTO.getUsername().equalsIgnoreCase(username)));
-				if(usersDTO.getUsername()!=null && usersDTO.getUsername().endsWith(".com")){
-//					System.out.println("======= usersDTO.getUsername() with  .com =========="+usersDTO.getUsername());
-					StringBuilder sb=new StringBuilder();
-					sb.append(username+".com");
-					if(usersDTO.getUsername().equalsIgnoreCase(sb.toString())){
-//						System.out.println("====== usersDTO TOSTRING ======"+usersDTO.toString());
-						
-						 users = ObjectMapper.mapToUsers(usersDTO);
-//						 System.out.println("====== users TOSTRING======"+users.toString());
-						 listUsersdata.add(users);
-						 return listUsersdata;	
-					}
-				}
-				else if(usersDTO.getUsername()!=null && usersDTO.getUsername().endsWith(".in")){
-//					System.out.println("======= usersDTO.getUsername() with sb.toString() .in =========="+usersDTO.getUsername());
-					StringBuilder sb=new StringBuilder();
-					sb.append(username+".in");
-//					System.out.println("======= usersDTO.getUsername() with sb.toString() .in =========="+sb.toString());
-					
-					if(usersDTO.getUsername().equalsIgnoreCase(sb.toString())){
-//						System.out.println("====== usersDTO TOSTRING ======"+usersDTO.toString());
-						
-						 users = ObjectMapper.mapToUsers(usersDTO);
-//						 System.out.println("====== users TOSTRING======"+users.toString());
-						 listUsersdata.add(users);
-						 return listUsersdata;	
-					}
-				}
-				
-				
-				
-			}
-			/*
-			//get Users information from user table
-			Users users = ObjectMapper.mapToUsers(userDTo);
-			
-			
-			System.out.println("getUserByUsername users ====== "+users.toString());
-			listUsers.add(users);
-			return listUsers;*/
-		} catch (EmptyResultDataAccessException  dae) {
-			System.out.println("getUserByUsername DataAccessException "+dae);
-		return null;
-			}
-		return null;
+			user = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
+		} catch (EmptyResultDataAccessException e) {
+			throw new UserDataAccessException(
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()), e);
+		}
+
+		return user;
 	}
 
 }

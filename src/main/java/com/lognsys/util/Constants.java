@@ -24,7 +24,6 @@ public class Constants {
 		select_auditorium_name_bydramaid,
 		select_dramabyauditorium,
 		select_dramasauditoriums_all
-		
 	}
 
 	
@@ -61,6 +60,14 @@ public class Constants {
 		user_filename, drama_filename, adverts_filename, booking_filename,
 	}
 	
+	
+	/**
+	 * Fields defined here are exactly same as in database. 
+	 * This is to identify fieldname in sql query and protect from  any misnomers of the fieldname with database
+	 * 
+	 * Caveat : Any change in the database fields adding or dropping requires to change field names here
+	 * 
+	 */
 	public enum USER_FIELD_NAMES {
 		usersId, realname, username, auth_id, phone, location, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, company_name, title,role,group
 	}
@@ -74,7 +81,29 @@ public class Constants {
 		auditoriumsId, auditorium_name,address,lat_lon
 	}
 	
+	
+	//REST URL constants
 	public static final String DRAMA_LIST_URL="/dramalist";
+	
+
+	/**
+	 * REST CONTROLLER APPLICATION PROPERTIES STATUS MESSAGES
+	 * Note: Please make sure any changes made to Enum REST_MSGS 
+	 * needs corresponding changes to application.properties.
+	 * Failure to do will create a bug
+	 */
+	public enum REST_MSGS {
+		response_userempty, response_userinvalid
+	}
+	
+	
+	/**
+	 * Exception Messages
+	 */
+	
+	public enum EXCEPTIONS_MSG {
+		exception_userinvalid, exception_userempty
+	}
 	
 }
 

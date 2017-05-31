@@ -54,7 +54,9 @@ CREATE TABLE users
 	#Optional birthdate 	
 	birthdate datetime default null,
 
-	last_edit timestamp not null default current_timestamp on update current_timestamp
+	last_edit timestamp not null default current_timestamp on update current_timestamp,
+	
+	UNIQUE(username, phone)
 
 ) ENGINE = InnoDB default CHARSET=utf8;
 
