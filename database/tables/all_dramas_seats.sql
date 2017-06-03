@@ -1,3 +1,5 @@
+drop table if exists all_dramas_seats;
+
 CREATE TABLE IF NOT EXISTS `kalrav`.`all_dramas_seats` (
   `audi_id` INT NOT NULL,
   `row_seat_id` INT NOT NULL,

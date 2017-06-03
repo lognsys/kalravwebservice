@@ -1,3 +1,5 @@
+drop table if exists booking;
+
 CREATE TABLE IF NOT EXISTS `kalrav`.`booking` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `booking_date` DATETIME NOT NULL,
