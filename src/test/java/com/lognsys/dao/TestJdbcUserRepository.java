@@ -5,8 +5,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.Assert;
-
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.model.Users;
 import com.lognsys.util.ObjectMapper;
@@ -103,11 +101,7 @@ public class TestJdbcUserRepository {
 
 		users.setZipcode("400067");
 
-		users.setCompany_name("LognSystems");
-
 		users.setAddress("Kandivali West");
-
-		users.setLocation("Kandivali West Again...");
 
 		users.setProvenance("Web");
 

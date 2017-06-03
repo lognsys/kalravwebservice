@@ -28,15 +28,14 @@ public class UsersDTO {
 	private String city = "";
 	private String state = "";
 	private String zipcode = "";
-    
-	
+
 	public UsersDTO() {
 		super();
 	}
 
-	public UsersDTO(int id, String realname, String username, String auth_id, String phone,
-			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
-			String city, String state, String zipcode) {
+	public UsersDTO(int id, String realname, String username, String auth_id, String phone, String provenance,
+			String birthdate, boolean enabled, boolean notification, String device, String address, String city,
+			String state, String zipcode) {
 		super();
 		this.id = id;
 		this.realname = realname;
@@ -54,7 +53,6 @@ public class UsersDTO {
 		this.zipcode = zipcode;
 	}
 
-	
 	public String getAuth_id() {
 		return auth_id;
 	}
@@ -71,7 +69,6 @@ public class UsersDTO {
 		this.phone = phone;
 	}
 
-	
 	public String getProvenance() {
 		return provenance;
 	}
@@ -144,7 +141,6 @@ public class UsersDTO {
 		this.zipcode = zipcode;
 	}
 
-
 	public int getId() {
 		return id;
 	}
@@ -159,6 +155,15 @@ public class UsersDTO {
 
 	public void setRealname(String realname) {
 		this.realname = realname;
+	}
+
+	public void setRealname(String firstname, String lastname) {
+
+		firstname = firstname != null ? firstname : "";
+		lastname = lastname != null ? firstname : "";
+
+		this.realname = firstname + lastname;
+
 	}
 
 	public String getUsername() {
@@ -176,7 +181,5 @@ public class UsersDTO {
 				+ enabled + ", notification=" + notification + ", device=" + device + ", address=" + address + ", city="
 				+ city + ", state=" + state + ", zipcode=" + zipcode + "]";
 	}
-
-	
 
 }
