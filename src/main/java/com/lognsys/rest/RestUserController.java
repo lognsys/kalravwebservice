@@ -6,6 +6,7 @@ import java.util.Properties;
 import javax.ws.rs.Produces;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
-import com.lognsys.exception.UserDataAccessException;
+//import com.lognsys.exception.UserDataAccessException;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 import com.lognsys.service.UserService;
@@ -206,8 +207,10 @@ public class RestUserController {
 
 		
 		try {
-			user = userService.getUserByUsername(username);
-		} catch (UserDataAccessException ue) {
+			user = userService.getUserByUsername(username);}
+//		}catch (UserDataAccessException ue) {
+
+		catch (DataAccessException ue) {
 
 			// check if user is null
 			if (ue.getMessage()

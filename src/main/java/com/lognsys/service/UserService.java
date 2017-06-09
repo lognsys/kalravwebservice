@@ -11,6 +11,7 @@ import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,7 @@ import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcRolesRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
-import com.lognsys.exception.UserDataAccessException;
+//import com.lognsys.exception.UserDataAccessException;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 import com.lognsys.util.CommonUtilities;
@@ -292,14 +293,16 @@ public class UserService {
 
 		// Throws user invalid on bad paramters
 		if (username.trim().isEmpty() || !CommonUtilities.isValidEmail(username))
-			throw new UserDataAccessException(
+//			throw new UserDataAccessException
+			throw new DataAccessResourceFailureException(
 					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userinvalid.name()));
 
 		// throws exception user not found
 		try {
 			user = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
 		} catch (EmptyResultDataAccessException e) {
-			throw new UserDataAccessException(
+//			throw new UserDataAccessException
+			throw new DataAccessResourceFailureException(
 					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()), e);
 		}
 

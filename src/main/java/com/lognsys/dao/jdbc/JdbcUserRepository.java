@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 import com.lognsys.dao.UserRespository;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.rowmapper.UserByUserIDRowMapper;
-import com.lognsys.exception.UserDataAccessException;
+//import com.lognsys.exception.UserDataAccessException;
 import com.lognsys.util.Constants;
 
 @Repository("userRepository")
