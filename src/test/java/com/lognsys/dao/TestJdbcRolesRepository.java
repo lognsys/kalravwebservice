@@ -25,21 +25,27 @@ public class TestJdbcRolesRepository {
 	}
 
 	@Test
-	public void testGetUsersByGroup() {
+	public void testGetAllRoles() {
 		List<RolesDTO> ug = rolesRepo.getAllRoles();
 		Assert.notNull(ug, "Check list of Users NOT NULL");
 		Assert.notEmpty(ug, "Collection not empty..list of Users and Group object");
 	}
 
-	
 	@Test
-	public void testgetRoleBy() {
+	public void testGetRoleBy() {
 		int user_id = 15;
 		String expected = "Critics";
 		String actual = rolesRepo.getRoleBy(user_id);
 		assertEquals(expected, actual);
 	}
-	
 
+	@Test
+	public void testUpdateRoleForUser() {
+
+		String username = "jdoshi@gmail.com";
+		String roleName = "ADMIN";
+		boolean isUpdate = rolesRepo.updateRoleOfUser(username, roleName);
+		Assert.isTrue(isUpdate, "Updating Role - " + roleName + "for User - " + username);
+	}
 
 }

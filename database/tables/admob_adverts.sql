@@ -40,5 +40,5 @@ CREATE TABLE IF NOT EXISTS admob_adverts
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 alter table admob_adverts add foreign key (adverts_type_id)
-  references adverts_types(id) on delete cascade;
+  references adverts_types(id) on update cascade on delete cascade;
 

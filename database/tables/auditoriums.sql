@@ -20,7 +20,7 @@ CREATE TABLE auditoriums (
   #Optional lat_lon
   lat_lon DECIMAL(9,6) not null default 0,
   
-  #
+  #last_edit
   last_edit TIMESTAMP not null default current_timestamp on update current_timestamp
 	 
 ) engine=InnoDB default CHARSET=utf8;

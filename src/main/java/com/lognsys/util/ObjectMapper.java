@@ -31,6 +31,7 @@ import com.lognsys.model.UsersTable;
 public class ObjectMapper {
 
 	/**
+	 * Users Table Object requires fields to be mapped from Group and Users Object
 	 * 
 	 * @param users
 	 *            - the Users Object and group object is added to Users Tabled
@@ -60,6 +61,7 @@ public class ObjectMapper {
 
 	/**
 	 * 
+	 * Map POJO Users Object to Users DTO Object
 	 * @param users
 	 * @return
 	 */
@@ -187,8 +189,6 @@ public class ObjectMapper {
 
 	// mapToGroupsDTO
 	public static GroupsDTO mapToGroupsDTO(Groups groups) {
-
 		return new GroupsDTO(groups.getId(), groups.getGroup_name());
-
 	}
 }

@@ -160,9 +160,9 @@ public class UsersDTO {
 	public void setRealname(String firstname, String lastname) {
 
 		firstname = firstname != null ? firstname : "";
-		lastname = lastname != null ? firstname : "";
+		lastname = lastname != null ? lastname : "";
 
-		this.realname = firstname + lastname;
+		this.realname = firstname + " " + lastname;
 
 	}
 

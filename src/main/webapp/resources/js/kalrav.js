@@ -150,7 +150,7 @@ $(document)
 
                             success: function(data) {
 
-                                //get subelements from div('#register_user')
+                                //get subelements from div('#register_user') from register.jsp
                                 regUserElements = $(data).find("#register_user").html();
 
                                 //clear previous added html elements
@@ -158,6 +158,9 @@ $(document)
 
                                 //append html subelements
                                 $(regUserElements).appendTo("#editform");
+                                
+                                //disable username field
+                                $("#username").prop("readonly", true);
 
                                 dialog = $("#dialog-form").dialog({
                                     autoOpen: false,
@@ -191,8 +194,6 @@ $(document)
                                     }
                                     event.preventDefault();
 
-
-
                                 });
 
                                 /*** edit user dialog form validation *****/
@@ -202,15 +203,15 @@ $(document)
                                 emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
                                     fname = $("#firstname"),
                                     lname = $("#lastname"),
-                                    username = $("#username"),
+                                   // username = $("#username"),
                                     address = $("#address"),
                                     city = $("#city"),
                                     state = $("#state"),
                                     zipcode = $("#zipcode"),
                                     company_name = $("#company_name"),
                                     phone = $("#phone"),
-                                    allFields = $([]).add(fname).add(lname).add(username).add(address).
-                                add(city).add(state).add(zipcode).add(company_name).add(phone),
+                                    allFields = $([]).add(fname).add(lname).add(address).
+                                    add(city).add(state).add(zipcode).add(company_name).add(phone),
                                     tips = $(".validateTips");
 
                                 function updateTips(t) {
@@ -518,7 +519,7 @@ $(document)
                     event.preventDefault();
                 });
 
-// groupdetail to add subgroup on click of plus
+            // groupdetail to add subgroup on click of plus
             $('#myTable').on('click', 'input[type="button"]', function () {
                 $(this).closest('tr').remove();
             })
@@ -531,8 +532,7 @@ $(document)
                 function(event) {
                     window.location.href = "http://localhost:8080/groupedit";
                     event.preventDefault();
-                });
-*/
+                });*/
 
             // groupdetail edit function
             $('#edit_button').click(

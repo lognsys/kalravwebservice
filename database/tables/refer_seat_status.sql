@@ -4,4 +4,4 @@ CREATE TABLE IF NOT EXISTS `kalrav`.`refer_seat_status` (
   `seat_status_description` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `seat_status_code_UNIQUE` (`seat_status_code` ASC))
-ENGINE = InnoDB
+ENGINE = InnoDB default CHARSET=utf8;

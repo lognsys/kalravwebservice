@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS dramas_groups
 	last_edit timestamp not null default current_timestamp on update current_timestamp
 
 ) ENGINE =InnoDB default CHARSET=utf8;
+
 alter table  dramas_groups add index (dramas_id);
 alter table  dramas_groups add index (groups_id);
 alter table  dramas_groups add constraint constr_dramasid UNIQUE (dramas_id);

@@ -27,7 +27,7 @@ public class TestMongoUsersRepository {
 	public void testCreateUser() {
 		Users users = new Users();
 
-		users.setAuth_id("123456789");
+
 
 		users.setRealname("Priyank Doshi");
 
@@ -43,11 +43,7 @@ public class TestMongoUsersRepository {
 
 		users.setZipcode("400067");
 
-		users.setCompany_name("LognSystems");
-
 		users.setAddress("Kandivali West");
-
-		users.setLocation("Kandivali West Again...");
 
 		users.setProvenance("Web");
 

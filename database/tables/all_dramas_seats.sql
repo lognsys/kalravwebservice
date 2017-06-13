@@ -1,6 +1,9 @@
 drop table if exists all_dramas_seats;
 
 CREATE TABLE IF NOT EXISTS `kalrav`.`all_dramas_seats` (
+  # Surrogate Primary Key	
+	id integer auto_increment primary key,
+	
   `audi_id` INT NOT NULL,
   `row_seat_id` INT NOT NULL,
   `seat_number` VARCHAR(15) NOT NULL,
@@ -38,4 +41,4 @@ CREATE TABLE IF NOT EXISTS `kalrav`.`all_dramas_seats` (
     REFERENCES `kalrav`.`dramas` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
+ENGINE = InnoDB default CHARSET=utf8;

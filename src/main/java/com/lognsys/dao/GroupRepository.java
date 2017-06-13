@@ -5,7 +5,6 @@ import java.util.List;
 import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
-import com.lognsys.model.Groups;
 
 public interface GroupRepository {
 
@@ -16,6 +15,7 @@ public interface GroupRepository {
 	public List<UsersGroupsDTO> getUsersByGroup(String group_name);
 
 	public boolean addGroup(String group_id);
+
 	public int addGroup(GroupsDTO groupsDTO);
 
 	public int findIDBy(String groupname);
@@ -24,11 +24,11 @@ public interface GroupRepository {
 
 	/**
 	 * Check if group exists by title
+	 * 
 	 * @param group_name
 	 * @return
 	 */
 	public boolean isExists(String group_name);
-
 
 	public String findGroupByDramaId(int drama_id);
 
@@ -36,8 +36,6 @@ public interface GroupRepository {
 
 	public List<DramasGroupsDTO> getAllDramasAndGroup();
 
-	
-	
-
+	public boolean updateGroupOfUser(String userName, String group_name);
 
 }

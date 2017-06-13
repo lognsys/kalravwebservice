@@ -25,7 +25,6 @@ import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 import com.lognsys.util.CommonUtilities;
 import com.lognsys.util.Constants;
-import com.lognsys.util.FormValidator;
 import com.lognsys.util.ObjectMapper;
 import com.lognsys.util.WriteJSONToFile;
 
@@ -165,18 +164,27 @@ public class UserService {
 	 * 
 	 * @param user
 	 */
+	@Transactional
 	public void updateUser(Users users) {
 		boolean isUpdated = false;
 		try {
 
+			// Convert Users POJO to UsersDTO
 			UsersDTO u = ObjectMapper.mapToUsersDTO(users);
+
 			isUpdated = jdbcUserRepository.updateUser(u);
-			LOG.info("INFO: updation successful for user - " + users.getUsername());
+			isUpdated = jdbcGroupRepository.updateGroupOfUser(users.getUsername(), users.getGroup());
+			isUpdated = jdbcRolesRepository.updateRoleOfUser(users.getUsername(), users.getRole());
+
+			refreshUserList();
 
 		} catch (DataAccessException dae) {
 			LOG.error(dae.getMessage());
 			throw new IllegalStateException("Failed user update : status - " + isUpdated);
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
 		}
+
 	}
 
 	/**
@@ -231,13 +239,12 @@ public class UserService {
 
 			// //get Group information
 			String groupName = jdbcGroupRepository.findGroupBy(users.getId());
-			System.out.println("getUserWithRoleAndGroup users groupName " + groupName);
 			if (groupName != null) {
 				users.setGroup(groupName);
 			} else {
 				users.setGroup("None");
 			}
-			System.out.println("getUserWithRoleAndGroup groupName " + groupName);
+
 			listUsers.add(users);
 			return listUsers;
 		} catch (DataAccessException dae) {

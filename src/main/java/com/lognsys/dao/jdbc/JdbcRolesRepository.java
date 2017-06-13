@@ -6,6 +6,7 @@ import java.util.Properties;
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -51,6 +52,22 @@ public class JdbcRolesRepository implements RoleRepository {
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.ROLES_QUERIES.select_role_byuserid.name()), param,
 				String.class);
+	}
+	
+	
+	/**
+	 * Update user role
+	 * 
+	 * @param userName
+	 * @param roleName
+	 * @return
+	 */
+	public boolean updateRoleOfUser(String userName, String roleName) throws DataAccessException{
+		SqlParameterSource param = new MapSqlParameterSource().addValue("username", userName).addValue("role",
+				roleName);
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.ROLES_QUERIES.update_roles_byuser.name()),
+				param)==1;
+
 	}
 
 }

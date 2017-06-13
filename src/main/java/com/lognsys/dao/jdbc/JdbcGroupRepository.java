@@ -48,10 +48,10 @@ public class JdbcGroupRepository implements GroupRepository {
 	}
 
 	/**
-	 * Returns the group_name that the user is associated to the database
+	 * Returns the group_name for a particular user
 	 * 
 	 * @param user_id
-	 *            - this is the user_id passed to retrieve the group_name
+	 * 
 	 */
 	@Override
 	public String findGroupBy(int users_id) {
@@ -62,7 +62,9 @@ public class JdbcGroupRepository implements GroupRepository {
 	}
 
 	/**
+	 * Returns list of users for a particular group
 	 * 
+	 * @param group_name
 	 */
 	@Override
 	public List<UsersGroupsDTO> getUsersByGroup(String group_name) {
@@ -75,7 +77,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	}
 
 	/**
-	 * 
+	 * Returns all users of respective groups
 	 */
 	@Override
 	public List<UsersGroupsDTO> getAllUsersAndGroup() {
@@ -87,7 +89,9 @@ public class JdbcGroupRepository implements GroupRepository {
 	}
 
 	/**
+	 * Add new groups to the database.
 	 * 
+	 * @param group_name
 	 */
 	@Override
 	public boolean addGroup(String group_name) {
@@ -103,6 +107,11 @@ public class JdbcGroupRepository implements GroupRepository {
 		return 0;
 	}
 
+	/**
+	 * Returns Group of particular drama
+	 * 
+	 * @param drama_id
+	 */
 	@Override
 	public String findGroupByDramaId(int drama_id) {
 		SqlParameterSource param = new MapSqlParameterSource("drama_id", drama_id);
@@ -111,6 +120,10 @@ public class JdbcGroupRepository implements GroupRepository {
 				String.class);
 	}
 
+	/**
+	 * 
+	 * Returns all Dramas of particular group
+	 */
 	@Override
 	public List<DramasGroupsDTO> getDramasByGroup(String group_name) {
 
@@ -119,37 +132,52 @@ public class JdbcGroupRepository implements GroupRepository {
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_dramasbygroups.name()), param,
 				new DramaGroupsResultSetExtractor());
 
-	
 	}
 
+	/**
+	 * Returns all drama of a prticule group
+	 */
 	@Override
 	public List<DramasGroupsDTO> getAllDramasAndGroup() {
-		
+
 		return namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_dramasgroups_all.name()),
 				new DramaGroupsResultSetExtractor());
 	}
 
+	/**
+	 * Returns true if group_name exists
+	 * 
+	 * @param group_name
+	 */
 	@Override
 	public boolean isExists(String group_name) {
 
 		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
 		return namedParamJdbcTemplate.queryForObject(
-				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_groups_exists.name()), param, Integer.class) > 0;
+				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_groups_exists.name()), param,
+				Integer.class) > 0;
 
-	
 	}
 
+	/**
+	 * Add GroupsDTO Object into groups table
+	 * 
+	 * Returns Group_id
+	 * 
+	 * @param GroupsDTO
+	 */
 	@Override
 	public int addGroup(GroupsDTO groupsDTO) {
-		// TODO Auto-generated method stub
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(groupsDTO);
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
-		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_groups.name()),
-				params, keyHolder);
+		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_groups.name()), params,
+				keyHolder);
 		return keyHolder.getKey().intValue();
 	}
+
 	/**
+	 * Add all groups and its respective sub groups
 	 * 
 	 * @param drama_id
 	 * @param group
@@ -157,12 +185,39 @@ public class JdbcGroupRepository implements GroupRepository {
 	public void addGroupAndSubGroup(int group_id, String sub_group_name) {
 
 		try {
-			SqlParameterSource param = new MapSqlParameterSource().addValue("group_id", group_id).addValue("sub_group_name",
-					sub_group_name);
-			namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_subgroups_groups.name()),
-					param);
+			SqlParameterSource param = new MapSqlParameterSource().addValue("group_id", group_id)
+					.addValue("sub_group_name", sub_group_name);
+			namedParamJdbcTemplate
+					.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_subgroups_groups.name()), param);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * Update group of a user
+	 * 
+	 * @param userName
+	 * @param roleName
+	 * @return
+	 */
+	public boolean updateGroupOfUser(String userName, String group_name) {
+		SqlParameterSource param = new MapSqlParameterSource().addValue("username", userName).addValue("group_name",
+				group_name);
+		return namedParamJdbcTemplate
+				.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.update_group_byuser.name()), param) == 1;
+	}
+
+	/**
+	 * 
+	 * @param group_name
+	 * @return
+	 */
+	public List<String> getSubGroupsBy(String group_name) {
+		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
+		return namedParamJdbcTemplate.queryForList(
+				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_subgroup_bygroup.name()), param, String.class);
+
+	}
+
 }

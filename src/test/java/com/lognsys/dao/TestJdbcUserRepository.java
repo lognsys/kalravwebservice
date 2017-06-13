@@ -85,9 +85,9 @@ public class TestJdbcUserRepository {
 
 		Users users = new Users();
 
-		users.setAuth_id("123456789");
-
-		users.setRealname("Priyank Doshi");
+		users.setFirstname("Priyank");
+		users.setLastname("Doshi");
+		
 
 		users.setUsername("doshipriyank");
 
@@ -97,15 +97,9 @@ public class TestJdbcUserRepository {
 
 		users.setCity("Mumbai");
 
-		users.setDevice("ABXCS67868");
-
 		users.setZipcode("400067");
 
 		users.setAddress("Kandivali West");
-
-		users.setProvenance("Web");
-
-		users.setNotification(true);
 
 		userRepo.updateUser(ObjectMapper.mapToUsersDTO(users));
 		
