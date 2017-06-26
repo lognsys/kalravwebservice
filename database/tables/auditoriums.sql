@@ -18,7 +18,10 @@ CREATE TABLE auditoriums (
   address varchar(255) not null default '',
   
   #Optional lat_lon
-  lat_lon DECIMAL(9,6) not null default 0,
+  latitude DECIMAL(9,6) not null default 0,
+
+  #Optional lat_lon
+  longitude DECIMAL(9,6) not null default 0,
   
   #last_edit
   last_edit TIMESTAMP not null default current_timestamp on update current_timestamp

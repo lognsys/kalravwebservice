@@ -23,7 +23,7 @@ last_edit timestamp not null default current_timestamp on update current_timesta
 
 insert into roles (role)
 values
-('SUPER_USER')
+('SUPER_USER'),
 ('ADMIN'),
 ('GROUP_USER'),
 ('GUEST');

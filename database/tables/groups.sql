@@ -10,8 +10,12 @@ CREATE TABLE IF NOT EXISTS groups
    	id integer auto_increment primary key,
         
     #required group name 
-	group_name varchar(32) not null,
+	group_name varchar(32) not null default "",
 
+	is_subgroup tinyint(1) not null default 0,
+	
+	parent_id integer (1) not null default 0,
+	
 	last_edit timestamp not null default current_timestamp on update current_timestamp,
 	
 	UNIQUE(group_name)
