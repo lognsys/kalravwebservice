@@ -1,21 +1,31 @@
 package com.lognsys.dao.dto;
 
+/**
+ * 
+ * @author pdoshi
+ * 
+ * Descriptions : AuditoriumsDTO fields are mapped with MySQL attributes 
+ * in database fields.
+ * 
+ */
 public class AuditoriumsDTO {
 
 	private int id;
 	private String auditorium_name;
 	private String address;
+	private String latitude;
+	private String longitude;
 	private String last_edit;
-	
+
 	public AuditoriumsDTO() {
 	}
 
-	public AuditoriumsDTO(int id, String auditorium_name,String address,String last_edit) {
+	public AuditoriumsDTO(String auditorium_name, String address, String latitude, String longitude) {
 		super();
-		this.id = id;
 		this.auditorium_name = auditorium_name;
 		this.address = address;
-		this.last_edit = last_edit;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 	public int getId() {
@@ -46,10 +56,24 @@ public class AuditoriumsDTO {
 		return last_edit;
 	}
 
+	public String getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
+	}
+
 	public void setLast_edit(String last_edit) {
 		this.last_edit = last_edit;
 	}
-
-
 
 }

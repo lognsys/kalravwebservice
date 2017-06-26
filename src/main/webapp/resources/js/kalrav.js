@@ -159,7 +159,7 @@ $(document)
                                 //append html subelements
                                 $(regUserElements).appendTo("#editform");
                                 
-                                //disable username field
+                                //mark username field as read-only
                                 $("#username").prop("readonly", true);
 
                                 dialog = $("#dialog-form").dialog({

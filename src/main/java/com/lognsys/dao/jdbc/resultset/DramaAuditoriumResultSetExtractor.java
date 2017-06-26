@@ -32,8 +32,7 @@ public class DramaAuditoriumResultSetExtractor implements ResultSetExtractor<Lis
 			DramasAuditoriumsDTO da = new DramasAuditoriumsDTO();
 
 			// Union of UsersDTO and Groups object
-			DramasDTO d = new DramasDTO(
-					rs.getInt(Constants.DRAMA_FIELD_NAMES.dramasId.name()),
+			DramasDTO d = new DramasDTO(rs.getInt(Constants.DRAMA_FIELD_NAMES.dramasId.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.imageurl.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.title.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.drama_length.name()),
@@ -45,13 +44,13 @@ public class DramaAuditoriumResultSetExtractor implements ResultSetExtractor<Lis
 					rs.getString(Constants.DRAMA_FIELD_NAMES.writer.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.music.name()),
 					rs.getString(Constants.DRAMA_FIELD_NAMES.avg_rating.name()),
-			rs.getString(Constants.DRAMA_FIELD_NAMES.dramas_language.name()));
+					rs.getString(Constants.DRAMA_FIELD_NAMES.dramas_language.name()));
 
 			AuditoriumsDTO auditoriums = new AuditoriumsDTO(
-					rs.getInt(Constants.AUDITORIUMS_FIELDNAME.auditoriumsId.name()),
 					rs.getString(Constants.AUDITORIUMS_FIELDNAME.auditorium_name.name()),
 					rs.getString(Constants.AUDITORIUMS_FIELDNAME.address.name()),
-					rs.getString(Constants.AUDITORIUMS_FIELDNAME.lat_lon.name()));
+					rs.getString(Constants.AUDITORIUMS_FIELDNAME.latitude.name()),
+					rs.getString(Constants.AUDITORIUMS_FIELDNAME.longitude.name()));
 
 			// users & groups
 			da.setDrama(d);

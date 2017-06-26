@@ -1,0 +1,1 @@
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) VALUES (1, 'Z', 1, 2);

@@ -3,7 +3,7 @@ package com.lognsys.dao.jdbc;
 import java.util.List;
 import java.util.Properties;
 import javax.annotation.Resource;
-import org.jboss.logging.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;

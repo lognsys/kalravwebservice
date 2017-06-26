@@ -4,12 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-
-import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
-
 import com.google.gson.Gson;
-import com.lognsys.model.Users;
 
 public class CommonUtilities {
 
@@ -36,7 +31,13 @@ public class CommonUtilities {
 	}
 
 	/**
-	 * Splits the String by Delimiter
+	 * Splits the String by Delimiter.
+	 * 
+	 * Assumption: String has 2 values
+	 * 
+	 * Description: if String > 2 values. Concatenate 1 to n-1
+	 * 
+	 * Result String[] of size 2
 	 * 
 	 * Test Cases: 1) "Priyank Doshi" 2) "Priyank " 3) "" 4) null
 	 * 
@@ -48,6 +49,25 @@ public class CommonUtilities {
 
 		if (str != null) {
 			String[] vals = str.trim().split(delimeter);
+
+			if (vals.length > 2) {
+				String[] fixVal = new String[2];
+				StringBuilder builder = new StringBuilder();
+
+				int counter = 0;
+				for (String val : vals) {
+
+					if (vals.length - 1 == counter) {
+						fixVal[0] = builder.toString().trim();
+						fixVal[1] = val;
+						return fixVal;
+					} else {
+						builder.append(val);
+						builder.append(delimeter);
+					}
+					counter++;
+				}
+			}
 
 			return vals;
 		}
@@ -65,11 +85,11 @@ public class CommonUtilities {
 
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 		Matcher matcher = pattern.matcher(email);
-		
+
 		if (matcher.matches()) {
 			isValid = true;
 		}
-		
+
 		return isValid;
 	}
 

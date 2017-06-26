@@ -72,15 +72,12 @@ public class RestUserController {
 	@RequestMapping(value = "/getsingleuser/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Users> getUser(@PathVariable("id") int id) {
 		System.out.println("Fetching User with id " + id);
-		List<Users> users = userService.getUserWithRoleAndGroup(id);
+		Users users = userService.getUserWithRoleAndGroup(id);
 		if (users == null) {
 			System.out.println("User with id " + id + " not found");
 			return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
 		}
-		for (Users user : users) {
-			return new ResponseEntity<Users>(user, HttpStatus.OK);
-		}
-		return null;
+			return new ResponseEntity<Users>(users, HttpStatus.OK);
 	}
 
 	/**
@@ -146,26 +143,11 @@ public class RestUserController {
 	public ResponseEntity<Users> updateUser(@PathVariable("id") int id, @RequestBody Users user) {
 		System.out.println("Updating User " + id);
 
-		// Users currentUser = userService.getUserWithRoleAndGroup(id);
-		List<Users> currentUsers = userService.getUserWithRoleAndGroup(id);
+			userService.updateUser(user);
+			return new ResponseEntity<Users>(user, HttpStatus.OK);
+		
 
-		if (currentUsers == null) {
-			System.out.println("User with id " + id + " not found");
-			return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
-		}
-		System.out.println("Updating User user.getCity()" + user.getCity());
-
-		Users obj = new Users(id, user.getAuth_id(), user.getUsername(), user.getRealname(), user.getPhone(),
-				user.getProvenance(), user.getBirthdate(), true, true, user.getDevice(), user.getAddress(),
-				user.getCity(), user.getState(), user.getZipcode(), user.getFirstname(), user.getLastname(),
-				user.getGroup(), user.getRole());
-		currentUsers.add(obj);
-		for (Users u : currentUsers) {
-			userService.updateUser(u);
-			return new ResponseEntity<Users>(u, HttpStatus.OK);
-		}
-
-		return null;
+	
 	}
 
 	/**
@@ -179,16 +161,14 @@ public class RestUserController {
 	public ResponseEntity<Users> deleteUser(@PathVariable("id") int id) {
 		System.out.println("Fetching & Deleting User with id " + id);
 
-		List<Users> user = userService.getUserWithRoleAndGroup(id);
+		Users user = userService.getUserWithRoleAndGroup(id);
 
 		if (user == null) {
 			System.out.println("Unable to delete. User with id " + id + " not found");
 			return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
 		} else {
-			int[] ids = new int[user.size()];
-			for (int i = 0; i < user.size(); i++) {
-				ids[i] = user.get(i).getId();
-			}
+			int[] ids = new int[1];
+			ids[0] = user.getId();
 			userService.deleteUsers(ids);
 		}
 		return new ResponseEntity<Users>(HttpStatus.NO_CONTENT);

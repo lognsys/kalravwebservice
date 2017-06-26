@@ -1,7 +1,6 @@
 package com.lognsys.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import org.apache.log4j.Logger;
@@ -165,13 +164,14 @@ public class UserService {
 	 * @param user
 	 */
 	@Transactional
-	public void updateUser(Users users) {
+	public boolean updateUser(Users users) {
 		boolean isUpdated = false;
 		try {
 
 			// Convert Users POJO to UsersDTO
 			UsersDTO u = ObjectMapper.mapToUsersDTO(users);
 
+			//TODO add exception
 			isUpdated = jdbcUserRepository.updateUser(u);
 			isUpdated = jdbcGroupRepository.updateGroupOfUser(users.getUsername(), users.getGroup());
 			isUpdated = jdbcRolesRepository.updateRoleOfUser(users.getUsername(), users.getRole());
@@ -184,6 +184,7 @@ public class UserService {
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
+		return isUpdated;
 
 	}
 
@@ -221,11 +222,10 @@ public class UserService {
 	 * @return
 	 */
 	@Transactional
-	public List<Users> getUserWithRoleAndGroup(int userId) {
+	public Users getUserWithRoleAndGroup(int userId) {
 
 		try {
-			List<Users> listUsers = new ArrayList<Users>();
-
+			
 			// get Users information from user table
 			Users users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(userId));
 
@@ -245,8 +245,8 @@ public class UserService {
 				users.setGroup("None");
 			}
 
-			listUsers.add(users);
-			return listUsers;
+		
+			return users;
 		} catch (DataAccessException dae) {
 			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
 			// LOG.error(dae.getMessage());

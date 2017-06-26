@@ -2,7 +2,6 @@ package com.lognsys.dao;
 
 import java.util.List;
 import com.lognsys.dao.dto.UsersDTO;
-import com.lognsys.model.Users;
 
 public interface UserRespository {
 

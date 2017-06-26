@@ -1,7 +1,5 @@
 package com.lognsys.model;
 
-import java.sql.Date;
-
 /**
  * Drama POJO as value object for retrieving values from form
  * 

@@ -106,8 +106,8 @@ public class BaseController {
 	 */
 	@RequestMapping(value = { "/edituser" }, method = RequestMethod.POST)
 	public String editUsers(@ModelAttribute("editUser") Users users) {
-		
-		System.out.println("User-Service : "+users.toString());
+
+		System.out.println("User-Service : " + users.toString());
 		userService.updateUser(users);
 		return "userlist";
 	}
@@ -117,7 +117,7 @@ public class BaseController {
 	 * @param model
 	 * @param request
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@RequestMapping(value = "/userlist", method = RequestMethod.GET)
 	public String showUsers(Model model, HttpServletRequest request) throws IOException {
@@ -176,8 +176,8 @@ public class BaseController {
 					id = jsonObject.get("id").toString();
 				}
 
-				List<Users> newUsers = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
-				
+				Users users = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
+
 				// CALL database to get roles & groups
 				List<RolesDTO> listOfRolesDTO = userService.getAllRoles();
 				List<GroupsDTO> listOfGroupsDTO = userService.getAllGroups();
@@ -193,13 +193,14 @@ public class BaseController {
 				for (GroupsDTO group : listOfGroupsDTO) {
 					groupsList.add(group.getGroup_name());
 				}
-		
+
 				model.addAttribute("rolesList", rolesList);
 				model.addAttribute("groupsList", groupsList);
-				for(Users users:newUsers){
-					model.addAttribute("users", users);
-						
-				}
+
+				model.addAttribute("users", users);
+				
+				System.out.println("Edit Users - "+users);
+
 				return "register";
 			} catch (ParseException e) {
 				e.printStackTrace();

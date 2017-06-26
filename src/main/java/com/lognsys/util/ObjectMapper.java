@@ -100,7 +100,7 @@ public class ObjectMapper {
 		// TODO: Current setting of group to null, but need to change to value
 
 		String[] splited = null;
-		String firstname = null, lastname = null;
+		String firstname = "", lastname = "";
 
 		splited = CommonUtilities.splitByDelemeter(users.getRealname(), " ");
 

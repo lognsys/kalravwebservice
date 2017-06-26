@@ -32,8 +32,7 @@ public class Constants {
 	 */
 	public enum GROUP_QUERIES {
 
-		insert_user_groups, insert_groups, insert_dramas_groups, insert_drama_auditoriums, select_groups_all, insert_subgroups_groups, select_groupname_byuserid, select_id_bygroupname, select_usersbygroups, select_usersgroups_all, select_groupname_bydramaid, select_dramasbygroups, select_dramasgroups_all, select_groups_exists,
-		update_group_byuser, select_subgroup_bygroup
+		insert_user_groups, insert_groups, insert_dramas_groups, insert_drama_auditoriums, select_groups_all, insert_subgroups_groups, select_groupname_byuserid, select_id_bygroupname, select_usersbygroups, select_usersgroups_all, select_groupname_bydramaid, select_dramasbygroups, select_dramasgroups_all, select_groups_exists, update_group_byuser, select_subgroup_bygroup
 
 	}
 
@@ -69,7 +68,7 @@ public class Constants {
 	}
 
 	public enum AUDITORIUMS_FIELDNAME {
-		auditoriumsId, auditorium_name, address, lat_lon
+		auditoriumsId, auditorium_name, address, latitude, longitude
 	}
 
 	// REST URL constants
@@ -95,4 +94,5 @@ public class Constants {
 	public enum DEFAULT_SUBGROUP {
 		None
 	}
+
 }

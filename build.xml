@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="kalrav" basedir="." default="jar">
+
+	<!-- default properties -->
+	<property file="build.properties" />
+
+	<property name="jar.file" value="${dir.jar}/${ant.project.name}.jar" />
+
+	<!-- displays build.properties -->
+	<target name="properties" description="Show custom properties">
+		<echoproperties prefix="dir." />
+		<echoproperties prefix="app." />
+	</target>
+
+	<target name="help" description="Print usage/help message">
+		<echo>
+	            ant help : Print this message
+	            ant properties : Show custom properties (dir, app)
+	            ant clean : Delete build and distribution
+	            ant compile : Compile Java source
+	            ant jar : Generate jar file with manifest (default)
+			
+	        </echo>
+	</target>
+	<path id="libraries.classpath">
+		<fileset dir="${dir.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<target name="compile">
+		<mkdir dir="${dir.build}" />
+		<javac debug="true" destdir="${dir.build}" includeantruntime="false">
+			<src path="${dir.src}" />
+			<include name="com/lognsys/loader/**" />
+			<include name="com/lognsys/dao/dto/**" />
+			<classpath refid="libraries.classpath" />
+		</javac>
+	
+		<copy todir="${dir.build}">
+			<fileset dir="${dir.resources}">
+				<exclude name="*META-INF/*"/>
+				<include name="**/*.properties"/>
+				<include name="*-context.xml"/>
+				<include name="*files/*"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="jar" depends="compile" description="Generate jar file with manifest">
+		
+		<pathconvert property="manifest.classpath" pathsep=" ">
+		  <path refid="libraries.classpath"/>
+		  <mapper>
+		    <chainedmapper>
+		       <flattenmapper/>
+		       <globmapper from="*.jar" to="lib/*.jar"/>
+		    </chainedmapper>
+		  </mapper>
+		</pathconvert>
+
+		<tstamp>
+			<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+		</tstamp>
+		<jar destfile="${ant.project.name}.jar" basedir="${dir.build}">
+
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Implementation-Version" value="${version.num}" />
+				<attribute name="Implementation-Vendor" value="Lognsys" />
+				<attribute name="Built-Date" value="${TODAY}" />
+				<attribute name="Main-Class" value="${main-class}" />
+				<attribute name="Class-Path" value="${manifest.classpath}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="clean">
+		<delete dir="${dir.build}" />
+		<delete file="${ant.project.name}.jar" />
+	</target>
+</project>
+
