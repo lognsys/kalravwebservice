@@ -33,7 +33,6 @@ public class RestUserController {
 	@Autowired
 	UserService userService;
 
-
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
 
@@ -45,7 +44,6 @@ public class RestUserController {
 	@Qualifier("applicationProperties")
 	private Properties applicationProperties;
 
-	
 	/**
 	 * 
 	 * @return
@@ -77,7 +75,7 @@ public class RestUserController {
 			System.out.println("User with id " + id + " not found");
 			return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
 		}
-			return new ResponseEntity<Users>(users, HttpStatus.OK);
+		return new ResponseEntity<Users>(users, HttpStatus.OK);
 	}
 
 	/**
@@ -143,11 +141,9 @@ public class RestUserController {
 	public ResponseEntity<Users> updateUser(@PathVariable("id") int id, @RequestBody Users user) {
 		System.out.println("Updating User " + id);
 
-			userService.updateUser(user);
-			return new ResponseEntity<Users>(user, HttpStatus.OK);
-		
+		userService.updateUser(user);
+		return new ResponseEntity<Users>(user, HttpStatus.OK);
 
-	
 	}
 
 	/**
@@ -181,19 +177,17 @@ public class RestUserController {
 	 * @throws JsonProcessingException
 	 */
 	@RequestMapping(value = "/getUser/{username:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getsingleuserbyusername(@PathVariable String username) throws JsonProcessingException {
+	public ResponseEntity<?> getSingleUserBy(@PathVariable String username) throws JsonProcessingException {
 		Users user = null;
 
-		
 		try {
-			user = userService.getUserByUsername(username);
+			user = userService.getUserWithRoleAndGroup(username);
 		} catch (UserDataAccessException ue) {
 
 			// check if user is null
 			if (ue.getMessage()
 					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()))) {
-			
-				
+
 				return new ResponseEntity<String>(
 						applicationProperties.getProperty(Constants.REST_MSGS.response_userempty.name()),
 						HttpStatus.NOT_FOUND);
@@ -207,7 +201,7 @@ public class RestUserController {
 			}
 
 		}
-		
+
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
 
 	}

@@ -171,7 +171,7 @@ public class UserService {
 			// Convert Users POJO to UsersDTO
 			UsersDTO u = ObjectMapper.mapToUsersDTO(users);
 
-			//TODO add exception
+			// TODO add exception
 			isUpdated = jdbcUserRepository.updateUser(u);
 			isUpdated = jdbcGroupRepository.updateGroupOfUser(users.getUsername(), users.getGroup());
 			isUpdated = jdbcRolesRepository.updateRoleOfUser(users.getUsername(), users.getRole());
@@ -222,12 +222,17 @@ public class UserService {
 	 * @return
 	 */
 	@Transactional
-	public Users getUserWithRoleAndGroup(int userId) {
+	public Users getUserWithRoleAndGroup(String username) {
 
+		Users users = null;
+		
+		
 		try {
+
+		
 			
 			// get Users information from user table
-			Users users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(userId));
+			users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
 
 			// get Role information with role table
 			String role = jdbcRolesRepository.getRoleBy(users.getId());
@@ -245,15 +250,60 @@ public class UserService {
 				users.setGroup("None");
 			}
 
-		
 			return users;
+
 		} catch (DataAccessException dae) {
 			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
 			// LOG.error(dae.getMessage());
 			// throw new IllegalAccessError("Failed to get user from database
 			// with ID - " + userId);
+			return users;
 		}
-		return null;
+	}
+	/**
+	 * This is the service layer with users and its role and Group
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	@Transactional
+	public Users getUserWithRoleAndGroup(int id) {
+		
+		Users users = null;
+		
+		
+		try {
+			
+			
+			
+			// get Users information from user table
+			users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(id));
+			
+			// get Role information with role table
+			String role = jdbcRolesRepository.getRoleBy(users.getId());
+			if (role != null) {
+				users.setRole(role);
+			} else {
+				users.setRole("User");
+			}
+			
+			// //get Group information
+			String groupName = jdbcGroupRepository.findGroupBy(users.getId());
+			if (groupName != null) {
+				users.setGroup(groupName);
+			} else {
+				users.setGroup("None");
+			}
+			
+			return users;
+			
+		} catch (DataAccessException dae) {
+			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
+			// LOG.error(dae.getMessage());
+			// throw new IllegalAccessError("Failed to get user from database
+			// with ID - " + userId);
+			return users;
+		}
 	}
 
 	/**
