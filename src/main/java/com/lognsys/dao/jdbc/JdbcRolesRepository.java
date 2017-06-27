@@ -47,7 +47,7 @@ public class JdbcRolesRepository implements RoleRepository {
 	 * @param user_id
 	 */
 	@Override
-	public String getRoleBy(int users_id) {
+	public String getRoleBy(int users_id) throws DataAccessException {
 		SqlParameterSource param = new MapSqlParameterSource("users_id", users_id);
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.ROLES_QUERIES.select_role_byuserid.name()), param,

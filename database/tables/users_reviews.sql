@@ -28,6 +28,6 @@ CREATE TABLE IF NOT EXISTS users_reviews
   last_edit timestamp not null default current_timestamp on update current_timestamp
   
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-create index ratings_drama_id_idx on ratings(drama_id);
+create index ratings_drama_id_idxxx on ratings(dramas_id);
 create index ratings_rating_date_idx on ratings(rating_date);
 

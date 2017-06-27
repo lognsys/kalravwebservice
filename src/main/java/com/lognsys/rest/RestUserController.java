@@ -50,7 +50,12 @@ public class RestUserController {
 	 */
 	@RequestMapping(value = "/getallusers/", method = RequestMethod.GET)
 	public ResponseEntity<List<UsersTable>> listAllUsers() {
+		System.out.println("Fetching listAllUsers " );
+		
 		List<UsersTable> users = ObjectMapper.mapToUserTable(jdbcGroupRepository.getAllUsersAndGroup());
+		System.out.println("Fetching listAllUsers users " +users);
+		
+		
 		if (users.isEmpty()) {
 			return new ResponseEntity<List<UsersTable>>(HttpStatus.NO_CONTENT);// You
 																				// many
@@ -183,7 +188,7 @@ public class RestUserController {
 		try {
 			user = userService.getUserWithRoleAndGroup(username);
 		} catch (UserDataAccessException ue) {
-
+			System.out.println("UserDataAccessException  ue  "+ue);
 			// check if user is null
 			if (ue.getMessage()
 					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()))) {

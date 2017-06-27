@@ -227,13 +227,13 @@ public class UserService {
 		Users users = null;
 		
 		
-		try {
+//		try {
 
 		
 			
 			// get Users information from user table
 			users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
-
+		
 			// get Role information with role table
 			String role = jdbcRolesRepository.getRoleBy(users.getId());
 			if (role != null) {
@@ -251,14 +251,14 @@ public class UserService {
 			}
 
 			return users;
-
+/*
 		} catch (DataAccessException dae) {
 			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
 			// LOG.error(dae.getMessage());
 			// throw new IllegalAccessError("Failed to get user from database
 			// with ID - " + userId);
 			return users;
-		}
+		}*/
 	}
 	/**
 	 * This is the service layer with users and its role and Group

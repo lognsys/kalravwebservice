@@ -65,5 +65,15 @@ public class TestUserService {
 		users.setBirthdate(currentTime);
 		userService.addUser(users);
 	}
+	
+	@Test
+	public void testUserService(){
+		String username = "lognsystems@gmail.com";
+		
+		Users user = userService.getUserWithRoleAndGroup(username);
+		System.out.println("Users - "+user);
+		
+		
+	}
 
 }
