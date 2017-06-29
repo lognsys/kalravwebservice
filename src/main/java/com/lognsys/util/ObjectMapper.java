@@ -20,11 +20,13 @@ import com.lognsys.dao.dto.DramasAuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.GroupsDTO;
+import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
 import com.lognsys.model.Drama;
 import com.lognsys.model.DramasTable;
 import com.lognsys.model.Groups;
+import com.lognsys.model.Ratings;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 
@@ -191,4 +193,18 @@ public class ObjectMapper {
 	public static GroupsDTO mapToGroupsDTO(Groups groups) {
 		return new GroupsDTO(groups.getId(), groups.getGroup_name());
 	}
+	
+	
+	/**
+	 * 
+	 * @param ratings
+	 * @return
+	 */
+	public static RatingsDTO mapToRatingsDTO(Ratings ratings) {
+	
+		return new RatingsDTO(ratings.getId(), ratings.getRating(), ratings.getRating_date(), ratings.getDramas_id(),
+				ratings.getUsers_id());
+
+	}
+
 }

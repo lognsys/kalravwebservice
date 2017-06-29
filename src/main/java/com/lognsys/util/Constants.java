@@ -35,6 +35,11 @@ public class Constants {
 		insert_user_groups, insert_groups, insert_dramas_groups, insert_drama_auditoriums, select_groups_all, insert_subgroups_groups, select_groupname_byuserid, select_id_bygroupname, select_usersbygroups, select_usersgroups_all, select_groupname_bydramaid, select_dramasbygroups, select_dramasgroups_all, select_groups_exists, update_group_byuser, select_subgroup_bygroup
 
 	}
+	
+	public enum RATING_QUERIES {
+		insert_ratings, select_dramas, delete_dramas, select_ratings_exists, select_dramas_id, delete_dramas_title, select_dramas_title, update_dramas
+	}
+
 
 	/**
 	 * enum contains keys of json files and their directory path defined in

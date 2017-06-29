@@ -17,5 +17,8 @@ public interface AuditoriumRepository {
 	public int findIDBy(String auditoriumname);
 
 	public List<DramasAuditoriumsDTO> getAllDramasAndAuditorium();
+	
+	
+//	public List<DramasAuditoriumsDTO> getAllDramasAndAuditorium();
 
 }

@@ -31,3 +31,5 @@ CREATE TABLE IF NOT EXISTS ratings
 create index ratings_dramas_id_idx on ratings(dramas_id);
 create index ratings_rating_date_idx on ratings(rating_date);
 
+ALTER TABLE `kalrav`.`ratings` 
+CHANGE COLUMN `rating` `rating` DOUBLE NOT NULL DEFAULT '0' ;

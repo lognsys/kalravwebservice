@@ -1,30 +1,35 @@
-package com.lognsys.model;
+package com.lognsys.dao.dto;
 
 /**
  * 
  * @author pdoshi
- *
+ * 
+ * Descriptions : RatingsDTO fields are mapped with MySQL attributes 
+ * in database fields.
+ * 
  */
-public class Ratings {
+public class RatingsDTO {
 
 	private int id;
 	private double rating;
 	private String rating_date;
 	private int dramas_id;
 	private int users_id;
+	private String last_edit;
 	
 	
 	
-	public Ratings(int id2, double rating, String rating_date2, int users_id2, int dramas_id2) {
+	public RatingsDTO() {
+		super();
+	}
+
+	public RatingsDTO(int id, double rating, String rating_date, int dramas_id, int users_id) {
+		super();
 		this.id = id;
 		this.rating = rating;
 		this.rating_date = rating_date;
 		this.dramas_id = dramas_id;
 		this.users_id = users_id;
-	}
-
-	public Ratings() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getRating_date() {
@@ -66,13 +71,4 @@ public class Ratings {
 	public void setRating(double rating) {
 		this.rating = rating;
 	}
-
-	@Override
-	public String toString() {
-		return "Ratings [id=" + id + ", rating=" + rating + ", rating_date=" + rating_date + ", dramas_id=" + dramas_id
-				+ ", users_id=" + users_id + "]";
 	}
-
-	
-	
-}

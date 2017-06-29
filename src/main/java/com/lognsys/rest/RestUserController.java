@@ -160,8 +160,7 @@ public class RestUserController {
 	 */
 	@RequestMapping(value = "/deleteuser/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Users> deleteUser(@PathVariable("id") int id) {
-		System.out.println("Fetching & Deleting User with id " + id);
-
+		
 		Users user = userService.getUserWithRoleAndGroup(id);
 
 		if (user == null) {

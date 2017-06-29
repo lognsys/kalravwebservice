@@ -16,14 +16,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.GroupsDTO;
+import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcAuditoriumRepository;
 import com.lognsys.dao.jdbc.JdbcDramaRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
+import com.lognsys.dao.jdbc.JdbcRatingsRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.model.Drama;
 import com.lognsys.model.DramasTable;
+import com.lognsys.model.Ratings;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 import com.lognsys.util.CommonUtilities;
@@ -38,6 +41,9 @@ public class DramaService {
 
 	@Autowired
 	private JdbcDramaRepository jdbcDramaRepository;
+	
+	@Autowired
+	private JdbcRatingsRepository jdbcRatingsRepository;
 
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
@@ -234,13 +240,11 @@ public class DramaService {
 	public DramasDTO findByDrama(int id) {
 
 		try {
-			System.out.println("manageDrama findByDrama id "+id);
 			
 			return jdbcDramaRepository.findDramaById(id);
-		} catch (DataAccessException dae) {
-			System.out.println("manageDrama findByDrama DataAccessException ===== "+dae);
-			
-			throw new IllegalAccessError("Failed to get drama from database with ID - " + id);
+		} catch (Exception dae) {
+			return jdbcDramaRepository.findDramaById(id);
+//			throw new IllegalAccessError("Failed to get drama from database with ID - " + id);
 		}
 		
 
@@ -307,4 +311,7 @@ public class DramaService {
 		}
 		return dramaList;
 	}
+	
+
+	
 }
