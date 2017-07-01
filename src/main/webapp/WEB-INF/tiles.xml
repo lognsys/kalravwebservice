@@ -69,4 +69,15 @@
 		<put-attribute name="body" value="/WEB-INF/pages/groupedit.jsp" />
 		<put-attribute name="footer" value="" />
 	</definition>
+	<definition name="notificationlist" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: NotificationList" />
+		<put-attribute name="body" value="/WEB-INF/pages/notificationlist.jsp" />
+		<put-attribute name="footer" value="" />
+	</definition>
+	
+	<definition name="sendnotification" extends="base_layout">
+		<put-attribute name="title" value="Kalrav: Notification" />
+		<put-attribute name="body" value="/WEB-INF/pages/sendnotification.jsp" />
+		<put-attribute name="footer" value="" />
+	</definition>
 </tiles-definitions>

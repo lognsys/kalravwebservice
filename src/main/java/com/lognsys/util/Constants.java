@@ -17,11 +17,15 @@ public class Constants {
 	}
 
 	public enum DRAMA_QUERIES {
-		insert_dramas, select_dramas, delete_dramas, select_dramas_exists, select_dramas_id, delete_dramas_title, select_dramas_title, update_dramas
+		insert_dramas, select_dramas,select_all_dramas, delete_dramas, select_dramas_exists, select_dramas_id, delete_dramas_title, select_dramas_title, update_dramas
 	}
 
 	public enum AUDITORIUM_QUERIES {
 		insert_auditoriums, select_auditoriums, insert_dramas_auditoriums, select_auditorium_name_bydramaid, select_dramabyauditorium, select_dramasauditoriums_all
+	}	
+	
+	public enum NOTIFICATION_QUERIES {
+		insert_notification,select_notification,delete_notification,select_notification_message
 	}
 
 	/**
@@ -48,7 +52,7 @@ public class Constants {
 	 * Note: All the files should be specified in application.properties.
 	 */
 	public enum JSON_FILES {
-		user_filename, drama_filename, adverts_filename, booking_filename,
+		user_filename, drama_filename, adverts_filename, booking_filename,notification_filename
 	}
 
 	/**

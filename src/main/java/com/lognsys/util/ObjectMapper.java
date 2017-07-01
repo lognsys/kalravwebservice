@@ -20,12 +20,15 @@ import com.lognsys.dao.dto.DramasAuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.GroupsDTO;
+import com.lognsys.dao.dto.NotificationsDTO;
 import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
 import com.lognsys.model.Drama;
 import com.lognsys.model.DramasTable;
 import com.lognsys.model.Groups;
+import com.lognsys.model.Notifications;
+import com.lognsys.model.NotificationsTable;
 import com.lognsys.model.Ratings;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
@@ -206,5 +209,35 @@ public class ObjectMapper {
 				ratings.getUsers_id());
 
 	}
+	/**
+	 * 
+	 * @param notification
+	 * @return
+	 */
+	public static NotificationsDTO mapToNotificationsDTO(Notifications notifications) {
+		NotificationsDTO notificationsDTO=new NotificationsDTO();
+		notificationsDTO.setId(notifications.getId());
+		notificationsDTO.setNotify(notifications.isNotify());
+		notificationsDTO.setMessage(notifications.getMessage());
+		return notificationsDTO;
 
+	}
+	public static List<NotificationsTable> mapToNotificationsDTO(List<NotificationsDTO> notificationsDTOs) {
+		
+		List<NotificationsTable> list = new ArrayList<>();
+		for (NotificationsDTO ndto : notificationsDTOs) {
+			list.add(new NotificationsTable((ndto).getId(), (ndto).isNotify(),
+					(ndto).getMessage()));
+		}
+		return list;
+		
+	}
+
+	public static Notifications mapToNotifications(NotificationsDTO notificationsDTO) {
+		
+		Notifications newNotifications = new Notifications(notificationsDTO.getId(), notificationsDTO.isNotify(),notificationsDTO.getMessage());
+
+				return newNotifications;
+
+	}
 }

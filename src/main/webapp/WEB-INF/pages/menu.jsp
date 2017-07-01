@@ -36,6 +36,11 @@
 						xlink:href="#stroked-app-window-with-content"></use></svg> Ticket
 				Booking
 		</a></li>
+			<li><a href="${pageContext.request.contextPath}/notificationlist"> <svg
+					class="glyph stroked app window with content">
+					<use xmlns:xlink="http://www.w3.org/1999/xlink"
+						xlink:href="#stroked-app-window-with-content"></use></svg> Send Notification
+		</a></li>
 		<li><a href="${pageContext.request.contextPath}/userlist"> <svg
 					class="glyph stroked gear">
 			<use xmlns:xlink="http://www.w3.org/1999/xlink"

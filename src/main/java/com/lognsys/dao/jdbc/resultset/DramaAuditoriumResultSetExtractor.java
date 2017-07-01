@@ -24,6 +24,9 @@ import com.lognsys.util.Constants;
  */
 public class DramaAuditoriumResultSetExtractor implements ResultSetExtractor<List<DramasAuditoriumsDTO>> {
 
+	
+	
+	
 	@Override
 	public List<DramasAuditoriumsDTO> extractData(ResultSet rs) throws SQLException, DataAccessException {
 

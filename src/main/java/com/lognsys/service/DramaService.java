@@ -202,20 +202,21 @@ public class DramaService {
 	 */
 	public List<DramasDTO> getDramas() {
 
-		LOG.info("#getDramas - Get All Dramas from database");
+//		LOG.info("#getDramas - Get All Dramas from database");
 		List<DramasDTO> dramaList;
 
 		try {
 			dramaList = jdbcDramaRepository.getAllDramas();
+			System.out.println("showDramas --> getDramas dramaList  "+dramaList);
+			System.out.println("showDramas --> getDramas dramaList  size "+dramaList.size());
 			
 			ResourceLoader resourceLoader = new FileSystemResourceLoader();
 			Resource resource = resourceLoader
 					.getResource(applicationProperties.getProperty(Constants.JSON_FILES.drama_filename.name()));
 			String list = CommonUtilities.convertToJSON(dramaList);
-//			System.out.println("showDramas --> getDramas list  "+list);
+			System.out.println("showDramas --> getDramas list  "+list);
 			
 			try {
-				System.out.println("showDramas --> getDramas WriteJSONToFile  ");
 				
 				WriteJSONToFile.getInstance().write(resource, list);
 			} catch (IOException e) {

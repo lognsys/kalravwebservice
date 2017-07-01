@@ -33,7 +33,12 @@
 		<security:intercept-url access="permitAll"
 			pattern="/useredit" />
 						
-
+		<security:intercept-url access="permitAll"
+			pattern="/notificationlist" />
+			
+		<security:intercept-url access="permitAll"
+			pattern="/sendnotification" />
+			
 		<security:form-login login-page="/login"
 			default-target-url="/login" always-use-default-target="true"
 			authentication-failure-url="/login?error" username-parameter="username"

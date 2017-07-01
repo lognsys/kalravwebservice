@@ -8,6 +8,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.lognsys.model.Drama;
+import com.lognsys.model.Notifications;
 import com.lognsys.model.Users;
 
 /**
@@ -28,6 +29,7 @@ public class FormValidator implements Validator {
 	String MOBILE_PATTERN = "[0-9]{10}";
 	String RATING_PATTERN = "[0-5]{1}";
 	String ZIPCODE_PATTERN = "[0-9]{6}";
+	String STRING_NUMERIC_PATTERN = "[a-z \\s A-Z] [0-9]";
 	private static final String TIME12HOURS_PATTERN =
             "(1[012]|[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)";
 
@@ -84,9 +86,24 @@ public class FormValidator implements Validator {
 			
 		
 		}
+		else if (target instanceof Notifications) {
+			System.out.println("Form Validation target Notifications "+target);
+			
+			Notifications notifications = (Notifications) target;
+			
+			validateMessage(notifications,errors);
+			
+			
+		
+		}
 
 	}
 
+
+	private void validateMessage(Notifications notifications, Errors errors) {
+		// TODO Auto-generated method stub
+		ValidationUtils.rejectIfEmpty(errors, "message", "required.message", "message is required.");
+	}
 
 	private void validateAverageRating(Drama dramas, Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "avg_rating", "required.avg_rating", "Average rating is required.");

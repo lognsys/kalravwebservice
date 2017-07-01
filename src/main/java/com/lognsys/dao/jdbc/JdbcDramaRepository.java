@@ -76,7 +76,7 @@ public class JdbcDramaRepository implements DramaRespository {
 	@Override
 	public List<DramasDTO> getAllDramas() {
 		List<DramasDTO> listdramas = namedParamJdbcTemplate.query(
-				sqlProperties.getProperty(Constants.DRAMA_QUERIES.select_dramas.name()),
+				sqlProperties.getProperty(Constants.DRAMA_QUERIES.select_all_dramas.name()),
 				new BeanPropertyRowMapper<DramasDTO>(DramasDTO.class));
 		return listdramas;
 	}
