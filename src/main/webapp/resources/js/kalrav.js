@@ -883,9 +883,7 @@ $(document)
                                 // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
                                 notify = $("#notify"),
                                  message = $("#message"),
-                                    realname = $("#userId"),
-                                    dramaTitle = $("#dramaId"),
-                                    allFields = $([]).add(notify).add(message).add(realname).add(dramaTitle),
+                                    allFields = $([]).add(notify).add(message),
                                     tips = $(".validateTips");
 
                                 function updateTips(t) {
@@ -922,8 +920,6 @@ $(document)
                                     var valid = true;
                                     allFields.removeClass("ui-state-error");
                                     valid = valid && checkLength(message, "message", 3, 80);
-                                    valid = valid && checkLength(realname, "userId", 3, 80);
-                                    valid = valid && checkLength(dramaTitle, "dramaId", 3, 80);
                                     return valid;
                                 }
 

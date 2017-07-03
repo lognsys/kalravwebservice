@@ -41,7 +41,7 @@ public class Constants {
 	}
 	
 	public enum RATING_QUERIES {
-		insert_ratings, select_dramas, delete_dramas, select_ratings_exists, select_dramas_id, delete_dramas_title, select_dramas_title, update_dramas
+		insert_ratings, select_dramas, delete_dramas, select_ratings_exists, update_ratings,select_users_id_and_dramas_id
 	}
 
 

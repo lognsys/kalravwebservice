@@ -75,4 +75,10 @@ public class RatingService {
 			throw new IllegalStateException("Error : Failed to add rating!");
 		}
 	}
+	
+	public int updateRating(int id,RatingsDTO ratingsDTO) {
+		
+		return jdbcRatingsRepository.updateRating(id,ratingsDTO);
+
+	}
 }

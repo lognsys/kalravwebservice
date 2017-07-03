@@ -22,6 +22,7 @@ public interface RatingsRespository {
 	 * @return
 	 */
 	public boolean isExists(RatingsDTO ratingsDTO);
+	public RatingsDTO findRatingByUserIDAndDramaID(int users_id,int dramas_id);
 
 	/**
 	 * Update rating information, enable/disable etc..

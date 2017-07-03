@@ -20,6 +20,8 @@ import com.lognsys.dao.RatingsRespository;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.jdbc.rowmapper.DramaUserIDRowMapper;
+import com.lognsys.dao.jdbc.rowmapper.RatingByUserIDAndDramaIDRowMapper;
+import com.lognsys.dao.jdbc.rowmapper.UserByUserIDRowMapper;
 import com.lognsys.model.Ratings;
 import com.lognsys.util.Constants;
 
@@ -69,13 +71,25 @@ public class JdbcRatingsRepository implements RatingsRespository {
 
 	@Override
 	public int updateRating(int id, RatingsDTO ratingsDTO) {
-		// TODO Auto-generated method stub
-		return 0;
+		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.RATING_QUERIES.update_ratings.name()),
+				parameter);
 	}
 
 	@Override
 	public List<RatingsDTO> getAllRatings() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public RatingsDTO findRatingByUserIDAndDramaID(int users_id, int dramas_id) {
+
+		Map<String ,  Integer> parameter = new HashMap<String, Integer>();
+		parameter.put("users_id",users_id);
+		parameter.put("dramas_id", dramas_id);
+		
+		return namedParamJdbcTemplate.queryForObject(
+				sqlProperties.getProperty(Constants.RATING_QUERIES.select_users_id_and_dramas_id.name()), parameter,
+				new RatingByUserIDAndDramaIDRowMapper());
 	}
 }
