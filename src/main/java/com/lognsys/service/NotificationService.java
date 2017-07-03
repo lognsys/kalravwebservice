@@ -13,10 +13,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.NotificationsDTO;
 import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.dao.jdbc.JdbcDramaRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcNotificationsRepository;
 import com.lognsys.dao.jdbc.JdbcRolesRepository;
@@ -40,6 +43,8 @@ public class NotificationService {
 	@Autowired
 	private JdbcUserRepository jdbcUserRepository;
 
+	@Autowired
+	private JdbcDramaRepository jdbcDramaRepository;
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
 
@@ -65,14 +70,24 @@ public class NotificationService {
 //		String username = notifications.get();
 
 		NotificationsDTO notificationDTO = ObjectMapper.mapToNotificationsDTO(notifications);
+		LOG.info("#addNotification - " + "addNotification notificationDTO toString : - " + notificationDTO.toString());
 
 		int notifyID = jdbcNotificationsRepository.addNotifications(notificationDTO);
+		LOG.info("#addNotification - " + "addNotification notifyID : - " + notifyID);
 
 		try {
 			refreshNotificationList();
 		} catch (IOException io) {
 			LOG.fatal("UserService#addUser refresUserList - " + io.getMessage());
 		}
+	}
+	public String getUserRealnameById(int id){
+		UsersDTO usersDTO=jdbcUserRepository.findUserById(id);
+		return usersDTO.getRealname();
+	}
+	public String getDramaTitleById(int id){
+		DramasDTO dramasDTO=jdbcDramaRepository.findDramaById(id);
+		return dramasDTO.getTitle();
 	}
 
 	/**
@@ -81,7 +96,7 @@ public class NotificationService {
 	 * @return
 	 * @throws IOException
 	 */
-	public void refreshNotificationList() throws IOException {
+		public void refreshNotificationList() throws IOException {
 		List<NotificationsTable> notificationsTables = ObjectMapper.mapToNotificationsDTO(jdbcNotificationsRepository.getAllNotifications());
 
 		ResourceLoader resourceLoader = new FileSystemResourceLoader();
@@ -134,10 +149,12 @@ public class NotificationService {
 	 * @throws IOException
 	 */
 	public void deleteNotification(String[] messages) throws IOException {
-		LOG.info("#deleteNotification - " + "Deleting total number of messages from database - " + messages.length);
-
+		System.out.println("#deleteNotification messages.length - " +messages.length);
+		
 		for (String message : messages) {
 			try {
+				System.out.println("#deleteNotification message - " +message);
+				
 				boolean isDelete = jdbcNotificationsRepository.deleteNotificationsBy(message);
 
 				if (!isDelete) {
@@ -191,23 +208,14 @@ public class NotificationService {
 	 */
 	public List<UsersDTO> getUsers() {
 
-		// Refresh list after deletion of user
+		
 		try {
-			refreshNotificationList();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		LOG.info("#getUsers - Get All Users from database");
-		List<UsersDTO> userList;
-
-		try {
-			userList = jdbcUserRepository.getAllUsers();
+			return jdbcUserRepository.getAllUsers();
 		} catch (DataAccessException dae) {
 			LOG.error(dae.getMessage());
 			throw new IllegalStateException("Error : Failed to add user!");
 		}
-		return userList;
+	
 	}
 
 	/**
@@ -361,40 +369,28 @@ public class NotificationService {
 	public Notifications getNotificationByMessage(String message) {
 
 		Notifications notifications = null;
-		
-		
-//		try {
 
-		
-			
 			// get Users information from user table
 		notifications = ObjectMapper.mapToNotifications(jdbcNotificationsRepository.findUserByMessage(message));
-		/*
-			// get Role information with role table
-			String role = jdbcRolesRepository.getRoleBy(users.getId());
-			if (role != null) {
-				users.setRole(role);
-			} else {
-				users.setRole("User");
-			}
-
-			// //get Group information
-			String groupName = jdbcGroupRepository.findGroupBy(users.getId());
-			if (groupName != null) {
-				users.setGroup(groupName);
-			} else {
-				users.setGroup("None");
-			}*/
+	
 
 			return notifications;
-/*
+
+	}
+	/*
+	*//**
+	 * @return returns the list of drama from database
+	 */
+	public List<DramasDTO> getDramas() {
+
+		try {
+			return jdbcDramaRepository.getAllDramas();
 		} catch (DataAccessException dae) {
-			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
-			// LOG.error(dae.getMessage());
-			// throw new IllegalAccessError("Failed to get user from database
-			// with ID - " + userId);
-			return users;
-		}*/
+			LOG.error(dae.getMessage());
+			throw new IllegalAccessError("Error: All roles cannot be retrieved");
+		}
+		
 	}
 
+	
 }

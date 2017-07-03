@@ -1,4 +1,4 @@
-package com.lognsys.web.controller;
+package com.lognsys.rest;
 
 import java.util.logging.Logger;
 
@@ -25,7 +25,7 @@ import com.lognsys.service.RatingService;
 @RestController
 public class RestRatingController {
 
-	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RestRatingController.class);
+//	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(RestRatingController.class);
 	
 	@Autowired
 	private RatingService ratingService;

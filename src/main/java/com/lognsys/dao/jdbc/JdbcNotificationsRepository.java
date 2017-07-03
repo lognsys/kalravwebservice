@@ -38,6 +38,7 @@ public class JdbcNotificationsRepository implements NotificationRespository {
 	@Override
 	public int addNotifications(NotificationsDTO notificationdto) {
 		int notify_id = 0;
+		System.out.println("#addNotification - " + "addNotification notificationdto toString : - " + notificationdto.toString());
 
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(notificationdto);
 		final KeyHolder keyHolder = new GeneratedKeyHolder();

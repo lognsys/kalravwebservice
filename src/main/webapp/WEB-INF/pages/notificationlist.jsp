@@ -42,6 +42,10 @@
 									<th data-field="id" data-sortable="true" data-visible="false">ID</th>
 									<th data-field="notify" data-sortable="true">Notify</th>
 									<th data-field="message" data-sortable="true">Message</th>
+									<th data-field="user_id" data-sortable="true" data-visible="false">ID</th>
+									<th data-field="drama_id" data-sortable="true" data-visible="false">ID</th>
+									<th data-field="realname" data-sortable="true">Real Name</th>
+									<th data-field="dramaTitle" data-sortable="true">Drama Title</th>
 								</tr>
 							</thead>
 						</table> 
@@ -49,7 +53,7 @@
 							<hr>
 							<button id="notificationadd" type="submit"
 								class="btn btn-primary pull-right rbtnMargin">Add</button>
-							<button id="userdelete" type="submit"
+							<button id="notificationdelete" type="submit"
 								class="btn btn-danger pull-right rbtnMargin">Delete</button>
 							<button id="notificationedit" type="submit"
 								class="btn btn-warning pull-right rbtnMargin">Edit</button>

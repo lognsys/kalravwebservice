@@ -5,13 +5,26 @@ public class NotificationsDTO {
 	private int id;
 //	private int users_id;
 //	private int dramas_id;
-	private boolean notify=false;
+	private boolean notify=true;
 	private String message;
+
+	private int userId;
+	private String realname;
+	private int dramaId;
+	private String dramaTitle;
 	
 	public NotificationsDTO() {
 		// no-arg constructor
 	}
-
+	public NotificationsDTO(int id, boolean notify, String message,int userId,int dramaId,String realname,String dramaTitle) {
+		this.id=id;
+		this.notify=notify;
+		this.message=message;
+		this.userId=userId;
+		this.dramaId=dramaId;
+		this.realname=realname;
+		this.dramaTitle=dramaTitle;
+	}
 	public NotificationsDTO(int id,boolean notify, String message) {
 		super();
 		this.id = id;
@@ -44,4 +57,37 @@ public class NotificationsDTO {
 	}
 
 
+public int getDramaId() {
+		return dramaId;
+	}
+	public void setDramaId(int dramaId) {
+		this.dramaId = dramaId;
+	}
+	
+	
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
+	public String getRealname() {
+		return realname;
+	}
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+	public String getDramaTitle() {
+		return dramaTitle;
+	}
+	public void setDramaTitle(String dramaTitle) {
+		this.dramaTitle = dramaTitle;
+	}
+	@Override
+	public String toString() {
+		return "NotificationsDTO [id=" + id + ", notify=" + notify + ", message=" + message + ", userId=" + userId
+				+ ", realname=" + realname + ", dramaId=" + dramaId + ", dramaTitle=" + dramaTitle + "]";
+	}
+	
 }

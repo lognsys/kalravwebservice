@@ -35,6 +35,10 @@ public class TestNotificationService {
 		notifications.setNotify(true);
 
 		notifications.setMessage("Hello");
+		notifications.setUserId(15);
+		notifications.setDramaId(8);
+		notifications.setRealname("Priyank");
+		notifications.setDramaTitle("dramaTitle");
 		notificationService.addNotification(notifications);
 	}
 	

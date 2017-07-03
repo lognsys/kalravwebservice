@@ -14,6 +14,7 @@ package com.lognsys.web.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.json.simple.JSONArray;
@@ -30,10 +31,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.RolesDTO;
+import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.model.Notifications;
 import com.lognsys.model.Users;
+import com.lognsys.service.DramaService;
 import com.lognsys.service.NotificationService;
 import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
@@ -43,7 +48,6 @@ import com.lognsys.util.FormValidator;
 public class NotificationController {
 	@Autowired
 	private NotificationService  notificationService;
-
 	/**
 	 * 
 	 * @param model
@@ -65,27 +69,25 @@ public class NotificationController {
 	 */
 	@RequestMapping(value = "/sendnotification", method = RequestMethod.GET)
 	public String showRegister(Model model, HttpServletRequest request) {
+		// CALL database to get dramas & users
+		
+	List<DramasDTO> listOfDramasDTO = notificationService.getDramas();
+	List<UsersDTO> listOfUsersDTO = notificationService.getUsers();
+					
+	// Adding data to list from DramasDTO & UsersDTO
+	Hashtable<Integer, String> dramasList=new Hashtable<>();
+	for (DramasDTO dramasDTO : listOfDramasDTO) {
+		dramasList.put(dramasDTO.getId(), dramasDTO.getTitle());
+	}	
 
-		/*// CALL database to get roles & groups
-		List<RolesDTO> listOfRolesDTO = userService.getAllRoles();
-		List<GroupsDTO> listOfGroupsDTO = userService.getAllGroups();
-
-		// Adding data to list from RolesDTO
-		List<String> rolesList = new ArrayList<String>();
-		for (RolesDTO role : listOfRolesDTO) {
-			rolesList.add(role.getRole());
+		Hashtable<Integer, String> usersList=new Hashtable<>();
+		for (UsersDTO usersDTO : listOfUsersDTO) {
+			usersList.put(usersDTO.getId(), usersDTO.getRealname());
 		}
-
-		// Adding data to list from GroupsDTO
-		List<String> groupsList = new ArrayList<String>();
-		for (GroupsDTO group : listOfGroupsDTO) {
-			groupsList.add(group.getGroup_name());
-		}*/
-
 		Notifications notifications = new Notifications();
 		model.addAttribute("notifications", notifications);
-//		model.addAttribute("rolesList", rolesList);
-//		model.addAttribute("groupsList", groupsList);
+		model.addAttribute("dramasList", dramasList);
+		model.addAttribute("usersList", usersList);
 
 		return "sendnotification";
 	}
@@ -99,7 +101,7 @@ public class NotificationController {
 	 */
 	@RequestMapping(value = "/sendnotification", method = RequestMethod.POST)
 	public String saveForm(@ModelAttribute("notifications") Notifications notification, BindingResult result, ModelMap model) {
-		System.out.println("Adding notification - " + notification.toString());
+		System.out.println("Adding result - " + result.toString());
 
 		FormValidator formValidator = new FormValidator();
 		formValidator.validate(notification, result);
@@ -107,27 +109,49 @@ public class NotificationController {
 		if (result.hasErrors()) {
 			System.out.println("Adding Errors - " + notification.toString());
 			
-//			// CALL database to get roles
-//			List<RolesDTO> listOfRolesDTO = userService.getAllRoles();
-//			// Adding data to list from RolesDTO
-//			List<String> rolesList = new ArrayList<String>();
-//			for (RolesDTO role : listOfRolesDTO) {
-//				rolesList.add(role.getRole());
-//			}
+			// CALL database to get dramas & users
+			
+			List<DramasDTO> listOfDramasDTO = notificationService.getDramas();
+			List<UsersDTO> listOfUsersDTO = notificationService.getUsers();
+			
+			// Adding data to list from DramasDTO & UsersDTO
+			Hashtable<Integer, String> dramasList=new Hashtable<>();
+			for (DramasDTO dramasDTO : listOfDramasDTO) {
+				dramasList.put(dramasDTO.getId(), dramasDTO.getTitle());
+			}	
 
-//			// Adding data to list from GroupsDTO
-//			// CALL database to get groups
-//			List<GroupsDTO> listOfGroupsDTO = userService.getAllGroups();
-//			List<String> groupsList = new ArrayList<String>();
-//			for (GroupsDTO group : listOfGroupsDTO) {
-//				groupsList.add(group.getGroup_name());
-//			}
-//
-//			model.addAttribute("rolesList", rolesList);
-//			model.addAttribute("groupsList", groupsList);
+			
+//			List<String> usersList = new ArrayList<String>();
+			Hashtable<Integer, String> usersList=new Hashtable<>();
+			for (UsersDTO usersDTO : listOfUsersDTO) {
+				usersList.put(usersDTO.getId(), usersDTO.getRealname());
+			}
+			
+			model.addAttribute("usersList", usersList);
+			model.addAttribute("dramasList", dramasList);
 			return "sendnotification";
 		} else {
 			try {
+				if(notification.getUserId()!=0){
+						
+					notification.setRealname(notificationService.getUserRealnameById(notification.getUserId()));
+					System.out.println("Adding notification getRealnamee   " + notification.getRealnamee());
+					System.out.println("Adding notification -toString  " + notification.toString());
+						
+				}
+				else{
+					notification.setRealname("-");
+				}
+				if(notification.getDramaId()!=0){
+						
+					notification.setDramaTitle(notificationService.getDramaTitleById(notification.getDramaId()));
+					System.out.println("Adding notification getDramaTitle   " + notification.getDramaTitle());
+						
+				}
+				else{
+					notification.setDramaTitle("-");
+				}
+				System.out.println("Adding notification -toString  " + notification.toString());
 				notificationService.addNotification(notification);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -146,33 +170,40 @@ public class NotificationController {
 	 * @return
 	 */
 	@RequestMapping(value = "/notificationlist", method = RequestMethod.POST)
-	public String manageUser(Model model, @RequestParam(value = "userIds", required = false) String userIds,
-			@RequestParam String userAction) {
-
-		switch (userAction) {
+	public String manageUser(Model model, @RequestParam(value = "notificationIds", required = false) String notificationIds,
+			@RequestParam String notifyAction) {
+		System.out.println("#delete notifyAction - " +notifyAction);
+		
+		switch (notifyAction) {
 
 		case "delete":
 			JSONParser parser = new JSONParser();
 			try {
-
-				Object obj = parser.parse(userIds);
+				System.out.println("#delete notificationIds - " +notificationIds);
+				
+				Object obj = parser.parse(notificationIds);
 
 				JSONArray arr = (JSONArray) obj;
-
+				System.out.println("#delete arr - " +arr);
+				System.out.println("#delete arr.size() - " +arr.size());
+				
 				String[] messages = new String[arr.size()];
 				for (int i = 0; i < arr.size(); i++) {
 
 					JSONObject jsonObject = (JSONObject) arr.get(i);
 					messages[i] = jsonObject.get("message").toString();
-
+					System.out.println("#delete messages[i] - " +messages[i]);
+					
 				}
 
 				notificationService.deleteNotification(messages);
 
 			} catch (ParseException e) {
-				e.printStackTrace();
+				System.out.println("#delete ParseException - " +e);
+				
+				
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("#delete IOException - " +e);
 			}
 			return "notificationlist";
 
@@ -180,7 +211,9 @@ public class NotificationController {
 
 			JSONParser p = new JSONParser();
 			try {
-				Object obj = p.parse(userIds);
+				Object obj = p.parse(notificationIds);
+				System.out.println("Edit notifications notificationIds - "+notificationIds);
+				
 				JSONArray arr = (JSONArray) obj;
 				String message = "";
 				for (int i = 0; i < arr.size(); i++) {
@@ -188,33 +221,31 @@ public class NotificationController {
 					JSONObject jsonObject = (JSONObject) arr.get(i);
 					message = jsonObject.get("message").toString();
 				}
+				System.out.println("Edit notifications message - "+message);
+
 				Notifications notifications = notificationService.getNotificationByMessage(message);
-
-				/*Users users = userService.getUserWithRoleAndGroup(Integer.parseInt(id));
-
-				// CALL database to get roles & groups
-				List<RolesDTO> listOfRolesDTO = userService.getAllRoles();
-				List<GroupsDTO> listOfGroupsDTO = userService.getAllGroups();
-
-				// Adding data to list from RolesDTO
-				List<String> rolesList = new ArrayList<String>();
-				for (RolesDTO role : listOfRolesDTO) {
-					rolesList.add(role.getRole());
-				}
-
-				// Adding data to list from GroupsDTO
-				List<String> groupsList = new ArrayList<String>();
-				for (GroupsDTO group : listOfGroupsDTO) {
-					groupsList.add(group.getGroup_name());
-				}
-
-				model.addAttribute("rolesList", rolesList);
-				model.addAttribute("groupsList", groupsList);*/
-
-				model.addAttribute("notifications", notifications);
-				
 				System.out.println("Edit notifications - "+notifications);
 
+				// CALL database to get dramas & users
+				
+				List<DramasDTO> listOfDramasDTO = notificationService.getDramas();
+				List<UsersDTO> listOfUsersDTO = notificationService.getUsers();
+								
+				// Adding data to list from DramasDTO & UsersDTO
+				Hashtable<Integer, String> dramasList=new Hashtable<>();
+				for (DramasDTO dramasDTO : listOfDramasDTO) {
+					dramasList.put(dramasDTO.getId(), dramasDTO.getTitle());
+				}	
+
+					Hashtable<Integer, String> usersList=new Hashtable<>();
+					for (UsersDTO usersDTO : listOfUsersDTO) {
+						usersList.put(usersDTO.getId(), usersDTO.getRealname());
+					}
+					model.addAttribute("notifications", notifications);
+					model.addAttribute("dramasList", dramasList);
+					model.addAttribute("usersList", usersList);
+				
+			
 				return "sendnotification";
 			} catch (ParseException e) {
 				e.printStackTrace();

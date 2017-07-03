@@ -771,14 +771,19 @@ $(document)
             // Userlist delete function
             $('#notificationdelete').click(
                 function(event) {
-
+                	  console.log("VALID event- " + event);
+                      
+                	  console.log("VALID event - notificationTable " + ('#notificationTable tr:has(:checkbox:checked)').length == 0);
+                      
                     if ($('#notificationTable tr:has(:checkbox:checked)').length == 0) {
-                    	  $('<li class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + '<strong>Error</strong> Please select one or more user from the list...</a></li>').appendTo('#error_list');
+                    	    
+                    	$('<li class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + '<strong>Error</strong> Please select one or more user from the list...</a></li>').appendTo('#error_list');
                     } else {
-
+                    	 console.log("VALID params- " + params);
+                         
                         var params = {
-                            "userIds": JSON.stringify(checkedRows),
-                            "userAction": "delete"
+                            "notificationIds": JSON.stringify(checkedRows),
+                            "notifyAction": "delete"
                         }
                         $.ajax({
                             url: '/notificationlist',
@@ -808,22 +813,25 @@ $(document)
                     if ($('#notificationTable tr:has(:checkbox:checked)').length == 0) {
                         $('<li class="alert alert-danger alert-dismissable"><a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>' + '<strong>Error</strong> Please select a user from the list...</a></li>').appendTo('#error_list');
                     } else {
-                        console.log(JSON.stringify(checkedRows));
+                    	  console.log("notificationedit event- " + event);
+                         
                         var params = {
-                            "userIds": JSON.stringify(checkedRows),
-                            "userAction": "edit"
+                            "notificationIds": JSON.stringify(checkedRows),
+                            "notifyAction": "edit"
                         }
+                  	  console.log("notificationedit params- " + JSON.stringify(params));
+                        
                         var regUser = "";
                         $.ajax({
                             url: '/notificationlist',
                             type: "POST",
                             data: params,
-
+                            
                             success: function(data) {
 
                                 //get subelements from div('#notify_user') from sendnotification.jsp
                                 regUserElements = $(data).find("#notify_user").html();
-
+                           	 
                                 //clear previous added html elements
                                 $('#editform').empty();
 
@@ -831,7 +839,7 @@ $(document)
                                 $(regUserElements).appendTo("#editform");
                                 
                                 //mark username field as read-only
-                                $("#username").prop("readonly", true);
+//                                $("#username").prop("readonly", true);
 
                                 dialog = $("#dialog-form").dialog({
                                     autoOpen: false,
@@ -857,8 +865,10 @@ $(document)
                                 dialog.dialog("open");
 
                                 form = dialog.find("form").on("submit", function(event) {
-
+                                	
                                     var isValid = editUser();
+                                    console.log("notificationedit isValid- " + isValid);
+                                    
                                     if (isValid) {
                                         console.log("VALID - " + isValid);
                                         return;
@@ -871,18 +881,11 @@ $(document)
                                 var dialog, form;
 
                                 // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
-                                emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-                                    fname = $("#firstname"),
-                                    lname = $("#lastname"),
-                                   // username = $("#username"),
-                                    address = $("#address"),
-                                    city = $("#city"),
-                                    state = $("#state"),
-                                    zipcode = $("#zipcode"),
-                                    company_name = $("#company_name"),
-                                    phone = $("#phone"),
-                                    allFields = $([]).add(fname).add(lname).add(address).
-                                    add(city).add(state).add(zipcode).add(company_name).add(phone),
+                                notify = $("#notify"),
+                                 message = $("#message"),
+                                    realname = $("#userId"),
+                                    dramaTitle = $("#dramaId"),
+                                    allFields = $([]).add(notify).add(message).add(realname).add(dramaTitle),
                                     tips = $(".validateTips");
 
                                 function updateTips(t) {
@@ -918,20 +921,9 @@ $(document)
                                 function editUser() {
                                     var valid = true;
                                     allFields.removeClass("ui-state-error");
-
-                                    valid = valid && checkLength(fname, "firstname", 3, 80);
-                                    valid = valid && checkLength(lname, "lastname", 3, 80);
-                                    valid = valid && checkLength(address, "address", 3, 80);
-                                    valid = valid && checkLength(city, "city", 3, 80);
-                                    valid = valid && checkLength(state, "state", 3, 80);
-                                    valid = valid && checkLength(zipcode, "zipcode", 6, 6);
-                                    valid = valid && checkLength(company_name, "company", 3, 80);
-                                    valid = valid && checkLength(phone, "phone", 10, 10);
-                                    valid = valid && checkRegexp(username, emailRegex, "eg. pdoshi@yahoo.com");
-
-                                    //valid = valid && checkLength( password, "password", 5, 16 );
-                                    //valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-                                    //valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+                                    valid = valid && checkLength(message, "message", 3, 80);
+                                    valid = valid && checkLength(realname, "userId", 3, 80);
+                                    valid = valid && checkLength(dramaTitle, "dramaId", 3, 80);
                                     return valid;
                                 }
 

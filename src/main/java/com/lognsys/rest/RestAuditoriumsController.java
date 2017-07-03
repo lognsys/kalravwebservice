@@ -1,4 +1,4 @@
-package com.lognsys.web.controller;
+package com.lognsys.rest;
 
 public class RestAuditoriumsController {
 

@@ -219,6 +219,10 @@ public class ObjectMapper {
 		notificationsDTO.setId(notifications.getId());
 		notificationsDTO.setNotify(notifications.isNotify());
 		notificationsDTO.setMessage(notifications.getMessage());
+		notificationsDTO.setUserId(notifications.getUserId());
+		notificationsDTO.setDramaId(notifications.getDramaId());
+		notificationsDTO.setRealname(notifications.getRealnamee());
+		notificationsDTO.setDramaTitle(notifications.getDramaTitle());
 		return notificationsDTO;
 
 	}
@@ -227,7 +231,7 @@ public class ObjectMapper {
 		List<NotificationsTable> list = new ArrayList<>();
 		for (NotificationsDTO ndto : notificationsDTOs) {
 			list.add(new NotificationsTable((ndto).getId(), (ndto).isNotify(),
-					(ndto).getMessage()));
+					(ndto).getMessage(),(ndto).getRealname(),(ndto).getDramaTitle()));
 		}
 		return list;
 		
@@ -235,7 +239,13 @@ public class ObjectMapper {
 
 	public static Notifications mapToNotifications(NotificationsDTO notificationsDTO) {
 		
-		Notifications newNotifications = new Notifications(notificationsDTO.getId(), notificationsDTO.isNotify(),notificationsDTO.getMessage());
+		Notifications newNotifications = new Notifications(notificationsDTO.getId(), 
+				notificationsDTO.isNotify(),
+				notificationsDTO.getMessage(),
+				notificationsDTO.getUserId(),
+				notificationsDTO.getDramaId(),
+				notificationsDTO.getRealname(),
+				notificationsDTO.getDramaTitle());
 
 				return newNotifications;
 

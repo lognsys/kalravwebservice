@@ -17,6 +17,10 @@ public class NotificationByIDRowMapper implements RowMapper<NotificationsDTO> {
 		notificationsDTO.setId(rs.getInt("id"));
 		notificationsDTO.setNotify(rs.getBoolean("notify"));
 		notificationsDTO.setMessage(rs.getString("message"));
+		notificationsDTO.setUserId(rs.getInt("userId"));
+		notificationsDTO.setDramaId(rs.getInt("dramaId"));
+		notificationsDTO.setRealname(rs.getString("realname"));
+		notificationsDTO.setDramaTitle(rs.getString("dramaTitle"));
 		return notificationsDTO;
 	}
 }

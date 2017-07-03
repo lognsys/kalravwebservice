@@ -41,9 +41,9 @@ public class FormValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		
-		System.out.println("Form Validation target "+target);
+//		System.out.println("Form Validation target "+target);
 		if (target instanceof Users) {
-			System.out.println("Form Validation target Users "+target);
+//			System.out.println("Form Validation target Users "+target);
 			
 			Users users = (Users) target;
 			
@@ -71,7 +71,7 @@ public class FormValidator implements Validator {
 			validateEmail(users, errors);
 		}
 		else if (target instanceof Drama) {
-			System.out.println("Form Validation target Drama "+target);
+//			System.out.println("Form Validation target Drama "+target);
 			
 			Drama dramas = (Drama) target;
 			
@@ -87,7 +87,7 @@ public class FormValidator implements Validator {
 		
 		}
 		else if (target instanceof Notifications) {
-			System.out.println("Form Validation target Notifications "+target);
+//			System.out.println("Form Validation target Notifications "+target);
 			
 			Notifications notifications = (Notifications) target;
 			

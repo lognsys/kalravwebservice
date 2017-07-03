@@ -18,7 +18,7 @@
 				<div class="panel-body" cssClass="error">
 					<form:errors path="notify" element="div" />
 					<form:errors path="message" element="div" />
-				</div>
+									</div>
 				<div class="col-sm-12 panel panel-default">
 					<fieldset>
 						<div id="notify_user" class="col-sm-12 panel panel-default">
@@ -36,13 +36,29 @@
 							<div class="row">
 								<div class="col-sm-4 form-group">
 									<label>Are You Sure you want to  notify?</label>
-									<form:input id="notify" type="text"
-										placeholder="Enter 1 for yes or 0  for no.."
-										class="form-control text ui-widget-content ui-corner-all"
-										path="notify" />
+									<form:select path="notify"  id="notify" type="text"
+										class="form-control text ui-widget-content ui-corner-all">
+										<option value="True">True</option>
+										<option value="False">False</option>
+								</form:select>
 								</div>
 							</div>
-							
+							 <div class="row">
+							 <div class="col-sm-4  form-group">
+								<label>Notify By Drama</label>
+								<form:select path="dramaId">
+									<option value="0">--- Select ---</option>
+									<form:options items="${dramasList}"></form:options>
+								</form:select>
+								</div>
+								<div class="col-sm-4 ">
+								<label>Notify To User</label>
+								<form:select path="userId">
+									<option value="0">--- Select ---</option>
+									<form:options items="${usersList}"></form:options>
+								</form:select>
+								</div>
+							</div>
 							<%-- <div class="form-group">
 								<label>Groups</label>
 								<form:select path="group">

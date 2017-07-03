@@ -79,15 +79,7 @@
 										path="zipcode" />
 								</div>
 							</div>
-							<%-- <div class="row">
-								<div class="col-sm-6 form-group">
-									<label>Company</label>
-									<form:input id="company_name" type="text"
-										placeholder="Enter Company Name Here.."
-										class="form-control text ui-widget-content ui-corner-all"
-										path="company_name" />
-								</div>
-							</div> --%>
+							
 							<div class="form-group">
 								<label>Phone Number</label>
 								<form:input id="phone" type="text"

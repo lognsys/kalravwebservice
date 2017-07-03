@@ -12,17 +12,21 @@ public class NotificationsTable {
 	private String message;
 	private boolean notify;
 	
+
+	private String realname;
+	private String dramaTitle;
 	
 	
-	
-	public NotificationsTable(int id, boolean notify, String message) {
+	public NotificationsTable(int id, boolean notify, String message,String realname,String dramaTitle) {
 		super();
 		this.id = id;
 		this.notify = notify;
 		this.message = message;
+		this.realname = realname;
+		this.dramaTitle = dramaTitle;
 	}
 
-	
+	/*
 
 	public NotificationsTable(int id, String name, String title, String message, boolean enabled) {
 		super();
@@ -32,7 +36,7 @@ public class NotificationsTable {
 		this.message = message;
 		setNotify(enabled);
 		this.notify = getNotify();
-	}
+	}*/
 
 	public boolean getNotify() {
 		return notify;
@@ -41,7 +45,18 @@ public class NotificationsTable {
 //	public void setNotify(boolean notify) {
 //		this.notify = notify;
 //	}
-
+	public String getRealname() {
+		return realname;
+	}
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+	public String getDramaTitle() {
+		return dramaTitle;
+	}
+	public void setDramaTitle(String dramaTitle) {
+		this.dramaTitle = dramaTitle;
+	}
 	public void setNotify(boolean enabled) {
 		if (enabled) {
 			this.notify = NOTIFY.Active.name() != null;
