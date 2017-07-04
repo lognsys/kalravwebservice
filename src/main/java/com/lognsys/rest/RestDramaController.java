@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lognsys.dao.dto.DramasDTO;
+import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
@@ -80,9 +81,27 @@ public class RestDramaController {
 	
 	// list all  drama with group name  
 		@GetMapping("/getalldramaandgroup/{group_name}")
-		public List getAllDramasAndGroup(@PathVariable("group_name") String group_name) {
+		public ResponseEntity<List<DramasGroupsDTO>> getAllDramasAndGroup(@PathVariable("group_name") String group_name) {
 			
-			return  jdbcGroupRepository.getDramasByGroup(group_name);
+//			return  jdbcGroupRepository.getDramasByGroup(group_name);
+		
+			try {
+				if(jdbcGroupRepository.getDramasByGroup(group_name).size()>0){
+					return new ResponseEntity(jdbcGroupRepository.getDramasByGroup(group_name), HttpStatus.OK);
+				}
+				else{
+					return new ResponseEntity("No Drama found with group name : " + group_name, HttpStatus.NOT_FOUND);
+					
+				}
+			} catch (Exception e) {
+				System.out.println("manageDrama getDramaById  jdbcGroupRepository.getDramasByGroup(group_name) "+ jdbcGroupRepository.getDramasByGroup(group_name));
+				
+				if ( jdbcGroupRepository.getDramasByGroup(group_name) == null) {
+					return new ResponseEntity("No Drama found with group name " + group_name, HttpStatus.NOT_FOUND);
+				}
+			}
+			return  new ResponseEntity(jdbcGroupRepository.getDramasByGroup(group_name), HttpStatus.OK);
+		
 		}
 
 	
@@ -139,7 +158,8 @@ public class RestDramaController {
 		System.out.println("RestDramaController updateDrama ");
 		
 		int Updatecount =dramaService.updateDrama(id,dramasDTO);
-
+		System.out.println("RestDramaController updateDrama Updatecount "+Updatecount);
+		
 		if (0 == Updatecount) {
 			return new ResponseEntity("No Drama found for ID " + id, HttpStatus.NOT_FOUND);
 		}
@@ -147,12 +167,7 @@ public class RestDramaController {
 		return new ResponseEntity(Updatecount, HttpStatus.OK);
 	}
 	
-	// list all  drama with group name  
-	@GetMapping("/getaudidatetimebydramaid/{drama_id}/{datetime}")
-	public List getAudiDatetimeByDramaId(@PathVariable("group_name") String group_name) {
-		
-		return  jdbcGroupRepository.getDramasByGroup(group_name);
-	}
+
 	
 
 

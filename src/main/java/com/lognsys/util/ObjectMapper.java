@@ -14,8 +14,10 @@ package com.lognsys.util;
  */
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
+import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.DramasAuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.DramasGroupsDTO;
@@ -248,6 +250,67 @@ public class ObjectMapper {
 				notificationsDTO.getDramaTitle());
 
 				return newNotifications;
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	public static Hashtable<String, String[] > mapToAuditoriumDTO(List<AuditoriumsDTO> auditoriumsDTOs) {
+		Hashtable<String, String[]> hashtable=null;
+		String[] arrayId =new String[auditoriumsDTOs.size()];		
+		String[] arrayname =new String[auditoriumsDTOs.size()];		
+		String[] arrTime =new String[auditoriumsDTOs.size()];		
+		String[] arrDate =new String[auditoriumsDTOs.size()];		
+		String[] arrPrice =new String[auditoriumsDTOs.size()];		
+		String[] arrIstart =new String[auditoriumsDTOs.size()];		
+		String[] arrIend =new String[auditoriumsDTOs.size()];		
+		if(auditoriumsDTOs.size()>0 && auditoriumsDTOs!=null){
+			for(int i=0;i<auditoriumsDTOs.size();i++){
+				hashtable=new Hashtable<String, String[]>();
+				AuditoriumsDTO auditoriumsDTO=auditoriumsDTOs.get(i);
+				if(auditoriumsDTO.getId()!=0){
+					 arrayId[i]=String.valueOf(auditoriumsDTO.getId());	
+					hashtable.put("id",arrayId);
+				}
+				if(auditoriumsDTO.getAuditorium_name()!=null){
+					 arrayname[i]=auditoriumsDTO.getAuditorium_name();
+					 if(arrayname[i]!= null && !(arrayname[i].equalsIgnoreCase(auditoriumsDTO.getAuditorium_name()))){
+							hashtable.put("auditorium_name",arrayname);
+					 }
+				}if(auditoriumsDTO.getDate()!=null){
+					arrDate[i]=auditoriumsDTO.getDate();
+					hashtable.put("date", arrDate);
+				}if(auditoriumsDTO.getTime()!=null){
+					arrTime[i]=auditoriumsDTO.getTime();
+					hashtable.put("time",arrTime);
+				}if(auditoriumsDTO.getPrice()!=0){
+					arrPrice[i]=String.valueOf(auditoriumsDTO.getPrice());
+					hashtable.put("price",arrPrice);
+				}if(auditoriumsDTO.getIstart()!=0){
+					arrIstart[i]=String.valueOf(auditoriumsDTO.getIstart());
+					hashtable.put("istart",arrIstart);
+				}if(auditoriumsDTO.getIend()!=0){
+					arrIend[i]=String.valueOf(auditoriumsDTO.getIend());
+					hashtable.put("iend",arrIend);
+				}
+//				hashtable.put("auditorium_name",auditoriumsDTO.getAuditorium_name());
+//				hashtable.put("date",auditoriumsDTO.getDate());
+//				hashtable.put("time",arrTime[i]);
+//				hashtable.put("price",String.valueOf(auditoriumsDTO.getPrice()));
+//				hashtable.put("istart",String.valueOf(auditoriumsDTO.getIstart()));
+//				hashtable.put("iend",String.valueOf(auditoriumsDTO.getIend()));
+						
+			}
+			return hashtable;
+		}
+		
+
+		return hashtable;
 
 	}
 }

@@ -14,6 +14,8 @@ import com.lognsys.dao.AuditoriumRepository;
 import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.DramasAuditoriumsDTO;
 import com.lognsys.dao.jdbc.resultset.DramaAuditoriumResultSetExtractor;
+import com.lognsys.dao.jdbc.rowmapper.AuditoriumDramaIDRowMapper;
+import com.lognsys.dao.jdbc.rowmapper.DramaUserIDRowMapper;
 import com.lognsys.util.Constants;
 
 @Repository
@@ -52,11 +54,19 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 	}
 
 	@Override
-	public String findAuditoriumBy(int drama_id) {
-		SqlParameterSource param = new MapSqlParameterSource("drama_id", drama_id);
-		return namedParamJdbcTemplate.queryForObject(
-				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_auditorium_name_bydramaid.name()), param,
-				String.class);
+	public  List<AuditoriumsDTO>  findAuditoriumBy(int dramas_id) {
+		SqlParameterSource parameter = new MapSqlParameterSource("dramas_id", dramas_id);
+		
+		/*SqlParameterSource parameter = new MapSqlParameterSource("dramas_id", dramas_id);
+			return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_auditorium_name_bydramaid.name()),
+				parameter, new AuditoriumDramaIDRowMapper());*/
+		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_auditorium_name_bydramaid.name()),parameter,
+				new BeanPropertyRowMapper<AuditoriumsDTO>(AuditoriumsDTO.class));
+		   System.out.println("#JdbcAuditoriumRepository findAuditoriumBy listauditoriums "+ listauditoriums.size());
+			
+		return listauditoriums;
+		
 	}
 
 	@Override

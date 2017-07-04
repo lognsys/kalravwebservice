@@ -8,7 +8,7 @@ public interface AuditoriumRepository {
 
 	public List<AuditoriumsDTO> getAllAuditoriums();
 
-	public String findAuditoriumBy(int drama_id);
+	public  List<AuditoriumsDTO>  findAuditoriumBy(int drama_id);
 
 	public List<DramasAuditoriumsDTO> getDramasByAuditorium(String auditorium_name);
 
