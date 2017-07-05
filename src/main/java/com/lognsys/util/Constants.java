@@ -21,7 +21,7 @@ public class Constants {
 	}
 
 	public enum AUDITORIUM_QUERIES {
-		insert_auditoriums, select_auditoriums, insert_dramas_auditoriums, select_auditorium_name_bydramaid, select_dramabyauditorium, select_dramasauditoriums_all
+		select_new_audi_price_time,select_new_name_id_auditorium_by_dramaId,insert_auditoriums, select_auditoriums, insert_dramas_auditoriums, select_auditorium_name_bydramaid, select_dramabyauditorium, select_dramasauditoriums_all
 	}	
 	
 	public enum NOTIFICATION_QUERIES {

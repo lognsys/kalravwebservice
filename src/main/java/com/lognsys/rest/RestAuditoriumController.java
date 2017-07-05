@@ -3,6 +3,7 @@ package com.lognsys.rest;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,36 +29,22 @@ public class RestAuditoriumController {
 	
 	// list all  auditoriumlist 
 	@GetMapping("/auditoriumlist/{dramas_id}")
-	public ResponseEntity<Hashtable<String, String[]>>  getAudi(@PathVariable("dramas_id") int dramas_id) {
-		
-//		List<AuditoriumsDTO> auditoriumsDTOs=auditoriumService.getAuditoriumList(dramas_id);
-		Hashtable<String, String[]> hashtable=auditoriumService.getAuditoriumList(dramas_id);		
-		System.out.println("#RestAuditoriumController hashtable "+hashtable);
-		System.out.println("#RestAuditoriumController (hashtable.size() "+hashtable.size());
+	public ResponseEntity<JSONArray>  getAuditoriumList(@PathVariable("dramas_id") int dramas_id) {
 		
 				try {
-					/*if(auditoriumsDTOs.size()>0){
-						return new ResponseEntity(auditoriumsDTOs, HttpStatus.OK);
-					}
-					else{
-						return new ResponseEntity("No auditorium found with drama: " , HttpStatus.NOT_FOUND);
-						
-					}*/
-					if(hashtable.size()>0){
-						return new ResponseEntity(hashtable, HttpStatus.OK);
-					}
-					else{
-						return new ResponseEntity("No auditorium found with drama: " , HttpStatus.NOT_FOUND);
-						
-					}
+						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id);		
+						if(jsonArray!= null && jsonArray.size()>0)
+						{
+							return new ResponseEntity(jsonArray, HttpStatus.OK);
+						}
+						else{
+							return new ResponseEntity("No audotorium available : " , HttpStatus.NOT_FOUND);
+						}
 				} catch (Exception e) {
 					System.out.println("#RestAuditoriumController Exception e"+e);
+					return new ResponseEntity("No auditorium found with drama : " , HttpStatus.NOT_FOUND);
 					
-					if ( hashtable== null) {
-						return new ResponseEntity("No auditorium found  ", HttpStatus.NOT_FOUND);
-					}
 				}
-				  	return new ResponseEntity(hashtable, HttpStatus.OK);
 				
 			
 	}

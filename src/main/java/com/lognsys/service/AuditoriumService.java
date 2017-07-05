@@ -5,9 +5,12 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonElement;
 import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.jdbc.JdbcAuditoriumRepository;
@@ -27,71 +30,64 @@ public class AuditoriumService {
 	 * @param id
 	 * @return
 	 */
-	public Hashtable<String, String[]> getAuditoriumList(int dramas_id) {
-		List<AuditoriumsDTO> lists=new ArrayList<>();
-		lists=jdbcAuditoriumRepository.findAuditoriumBy(dramas_id);
+	public JSONArray getAuditoriumList(int dramas_id) {
+		List<AuditoriumsDTO> auditoriumsDTOsList=jdbcAuditoriumRepository.findAuditoriumBy(dramas_id);
 		
-		System.out.println("#Service AuditoriumsDTO auditoriumsDTO lists "+ lists.size());
+		System.out.println("#AuditoriumService getAuditoriumList  lists.size() "+ auditoriumsDTOsList.size());
 		
-		Hashtable<String, String[]> hashtable=ObjectMapper.mapToAuditoriumDTO(lists);
-		
-		try {
-			   System.out.println("#Service AuditoriumsDTO lihashtablests "+ hashtable.size());
-				
-			return hashtable;
-			 /*  Enumeration values;
-			   String key;
-
-				System.out.println("#Service AuditoriumsDTO dramas_id "+ dramas_id);   
-			AuditoriumsDTO auditoriumsDTO=jdbcAuditoriumRepository.findAuditoriumBy(dramas_id);
-			System.out.println("#Service AuditoriumsDTO auditoriumsDTO toString "+ auditoriumsDTO.toString());
+		JSONArray mainArray=new JSONArray();
+		if(auditoriumsDTOsList!=null && auditoriumsDTOsList.size()>0){
 			
-			Hashtable<String, String> hashtable=ObjectMapper.mapToAuditoriumDTO(auditoriumsDTO);
+		for(int i=0 ;i<auditoriumsDTOsList.size();i++){
+			JSONArray jsonArray=new JSONArray();
 			
-			   System.out.println("#Service AuditoriumsDTO hashtable "+ hashtable.size());
+			AuditoriumsDTO auditoriumsDTO=auditoriumsDTOsList.get(i);
+			
+			System.out.println("#AuditoriumService getAuditoriumList  lists  auditoriumsDTO.toString()  "+ auditoriumsDTO.toString());
+			
+			if(auditoriumsDTO.getId()!=0){
 				
-			if(hashtable!= null && hashtable.size()>0){
-				values = hashtable.keys();
-				   while(values.hasMoreElements()) {
-				      AuditoriumsDTO auditoriumsDTO2=new   AuditoriumsDTO();
-					 
-				      key = (String) values.nextElement();
-				      System.out.println("Key: " +key+ " & Value: " + hashtable.get(key));
-				    
-				      if(key.equalsIgnoreCase("auditorium_name"));
-				      {
-				    	  auditoriumsDTO2.setAuditorium_name((hashtable.get(key)));
-				      }
-				      if(key.equalsIgnoreCase("date")){
-				    	  auditoriumsDTO2.setDate((hashtable.get(key)));
-					  }
-				      if(key.equalsIgnoreCase("time")){
-				    	  auditoriumsDTO2.setTime((hashtable.get(key)));
-					  }
-				      if(key.equalsIgnoreCase("price")){
-				    	  auditoriumsDTO2.setPrice(Double.parseDouble(hashtable.get(key)));
-					  }
-				      if(key.equalsIgnoreCase("istart")){
-				    	  auditoriumsDTO2.setIstart(Integer.parseInt(hashtable.get(key)));
-					  }
-				      if(key.equalsIgnoreCase("iend")){
-				    	  auditoriumsDTO2.setIend(Integer.parseInt(hashtable.get(key)));
-					  }	
-				      lists.add(auditoriumsDTO2);
-				   }
-				   System.out.println("#Service AuditoriumsDTO lists "+ lists.size());
+				List<AuditoriumsDTO> auditoriumsPriceDTOsList= jdbcAuditoriumRepository.getAuditoriumListBy(auditoriumsDTO.getId(),dramas_id);
+				
+				JSONObject jsonObject=new JSONObject();
+			
+				jsonObject.put("id", auditoriumsDTO.getId());
+				jsonObject.put("auditorium_name", auditoriumsDTO.getAuditorium_name());
+				jsonObject.put("date", auditoriumsDTO.getDate());
+				jsonObject.put("time", auditoriumsDTO.getTime());
+				
+				if(auditoriumsPriceDTOsList!=null && auditoriumsPriceDTOsList.size()>0){
+					System.out.println("#AuditoriumService getAuditoriumList lists auditoriumsPriceDTOsList.size() "+ auditoriumsPriceDTOsList.size());
 					
-				   return lists;
-			}*/
-			
-			
-		} catch (Exception dae) {
-			System.out.println("#Service AuditoriumsDTO Exception "+ dae);
-			System.out.println("#Service AuditoriumsDTO Exception hashtable "+ hashtable);
-			
-		}
-		return hashtable;
+					for(int j=0;j<auditoriumsPriceDTOsList.size();j++){
+						AuditoriumsDTO auditsDTO=auditoriumsPriceDTOsList.get(j);
+						JSONObject jsonPricelist=new JSONObject();
+						if(auditsDTO!=null && auditsDTO.getIstart() !=0 && auditsDTO.getIend()!=0 && auditsDTO.getPrice()!=0){
+							jsonPricelist.put("istart", auditsDTO.getIstart());
+							jsonPricelist.put("iend", auditsDTO.getIend());
+							jsonPricelist.put("price", auditsDTO.getPrice());
+							jsonArray.add(jsonPricelist);
 		
+						}
+					}
+				}
+				if(jsonArray!=null && jsonArray.size()>0){
+					jsonObject.put("auditoriumpricelist",jsonArray);
+					mainArray.add(jsonObject);
+				}
+				
+			}
 
+		}
+		System.out.println("\n\n #AuditoriumService getAuditoriumList  mainArray "+ mainArray.toJSONString());
+		return mainArray;
+
+		}
+		else{
+			return null;
+
+		}
+		
+			
 	}
 }

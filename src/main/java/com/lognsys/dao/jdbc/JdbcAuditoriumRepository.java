@@ -1,5 +1,6 @@
 package com.lognsys.dao.jdbc;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
 import javax.annotation.Resource;
@@ -61,7 +62,7 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 			return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_auditorium_name_bydramaid.name()),
 				parameter, new AuditoriumDramaIDRowMapper());*/
 		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
-				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_auditorium_name_bydramaid.name()),parameter,
+				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_new_name_id_auditorium_by_dramaId.name()),parameter,
 				new BeanPropertyRowMapper<AuditoriumsDTO>(AuditoriumsDTO.class));
 		   System.out.println("#JdbcAuditoriumRepository findAuditoriumBy listauditoriums "+ listauditoriums.size());
 			
@@ -69,29 +70,28 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 		
 	}
 
-	@Override
-	public List<DramasAuditoriumsDTO> getDramasByAuditorium(String auditorium_name) {
-
-		SqlParameterSource param = new MapSqlParameterSource("auditorium_name", auditorium_name);
-		return namedParamJdbcTemplate.query(
-				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_dramabyauditorium.name()), param,
-				new DramaAuditoriumResultSetExtractor());
-
-	}
-
 	
-
-	@Override
-	public int findIDBy(String auditoriumname) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	@Override
 	public List<DramasAuditoriumsDTO> getAllDramasAndAuditorium() {
 		return namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_dramasauditoriums_all.name()),
 				new DramaAuditoriumResultSetExtractor());
+	}
+
+
+	@Override
+	public List<AuditoriumsDTO> getAuditoriumListBy(int id,int dramas_id) {
+//		SqlParameterSource parameter = new MapSqlParameterSource("id", id);
+		Hashtable<String, Integer> parameter=new Hashtable<>();
+		parameter.put("id",id);
+		parameter.put("dramas_id",dramas_id);
+		
+		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_new_audi_price_time.name()),parameter,
+				new BeanPropertyRowMapper<AuditoriumsDTO>(AuditoriumsDTO.class));
+		   System.out.println("#JdbcAuditoriumRepository getAuditoriumListBy listauditoriums "+ listauditoriums.size());
+			
+		return listauditoriums;
 	}
 
 
