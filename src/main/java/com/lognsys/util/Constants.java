@@ -21,7 +21,7 @@ public class Constants {
 	}
 
 	public enum AUDITORIUM_QUERIES {
-		insert_auditoriums, select_auditoriums, insert_dramas_auditoriums, select_auditorium_name_bydramaid, select_dramabyauditorium, select_dramasauditoriums_all
+		insert_auditoriums, select_auditoriums, insert_dramas_auditoriums, select_auditorium_name_bydramaid, select_dramabyauditorium, select_dramasauditoriums_all,select_auditorium_id_byname
 	}	
 	
 	public enum NOTIFICATION_QUERIES {
@@ -38,6 +38,10 @@ public class Constants {
 
 		insert_user_groups, insert_groups, insert_dramas_groups, insert_drama_auditoriums, select_groups_all, insert_subgroups_groups, select_groupname_byuserid, select_id_bygroupname, select_usersbygroups, select_usersgroups_all, select_groupname_bydramaid, select_dramasbygroups, select_dramasgroups_all, select_groups_exists, update_group_byuser, select_subgroup_bygroup
 
+	}
+	public enum ROW_QUERIES {
+		
+		insert_rowseat		
 	}
 	
 	public enum RATING_QUERIES {

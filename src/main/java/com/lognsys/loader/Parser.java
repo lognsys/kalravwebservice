@@ -88,18 +88,20 @@ public class Parser {
 
 					Cell cell = cellIterator.next();
 
-					if (cell.getColumnIndex() == 0)
+					if (cell.getColumnIndex() == 0) {
+
 						rowSeatDTO.setRow_num(Integer.parseInt(getCellValue(cell)));
+					}
+					if (cell.getColumnIndex() == 1) {
 
-					if (cell.getColumnIndex() == 1)
 						rowSeatDTO.setRow_name(getCellValue(cell));
-
-					if (cell.getColumnIndex() == 2)
+					}
+					if (cell.getColumnIndex() == 2) {
 						rowSeatDTO.setSeatCount(getCellValue(cell));
-
-					if (cell.getColumnIndex() == 3)
+					}
+					if (cell.getColumnIndex() == 3) {
 						rowSeatDTO.setAuditorium_name(getCellValue(cell));
-
+					}
 				}
 
 				listOfRows.add(rowSeatDTO);

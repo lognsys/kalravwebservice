@@ -10,8 +10,8 @@ import com.lognsys.dao.dto.GroupsDTO;
 @Repository
 public class MongoGroupRepository {
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
+//	@Autowired
+//	private MongoTemplate mongoTemplate;
 	
 
 	public List<GroupsDTO> getAllGroups() {

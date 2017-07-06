@@ -6,9 +6,24 @@ public class RowSeatDTO {
 	private int row_num;
 	private String row_name;
 	private int seat_num;
-	private int auditorium_id;
+	private int auditoriums_id;
 	private String seatCount;
 	private String auditorium_name;
+
+	public RowSeatDTO(int row_num, String row_name, int seat_num, int auditoriums_id) {
+		super();
+
+		this.row_num = row_num;
+		this.row_name = row_name;
+		this.seat_num = seat_num;
+		this.auditoriums_id = auditoriums_id;
+
+	}
+
+	public RowSeatDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public int getId() {
 		return id;
@@ -42,12 +57,12 @@ public class RowSeatDTO {
 		this.seat_num = seat_num;
 	}
 
-	public int getAuditorium_id() {
-		return auditorium_id;
+	public int getAuditoriums_id() {
+		return auditoriums_id;
 	}
 
-	public void setAuditorium_id(int auditorium_id) {
-		this.auditorium_id = auditorium_id;
+	public void setAuditoriums_id(int auditoriums_id) {
+		this.auditoriums_id = auditoriums_id;
 	}
 
 	public String getSeatCount() {

@@ -12,7 +12,7 @@ public interface AuditoriumRepository {
 
 	public List<DramasAuditoriumsDTO> getDramasByAuditorium(String auditorium_name);
 
-	public void addAuditoriums(AuditoriumsDTO auditoriumsDTO);
+	public boolean addAuditoriums(AuditoriumsDTO auditoriumsDTO);
 
 	public int findIDBy(String auditoriumname);
 
