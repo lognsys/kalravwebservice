@@ -45,7 +45,7 @@ public class CommonUtilities {
 	 * @param delimeter
 	 * @return array with 1, 2 values or null
 	 */
-	static String[] splitByDelemeter(String str, String delimeter) {
+	public static String[] splitByDelemeter(String str, String delimeter) {
 
 		if (str != null) {
 			String[] vals = str.trim().split(delimeter);

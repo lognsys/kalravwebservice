@@ -10,8 +10,8 @@ import com.lognsys.dao.dto.UsersDTO;
 @Repository
 public class MongoUserRepository implements UserRespository {
 
-	@Autowired
-	private MongoTemplate mongoTemplate;
+//	@Autowired
+//	private MongoTemplate mongoTemplate;
 
 	@Override
 	public int addUser(UsersDTO users) {

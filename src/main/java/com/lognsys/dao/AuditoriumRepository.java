@@ -8,14 +8,16 @@ public interface AuditoriumRepository {
 
 	public List<AuditoriumsDTO> getAllAuditoriums();
 
-	public  List<AuditoriumsDTO>  findAuditoriumBy(int drama_id);
+	public List<AuditoriumsDTO> findAuditoriumBy(int drama_id);
 
-	public void addAuditoriums(AuditoriumsDTO auditoriumsDTO);
-
+	public boolean addAuditoriums(AuditoriumsDTO auditoriumsDTO);
 
 	public List<DramasAuditoriumsDTO> getAllDramasAndAuditorium();
-	
 
-	public  List<AuditoriumsDTO>  getAuditoriumListBy(int id,int dramas_id);
+	public List<AuditoriumsDTO> getAuditoriumListBy(int id, int dramas_id);
+
+	public int findIDBy(String auditorium_name);
+	
+	public List<DramasAuditoriumsDTO> getDramasByAuditorium(String auditorium_name);
 
 }

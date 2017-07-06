@@ -9,11 +9,9 @@ package com.lognsys.loader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
-import javax.sql.DataSource;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -23,18 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+
 import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.RowSeatDTO;
 import com.lognsys.dao.jdbc.JdbcAuditoriumRepository;
+import com.lognsys.util.CommonUtilities;
 
 @Component
 public class IngestXLSData implements Ingest {
@@ -45,10 +37,6 @@ public class IngestXLSData implements Ingest {
 
 	private Resource resource;
 
-	private Properties sqlProperty;
-
-	private NamedParameterJdbcTemplate jdbcTemplate;
-
 	// static fields
 	private static String ARG = "";
 
@@ -57,6 +45,10 @@ public class IngestXLSData implements Ingest {
 	private static final int EXIT_OK = 0;
 
 	private static Parser parser = new Parser();
+
+	private int row_count = 0;
+
+	private int row_parsed = 0;
 
 	@Autowired
 	private JdbcAuditoriumRepository jdbcAuditoriumRepository;
@@ -67,8 +59,7 @@ public class IngestXLSData implements Ingest {
 	 * @param resource
 	 * @param dataSource
 	 */
-	public IngestXLSData(Resource resource, DataSource dataSource, Properties sqlProperty) {
-		this.sqlProperty = sqlProperty;
+	public IngestXLSData(Resource resource) {
 		this.resource = resource;
 	}
 
@@ -92,13 +83,35 @@ public class IngestXLSData implements Ingest {
 
 		case auditorium:
 			System.out.println("Parsing Auditoriums Sheet.....");
+
 			List<AuditoriumsDTO> listOfAuditoriums = parser.parseAuditoriums(sheet);
+
+			for (AuditoriumsDTO auditoriumsDTO : listOfAuditoriums) {
+				boolean isAdded = jdbcAuditoriumRepository.addAuditoriums(auditoriumsDTO);
+				row_parsed++;
+
+				if (isAdded)
+					row_count++;
+			}
 
 			break;
 
 		case row_seat:
-			System.out.println("Parsing Row_Seat Sheet.....");
+			System.out.println("Note: Please make sure to insert Auditorium Sheet before parsing Row_Seat Sheet..."
+					+ "\n Parsing Row_Seat Sheet.....");
 			List<RowSeatDTO> listOfRowSeat = parser.parseRowSeat(sheet);
+			for (RowSeatDTO rs : listOfRowSeat) {
+				String[] range = CommonUtilities.splitByDelemeter(rs.getSeatCount(), "-");
+				int start = Integer.parseInt(range[0]);
+				int end = Integer.parseInt(range[1]);
+
+				for (int i = start; i <= end; i++) {
+					jdbcAuditoriumRepository.addRow_Seat(new RowSeatDTO(rs.getRow_num(), rs.getRow_name(), i,
+							jdbcAuditoriumRepository.findIDBy(rs.getAuditorium_name())));
+					row_count++;
+				}
+
+			}
 
 			break;
 
@@ -110,200 +123,13 @@ public class IngestXLSData implements Ingest {
 
 	}
 
-	/**
-	 * 
-	 * @param listOfData
-	 */
-//	public void loadAuditorium(List<AuditoriumsDTO> listOfData) {
-//
-//		for()
-//	}
+	@Override
+	public void printReport() {
 
-//	/**
-//	 * List<NutritionalVO> param passed. ingest table ayurbaby_nutritionalfood
-//	 * ingest table ayurbaby_stage_nutritionalfood
-//	 * 
-//	 * @param listOfData
-//	 * @return no. of rows loaded
-//	 */
-//	public void loadNutritionalFood(List<?> listOfData) {
-//
-//		int totalRowCount = 0;
-//		for (Object obj : listOfData) {
-//			try {
-//				NutritionalVO nutVo = ((NutritionalVO) obj);
-//				// ingest ayurbaby_nutritionalfood
-//				BeanPropertySqlParameterSource nutVoBeanParam = new BeanPropertySqlParameterSource(nutVo);
-//				KeyHolder nutVoKeyHolder = new GeneratedKeyHolder();
-//				int row = jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_NUTRITIONALFOOD"), nutVoBeanParam,
-//						nutVoKeyHolder);
-//
-//				totalRowCount = totalRowCount + row;
-//
-//				// ingest ayurbaby_stages_nutritionalfood
-//				int[] monthArr = Util.normalizeMonths(nutVo.getMonth(), ",");
-//
-//				for (int month : monthArr) {
-//					MapSqlParameterSource params = new MapSqlParameterSource();
-//					params.addValue("stage_id", month);
-//					params.addValue("nutritionalfood_id", nutVoKeyHolder.getKey());
-//					jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_STAGE_NUTRITIONALFOOD"), params);
-//
-//				}
-//
-//			} catch (DataAccessException dae) {
-//				dae.printStackTrace();
-//			}
-//
-//			nutrtionalFoodRowCount = totalRowCount;
-//
-//		}
-//
-//	}
-//
-//	public void load(List<?> listOfData) {
-//
-//		int rowCount = 0;
-//		for (Object obj : listOfData) {
-//			try {
-//				// type casting
-//				RecipesVO recipeVo = ((RecipesVO) obj);
-//
-//				// ingest recipe
-//				BeanPropertySqlParameterSource recipeVoBeanParam = new BeanPropertySqlParameterSource(recipeVo);
-//				KeyHolder recipeVoKeyHolder = new GeneratedKeyHolder();
-//				int row = jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_RECIPE"), recipeVoBeanParam,
-//						recipeVoKeyHolder);
-//
-//				rowCount = rowCount + row;
-//
-//				// ingest ayurbaby_stages_ayurvedicfood
-//				int[] monthArr = Util.normalizeMonths(recipeVo.getMonth(), ",");
-//
-//				for (int month : monthArr) {
-//					MapSqlParameterSource params = new MapSqlParameterSource();
-//					params.addValue("stage_id", month);
-//					params.addValue("recipe_id", recipeVoKeyHolder.getKey());
-//					jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_STAGE_RECIPE"), params);
-//
-//				}
-//
-//			} catch (DataAccessException dae) {
-//				dae.printStackTrace();
-//			}
-//
-//			recipeRowCount = rowCount;
-//		}
-//
-//	}
-//
-//	/**
-//	 * List<AyurvedicVO> obj param passed for load
-//	 * 
-//	 * @param listOfData
-//	 * @return no. of rows loaded
-//	 */
-//	public void loadAyurved(List<?> listOfData) {
-//		int rowCount = 0;
-//		for (Object obj : listOfData) {
-//			try {
-//				// type casting
-//				AyurvedicVO ayurVo = ((AyurvedicVO) obj);
-//				// ingest ayurvedic
-//				BeanPropertySqlParameterSource ayurVoBeanParam = new BeanPropertySqlParameterSource(ayurVo);
-//				KeyHolder ayurVoKeyHolder = new GeneratedKeyHolder();
-//				int row = jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_AYURVED"), ayurVoBeanParam,
-//						ayurVoKeyHolder);
-//
-//				rowCount = rowCount + row;
-//
-//				// ingest ayurbaby_stages_ayurvedicfood
-//				int[] monthArr = Util.normalizeMonths(ayurVo.getMonth(), ",");
-//
-//				for (int month : monthArr) {
-//					MapSqlParameterSource params = new MapSqlParameterSource();
-//					params.addValue("stage_id", month);
-//					params.addValue("ayurved_id", ayurVoKeyHolder.getKey());
-//					jdbcTemplate.update(this.sqlProperty.getProperty("INSERT_STAGE_AYURVED"), params);
-//
-//				}
-//
-//			} catch (DataAccessException dae) {
-//				dae.printStackTrace();
-//			}
-//
-//		}
-//
-//		ayurvedicRowCount = rowCount;
-//	}
-//
-//	/**
-//	 * listOfFunFacts obj param passed for load
-//	 * 
-//	 * @param listOfFunFacts
-//	 * @return no. of rows loaded
-//	 */
-//	public int loadFunfacts(List<?> listOfFunFacts) {
-//		int[] rowCount = null;
-//
-//		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(listOfFunFacts.toArray());
-//
-//		try {
-//			rowCount = jdbcTemplate.batchUpdate(this.sqlProperty.getProperty("INSERT_FUNFACTS"), params);
-//		} catch (DataAccessException dae) {
-//			log.error(dae.getMessage());
-//		}
-//
-//		return rowCount.length;
-//
-//	}
-//
-//	/**
-//	 * @return no. of rows loaded
-//	 */
-//	public int loadOrganicCompunds() {
-//
-//		List<CompoundsVO> listOfCompounds = new ArrayList<CompoundsVO>();
-//
-//		for (String compound : organicCompounds) {
-//
-//			listOfCompounds.add(new CompoundsVO(compound));
-//
-//		}
-//
-//		int[] rowCount = null;
-//		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(listOfCompounds.toArray());
-//
-//		{
-//			try {
-//				System.out.println("In - SQL INSERT COMPOUND");
-//				rowCount = jdbcTemplate.batchUpdate(this.sqlProperty.getProperty("INSERT_COMPOUND"), params);
-//			} catch (DataAccessException dae) {
-//				log.error(dae.getMessage());
-//				System.out.println(dae.getMessage());
-//			}
-//		}
-//		return rowCount.length;
-//	}
-//
-//	@Override
-//	public void printReport() {
-//
-//		System.out.println("\nParsed Summary:");
-//		List<String> parsed = Parser.getStats();
-//		for (String stats : parsed) {
-//			System.out.println(stats);
-//		}
-//
-//		System.out.println("\n\nDatabase Summary:");
-//		System.out.println("Nutritional Table rows loaded - " + nutrtionalFoodRowCount);
-//		System.out.println("Ayurvedic Table rows loaded - " + ayurvedicRowCount);
-//		System.out.println("Funfacts Table rows loaded - " + funFactsRowCount);
-//		System.out.println("Organic Compound Table rows loaded - " + organiCompoundRowCount);
-//		System.out.println("Recipe Table rows loaded - " + recipeRowCount);
-//		System.out.println();
-//
-//	}
+		System.out.println("Total Rows Parsed - " + row_parsed);
+		System.out.println("Total Rows Inserted - " + row_count);
+
+	}
 
 	/**
 	 * run method instantiated
@@ -323,17 +149,6 @@ public class IngestXLSData implements Ingest {
 		try (InputStream is = resource.getInputStream()) {
 			// Get the workbook instance for XLS file
 			Workbook workBook = WorkbookFactory.create(is);
-
-			/*
-			 * int noOfSheets = workBook.getNumberOfSheets(); if (noOfSheets !=
-			 * 3) throw new IllegalArgumentException(
-			 * "ERROR: AyurBaby ExcelSheet does not meet requirements."); // if
-			 * no argument then load all the sheets if
-			 * (IngestXLSData.ARG.isEmpty()) { for (int i = 0; i < noOfSheets;
-			 * i++) { // Get sheets from the workbook Sheet sheet =
-			 * workBook.getSheetAt(i); // Set sheet setSheet(sheet); // call
-			 * parsedata after setting sheet for parsing parseData(); } }
-			 */
 
 			// if argument then load all the sheets
 			if (!IngestXLSData.ARG.isEmpty()) {
@@ -404,7 +219,7 @@ public class IngestXLSData implements Ingest {
 			System.exit(EXIT_ERROR);
 		}
 
-		System.setProperty("spring.profiles.active", "dev");
+		// System.setProperty("spring.profiles.active", "dev");
 
 		// Spring Application context loads
 		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(
@@ -427,13 +242,8 @@ public class IngestXLSData implements Ingest {
 		ctx.close();
 		System.out.println();
 		System.out.println(
-				"AyurBaby Ingest program ended " + date.toString() + " Elapsed time = " + elapsedTimeSec + " seconds.");
+				"Kalrav Ingest program ended " + date.toString() + " Elapsed time = " + elapsedTimeSec + " seconds.");
 
 	}
 
-	@Override
-	public void printReport() {
-		// TODO Auto-generated method stub
-		
-	}
 }
