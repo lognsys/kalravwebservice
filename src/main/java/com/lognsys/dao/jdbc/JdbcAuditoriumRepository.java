@@ -58,9 +58,6 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 	public  List<AuditoriumsDTO>  findAuditoriumBy(int dramas_id) {
 		SqlParameterSource parameter = new MapSqlParameterSource("dramas_id", dramas_id);
 		
-		/*SqlParameterSource parameter = new MapSqlParameterSource("dramas_id", dramas_id);
-			return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_auditorium_name_bydramaid.name()),
-				parameter, new AuditoriumDramaIDRowMapper());*/
 		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_new_name_id_auditorium_by_dramaId.name()),parameter,
 				new BeanPropertyRowMapper<AuditoriumsDTO>(AuditoriumsDTO.class));

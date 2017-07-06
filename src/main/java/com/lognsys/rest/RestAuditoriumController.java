@@ -1,5 +1,8 @@
 package com.lognsys.rest;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class RestAuditoriumController {
 	public ResponseEntity<JSONArray>  getAuditoriumList(@PathVariable("dramas_id") int dramas_id) {
 		
 				try {
+					
 						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id);		
 						if(jsonArray!= null && jsonArray.size()>0)
 						{

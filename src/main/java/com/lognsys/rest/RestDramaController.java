@@ -172,22 +172,4 @@ public class RestDramaController {
 
 
 
-
-	@PostMapping(value = "/notify")
-	public ResponseEntity sendNotification() {
-		System.out.println(" sendNotification");
-		String result=null;
-		try {
-			String deviceToken="eY2UboGuVsc:APA91bHPlohGb1QYBwByk1JKbquUoJ8aCxaWOCQZ19J-ZNiWSH3T0zZGJBpHLm-crjlJ1wuT46MQ54To9rB_XkjDnTP50NyfX6N9phsZKUTEZwDpqXm_oTLwHmb7ktGFWrnhy8X1VbMr";
-			 result=PushNotificationHelper.sendPushNotification(deviceToken);
-			 System.out.println(" sendNotification result   "+result);
-				
-		} catch (IOException e) {
-			System.out.println(" sendNotification IOException "+e);
-			
-			e.printStackTrace();
-		}
-		
-		return new ResponseEntity(result,HttpStatus.OK);
-	}
 }
