@@ -4,6 +4,8 @@ package com.lognsys.dao.jdbc;
  * @author pdoshi
  * 
  */
+
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
 import javax.annotation.Resource;
@@ -53,16 +55,29 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_auditoriums.name()),
 				new BeanPropertyRowMapper<AuditoriumsDTO>(AuditoriumsDTO.class));
-		
+
 		return listauditoriums;
 	}
 
 	@Override
-	public String findAuditoriumBy(int drama_id) throws DataAccessException {
-		SqlParameterSource param = new MapSqlParameterSource("drama_id", drama_id);
-		return namedParamJdbcTemplate.queryForObject(
-				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_auditorium_name_bydramaid.name()), param,
-				String.class);
+
+	public List<AuditoriumsDTO> findAuditoriumBy(int dramas_id) {
+		SqlParameterSource parameter = new MapSqlParameterSource("dramas_id", dramas_id);
+
+		/*
+		 * SqlParameterSource parameter = new MapSqlParameterSource("dramas_id",
+		 * dramas_id); return
+		 * namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(
+		 * Constants.AUDITORIUM_QUERIES.select_auditorium_name_bydramaid.name())
+		 * , parameter, new AuditoriumDramaIDRowMapper());
+		 */
+		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_new_name_id_auditorium_by_dramaId.name()),
+				parameter, new BeanPropertyRowMapper<AuditoriumsDTO>(AuditoriumsDTO.class));
+		System.out.println("#JdbcAuditoriumRepository findAuditoriumBy listauditoriums " + listauditoriums.size());
+
+		return listauditoriums;
+
 	}
 
 	@Override
@@ -89,15 +104,27 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_dramasauditoriums_all.name()),
 				new DramaAuditoriumResultSetExtractor());
 	}
-	
-	//Add Row_Seat
-	
-	public boolean addRow_Seat(RowSeatDTO rowSeatDTO){
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(rowSeatDTO);
-		return namedParamJdbcTemplate
-				.update(sqlProperties.getProperty(Constants.ROW_QUERIES.insert_rowseat.name()), params) == 1;
+
+	@Override
+	public List<AuditoriumsDTO> getAuditoriumListBy(int id, int dramas_id) {
+		// SqlParameterSource parameter = new MapSqlParameterSource("id", id);
+		Hashtable<String, Integer> parameter = new Hashtable<>();
+		parameter.put("id", id);
+		parameter.put("dramas_id", dramas_id);
+
+		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_new_audi_price_time.name()), parameter,
+				new BeanPropertyRowMapper<AuditoriumsDTO>(AuditoriumsDTO.class));
+		System.out.println("#JdbcAuditoriumRepository getAuditoriumListBy listauditoriums " + listauditoriums.size());
+
+		return listauditoriums;
 	}
-	
-	
+
+	// Add Row_Seat
+	public boolean addRow_Seat(RowSeatDTO rowSeatDTO) {
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(rowSeatDTO);
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.ROW_QUERIES.insert_rowseat.name()),
+				params) == 1;
+	}
 
 }

@@ -17,15 +17,16 @@ public class Constants {
 	}
 
 	public enum DRAMA_QUERIES {
-		insert_dramas, select_dramas,select_all_dramas, delete_dramas, select_dramas_exists, select_dramas_id, delete_dramas_title, select_dramas_title, update_dramas
+		insert_dramas, select_dramas, select_all_dramas, delete_dramas, select_dramas_exists, select_dramas_id, delete_dramas_title, select_dramas_title, update_dramas
 	}
 
 	public enum AUDITORIUM_QUERIES {
-		insert_auditoriums, select_auditoriums, insert_dramas_auditoriums, select_auditorium_name_bydramaid, select_dramabyauditorium, select_dramasauditoriums_all,select_auditorium_id_byname
-	}	
-	
+		select_auditorium_id_byname, select_new_audi_price_time, select_new_name_id_auditorium_by_dramaId, insert_auditoriums, select_auditoriums, insert_dramas_auditoriums, select_auditorium_name_bydramaid, select_dramabyauditorium, select_dramasauditoriums_all
+
+	}
+
 	public enum NOTIFICATION_QUERIES {
-		insert_notification,select_notification,delete_notification,select_notification_message
+		insert_notification, select_notification, delete_notification, select_notification_message
 	}
 
 	/**
@@ -39,15 +40,15 @@ public class Constants {
 		insert_user_groups, insert_groups, insert_dramas_groups, insert_drama_auditoriums, select_groups_all, insert_subgroups_groups, select_groupname_byuserid, select_id_bygroupname, select_usersbygroups, select_usersgroups_all, select_groupname_bydramaid, select_dramasbygroups, select_dramasgroups_all, select_groups_exists, update_group_byuser, select_subgroup_bygroup
 
 	}
+
 	public enum ROW_QUERIES {
-		
-		insert_rowseat		
-	}
-	
-	public enum RATING_QUERIES {
-		insert_ratings, select_dramas, delete_dramas, select_ratings_exists, update_ratings,select_users_id_and_dramas_id
+
+		insert_rowseat
 	}
 
+	public enum RATING_QUERIES {
+		insert_ratings, select_dramas, delete_dramas, select_ratings_exists, update_ratings, select_users_id_and_dramas_id
+	}
 
 	/**
 	 * enum contains keys of json files and their directory path defined in
@@ -56,7 +57,7 @@ public class Constants {
 	 * Note: All the files should be specified in application.properties.
 	 */
 	public enum JSON_FILES {
-		user_filename, drama_filename, adverts_filename, booking_filename,notification_filename
+		user_filename, drama_filename, adverts_filename, booking_filename, notification_filename
 	}
 
 	/**

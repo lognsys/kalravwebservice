@@ -14,8 +14,12 @@ package com.lognsys.util;
  */
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+
+import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.DramasAuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.DramasGroupsDTO;
@@ -248,6 +252,21 @@ public class ObjectMapper {
 				notificationsDTO.getDramaTitle());
 
 				return newNotifications;
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	public static JSONArray mapToAuditoriumDTO(List<AuditoriumsDTO> auditoriumsDTOs) {
+		Hashtable<String, String[]> hashtable=null;
+		JSONArray array=new JSONArray();
+		
+		return array;
 
 	}
 }
