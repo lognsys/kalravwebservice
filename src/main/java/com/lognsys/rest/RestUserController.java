@@ -26,7 +26,7 @@ import com.lognsys.util.Constants;
 import com.lognsys.util.ObjectMapper;
 
 @Produces("application/json")
-@RestController
+@RestController("/user")
 public class RestUserController {
 
 	private static final Logger LOG = Logger.getLogger(RestUserController.class);
@@ -74,10 +74,9 @@ public class RestUserController {
 	 */
 	@RequestMapping(value = "/getsingleuser/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Users> getUser(@PathVariable("id") int id) {
-		System.out.println("Fetching User with id " + id);
+		
 		Users users = userService.getUserWithRoleAndGroup(id);
 		if (users == null) {
-			System.out.println("User with id " + id + " not found");
 			return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
 		}
 		return new ResponseEntity<Users>(users, HttpStatus.OK);

@@ -28,7 +28,3 @@ insert into users_groups (users_id,groups_id)
 values (14, 3);
 insert into users_groups (users_id,groups_id)
 values (15, 3);
-insert into users_groups (users_id,groups_id)
-values (16, 3);
-insert into users_groups (users_id,groups_id)
-values (18, 3);

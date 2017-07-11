@@ -19,7 +19,9 @@ users_id integer not null,
 # Foreign key roles.id
 roles_id integer not null,
 
-last_edit timestamp not null default current_timestamp on update current_timestamp
+last_edit timestamp not null default current_timestamp on update current_timestamp,
+# adding unique constraint to users_id
+ CONSTRAINT uc_users_roles UNIQUE (users_id)
 
 ) engine=InnoDB DEFAULT CHARSET=utf8;
 

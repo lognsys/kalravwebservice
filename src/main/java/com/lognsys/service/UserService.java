@@ -221,6 +221,8 @@ public class UserService {
 	}
 
 	/**
+	 * 
+	 * TODO 2  : Need to catch exception at role and group level 
 	 * This is the service layer with users and its role and Group
 	 * 
 	 * @param userId
@@ -266,6 +268,8 @@ public class UserService {
 	}
 
 	/**
+	 * 
+	 * TODO 1  : Need to catch exception at role and group level 
 	 * This is the service layer with users and its role and Group
 	 * 
 	 * @param userId

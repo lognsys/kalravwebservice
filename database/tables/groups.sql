@@ -24,6 +24,6 @@ CREATE TABLE IF NOT EXISTS groups
 
 create index groups_grousp_name_idx on groups(group_name);
 
-insert into groups (group_name, is_subgroup, parant_id)
+insert into groups (group_name, is_subgroup, parent_id)
 values
 ('NONE', 0, 0);

@@ -13,7 +13,10 @@ CREATE TABLE IF NOT EXISTS users_groups
 	#foreign key users.id	
 	users_id integer not null default -1,
 
-	last_edit timestamp not null default current_timestamp on update current_timestamp
+	last_edit timestamp not null default current_timestamp on update current_timestamp,
+	
+	# adding unique constraint to users_id
+    CONSTRAINT uc_users_groups UNIQUE (users_id)
 
 ) ENGINE =InnoDB default CHARSET=utf8;
 alter table users_groups add index (users_id);
