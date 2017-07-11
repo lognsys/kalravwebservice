@@ -23,3 +23,7 @@ CREATE TABLE IF NOT EXISTS groups
 ) ENGINE =InnoDB default CHARSET=utf8;
 
 create index groups_grousp_name_idx on groups(group_name);
+
+insert into groups (group_name, is_subgroup, parant_id)
+values
+('NONE', 0, 0);

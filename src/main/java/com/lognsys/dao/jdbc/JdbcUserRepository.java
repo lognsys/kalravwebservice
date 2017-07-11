@@ -156,9 +156,6 @@ public class JdbcUserRepository implements UserRespository {
 				sqlProperties.getProperty(Constants.USER_QUERIES.select_users_username.name()), parameter,
 				new UserByUserIDRowMapper());
 
-		if (usersDTO == null)
-			throw new EmptyResultDataAccessException(1);
-
 		return usersDTO;
 
 	}
