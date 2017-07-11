@@ -73,12 +73,31 @@ public class RestUserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getsingleuser/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Users> getUser(@PathVariable("id") int id) {
-		
-		Users users = userService.getUserWithRoleAndGroup(id);
-		if (users == null) {
-			return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<?> getUser(@PathVariable("id") int id) {
+
+		Users users = null;
+
+		try {
+			users = userService.getUserWithRoleAndGroup(id);
+		} catch (UserDataAccessException ue) {
+			// check if user is null
+			if (ue.getMessage()
+					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()))) {
+
+				return new ResponseEntity<String>(
+						applicationProperties.getProperty(Constants.REST_MSGS.response_userempty.name()),
+						HttpStatus.NOT_FOUND);
+			}
+
+			if (ue.getMessage()
+					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userinvalid.name()))) {
+				return new ResponseEntity<String>(
+						applicationProperties.getProperty(Constants.REST_MSGS.response_userinvalid.name()),
+						HttpStatus.BAD_REQUEST);
+			}
+
 		}
+
 		return new ResponseEntity<Users>(users, HttpStatus.OK);
 	}
 
@@ -160,7 +179,7 @@ public class RestUserController {
 		if (isExists) {
 			String str = applicationProperties.getProperty(Constants.REST_MSGS.response_userexists.name());
 			return new ResponseEntity<String>(str, HttpStatus.NOT_ACCEPTABLE);
-			
+
 		} else {
 			int userId = jdbcUserRepository.addUser(usersDTO);
 			usersDTO.setId(userId);
