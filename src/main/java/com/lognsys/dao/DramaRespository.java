@@ -27,7 +27,7 @@ public interface DramaRespository {
 	 * 
 	 * @param drama
 	 */
-	public int updateDrama(int id,DramasDTO dramasDTO);
+	public boolean updateDrama(DramasDTO dramasDTO);
 
 
 	/**

@@ -28,6 +28,9 @@ public class Constants {
 	public enum NOTIFICATION_QUERIES {
 		insert_notification, select_notification, delete_notification, select_notification_message
 	}
+	public enum DEVICE_QUERIES {
+		insert_devices,select_devices_exists,update_devices
+		}
 
 	/**
 	 * enum contains keys of queries defined in sql.properties.

@@ -1,6 +1,7 @@
 package com.lognsys.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import org.apache.log4j.Logger;
@@ -12,6 +13,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
@@ -191,9 +195,9 @@ public class DramaService {
 	 * update drama
 	 */
 
-	public int updateDrama(int id,DramasDTO drama) {
+	public boolean updateDrama(int id,DramasDTO drama) {
 		
-		return jdbcDramaRepository.updateDrama(id,drama);
+		return jdbcDramaRepository.updateDrama(drama);
 
 	}
 	/*
@@ -215,7 +219,7 @@ public class DramaService {
 					.getResource(applicationProperties.getProperty(Constants.JSON_FILES.drama_filename.name()));
 			String list = CommonUtilities.convertToJSON(dramaList);
 			System.out.println("showDramas --> getDramas list  "+list);
-			
+			 
 			try {
 				
 				WriteJSONToFile.getInstance().write(resource, list);
@@ -312,7 +316,6 @@ public class DramaService {
 		}
 		return dramaList;
 	}
-	
 
 	
 }

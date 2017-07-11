@@ -157,11 +157,11 @@ public class RestDramaController {
 	public ResponseEntity updateDrama(@PathVariable int id, @RequestBody DramasDTO dramasDTO) {
 		System.out.println("RestDramaController updateDrama ");
 		
-		int Updatecount =dramaService.updateDrama(id,dramasDTO);
+		boolean Updatecount =dramaService.updateDrama(id,dramasDTO);
 		System.out.println("RestDramaController updateDrama Updatecount "+Updatecount);
 		
-		if (0 == Updatecount) {
-			return new ResponseEntity("No Drama found for ID " + id, HttpStatus.NOT_FOUND);
+		if (Updatecount==false) {
+			return new ResponseEntity("Drama Does not exist ...!", HttpStatus.NOT_FOUND);
 		}
 
 		return new ResponseEntity(Updatecount, HttpStatus.OK);

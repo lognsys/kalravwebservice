@@ -1,8 +1,15 @@
 package com.lognsys.service;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 import java.util.Properties;
+
+import javax.net.ssl.HttpsURLConnection;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -63,10 +70,10 @@ public class NotificationService {
 	 * Add user to database.. Check if user already exists in db
 	 * 
 	 * @return
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 	@Transactional
-	public void addNotification(Notifications notifications) throws IOException {
+	public void addNotification(Notifications notifications) throws Exception {
 //		String username = notifications.get();
 
 		NotificationsDTO notificationDTO = ObjectMapper.mapToNotificationsDTO(notifications);
@@ -74,7 +81,9 @@ public class NotificationService {
 
 		int notifyID = jdbcNotificationsRepository.addNotifications(notificationDTO);
 		LOG.info("#addNotification - " + "addNotification notifyID : - " + notifyID);
-
+		LOG.info("#addNotification - " + "addNotification notifyID : - " + notifyID);
+		notifications.setId(notifyID);
+		sendPost(notifications);
 		try {
 			refreshNotificationList();
 		} catch (IOException io) {
@@ -391,6 +400,67 @@ public class NotificationService {
 		}
 		
 	}
+	// HTTP POST request
+		public void sendPost(Notifications notifications) throws Exception {
+			String urlParameters=null;
+			String url = "http://localhost:8080/notify/";
+			URL obj = new URL(url);
+			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
+
+			//add reuqest header
+			con.setRequestMethod("POST");
+//			con.setRequestProperty("User-Agent", USER_AGENT);
+			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+			if(notifications!=null && notifications.getMessage()!=null){
+				if(notifications.getUserId()!=0 && notifications.getRealnamee()!=null){
+					 urlParameters = "realname="+notifications.getRealnamee()+"&message="+notifications.getMessage();
+	
+				}
+				else if(notifications.getDramaId()!=0 && notifications.getDramaTitle()!=null){
+					 urlParameters = "dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
+						
+				}else if(notifications.getDramaId()>0 && notifications.getUserId()>0 && notifications.getDramaTitle()!=null && notifications.getRealnamee()!=null)
+						{
+					 urlParameters =  "realname="+notifications.getRealnamee()+"&dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
+				}
+				else{
+					 urlParameters =  "message="+notifications.getMessage();
+						
+				}
+			}
+			
+			// Send post request
+			con.setDoOutput(true);
+			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+			wr.writeBytes(urlParameters);
+			wr.flush();
+			wr.close();
+
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'POST' request to URL : " + url);
+			System.out.println("Post parameters : " + urlParameters);
+			System.out.println("Response Code : " + responseCode);
+
+			BufferedReader in = new BufferedReader(
+			        new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+
+			//print result
+			System.out.println(response.toString());
+
+		}
+		public Users getUserDetailById(int id) {
+
+			return ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(id));
+		}
+
 
 	
 }

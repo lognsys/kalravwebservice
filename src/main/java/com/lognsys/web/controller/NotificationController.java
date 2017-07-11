@@ -98,9 +98,10 @@ public class NotificationController {
 	 * @param result
 	 * @param model
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/sendnotification", method = RequestMethod.POST)
-	public String saveForm(@ModelAttribute("notifications") Notifications notification, BindingResult result, ModelMap model) {
+	public String saveForm(@ModelAttribute("notifications") Notifications notification, BindingResult result, ModelMap model) throws Exception {
 		System.out.println("Adding result - " + result.toString());
 
 		FormValidator formValidator = new FormValidator();
@@ -152,7 +153,11 @@ public class NotificationController {
 					notification.setDramaTitle("-");
 				}
 				System.out.println("Adding notification -toString  " + notification.toString());
+				System.out.println("\notification 1 - Send Http POST request");
+//				notificationService.sendPost(notification);
 				notificationService.addNotification(notification);
+				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.out.println(" IOException - " + e);

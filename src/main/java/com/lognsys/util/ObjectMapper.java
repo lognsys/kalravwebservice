@@ -20,6 +20,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 
 import com.lognsys.dao.dto.AuditoriumsDTO;
+import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasAuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.DramasGroupsDTO;
@@ -28,6 +29,7 @@ import com.lognsys.dao.dto.NotificationsDTO;
 import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
+import com.lognsys.model.Device;
 import com.lognsys.model.Drama;
 import com.lognsys.model.DramasTable;
 import com.lognsys.model.Groups;
@@ -257,11 +259,6 @@ public class ObjectMapper {
 	
 	
 	
-	
-	
-	
-	
-	
 	public static JSONArray mapToAuditoriumDTO(List<AuditoriumsDTO> auditoriumsDTOs) {
 		Hashtable<String, String[]> hashtable=null;
 		JSONArray array=new JSONArray();
@@ -269,4 +266,17 @@ public class ObjectMapper {
 		return array;
 
 	}
+	
+	/**
+	 * 
+	 * @param dramas
+	 * @return
+	 */
+	public static DeviceDTO mapToDeviceDTO(Device device) {
+		// TODO: Current setting of group to null, but need to change to value
+
+		return new DeviceDTO(device.getId(), device.getDeviceToken());
+
+	}
+
 }

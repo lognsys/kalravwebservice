@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Properties;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -35,7 +36,7 @@ public class JdbcDramaRepository implements DramaRespository {
 	 * @param users
 	 */
 	@Override
-	public int addDrama(DramasDTO dramas) {
+	public int addDrama(DramasDTO dramas)  throws DataAccessException{
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(dramas);
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
 		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DRAMA_QUERIES.insert_dramas.name()),
@@ -51,7 +52,7 @@ public class JdbcDramaRepository implements DramaRespository {
 	 * 
 	 */
 	@Override
-	public boolean isExists(String title) {
+	public boolean isExists(String title)  throws DataAccessException{
 
 		SqlParameterSource param = new MapSqlParameterSource("title", title);
 		return namedParamJdbcTemplate.queryForObject(
@@ -63,18 +64,18 @@ public class JdbcDramaRepository implements DramaRespository {
 	 * @return 
 	 */
 	@Override
-	public int updateDrama(int id,DramasDTO dramasDTO) {
-		System.out.println("manageDrama deleteDramas deleteDramaBy id "+id);
-		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
-		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DRAMA_QUERIES.update_dramas.name()),
-				parameter);
+	public boolean updateDrama(DramasDTO dramasDTO)  throws DataAccessException{
+		boolean isUpdate = false;
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(dramasDTO);
+		return isUpdate = namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DRAMA_QUERIES.update_dramas.name()),
+				params) == 1;
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	public List<DramasDTO> getAllDramas() {
+	public List<DramasDTO> getAllDramas() throws DataAccessException{
 		List<DramasDTO> listdramas = namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.DRAMA_QUERIES.select_all_dramas.name()),
 				new BeanPropertyRowMapper<DramasDTO>(DramasDTO.class));
@@ -124,7 +125,7 @@ public class JdbcDramaRepository implements DramaRespository {
 	 * @param drama_id
 	 * @param group
 	 */
-	public void addDramaAndGroup(int dramas_id, String group_name) {
+	public void addDramaAndGroup(int dramas_id, String group_name) throws DataAccessException {
 
 		try {
 			SqlParameterSource param = new MapSqlParameterSource().addValue("dramas_id", dramas_id).addValue("group_name",
@@ -140,7 +141,7 @@ public class JdbcDramaRepository implements DramaRespository {
 	 * @param drama_id
 	 * @param group
 	 */
-	public void addDramaAndAuditorium(int dramas_id, String auditorium_name) {
+	public void addDramaAndAuditorium(int dramas_id, String auditorium_name) throws DataAccessException{
 
 		try {
 			SqlParameterSource param = new MapSqlParameterSource().addValue("dramas_id", dramas_id).addValue("auditorium_name",

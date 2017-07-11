@@ -9,11 +9,13 @@ import java.net.URL;
 
 import org.json.simple.JSONObject;
 
+import com.lognsys.model.Notifications;
+
 public class PushNotificationHelper {
 public final static String AUTH_KEY_FCM = "AIzaSyCbsadSh43AQq8IChS4CQkGhAy1QeuaVDE";
 public final static String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
 
-public static String sendPushNotification(String deviceToken)
+public static String sendPushNotification(String deviceToken,Notifications notifications)
         throws IOException {
     String result = "";
     URL url = new URL(API_URL_FCM);
@@ -31,8 +33,36 @@ public static String sendPushNotification(String deviceToken)
 
     json.put("to", deviceToken.trim());
     JSONObject info = new JSONObject();
-    info.put("title", "notification title"); // Notification title
-    info.put("body", "message body"); // Notification
+
+	if(notifications!=null && notifications.getMessage()!=null){
+		if(notifications.getUserId()!=0 && notifications.getRealnamee()!=null){
+//			 urlParameters = "realname="+notifications.getRealnamee()+"&message="+notifications.getMessage();
+			 info.put("title",notifications.getRealnamee()); // Notification title
+			 info.put("body", notifications.getMessage()); // Notification
+			    
+		}
+		else if(notifications.getDramaId()!=0 && notifications.getDramaTitle()!=null){
+//			 urlParameters = "dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
+			 info.put("title",notifications.getDramaTitle()); // Notification title
+			 info.put("body", notifications.getMessage()); // Notification
+			 	
+		}else if(notifications.getDramaId()>0 && notifications.getUserId()>0 && notifications.getDramaTitle()!=null && notifications.getRealnamee()!=null)
+				{
+//			 urlParameters =  "realname="+notifications.getRealnamee()+"&dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
+			 info.put("title",notifications.getRealnamee() + "Your Drama :"+notifications.getDramaTitle()); // Notification title
+			 info.put("body", notifications.getMessage()); // Notification
+			
+		}
+		else{
+//			 urlParameters =  "message="+notifications.getMessage();
+			 info.put("title","Kalrav"); // Notification title
+			 info.put("body", notifications.getMessage()); // Notification
+						
+		}
+	}
+    
+//    info.put("title", "notification title"); // Notification title
+//    info.put("body", "message body"); // Notification
                                                             // body
     json.put("notification", info);
     try {
