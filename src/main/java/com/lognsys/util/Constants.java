@@ -97,7 +97,7 @@ public class Constants {
 	 * application.properties. Failure to do will create a bug
 	 */
 	public enum REST_MSGS {
-		response_userempty, response_userinvalid
+		response_userempty, response_userinvalid, response_userexists
 	}
 
 	/**
@@ -108,8 +108,12 @@ public class Constants {
 		exception_userinvalid, exception_userempty
 	}
 
-	public enum DEFAULT_SUBGROUP {
-		None
+	public enum DEFAULT_GROUP {
+		NONE
+	}
+	
+	public enum DEFAULT_ROLE {
+		GUEST
 	}
 
 }

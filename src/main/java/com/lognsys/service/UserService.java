@@ -27,7 +27,6 @@ import com.lognsys.util.Constants;
 import com.lognsys.util.ObjectMapper;
 import com.lognsys.util.WriteJSONToFile;
 
-//TODO 2: Add logging at service level
 @Service("userService")
 public class UserService {
 
@@ -50,23 +49,29 @@ public class UserService {
 	/**
 	 * Add user to database.. Check if user already exists in db
 	 * 
+	 * TODO : Add rollbackFor is users exists TODO : Add exception for users and
+	 * roles and groups which has unqieu constraints
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
-	@Transactional
+	@Transactional(rollbackFor = IllegalArgumentException.class)
 	public void addUser(Users users) throws IOException {
 		String username = users.getUsername();
 
+		// convert UserDTO -> User Object
 		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
 
+		// Check if User Exists
 		boolean isExists = jdbcUserRepository.isExists(username);
-
 		if (isExists)
 			throw new IllegalArgumentException("User already exists in database with username - " + username);
 
+		// adding user into database users
 		LOG.info("#addUser - " + "Adding USER in database with - " + username);
 		int userID = jdbcUserRepository.addUser(usersDTO);
 
+		// adding user into
 		LOG.info("#addUser - " + "Adding USER to corresponding GROUP - " + users.getGroup());
 		jdbcUserRepository.addUserAndGroup(userID, users.getGroup());
 
@@ -221,89 +226,88 @@ public class UserService {
 	 * @param userId
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = UserDataAccessException.class)
 	public Users getUserWithRoleAndGroup(String username) {
 
 		Users users = null;
-		
-		
-//		try {
 
-		
-			
+		try {
 			// get Users information from user table
 			users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
-		
-			// get Role information with role table
-			String role = jdbcRolesRepository.getRoleBy(users.getId());
-			if (role != null) {
-				users.setRole(role);
-			} else {
-				users.setRole("User");
-			}
 
-			// //get Group information
-			String groupName = jdbcGroupRepository.findGroupBy(users.getId());
-			if (groupName != null) {
-				users.setGroup(groupName);
-			} else {
-				users.setGroup("None");
-			}
-
-			return users;
-/*
+			if (users == null)
+				throw new UserDataAccessException(
+						applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
 		} catch (DataAccessException dae) {
-			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
-			// LOG.error(dae.getMessage());
-			// throw new IllegalAccessError("Failed to get user from database
-			// with ID - " + userId);
-			return users;
-		}*/
+			dae.printStackTrace();
+
+			throw new UserDataAccessException(
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
+		}
+
+		// get Role information with role table
+		String role = jdbcRolesRepository.getRoleBy(users.getId());
+		if (role != null) {
+			users.setRole(role);
+		} else {
+			users.setRole(Constants.DEFAULT_ROLE.GUEST.toString());
+		}
+
+		// //get Group information
+		String groupName = jdbcGroupRepository.findGroupBy(users.getId());
+		if (groupName != null) {
+			users.setGroup(groupName);
+		} else {
+			users.setRole(Constants.DEFAULT_GROUP.NONE.toString());
+		}
+
+		return users;
+
 	}
+
 	/**
 	 * This is the service layer with users and its role and Group
 	 * 
 	 * @param userId
 	 * @return
 	 */
-	@Transactional
+	@Transactional(rollbackFor = UserDataAccessException.class)
 	public Users getUserWithRoleAndGroup(int id) {
-		
+
 		Users users = null;
-		
-		
+
 		try {
-			
-			
-			
 			// get Users information from user table
 			users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(id));
-			
-			// get Role information with role table
-			String role = jdbcRolesRepository.getRoleBy(users.getId());
-			if (role != null) {
-				users.setRole(role);
-			} else {
-				users.setRole("User");
-			}
-			
-			// //get Group information
-			String groupName = jdbcGroupRepository.findGroupBy(users.getId());
-			if (groupName != null) {
-				users.setGroup(groupName);
-			} else {
-				users.setGroup("None");
-			}
-			
-			return users;
-			
+
+			if (users == null)
+				throw new UserDataAccessException(
+						applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
 		} catch (DataAccessException dae) {
-			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
-			// LOG.error(dae.getMessage());
-			// throw new IllegalAccessError("Failed to get user from database
-			// with ID - " + userId);
-			return users;
+			dae.printStackTrace();
+
+			throw new UserDataAccessException(
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
 		}
+
+		// get Role information with role table
+		String role = jdbcRolesRepository.getRoleBy(users.getId());
+		if (role != null) {
+			users.setRole(role);
+		} else {
+			users.setRole(Constants.DEFAULT_ROLE.GUEST.toString());
+		}
+
+		// //get Group information
+		String groupName = jdbcGroupRepository.findGroupBy(users.getId());
+		if (groupName != null) {
+			users.setGroup(groupName);
+		} else {
+			users.setRole(Constants.DEFAULT_GROUP.NONE.toString());
+		}
+
+		return users;
+
 	}
 
 	/**

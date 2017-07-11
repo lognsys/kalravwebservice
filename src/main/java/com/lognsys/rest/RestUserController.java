@@ -2,8 +2,8 @@ package com.lognsys.rest;
 
 import java.util.List;
 import java.util.Properties;
-
 import javax.ws.rs.Produces;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
@@ -29,6 +28,8 @@ import com.lognsys.util.ObjectMapper;
 @Produces("application/json")
 @RestController
 public class RestUserController {
+
+	private static final Logger LOG = Logger.getLogger(RestUserController.class);
 
 	@Autowired
 	UserService userService;
@@ -50,12 +51,11 @@ public class RestUserController {
 	 */
 	@RequestMapping(value = "/getallusers/", method = RequestMethod.GET)
 	public ResponseEntity<List<UsersTable>> listAllUsers() {
-		System.out.println("Fetching listAllUsers " );
-		
+		System.out.println("Fetching listAllUsers ");
+
 		List<UsersTable> users = ObjectMapper.mapToUserTable(jdbcGroupRepository.getAllUsersAndGroup());
-		System.out.println("Fetching listAllUsers users " +users);
-		
-		
+		System.out.println("Fetching listAllUsers users " + users);
+
 		if (users.isEmpty()) {
 			return new ResponseEntity<List<UsersTable>>(HttpStatus.NO_CONTENT);// You
 																				// many
@@ -83,54 +83,88 @@ public class RestUserController {
 		return new ResponseEntity<Users>(users, HttpStatus.OK);
 	}
 
+	// /**
+	// *
+	// * @param id
+	// * @param realname
+	// * @param username
+	// * @param auth_id
+	// * @param phone
+	// * @param provenance
+	// * @param birthdate
+	// * @param enabled
+	// * @param notification
+	// * @param device
+	// * @param address
+	// * @param city
+	// * @param state
+	// * @param zipcode
+	// * @return
+	// */
+	// @RequestMapping(value =
+	// "/createuser/{id}/{realname}/{username}/{auth_id}/{phone}/{provenance}/{birthdate}/{enabled}/{notification}/{device}/{address}/{city}/{state}/{zipcode}/{firstname}/{lastname}/{group}/{role}",
+	// method = RequestMethod.POST)
+	// public ResponseEntity<UsersDTO> createUser(@PathVariable(value = "id")
+	// int id,
+	// @PathVariable(value = "realname") String realname, @PathVariable(value =
+	// "username") String username,
+	// @PathVariable(value = "auth_id") String auth_id, @PathVariable(value =
+	// "phone") String phone,
+	// @PathVariable(value = "provenance") String provenance,
+	// @PathVariable(value = "birthdate") String birthdate,
+	// @PathVariable(value = "enabled") Boolean enabled,
+	// @PathVariable(value = "notification") Boolean notification,
+	// @PathVariable(value = "device") String device,
+	// @PathVariable(value = "address") String address, @PathVariable(value =
+	// "city") String city,
+	// @PathVariable(value = "state") String state, @PathVariable(value =
+	// "zipcode") String zipcode) {
+	// int userId;
+	// UsersDTO usersDTO = new UsersDTO(id, realname, username, auth_id, phone,
+	// provenance, birthdate, enabled,
+	// notification, device, address, city, state, zipcode);
+	// System.out.println("Creating User toString " + usersDTO.toString());
+	//
+	// boolean isExists = jdbcUserRepository.isExists(usersDTO.getUsername());
+	// System.out.println("Creating User isExists " + isExists);
+	// if (isExists) {
+	// System.out.println(" isExists usersDTO.getUsername() " +
+	// usersDTO.getUsername());
+	//
+	// usersDTO =
+	// (jdbcUserRepository.findUserByUsername(usersDTO.getUsername()));
+	// System.out.println(" isExists usersDTO.tostring " + usersDTO.toString());
+	//
+	// return new ResponseEntity<UsersDTO>(usersDTO, HttpStatus.OK);
+	// } else {
+	// userId = jdbcUserRepository.addUser(usersDTO);
+	// usersDTO.setId(userId);
+	// System.out.println("Creating User userId " + userId);
+	// System.out.println("Creating User usersDTO tostring after add " +
+	// usersDTO.toString());
+	// // userService.addUser(user);
+	// // CREATED====201
+	// return new ResponseEntity<UsersDTO>(usersDTO, HttpStatus.CREATED);
+	// }
+	// }
 	/**
 	 * 
-	 * @param id
-	 * @param realname
-	 * @param username
-	 * @param auth_id
-	 * @param phone
-	 * @param provenance
-	 * @param birthdate
-	 * @param enabled
-	 * @param notification
-	 * @param device
-	 * @param address
-	 * @param city
-	 * @param state
-	 * @param zipcode
-	 * @return
+	 * @param User
+	 * @return UserDTO
 	 */
-	@RequestMapping(value = "/createuser/{id}/{realname}/{username}/{auth_id}/{phone}/{provenance}/{birthdate}/{enabled}/{notification}/{device}/{address}/{city}/{state}/{zipcode}/{firstname}/{lastname}/{group}/{role}", method = RequestMethod.POST)
-	public ResponseEntity<UsersDTO> createUser(@PathVariable(value = "id") int id,
-			@PathVariable(value = "realname") String realname, @PathVariable(value = "username") String username,
-			@PathVariable(value = "auth_id") String auth_id, @PathVariable(value = "phone") String phone,
-			@PathVariable(value = "provenance") String provenance, @PathVariable(value = "birthdate") String birthdate,
-			@PathVariable(value = "enabled") Boolean enabled,
-			@PathVariable(value = "notification") Boolean notification, @PathVariable(value = "device") String device,
-			@PathVariable(value = "address") String address, @PathVariable(value = "city") String city,
-			@PathVariable(value = "state") String state, @PathVariable(value = "zipcode") String zipcode) {
-		int userId;
-		UsersDTO usersDTO = new UsersDTO(id, realname, username, auth_id, phone, provenance, birthdate, enabled,
-				notification, device, address, city, state, zipcode);
-		System.out.println("Creating User toString " + usersDTO.toString());
+	@RequestMapping(value = "/createuser")
+	public ResponseEntity<?> createUser(@RequestBody Users users) {
 
-		boolean isExists = jdbcUserRepository.isExists(usersDTO.getUsername());
-		System.out.println("Creating User isExists " + isExists);
+		boolean isExists = jdbcUserRepository.isExists(users.getUsername());
+
+		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
 		if (isExists) {
-			System.out.println(" isExists usersDTO.getUsername() " + usersDTO.getUsername());
-
-			usersDTO = (jdbcUserRepository.findUserByUsername(usersDTO.getUsername()));
-			System.out.println(" isExists usersDTO.tostring " + usersDTO.toString());
-
-			return new ResponseEntity<UsersDTO>(usersDTO, HttpStatus.OK);
+			String str = applicationProperties.getProperty(Constants.REST_MSGS.response_userexists.name());
+			return new ResponseEntity<String>(str, HttpStatus.NOT_ACCEPTABLE);
+			
 		} else {
-			userId = jdbcUserRepository.addUser(usersDTO);
+			int userId = jdbcUserRepository.addUser(usersDTO);
 			usersDTO.setId(userId);
-			System.out.println("Creating User userId " + userId);
-			System.out.println("Creating User usersDTO tostring after add " + usersDTO.toString());
-			// userService.addUser(user);
-			// CREATED====201
 			return new ResponseEntity<UsersDTO>(usersDTO, HttpStatus.CREATED);
 		}
 	}
@@ -144,7 +178,6 @@ public class RestUserController {
 
 	@RequestMapping(value = "/updateuser/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Users> updateUser(@PathVariable("id") int id, @RequestBody Users user) {
-		System.out.println("Updating User " + id);
 
 		userService.updateUser(user);
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
@@ -160,7 +193,7 @@ public class RestUserController {
 	 */
 	@RequestMapping(value = "/deleteuser/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Users> deleteUser(@PathVariable("id") int id) {
-		
+
 		Users user = userService.getUserWithRoleAndGroup(id);
 
 		if (user == null) {
@@ -187,7 +220,6 @@ public class RestUserController {
 		try {
 			user = userService.getUserWithRoleAndGroup(username);
 		} catch (UserDataAccessException ue) {
-			System.out.println("UserDataAccessException  ue  "+ue);
 			// check if user is null
 			if (ue.getMessage()
 					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()))) {
