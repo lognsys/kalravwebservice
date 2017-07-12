@@ -34,8 +34,9 @@ public class Users {
 	private String lastname = "";
 	private String role = "";
 	private String group = "";
-
+	
 	public Users() {
+		//no-arg constructor
 	}
 
 	public Users(int id, String auth_id, String username, String realname, String phone,
@@ -86,12 +87,6 @@ public class Users {
 		this.lastname = lastname;
 
 	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	
 
 	public int getId() {
 		return id;

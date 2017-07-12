@@ -1,5 +1,7 @@
 package com.lognsys.util;
 
+import java.io.IOException;
+
 /**
  * @author pdoshi
  * 
@@ -42,7 +44,8 @@ import com.lognsys.model.UsersTable;
 public class ObjectMapper {
 
 	/**
-	 * Users Table Object requires fields to be mapped from Group and Users Object
+	 * Users Table Object requires fields to be mapped from Group and Users
+	 * Object
 	 * 
 	 * @param users
 	 *            - the Users Object and group object is added to Users Tabled
@@ -73,6 +76,7 @@ public class ObjectMapper {
 	/**
 	 * 
 	 * Map POJO Users Object to Users DTO Object
+	 * 
 	 * @param users
 	 * @return
 	 */
@@ -117,19 +121,19 @@ public class ObjectMapper {
 
 		if (splited == null) {
 			firstname = "";
-		    lastname = "";
+			lastname = "";
 		}
-		
+
 		if (splited.length == 1) {
 			firstname = splited[0];
-		    lastname = "";
+			lastname = "";
 		}
-		
+
 		if (splited.length == 2) {
 			firstname = splited[0];
-		    lastname = splited[1];
+			lastname = splited[1];
 		}
-		
+
 		Users newusers = new Users(users.getId(), users.getAuth_id(), users.getUsername(), users.getRealname(),
 				users.getPhone(), users.getProvenance(), users.getBirthdate(), users.isEnabled(),
 				users.isNotification(), users.getDevice(), users.getAddress(), users.getCity(), users.getState(),
@@ -168,7 +172,6 @@ public class ObjectMapper {
 
 	}
 
-	
 	/**
 	 * 
 	 * @param dramaGroups
@@ -183,7 +186,6 @@ public class ObjectMapper {
 		return list;
 	}
 
-	
 	/**
 	 * 
 	 * @param dramaAuditorium
@@ -202,26 +204,26 @@ public class ObjectMapper {
 	public static GroupsDTO mapToGroupsDTO(Groups groups) {
 		return new GroupsDTO(groups.getId(), groups.getGroup_name());
 	}
-	
-	
+
 	/**
 	 * 
 	 * @param ratings
 	 * @return
 	 */
 	public static RatingsDTO mapToRatingsDTO(Ratings ratings) {
-	
+
 		return new RatingsDTO(ratings.getId(), ratings.getRating(), ratings.getRating_date(), ratings.getDramas_id(),
 				ratings.getUsers_id());
 
 	}
+
 	/**
 	 * 
 	 * @param notification
 	 * @return
 	 */
 	public static NotificationsDTO mapToNotificationsDTO(Notifications notifications) {
-		NotificationsDTO notificationsDTO=new NotificationsDTO();
+		NotificationsDTO notificationsDTO = new NotificationsDTO();
 		notificationsDTO.setId(notifications.getId());
 		notificationsDTO.setNotify(notifications.isNotify());
 		notificationsDTO.setMessage(notifications.getMessage());
@@ -232,41 +234,36 @@ public class ObjectMapper {
 		return notificationsDTO;
 
 	}
+
 	public static List<NotificationsTable> mapToNotificationsDTO(List<NotificationsDTO> notificationsDTOs) {
-		
+
 		List<NotificationsTable> list = new ArrayList<>();
 		for (NotificationsDTO ndto : notificationsDTOs) {
-			list.add(new NotificationsTable((ndto).getId(), (ndto).isNotify(),
-					(ndto).getMessage(),(ndto).getRealname(),(ndto).getDramaTitle()));
+			list.add(new NotificationsTable((ndto).getId(), (ndto).isNotify(), (ndto).getMessage(),
+					(ndto).getRealname(), (ndto).getDramaTitle()));
 		}
 		return list;
-		
+
 	}
 
 	public static Notifications mapToNotifications(NotificationsDTO notificationsDTO) {
-		
-		Notifications newNotifications = new Notifications(notificationsDTO.getId(), 
-				notificationsDTO.isNotify(),
-				notificationsDTO.getMessage(),
-				notificationsDTO.getUserId(),
-				notificationsDTO.getDramaId(),
-				notificationsDTO.getRealname(),
-				notificationsDTO.getDramaTitle());
 
-				return newNotifications;
+		Notifications newNotifications = new Notifications(notificationsDTO.getId(), notificationsDTO.isNotify(),
+				notificationsDTO.getMessage(), notificationsDTO.getUserId(), notificationsDTO.getDramaId(),
+				notificationsDTO.getRealname(), notificationsDTO.getDramaTitle());
+
+		return newNotifications;
 
 	}
-	
-	
-	
+
 	public static JSONArray mapToAuditoriumDTO(List<AuditoriumsDTO> auditoriumsDTOs) {
-		Hashtable<String, String[]> hashtable=null;
-		JSONArray array=new JSONArray();
-		
+		Hashtable<String, String[]> hashtable = null;
+		JSONArray array = new JSONArray();
+
 		return array;
 
 	}
-	
+
 	/**
 	 * 
 	 * @param dramas
@@ -279,4 +276,20 @@ public class ObjectMapper {
 
 	}
 
+	/**
+	 * 
+	 * @param jsonStr
+	 * @return
+	 */
+	public static Users convertJSONtoObject(String jsonStr) {
+		com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+		Users users = null;
+		try {
+			users = mapper.readValue(jsonStr, Users.class);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return users;
+	}
 }
