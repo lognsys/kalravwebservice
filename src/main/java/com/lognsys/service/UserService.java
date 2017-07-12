@@ -49,15 +49,14 @@ public class UserService {
 	/**
 	 * Add user to database.. Check if user already exists in db
 	 * 
-	 * TODO : Add rollbackFor is users exists 
-	 * TODO : Add exception for users and
+	 * TODO : Add rollbackFor is users exists TODO : Add exception for users and
 	 * roles and groups which has unqieu constraints
 	 * 
 	 * @return
 	 * @throws IOException
 	 */
 	@Transactional(rollbackFor = IllegalArgumentException.class)
-	public void addUser(Users users) throws IOException {
+	public int addUser(Users users) throws IOException {
 		String username = users.getUsername();
 
 		// convert UserDTO -> User Object
@@ -84,6 +83,7 @@ public class UserService {
 		} catch (IOException io) {
 			LOG.fatal("UserService#addUser refresUserList - " + io.getMessage());
 		}
+		return userID;
 	}
 
 	/**
@@ -223,8 +223,8 @@ public class UserService {
 
 	/**
 	 * 
-	 * TODO 2  : Need to catch exception at role and group level 
-	 * This is the service layer with users and its role and Group
+	 * TODO 2 : Need to catch exception at role and group level This is the
+	 * service layer with users and its role and Group
 	 * 
 	 * @param userId
 	 * @return
@@ -232,18 +232,26 @@ public class UserService {
 	@Transactional(rollbackFor = UserDataAccessException.class)
 	public Users getUserWithRoleAndGroup(String username) {
 
+		// Throw exception on invalid paramter or empty paramter
+		if (username.isEmpty() || !CommonUtilities.isValidEmail(username))
+			throw new UserDataAccessException(
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userinvalid.name()));
+
 		Users users = null;
 
 		try {
 			// get Users information from user table
 			users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
 
+			// database returning empty user
 			if (users == null)
 				throw new UserDataAccessException(
 						applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
+
 		} catch (DataAccessException dae) {
 			dae.printStackTrace();
 
+			// throw exception if user is empty
 			throw new UserDataAccessException(
 					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
 		}
@@ -256,7 +264,7 @@ public class UserService {
 			users.setRole(Constants.DEFAULT_ROLE.GUEST.toString());
 		}
 
-		// //get Group information
+		// get group information
 		String groupName = jdbcGroupRepository.findGroupBy(users.getId());
 		if (groupName != null) {
 			users.setGroup(groupName);
@@ -270,8 +278,8 @@ public class UserService {
 
 	/**
 	 * 
-	 * TODO 1  : Need to catch exception at role and group level 
-	 * This is the service layer with users and its role and Group
+	 * TODO 1 : Need to catch exception at role and group level This is the
+	 * service layer with users and its role and Group
 	 * 
 	 * @param userId
 	 * @return
