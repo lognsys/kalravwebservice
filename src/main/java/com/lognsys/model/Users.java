@@ -34,6 +34,10 @@ public class Users {
 	private String lastname = "";
 	private String role = "";
 	private String group = "";
+	
+	public Users() {
+		//no-arg constructor
+	}
 
 	public Users(int id, String auth_id, String username, String realname, String phone,
 			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
@@ -82,14 +86,6 @@ public class Users {
 		this.firstname = firstname;
 		this.lastname = lastname;
 
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	public Users() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getId() {

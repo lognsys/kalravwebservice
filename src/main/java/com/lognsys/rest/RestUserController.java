@@ -1,7 +1,6 @@
 package com.lognsys.rest;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Properties;
 import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
@@ -14,21 +13,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.exception.UserDataAccessException;
 import com.lognsys.model.Users;
-import com.lognsys.model.UsersTable;
 import com.lognsys.service.UserService;
 import com.lognsys.util.Constants;
-import com.lognsys.util.ObjectMapper;
 
 @Produces("application/json")
-@RestController("/user")
+@RestController
 public class RestUserController {
 
 	private static final Logger LOG = Logger.getLogger(RestUserController.class);
@@ -46,23 +41,6 @@ public class RestUserController {
 	@Autowired
 	@Qualifier("applicationProperties")
 	private Properties applicationProperties;
-
-	// /**
-	// *
-	// * @return
-	// */
-	// @RequestMapping(value = "/getallusers/", method = RequestMethod.GET)
-	// public ResponseEntity<List<UsersTable>> listAllUsers() {
-	//
-	// List<UsersTable> users =
-	// ObjectMapper.mapToUserTable(jdbcGroupRepository.getAllUsersAndGroup());
-	// System.out.println("Fetching listAllUsers users " + users);
-	//
-	// if (users.isEmpty()) {
-	// return new ResponseEntity<List<UsersTable>>(HttpStatus.NO_CONTENT);
-	// }
-	// return new ResponseEntity<List<UsersTable>>(users, HttpStatus.OK);
-	// }
 
 	/**
 	 * 
@@ -95,10 +73,8 @@ public class RestUserController {
 	 * @param User
 	 * @return UserDTO
 	 */
-	@RequestMapping(value = "/createuser", method = { RequestMethod.POST }, consumes = { "application/json" })
+	@RequestMapping(value = "/createuser", method = { RequestMethod.POST })
 	public ResponseEntity<?> createUser(@RequestBody Users users) {
-
-		System.out.println("CREATE USER METHOD");
 
 		boolean isExists = jdbcUserRepository.isExists(users.getUsername());
 
@@ -133,31 +109,6 @@ public class RestUserController {
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
 
 	}
-
-	// /**
-	// * TODO : Please remove delete user from Controller
-	// *
-	// * @param id
-	// * @return
-	// * @deprecated
-	// */
-	// @RequestMapping(value = "/deleteuser/{id}", method =
-	// RequestMethod.DELETE)
-	// public ResponseEntity<Users> deleteUser(@PathVariable("id") int id) {
-	//
-	// Users user = userService.getUserWithRoleAndGroup(id);
-	//
-	// if (user == null) {
-	// System.out.println("Unable to delete. User with id " + id + " not
-	// found");
-	// return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
-	// } else {
-	// int[] ids = new int[1];
-	// ids[0] = user.getId();
-	// userService.deleteUsers(ids);
-	// }
-	// return new ResponseEntity<Users>(HttpStatus.NO_CONTENT);
-	// }
 
 	/**
 	 * 

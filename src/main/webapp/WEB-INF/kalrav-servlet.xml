@@ -22,12 +22,13 @@
 
 	<mvc:resources mapping="/static/**" location="/resources/" />
 	<mvc:resources mapping="/webjars/**" location="/webjars/" />
-<!-- 	<mvc:resources mapping="/resources/**" location="/resources/csshome" />
-	<mvc:resources mapping="/resources/**" location="/resources/js" /> -->
+	<!-- <mvc:resources mapping="/resources/**" location="/resources/csshome" 
+		/> <mvc:resources mapping="/resources/**" location="/resources/js" /> -->
 
 	<!-- Default handler -->
 	<mvc:default-servlet-handler />
 
+	<!-- enable spring rest annotations -->
 	<mvc:annotation-driven />
 
 	<!-- Configure Tiles -->
@@ -43,4 +44,19 @@
 			value="org.springframework.web.servlet.view.tiles3.TilesView"></property>
 	</bean>
 
+	<!--  This is not needed if <mvc: annotation driven> -->
+	<!-- Configure to plugin JSON as request and response in method handler -->
+	<!-- <bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jsonMessageConverter" />
+			</list>
+		</property>
+	</bean> -->
+
+	<!-- Configure bean to convert JSON to POJO and vice versa -->
+	<!-- <bean id="jsonMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+	</bean> -->
 </beans>
