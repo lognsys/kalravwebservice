@@ -32,3 +32,15 @@ alter table  dramas_auditoriums add foreign key (auditoriums_id)
    references  auditoriums (id) on delete cascade
    			 on update cascade;
              
+ALTER TABLE `kalrav`.`dramas_auditoriums` 
+DROP FOREIGN KEY `dramas_auditoriums_ibfk_1`;
+ALTER TABLE `kalrav`.`dramas_auditoriums` 
+ADD CONSTRAINT `dramas_auditoriums_ibfk_1`
+  FOREIGN KEY (`dramas_id`)
+  REFERENCES `kalrav`.`dramas` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+  ALTER TABLE `kalrav`.`dramas_auditoriums` 
+DROP INDEX `uc_drama_audtoriums` ,
+ADD INDEX `uc_drama_audtoriums` (`dramas_id` ASC);

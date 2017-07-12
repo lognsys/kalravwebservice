@@ -170,7 +170,7 @@ public class RestUserController {
 	 * @param User
 	 * @return UserDTO
 	 */
-	@RequestMapping(value = "/createuser")
+	@RequestMapping(value = "/createuser", method= RequestMethod.POST)
 	public ResponseEntity<?> createUser(@RequestBody Users users) {
 
 		boolean isExists = jdbcUserRepository.isExists(users.getUsername());

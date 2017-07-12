@@ -29,7 +29,7 @@ public class TestNotificationService {
 	}
 
 	@Test
-	public void testAddNotification() throws IOException {
+	public void testAddNotification() throws Throwable {
 		Notifications notifications = new Notifications();
 
 		notifications.setNotify(true);

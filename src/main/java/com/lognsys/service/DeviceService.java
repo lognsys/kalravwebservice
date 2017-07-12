@@ -28,7 +28,6 @@ public class DeviceService {
 	public void addDevice(Device device) {
 		String deviceToken = device.getDeviceToken();
 		System.out.println("DeviceService addDdevice  dramaTitle "+deviceToken);
-		
 		DeviceDTO deviceDTO = ObjectMapper.mapToDeviceDTO(device);
 		System.out.println("DeviceService addDdevice  deviceDTO "+deviceDTO);
 		
