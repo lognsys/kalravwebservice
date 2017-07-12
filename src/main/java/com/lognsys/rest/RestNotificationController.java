@@ -61,7 +61,7 @@ public class RestNotificationController {
 		
 		Device device=new Device();
 		device.setDeviceToken(deviceToken);
-		deviceToken="chSD5yuHt-0:APA91bGKikJYyet8PB21SjSWUC8vRe3_1p4XIF50pxed2upo6b20qi81PtnGfrs6xvAGXO7RKTerKrFHYthdlUN5AcGtWaihAUuEoDRNuJJXoEAD_L4aY_7jPkXoRYAz1Jw2w_-Rey0f";
+//		deviceToken="chSD5yuHt-0:APA91bGKikJYyet8PB21SjSWUC8vRe3_1p4XIF50pxed2upo6b20qi81PtnGfrs6xvAGXO7RKTerKrFHYthdlUN5AcGtWaihAUuEoDRNuJJXoEAD_L4aY_7jPkXoRYAz1Jw2w_-Rey0f";
 		System.out.println("RestNotificationController getDeviceToken deviceToken  == = = == = == == "+deviceToken);
 		
 		deviceService.addDevice(new Device(0, deviceToken));

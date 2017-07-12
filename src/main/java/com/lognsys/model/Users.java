@@ -35,6 +35,9 @@ public class Users {
 	private String role = "";
 	private String group = "";
 
+	public Users() {
+	}
+
 	public Users(int id, String auth_id, String username, String realname, String phone,
 			String provenance, String birthdate, boolean enabled, boolean notification, String device, String address,
 			String city, String state, String zipcode, String firstname, String lastname,
@@ -88,9 +91,7 @@ public class Users {
 		this.lastname = lastname;
 	}
 
-	public Users() {
-		// TODO Auto-generated constructor stub
-	}
+	
 
 	public int getId() {
 		return id;
