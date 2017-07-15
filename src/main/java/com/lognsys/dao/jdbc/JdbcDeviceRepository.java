@@ -44,6 +44,8 @@ public class JdbcDeviceRepository implements DeviceRespository {
 
 	@Override
 	public boolean isExists(String deviceToken)  throws DataAccessException{
+		System.out.println(" isExists deviceToken==================================== "+deviceToken);
+		
 		SqlParameterSource param = new MapSqlParameterSource("deviceToken", deviceToken);
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.DEVICE_QUERIES.select_devices_exists.name()), param, Integer.class) > 0;

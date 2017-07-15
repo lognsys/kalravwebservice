@@ -104,8 +104,12 @@ public class RestUserController {
 
 	@RequestMapping(value = "/updateuser/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Users> updateUser(@PathVariable("id") int id, @RequestBody Users user) {
-
+		System.out.println(" updateuser  id  "+id);
+		System.out.println(" updateuser  user  "+user.toString());
+			
 		userService.updateUser(user);
+//		Fremont
+		user.setId(id);
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
 
 	}

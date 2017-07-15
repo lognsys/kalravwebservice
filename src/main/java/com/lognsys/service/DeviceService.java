@@ -1,5 +1,7 @@
 package com.lognsys.service;
 
+import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -8,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasDTO;
+import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcDeviceRepository;
 import com.lognsys.dao.jdbc.JdbcDramaRepository;
 import com.lognsys.model.Device;
@@ -24,31 +27,27 @@ public class DeviceService {
 	@Autowired
 	private JdbcDeviceRepository jdbcDeviceRepository;
 	
-	@Transactional
-	public void addDevice(Device device) {
+	@Transactional(rollbackFor = IllegalArgumentException.class)
+	public int addDevice(Device device) {
 		String deviceToken = device.getDeviceToken();
-		System.out.println("DeviceService addDdevice  dramaTitle "+deviceToken);
-		DeviceDTO deviceDTO = ObjectMapper.mapToDeviceDTO(device);
-		System.out.println("DeviceService addDdevice  deviceDTO "+deviceDTO);
 		
-		try {
-			boolean isExists = jdbcDeviceRepository.isExists(deviceDTO.getDeviceToken());
-			System.out.println("DeviceService addDdevice  isExists "+isExists);
+		
+		System.out.println("DeviceService addDdevice  deviceToken "+deviceToken);
+			// convert DeviceDTO -> Device Object
+			DeviceDTO deviceDTO = ObjectMapper.mapToDeviceDTO(device);
+			System.out.println("DeviceService addDdevice  deviceDTO toString ========================== "+deviceDTO.toString());
+			
+			boolean isExists = jdbcDeviceRepository.isExists(deviceToken);
+			
+			System.out.println("DeviceService addDdevice  isExists =================================== "+isExists);
 			
 			if (isExists) {
-				LOG.info("Found deviceToken in database with deviceToken - " + deviceToken);
-				deviceDTO =jdbcDeviceRepository.findDeviceById(deviceToken);
-				jdbcDeviceRepository.updateDevice(deviceDTO);
-			
-			} else {
-				int deviceId =jdbcDeviceRepository.addDevice(deviceDTO);
-				System.out.println("#DeviceService - " + "Adding deviceDTO in database with deviceId - " + deviceId);
-				
+				throw new IllegalArgumentException("Device already exists in database with deviceToken - " + deviceToken);
 			}
-		} catch (DataAccessException dae) {
-			System.out.println("DeviceService addDevice  Exception "+dae);
+				int deviceId =jdbcDeviceRepository.addDevice(deviceDTO);
+				System.out.println("#DeviceService - " + "Adding deviceDTO in database with deviceId ==========================- " + deviceId);
+			return deviceId;	
 			
-			throw new IllegalStateException("Error : Failed to add deviceToken!");
-		}
+		
 	}
 }
