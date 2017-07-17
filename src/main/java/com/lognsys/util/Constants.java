@@ -29,7 +29,7 @@ public class Constants {
 		insert_notification, select_notification, delete_notification, select_notification_message
 	}
 	public enum DEVICE_QUERIES {
-		insert_devices,select_devices_exists,update_devices
+		insert_user_devices,select_devices_exists,update_devices,select_all_devices
 		}
 
 	/**

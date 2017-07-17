@@ -4,7 +4,9 @@ public class DeviceDTO {
 
 	private int id;
 	private String deviceToken="";
-
+public DeviceDTO() {
+		
+	}
 	public DeviceDTO(int id, String deviceToken) {
 		
 		this.id = id;

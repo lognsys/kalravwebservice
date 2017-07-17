@@ -13,6 +13,9 @@ package com.lognsys.web.controller;
  */
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -22,16 +25,21 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.RolesDTO;
@@ -42,6 +50,7 @@ import com.lognsys.service.DramaService;
 import com.lognsys.service.NotificationService;
 import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
+import com.lognsys.util.PushNotificationHelper;
 
 //TODO Logging required for base controller
 @Controller
@@ -102,8 +111,7 @@ public class NotificationController {
 	 */
 	@RequestMapping(value = "/sendnotification", method = RequestMethod.POST)
 	public String saveForm(@ModelAttribute("notifications") Notifications notification, BindingResult result, ModelMap model) throws Exception {
-		System.out.println("Adding result - " + result.toString());
-
+		
 		FormValidator formValidator = new FormValidator();
 		formValidator.validate(notification, result);
 
@@ -136,7 +144,7 @@ public class NotificationController {
 				if(notification.getUserId()!=0){
 						
 					notification.setRealname(notificationService.getUserRealnameById(notification.getUserId()));
-					System.out.println("Adding notification getRealnamee   " + notification.getRealnamee());
+					System.out.println("Adding notification getRealnamee  \n " + notification.getRealnamee());
 					System.out.println("Adding notification -toString  " + notification.toString());
 						
 				}
@@ -153,11 +161,72 @@ public class NotificationController {
 					notification.setDramaTitle("-");
 				}
 				System.out.println("Adding notification -toString  " + notification.toString());
-				System.out.println("\notification 1 - Send Http POST request");
-//				notificationService.sendPost(notification);
-				notificationService.addNotification(notification);
 				
+				notificationService.addNotification(notification);
 
+				String resultNotify=null;	try {
+					List<DeviceDTO> listsdeviceToken=notificationService.getDeviceToken();
+				
+					if(notification.getUserId()!=0){
+						Users users =notificationService.getUserDetailById(notification.getUserId());
+						
+						for(DeviceDTO devicedto : listsdeviceToken){
+							if(users.getDevice() !=null && users.getDevice().equalsIgnoreCase(devicedto.getDeviceToken())){
+								resultNotify=PushNotificationHelper.sendPushNotification(users.getDevice() ,notification);
+							}
+							else{
+								resultNotify=PushNotificationHelper.sendPushNotification(devicedto.getDeviceToken() ,notification);
+							}
+						}
+					}
+					else{
+						for(DeviceDTO devicedto : listsdeviceToken){
+							if(devicedto.getDeviceToken()!=null){
+								resultNotify=PushNotificationHelper.sendPushNotification(devicedto.getDeviceToken() ,notification);
+							}
+							
+						}
+							
+					}
+					
+					System.out.println(" sendNotification result   "+result.toString());
+						
+				} catch (IOException e) {
+					System.out.println(" sendNotification IOException "+e);
+					
+					e.printStackTrace();
+				}
+				
+				/*try {
+					Hashtable<String, String> hash=new Hashtable<>();
+					hash.put("id", "19");
+					hash.put("notify", String.valueOf(notification.isNotify()));
+					hash.put("message", notification.getMessage());
+					hash.put("userId",String.valueOf(notification.getUserId()));
+					hash.put("realname", notification.getRealnamee());
+					hash.put("dramaId", String.valueOf(notification.getDramaId()));
+					hash.put("dramaTitle", notification.getDramaTitle());
+						
+					
+					URL url = new URL("http://localhost:8080/notify/"+hash);
+					System.out.println("url    " + url);
+					
+					HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+					  httpCon.setDoOutput(true);
+					  httpCon.setRequestMethod("POST");
+					  OutputStreamWriter out = new OutputStreamWriter(
+					      httpCon.getOutputStream());
+					  System.out.println("Response Code "+httpCon.getResponseCode());
+					  System.out.println("Response message "+httpCon.getResponseMessage());
+					  out.close();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
+				
+				return "notificationlist";
+
+			 
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.out.println(" IOException - " + e);

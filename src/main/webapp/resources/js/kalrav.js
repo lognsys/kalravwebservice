@@ -806,7 +806,7 @@ $(document)
                 });
 
 
-            // Userlist edit function
+            // Notificationlist edit function
             $('#notificationedit').click(
                 function(event) {
 
@@ -838,9 +838,7 @@ $(document)
                                 //append html subelements
                                 $(regUserElements).appendTo("#editform");
                                 
-                                //mark username field as read-only
-//                                $("#username").prop("readonly", true);
-
+                                
                                 dialog = $("#dialog-form").dialog({
                                     autoOpen: false,
                                     resizable: false,
@@ -941,5 +939,69 @@ $(document)
                     event.preventDefault();
                 });
             //=====================================================NOTIFICATION LIST===========================================================================
-               
+          /*  $('#sendNotificationId').click(
+                function(event) {
+
+                     {
+                        
+                        // get the form values
+                        var message = $('#message').val();
+                        var notify = $('#notify').val();
+                        var title = $('#title').val();
+                        var realname = $('#realname').val();
+
+                        $.ajax({
+                        type: "POST",
+                        url: "/sendnotification",
+                        data: "message=" + message + "&notify=" + notify+ "&title=" + title + "&realname=" + realname,
+                        success: function(response){
+                        	console.log(JSON.stringify(response)); 
+                        	// we have the response
+                        $('#info').html(response);
+                        $('#message').val('');
+                        $('#notify').val('');
+                        $('#title').val('');
+                        $('#realname').val('');
+                        },
+                        error: function(e){
+                        alert('Error: ' + e);
+                        }
+                        });
+                      
+                    }
+                    event.preventDefault();
+                });
+ */
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         });

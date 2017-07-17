@@ -188,4 +188,11 @@ public class JdbcUserRepository implements UserRespository {
 
 	}
 
+	public void addUserAndDevice(int users_id, String device) {
+
+		SqlParameterSource param = new MapSqlParameterSource().addValue("users_id", users_id).addValue("deviceToken", device);
+		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DEVICE_QUERIES.insert_user_devices.name()),
+				param);
+	}
+
 }

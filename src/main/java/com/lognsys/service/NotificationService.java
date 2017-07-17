@@ -21,17 +21,20 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.NotificationsDTO;
 import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.dao.jdbc.JdbcDeviceRepository;
 import com.lognsys.dao.jdbc.JdbcDramaRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcNotificationsRepository;
 import com.lognsys.dao.jdbc.JdbcRolesRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.exception.UserDataAccessException;
+import com.lognsys.model.Device;
 import com.lognsys.model.Notifications;
 import com.lognsys.model.NotificationsTable;
 import com.lognsys.model.Users;
@@ -50,6 +53,9 @@ public class NotificationService {
 	@Autowired
 	private JdbcUserRepository jdbcUserRepository;
 
+	@Autowired
+	private JdbcDeviceRepository jdbcDeviceRepository;
+	
 	@Autowired
 	private JdbcDramaRepository jdbcDramaRepository;
 	@Autowired
@@ -80,10 +86,8 @@ public class NotificationService {
 		LOG.info("#addNotification - " + "addNotification notificationDTO toString : - " + notificationDTO.toString());
 
 		int notifyID = jdbcNotificationsRepository.addNotifications(notificationDTO);
-		LOG.info("#addNotification - " + "addNotification notifyID : - " + notifyID);
-		LOG.info("#addNotification - " + "addNotification notifyID : - " + notifyID);
+	
 		notifications.setId(notifyID);
-		sendPost(notifications);
 		try {
 			refreshNotificationList();
 		} catch (IOException io) {
@@ -400,66 +404,19 @@ public class NotificationService {
 		}
 		
 	}
-	// HTTP POST request
-		public void sendPost(Notifications notifications) throws Exception {
-			String urlParameters=null;
-			String url = "http://localhost:8080/notify/";
-			URL obj = new URL(url);
-			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-
-			//add reuqest header
-			con.setRequestMethod("POST");
-//			con.setRequestProperty("User-Agent", USER_AGENT);
-			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-			if(notifications!=null && notifications.getMessage()!=null){
-				if(notifications.getUserId()!=0 && notifications.getRealnamee()!=null){
-					 urlParameters = "realname="+notifications.getRealnamee()+"&message="+notifications.getMessage();
-	
-				}
-				else if(notifications.getDramaId()!=0 && notifications.getDramaTitle()!=null){
-					 urlParameters = "dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
-						
-				}else if(notifications.getDramaId()>0 && notifications.getUserId()>0 && notifications.getDramaTitle()!=null && notifications.getRealnamee()!=null)
-						{
-					 urlParameters =  "realname="+notifications.getRealnamee()+"&dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
-				}
-				else{
-					 urlParameters =  "message="+notifications.getMessage();
-						
-				}
-			}
-			
-			// Send post request
-			con.setDoOutput(true);
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(urlParameters);
-			wr.flush();
-			wr.close();
-
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
-
-			BufferedReader in = new BufferedReader(
-			        new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-
-			//print result
-			System.out.println(response.toString());
-
-		}
-		public Users getUserDetailById(int id) {
+			public Users getUserDetailById(int id) {
 
 			return ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(id));
 		}
+		public List<DeviceDTO> getDeviceToken() {
+			try {
+				return jdbcDeviceRepository.getAllDeviceDTO();
+			} catch (DataAccessException dae) {
+				LOG.error(dae.getMessage());
+				throw new IllegalAccessError("Error: All roles cannot be retrieved");
+			}
+		}
+		
 
 
 	

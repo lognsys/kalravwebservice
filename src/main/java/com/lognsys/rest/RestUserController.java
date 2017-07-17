@@ -108,7 +108,7 @@ public class RestUserController {
 		System.out.println(" updateuser  user  "+user.toString());
 			
 		userService.updateUser(user);
-//		Fremont
+		
 		user.setId(id);
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
 

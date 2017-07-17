@@ -34,6 +34,7 @@ public static String sendPushNotification(String deviceToken,Notifications notif
     json.put("to", deviceToken.trim());
     JSONObject info = new JSONObject();
 
+    System.out.println("notifications  .... \n"+notifications.toString());
 	if(notifications!=null && notifications.getMessage()!=null){
 		if(notifications.getUserId()!=0 && notifications.getRealnamee()!=null){
 //			 urlParameters = "realname="+notifications.getRealnamee()+"&message="+notifications.getMessage();
@@ -65,6 +66,8 @@ public static String sendPushNotification(String deviceToken,Notifications notif
 //    info.put("body", "message body"); // Notification
                                                             // body
     json.put("notification", info);
+    System.out.println("json  .... \n"+json.toString());
+    
     try {
         OutputStreamWriter wr = new OutputStreamWriter(
                 conn.getOutputStream());

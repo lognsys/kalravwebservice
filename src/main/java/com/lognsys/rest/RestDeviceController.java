@@ -55,7 +55,7 @@ public class RestDeviceController {
 	@Autowired
 	private JdbcDeviceRepository jdbcDeviceRepository;
 
-	// getDevice token 
+	/*// getDevice token 
 	@RequestMapping(value = "/getDeviceToken", method = { RequestMethod.POST })
 	public ResponseEntity<?> getDeviceToken(@RequestBody Device deviceToken) throws IOException {
 			Device device=new Device();
@@ -75,5 +75,5 @@ public class RestDeviceController {
 			}
 					return new ResponseEntity<Device>(deviceToken, HttpStatus.CREATED);
 			}
-		
+		*/
 }
