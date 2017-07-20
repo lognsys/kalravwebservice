@@ -33,40 +33,16 @@ public static String sendPushNotification(String deviceToken,Notifications notif
     JSONObject json = new JSONObject();
 
     json.put("to", deviceToken.trim());
-  /*  JSONObject info = new JSONObject();
-
-    System.out.println("notifications  .... \n"+notifications.toString());
-
-    if(notifications.getDramaTitle()!=null){
-    	info.put("title", notifications.getDramaTitle()); // Notification title
-        	
-    }
-    else if(notifications.getRealnamee()!=null){
-    	info.put("title", notifications.getRealnamee()); // Notification title
-        
-    }
-    else{
-    	info.put("title", "Kalrav"); // Notification body
-    }
-    
-
-    if(notifications.getDramaTitle()!=null){
-    	info.put("body", notifications.getDramaTitle()); // Notification body
-        	
-    }
-    else if(notifications.getRealnamee()!=null){
-    	info.put("body", notifications.getRealnamee()); // Notification body
-        
-    }
-    else{
-    	info.put("body", "Kalrav"); // Notification body
-    }
-    */
+ 
     JSONObject info = new JSONObject();
 	
     JSONArray jsonArray=new JSONArray();
     
     JSONObject jsonObject=new JSONObject();
+    System.out.println("\n json  notifications toString.... \n"+notifications.toString());
+    System.out.println("\n json  notifications obj checking.... \n"+notifications);
+    
+    
     if(notifications!=null){
 		jsonObject.put("dramaId", notifications.getDramaId());
 
@@ -82,7 +58,7 @@ public static String sendPushNotification(String deviceToken,Notifications notif
 	info.put("title", "Notification"); 
     info.put("body", jsonArray);
     json.put("notification", info);
-    System.out.println("json  .... \n"+json.toString());
+    System.out.println("\n json  .... \n"+json.toString());
     
     try {
         OutputStreamWriter wr = new OutputStreamWriter(
@@ -95,7 +71,7 @@ public static String sendPushNotification(String deviceToken,Notifications notif
 
         String output;
         while ((output = br.readLine()) != null) {
-        	  System.out.println("Output from Server sendPushNotification .... \n"+output);
+//        	  System.out.println("Output from Server sendPushNotification .... \n"+output);
               
         }
         result = "SUCCESS";

@@ -144,34 +144,37 @@ public class NotificationController {
 				if(notification.getUserId()!=0){
 						
 					notification.setRealname(notificationService.getUserRealnameById(notification.getUserId()));
-					System.out.println("Adding notification getRealnamee  \n " + notification.getRealnamee());
-					System.out.println("Adding notification -toString  " + notification.toString());
+//					System.out.println("Adding notification getRealnamee  \n " + notification.getRealnamee());
+//					System.out.println("Adding notification -toString  " + notification.toString());
 						
 				}
 				else{
-					notification.setRealname("-");
+					notification.setRealname("");
 				}
 				if(notification.getDramaId()!=0){
 						
 					notification.setDramaTitle(notificationService.getDramaTitleById(notification.getDramaId()));
-					System.out.println("Adding notification getDramaTitle   " + notification.getDramaTitle());
+//					System.out.println("Adding notification getDramaTitle   " + notification.getDramaTitle());
 						
 				}
 				else{
-					notification.setDramaTitle("-");
+					notification.setDramaTitle("");
 				}
-				System.out.println("Adding notification -toString  " + notification.toString());
+//				System.out.println("Adding notification -toString  " + notification.toString());
 				
 				notificationService.addNotification(notification);
 
-				String resultNotify=null;	try {
+				String resultNotify=null;
+				try {
 					List<DeviceDTO> listsdeviceToken=notificationService.getDeviceToken();
 				
 					if(notification.getUserId()!=0){
 						Users users =notificationService.getUserDetailById(notification.getUserId());
 						
 						for(DeviceDTO devicedto : listsdeviceToken){
-							if(users.getDevice() !=null && users.getDevice().equalsIgnoreCase(devicedto.getDeviceToken())){
+							System.out.println(" DEVICE ====   "+(users.getDevice() !=null && users.getDevice().equalsIgnoreCase(devicedto.getDeviceToken())));
+							
+							if(users.getDevice() !=null && users.getDevice().equalsIgnoreCase(devicedto.getDeviceToken()) && notification.getUserId()==users.getId()){
 								resultNotify=PushNotificationHelper.sendPushNotification(users.getDevice() ,notification);
 							}
 							else{
@@ -181,6 +184,8 @@ public class NotificationController {
 					}
 					else{
 						for(DeviceDTO devicedto : listsdeviceToken){
+							System.out.println("\n DEVICE NO USER AND DRAMA====   "+devicedto.getDeviceToken());
+							
 							if(devicedto.getDeviceToken()!=null){
 								resultNotify=PushNotificationHelper.sendPushNotification(devicedto.getDeviceToken() ,notification);
 							}
@@ -189,7 +194,6 @@ public class NotificationController {
 							
 					}
 					
-					System.out.println(" sendNotification result   "+result.toString());
 						
 				} catch (IOException e) {
 					System.out.println(" sendNotification IOException "+e);
