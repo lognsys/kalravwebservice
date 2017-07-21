@@ -26,7 +26,7 @@ public class Constants {
 	}
 
 	public enum NOTIFICATION_QUERIES {
-		insert_notification, select_notification, delete_notification, select_notification_message
+		insert_notification, select_notification, delete_notification, select_notification_message,delete_notification_by_id,
 	}
 	public enum DEVICE_QUERIES {
 		insert_user_devices,select_devices_exists,update_devices,select_all_devices

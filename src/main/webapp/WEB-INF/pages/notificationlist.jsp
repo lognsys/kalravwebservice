@@ -44,7 +44,7 @@
 									<th data-field="message" data-sortable="true">Message</th>
 									<th data-field="user_id" data-sortable="true" data-visible="false">ID</th>
 									<th data-field="drama_id" data-sortable="true" data-visible="false">ID</th>
-									<th data-field="realname" data-sortable="true">Real Name</th>
+									<th data-field="realname" data-sortable="true">User Real Name</th>
 									<th data-field="dramaTitle" data-sortable="true">Drama Title</th>
 								</tr>
 							</thead>
@@ -55,8 +55,8 @@
 								class="btn btn-primary pull-right rbtnMargin">Add</button>
 							<button id="notificationdelete" type="submit"
 								class="btn btn-danger pull-right rbtnMargin">Delete</button>
-							<button id="notificationedit" type="submit"
-								class="btn btn-warning pull-right rbtnMargin">Edit</button>
+							<!-- <button id="notificationedit" type="submit"
+								class="btn btn-warning pull-right rbtnMargin">Edit</button> -->
 							<button id="notificationcancel" type="reset"
 								class="btn btn-default pull-right rbtnMargin">Cancel</button>
 						</div>

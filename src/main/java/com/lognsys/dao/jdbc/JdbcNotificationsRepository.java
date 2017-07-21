@@ -82,4 +82,11 @@ public class JdbcNotificationsRepository implements NotificationRespository {
 		return notificationsDTO;
 
 	}
+
+	@Override
+	public boolean deleteNotificationsById(int id) {
+		SqlParameterSource parameter = new MapSqlParameterSource("id",id);
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.NOTIFICATION_QUERIES.delete_notification_by_id.name()),
+				parameter) == 1;
+	}
 }

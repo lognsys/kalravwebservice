@@ -67,6 +67,7 @@ public class NotificationController {
 	@RequestMapping(value = "/notificationlist", method = RequestMethod.GET)
 	public String showUsers(Model model, HttpServletRequest request) throws IOException {
 		notificationService.refreshNotificationList();
+		
 		return "notificationlist";
 	}
 

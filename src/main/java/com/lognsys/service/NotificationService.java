@@ -1,10 +1,15 @@
 package com.lognsys.service;
 
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -66,7 +71,7 @@ public class NotificationService {
 	
 	@Autowired
 	private JdbcNotificationsRepository jdbcNotificationsRepository;
-
+	int count=0;
 	// Injecting resource application.properties.
 	@Autowired
 	@Qualifier("applicationProperties")
@@ -80,10 +85,9 @@ public class NotificationService {
 	 */
 	@Transactional
 	public void addNotification(Notifications notifications) throws Exception {
-//		String username = notifications.get();
 
 		NotificationsDTO notificationDTO = ObjectMapper.mapToNotificationsDTO(notifications);
-		LOG.info("#addNotification - " + "addNotification notificationDTO toString : - " + notificationDTO.toString());
+//		LOG.info("#addNotification - " + "addNotification notificationDTO toString : - " + notificationDTO.toString());
 
 		int notifyID = jdbcNotificationsRepository.addNotifications(notificationDTO);
 	
@@ -111,7 +115,11 @@ public class NotificationService {
 	 */
 		public void refreshNotificationList() throws IOException {
 		List<NotificationsTable> notificationsTables = ObjectMapper.mapToNotificationsDTO(jdbcNotificationsRepository.getAllNotifications());
-
+		System.out.println("#deleteNotification notificationsTables.size() - " +notificationsTables.size());
+		
+		if(notificationsTables!= null && notificationsTables.size()>10 && (notificationsTables.size()!=0)){
+			deleteNotificationByIds(notificationsTables);
+		}
 		ResourceLoader resourceLoader = new FileSystemResourceLoader();
 		Resource resource = resourceLoader
 				.getResource(applicationProperties.getProperty(Constants.JSON_FILES.notification_filename.name()));
@@ -125,6 +133,27 @@ public class NotificationService {
 	}
 
 
+	private void deleteNotificationByIds(List<NotificationsTable> notificationsTables) throws IOException {
+	System.out.println("#deleteNotification notificationsTables.size() - " +notificationsTables.size());
+		
+		for (int i=0;i<notificationsTables.size()-10;i++) {
+			try {
+				NotificationsTable notificationsTable=notificationsTables.get(i);
+				System.out.println("#deleteNotification notificationsTable.getId() - " +notificationsTable.getId());
+				
+				boolean isDelete = jdbcNotificationsRepository.deleteNotificationsById(notificationsTable.getId());
+				if (!isDelete) {
+					LOG.info("#deleteNotification - " + "failed to delete Notification with notificationsTable.getId() - " + notificationsTable.getId());
+				} else {
+					refreshNotificationList();
+				}
+			} catch (DataAccessException dae) {
+
+				LOG.error(dae.getMessage());
+				throw new IllegalStateException("Error : Failed to delete Notification!");
+			}
+		}
+	}
 	/**
 	 * Delete users from database
 	 * 
@@ -154,6 +183,7 @@ public class NotificationService {
 			}
 		}
 	}
+
 
 
 	/**
