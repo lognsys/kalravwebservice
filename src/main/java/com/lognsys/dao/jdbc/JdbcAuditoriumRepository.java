@@ -1,5 +1,7 @@
 package com.lognsys.dao.jdbc;
 
+import java.util.Date;
+
 /**
  * @author pdoshi
  * 
@@ -61,10 +63,18 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 
 	@Override
 
-	public List<AuditoriumsDTO> findAuditoriumBy(int dramas_id) {
-		SqlParameterSource parameter = new MapSqlParameterSource("dramas_id", dramas_id);
+	public List<AuditoriumsDTO> findAuditoriumBy(int dramas_id,Date strDate) {
 		
+		Hashtable<String, Object> parameter = new Hashtable<>();
+		parameter.put("dramas_id",(dramas_id));
+		parameter.put("date", strDate);
+	
+		 System.out.println("parameter toString =="+parameter.toString());  
 
+		 System.out.println("parameter keys =="+parameter.keys());  
+
+		 System.out.println("parameter values =="+parameter.values());  
+		 
 		/*
 		 * SqlParameterSource parameter = new MapSqlParameterSource("dramas_id",
 		 * dramas_id); return
@@ -113,7 +123,8 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 		Hashtable<String, Integer> parameter = new Hashtable<>();
 		parameter.put("id", id);
 		parameter.put("dramas_id", dramas_id);
-
+		System.out.println("#AuditoriumService================ dramas_id "+dramas_id);
+		
 		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_new_audi_price_time.name()), parameter,
 				new BeanPropertyRowMapper<AuditoriumsDTO>(AuditoriumsDTO.class));

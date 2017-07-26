@@ -21,6 +21,8 @@ import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.service.AuditoriumService;
 import com.lognsys.service.DramaService;
 
+import net.minidev.json.JSONObject;
+
 @RestController
 public class RestAuditoriumController {
 	@Autowired
@@ -31,22 +33,26 @@ public class RestAuditoriumController {
 	
 	
 	// list all  auditoriumlist 
-	@GetMapping("/auditoriumlist/{dramas_id}")
-	public ResponseEntity<JSONArray>  getAuditoriumList(@PathVariable("dramas_id") int dramas_id) {
+	@GetMapping("/auditoriumlist/{dramas_id}/{strDate}")
+	public ResponseEntity<?>  getAuditoriumList(@PathVariable("dramas_id") int dramas_id ,@PathVariable("strDate")  String strDate) {
 		
 				try {
-					
-						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id);		
+					System.out.println("getAuditoriumList String date "+strDate);  
+						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id,strDate);		
 						if(jsonArray!= null && jsonArray.size()>0)
 						{
-							return new ResponseEntity(jsonArray, HttpStatus.OK);
+							return new ResponseEntity<JSONArray>(jsonArray, HttpStatus.OK);
 						}
 						else{
-							return new ResponseEntity("No audotorium available : " , HttpStatus.NOT_FOUND);
+							/*JSONObject object =new JSONObject();
+							object.put("msg", "No audotorium available : ");
+							JSONArray jarray=new JSONArray();
+							jarray.add(object);*/
+							return new ResponseEntity<String>("No auditorium available" , HttpStatus.NOT_FOUND);
 						}
 				} catch (Exception e) {
 					System.out.println("#RestAuditoriumController Exception e"+e);
-					return new ResponseEntity("No auditorium found with drama : " , HttpStatus.NOT_FOUND);
+					return new ResponseEntity<String>("No auditorium found with drama  " , HttpStatus.NOT_FOUND);
 					
 				}
 				

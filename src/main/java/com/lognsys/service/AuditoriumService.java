@@ -3,6 +3,8 @@ package com.lognsys.service;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,15 +37,35 @@ public class AuditoriumService {
 	 * @param id
 	 * @return
 	 */
-	public JSONArray getAuditoriumList(int dramas_id) {
-		List<AuditoriumsDTO> auditoriumsDTOsList=jdbcAuditoriumRepository.findAuditoriumBy(dramas_id);
+	public JSONArray getAuditoriumList(int dramas_id,String strDate) {
+		   System.out.println("String date "+strDate);  
+	    System.out.println("dramas id"+dramas_id);  
+	    Date datenew  = null;
+		
+	    Date date1 = null;
+		try {
+			if(strDate!=null)
+			date1 = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+			else{
+				datenew=new Date();
+				strDate=new SimpleDateFormat("yyyy-MM-dd").format(datenew);
+				date1 = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+						
+			}
+		
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		    System.out.println(strDate+"\t"+date1);  
+		List<AuditoriumsDTO> auditoriumsDTOsList=jdbcAuditoriumRepository.findAuditoriumBy(dramas_id,date1);
 //		System.out.println("#AuditoriumService getAuditoriumList  lists.size() "+ auditoriumsDTOsList.size());
 		
 		JSONArray mainArray=new JSONArray();
 
 		if(auditoriumsDTOsList!=null && auditoriumsDTOsList.size()>0){
 			for(int i=0 ;i<auditoriumsDTOsList.size();i++){
-			
+				
 				JSONArray jsonArray=new JSONArray();
 				AuditoriumsDTO auditoriumsDTO=auditoriumsDTOsList.get(i);
 	//			System.out.println("#AuditoriumService getAuditoriumList  lists  auditoriumsDTO.toString()  "+ auditoriumsDTO.toString());
@@ -52,9 +74,13 @@ public class AuditoriumService {
 						&& auditoriumsDTO.getDate()!= null
 						&& auditoriumsDTO.getDate().length()>0){
 				
-					if(comparedDateWithCurrrentDate(auditoriumsDTO)){
+					if(comparedDateWithCurrrentDate(auditoriumsDTOsList.get(i))==true){
+						System.out.println("#AuditoriumService================ comparedDateWithCurrrentDate(auditoriumsDTOsList.get(i)) "+ comparedDateWithCurrrentDate(auditoriumsDTOsList.get(i)));
 						
-						List<AuditoriumsDTO> auditoriumsPriceDTOsList= jdbcAuditoriumRepository.getAuditoriumListBy(auditoriumsDTO.getId(),dramas_id);
+						System.out.println("#AuditoriumService================ auditoriumsDTOsList.get(i).getId() "+ auditoriumsDTOsList.get(i).getId());
+						System.out.println("#AuditoriumService================ dramas_id "+dramas_id);
+						
+						List<AuditoriumsDTO> auditoriumsPriceDTOsList= jdbcAuditoriumRepository.getAuditoriumListBy(auditoriumsDTOsList.get(i).getId(),dramas_id);
 						
 						JSONObject jsonObject=new JSONObject();
 					
@@ -87,9 +113,7 @@ public class AuditoriumService {
 
 						return mainArray;
 					
-					}else{
-					auditoriumsDTOsList.remove(auditoriumsDTO);
-				}
+					}
 			}
 		}
 		return mainArray;
@@ -105,18 +129,17 @@ public class AuditoriumService {
 		
 		SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"); // 2015-01-20-2015 
          Date auditoriumDatabaseDate=null;
-//         Date currentDate=new Date();
-         Calendar currentDate = Calendar.getInstance();
+       
       String today=   getToday("yyyy-MM-dd hh:mm:ss ");
-      String[] todaysArray=today.split(" ");
-      System.out.println("today splite "+today.split(" "));
-  	try {
+      System.out.println("today "+today);
+    	 String[] todaysArray=today.split(" ");
+    try {
 		String date1 = auditoriumsDTODate.getDate();//"2016-07-15";
 		String time1 = auditoriumsDTODate.getTime();//"11:00 AM";
 		String date2 =todaysArray[0];//"2016-07-17";
 		String time2 =todaysArray[1];//"12:15 AM";
-		System.out.println("\n\n #comparedDateWithCurrrentDate  date1 "+ date1+"   time1"+time1);
-		System.out.println("\n\n #comparedDateWithCurrrentDate  date2 "+ date2+"   time2"+time2);
+		System.out.println("\n\n #comparedDateWithCurrrentDate database date1 "+ date1+"   time1"+time1);
+		System.out.println("\n\n #comparedDateWithCurrrentDate todays date date2 "+ date2+"   time2"+time2);
 		
 		Date dateObj1 = sdf.parse(date1 + " " + time1);
 		Date dateObj2 = sdf.parse(date2 + " " + time2);
@@ -138,7 +161,7 @@ public class AuditoriumService {
                 return false;
             }
            }
-		else if(dateObj2.getDate()<=dateObj1.getDate()){// both date are same
+		else if(dateObj2.getMonth()<=dateObj1.getMonth()){// comparing months
 			      return true;
            }
 		else{
@@ -151,6 +174,8 @@ public class AuditoriumService {
 	}
 	public static String getToday(String format){
 	     Date date = new Date();
+	    
 	     return new SimpleDateFormat(format).format(date);
+	   
 	 }
 }
