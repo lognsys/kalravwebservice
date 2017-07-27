@@ -16,14 +16,15 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.GroupsDTO;
@@ -51,6 +54,7 @@ import com.lognsys.service.NotificationService;
 import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
 import com.lognsys.util.PushNotificationHelper;
+import com.mongodb.util.JSON;
 
 //TODO Logging required for base controller
 @Controller
@@ -249,7 +253,7 @@ public class NotificationController {
 	 * @return
 	 */
 	@RequestMapping(value = "/notificationlist", method = RequestMethod.POST)
-	public String manageUser(Model model, @RequestParam(value = "notificationIds", required = false) String notificationIds,
+	public String manageNotification(Model model, @RequestParam(value = "notificationIds", required = false) String notificationIds,
 			@RequestParam String notifyAction) {
 		System.out.println("#delete notifyAction - " +notifyAction);
 		
@@ -257,77 +261,32 @@ public class NotificationController {
 
 		case "delete":
 			JSONParser parser = new JSONParser();
+			
 			try {
-				System.out.println("#delete notificationIds - " +notificationIds);
+				System.out.println("#manageNotification notificationIds - " +notificationIds.toString());
+					Object obj = parser.parse(notificationIds);
 				
-				Object obj = parser.parse(notificationIds);
-
 				JSONArray arr = (JSONArray) obj;
-				System.out.println("#delete arr - " +arr);
-				System.out.println("#delete arr.size() - " +arr.size());
 				
-				String[] messages = new String[arr.size()];
+				Integer[] notifyIDs = new Integer[arr.size()];
+				if(arr.size()>0){
 				for (int i = 0; i < arr.size(); i++) {
-
 					JSONObject jsonObject = (JSONObject) arr.get(i);
-					messages[i] = jsonObject.get("message").toString();
-					System.out.println("#delete messages[i] - " +messages[i]);
+					
+					int id = Integer.parseInt(jsonObject.get("id").toString());
+					System.out.println("manageNotification arr id "+id);
+					
+					notifyIDs[i] = id;
+					System.out.println("manageNotification arr notifyIDs[i] "+notifyIDs[i]);
 					
 				}
-
-				notificationService.deleteNotification(messages);
-
-			} catch (ParseException e) {
-				System.out.println("#delete ParseException - " +e);
+				System.out.println("manageNotification arr notifyIDs length "+notifyIDs.length);
 				
-				
-			} catch (IOException e) {
-				System.out.println("#delete IOException - " +e);
-			}
-			return "notificationlist";
-
-		case "edit":
-
-			JSONParser p = new JSONParser();
-			try {
-				Object obj = p.parse(notificationIds);
-				System.out.println("Edit notifications notificationIds - "+notificationIds);
-				
-				JSONArray arr = (JSONArray) obj;
-				String message = "";
-				for (int i = 0; i < arr.size(); i++) {
-
-					JSONObject jsonObject = (JSONObject) arr.get(i);
-					message = jsonObject.get("message").toString();
-				}
-				System.out.println("Edit notifications message - "+message);
-
-				Notifications notifications = notificationService.getNotificationByMessage(message);
-				System.out.println("Edit notifications - "+notifications);
-
-				// CALL database to get dramas & users
-				
-				List<DramasDTO> listOfDramasDTO = notificationService.getDramas();
-				List<UsersDTO> listOfUsersDTO = notificationService.getUsers();
-								
-				// Adding data to list from DramasDTO & UsersDTO
-				Hashtable<Integer, String> dramasList=new Hashtable<>();
-				for (DramasDTO dramasDTO : listOfDramasDTO) {
-					dramasList.put(dramasDTO.getId(), dramasDTO.getTitle());
+				notificationService.deleteNotification(notifyIDs);
 				}	
 
-					Hashtable<Integer, String> usersList=new Hashtable<>();
-					for (UsersDTO usersDTO : listOfUsersDTO) {
-						usersList.put(usersDTO.getId(), usersDTO.getRealname());
-					}
-					model.addAttribute("notifications", notifications);
-					model.addAttribute("dramasList", dramasList);
-					model.addAttribute("usersList", usersList);
-				
-			
-				return "sendnotification";
-			} catch (ParseException e) {
-				e.printStackTrace();
+			}  catch (Exception e) {
+				System.out.println("#manageNotification IOException - " +e);
 			}
 			return "notificationlist";
 

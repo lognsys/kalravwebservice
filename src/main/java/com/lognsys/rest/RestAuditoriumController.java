@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Properties;
 
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +22,8 @@ import com.lognsys.dao.jdbc.JdbcAuditoriumRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.service.AuditoriumService;
 import com.lognsys.service.DramaService;
+import com.lognsys.util.Constants;
 
-import net.minidev.json.JSONObject;
 
 @RestController
 public class RestAuditoriumController {
@@ -30,6 +32,12 @@ public class RestAuditoriumController {
 	@Autowired
 	private JdbcAuditoriumRepository jdbcAuditoriumRepository;
 	
+	
+	// Injecting resource application.properties.
+		@Autowired
+		@Qualifier("applicationProperties")
+		private Properties applicationProperties;
+
 	
 	
 	// list all  auditoriumlist 
@@ -44,15 +52,15 @@ public class RestAuditoriumController {
 							return new ResponseEntity<JSONArray>(jsonArray, HttpStatus.OK);
 						}
 						else{
-							/*JSONObject object =new JSONObject();
-							object.put("msg", "No audotorium available : ");
-							JSONArray jarray=new JSONArray();
-							jarray.add(object);*/
-							return new ResponseEntity<String>("No auditorium available" , HttpStatus.NOT_FOUND);
+							String str = applicationProperties.getProperty(Constants.REST_MSGS.response_auditoriumempty.name());
+							return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+						
 						}
 				} catch (Exception e) {
 					System.out.println("#RestAuditoriumController Exception e"+e);
-					return new ResponseEntity<String>("No auditorium found with drama  " , HttpStatus.NOT_FOUND);
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_auditoriumempty.name());
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+				
 					
 				}
 				

@@ -162,17 +162,17 @@ public class NotificationService {
 	 * @return
 	 * @throws IOException
 	 */
-	public void deleteNotification(String[] messages) throws IOException {
-		System.out.println("#deleteNotification messages.length - " +messages.length);
+	public void deleteNotification(Integer[] ids) throws IOException {
+		System.out.println("#deleteNotification ids.length - " +ids.length);
 		
-		for (String message : messages) {
+		for (int id : ids) {
 			try {
-				System.out.println("#deleteNotification message - " +message);
+				System.out.println("#deleteNotification id - " +id);
 				
-				boolean isDelete = jdbcNotificationsRepository.deleteNotificationsBy(message);
+				boolean isDelete = jdbcNotificationsRepository.deleteNotificationsById(id);
 
 				if (!isDelete) {
-					LOG.info("#deleteNotification - " + "failed to delete Notification with messages - " + messages);
+					LOG.info("#deleteNotification - " + "failed to delete Notification with id - " + id);
 				} else {
 					refreshNotificationList();
 				}

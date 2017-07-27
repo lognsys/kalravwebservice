@@ -97,7 +97,7 @@ public class Constants {
 	 * application.properties. Failure to do will create a bug
 	 */
 	public enum REST_MSGS {
-		response_userempty, response_userinvalid, response_userexists
+		response_userempty, response_userinvalid, response_userexists,response_dramaexists,response_dramaempty,response_auditoriumempty,response_ratingsuccess
 	}
 
 	/**
