@@ -9,6 +9,7 @@ drop table if exists booking;
 CREATE TABLE IF NOT EXISTS `kalrav`.`booking` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `booking_date` DATETIME NOT NULL,
+  `confirmation_no` VARCHAR(64) NOT NULL,
   `users_id` INT(11) NOT NULL,
   `booking_seatcount` INT NOT NULL,
   `last_edit` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

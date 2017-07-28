@@ -2,25 +2,15 @@ drop table if exists all_dramas_seats;
 
 CREATE TABLE IF NOT EXISTS `kalrav`.`all_dramas_seats` (
   # Surrogate Primary Key	
-	id integer auto_increment primary key,
-	
-  `audi_id` INT NOT NULL,
+	id integer auto_increment primary key,	
   `row_seat_id` INT NOT NULL,
-  `seat_number` VARCHAR(15) NOT NULL,
   `refer_seat_status_id` INT NOT NULL default 0,
-  `drama_date` DATETIME NOT NULL,
   `booking_id` INT NOT NULL default 0,
-  `drama_id` INT NOT NULL,
-  INDEX `audi_id_idx` (`audi_id` ASC),
+  `dramas_auditoriums_id` INT NOT NULL,
   INDEX `row_seat_id_idx` (`row_seat_id` ASC),
   INDEX `refer_seat_status_id_idx` (`refer_seat_status_id` ASC),
   INDEX `booking_id_idx` (`booking_id` ASC),
-  INDEX `drama_id_idx` (`drama_id` ASC),
-  CONSTRAINT `audi_id`
-    FOREIGN KEY (`audi_id`)
-    REFERENCES `kalrav`.`auditoriums` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `all_dramas_seat_dramas_auditoriums_id_idx` (`dramas_auditoriums_id` ASC),
   CONSTRAINT `row_seat_id`
     FOREIGN KEY (`row_seat_id`)
     REFERENCES `kalrav`.`row_seat` (`id`)
@@ -36,8 +26,8 @@ CREATE TABLE IF NOT EXISTS `kalrav`.`all_dramas_seats` (
     REFERENCES `kalrav`.`booking` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `drama_id`
-    FOREIGN KEY (`drama_id`)
+  CONSTRAINT `dramas_auditoriums_id`
+    FOREIGN KEY (`dramas_auditoriums_id`)
     REFERENCES `kalrav`.`dramas` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
