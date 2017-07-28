@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.lognsys.model.Notifications;
@@ -32,39 +33,33 @@ public static String sendPushNotification(String deviceToken,Notifications notif
     JSONObject json = new JSONObject();
 
     json.put("to", deviceToken.trim());
+ 
     JSONObject info = new JSONObject();
-
-	if(notifications!=null && notifications.getMessage()!=null){
-		if(notifications.getUserId()!=0 && notifications.getRealnamee()!=null){
-//			 urlParameters = "realname="+notifications.getRealnamee()+"&message="+notifications.getMessage();
-			 info.put("title",notifications.getRealnamee()); // Notification title
-			 info.put("body", notifications.getMessage()); // Notification
-			    
-		}
-		else if(notifications.getDramaId()!=0 && notifications.getDramaTitle()!=null){
-//			 urlParameters = "dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
-			 info.put("title",notifications.getDramaTitle()); // Notification title
-			 info.put("body", notifications.getMessage()); // Notification
-			 	
-		}else if(notifications.getDramaId()>0 && notifications.getUserId()>0 && notifications.getDramaTitle()!=null && notifications.getRealnamee()!=null)
-				{
-//			 urlParameters =  "realname="+notifications.getRealnamee()+"&dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
-			 info.put("title",notifications.getRealnamee() + "Your Drama :"+notifications.getDramaTitle()); // Notification title
-			 info.put("body", notifications.getMessage()); // Notification
-			
-		}
-		else{
-//			 urlParameters =  "message="+notifications.getMessage();
-			 info.put("title","Kalrav"); // Notification title
-			 info.put("body", notifications.getMessage()); // Notification
-						
-		}
-	}
+	
+    JSONArray jsonArray=new JSONArray();
     
-//    info.put("title", "notification title"); // Notification title
-//    info.put("body", "message body"); // Notification
-                                                            // body
+    JSONObject jsonObject=new JSONObject();
+    System.out.println("\n json  notifications toString.... \n"+notifications.toString());
+    System.out.println("\n json  notifications obj checking.... \n"+notifications);
+    
+    
+    if(notifications!=null){
+		jsonObject.put("dramaId", notifications.getDramaId());
+
+		jsonObject.put("dramaTitle", notifications.getDramaTitle());
+
+		jsonObject.put("userId", notifications.getUserId());
+
+		jsonObject.put("realname", notifications.getRealnamee());
+
+		jsonObject.put("message", notifications.getMessage());
+		jsonArray.add(jsonObject);
+    } 
+	info.put("title", "Notification"); 
+    info.put("body", jsonArray);
     json.put("notification", info);
+    System.out.println("\n json  .... \n"+json.toString());
+    
     try {
         OutputStreamWriter wr = new OutputStreamWriter(
                 conn.getOutputStream());
@@ -75,9 +70,9 @@ public static String sendPushNotification(String deviceToken,Notifications notif
                 (conn.getInputStream())));
 
         String output;
-        System.out.println("Output from Server sendPushNotification .... \n");
         while ((output = br.readLine()) != null) {
-            System.out.println(output);
+//        	  System.out.println("Output from Server sendPushNotification .... \n"+output);
+              
         }
         result = "SUCCESS";
     } catch (Exception e) {

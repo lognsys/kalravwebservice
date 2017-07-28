@@ -29,6 +29,7 @@ public interface NotificationRespository {
 	 */
 	public boolean deleteNotificationsBy(String message);
 	
+	public boolean deleteNotificationsById(int id);
 	
 	
 	/**

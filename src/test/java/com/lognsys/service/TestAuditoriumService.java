@@ -39,7 +39,7 @@ public class TestAuditoriumService {
 		
 		try {
 			int dramas_id=1;
-			JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id);		
+			JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id, null);		
 			if(jsonArray!= null && jsonArray.size()>0)
 			{
 				System.out.println("#RestAuditoriumController jsonArray"+jsonArray);

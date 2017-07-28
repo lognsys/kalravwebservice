@@ -1,10 +1,15 @@
 package com.lognsys.service;
 
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -21,17 +26,20 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.NotificationsDTO;
 import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.dao.jdbc.JdbcDeviceRepository;
 import com.lognsys.dao.jdbc.JdbcDramaRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcNotificationsRepository;
 import com.lognsys.dao.jdbc.JdbcRolesRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.exception.UserDataAccessException;
+import com.lognsys.model.Device;
 import com.lognsys.model.Notifications;
 import com.lognsys.model.NotificationsTable;
 import com.lognsys.model.Users;
@@ -51,6 +59,9 @@ public class NotificationService {
 	private JdbcUserRepository jdbcUserRepository;
 
 	@Autowired
+	private JdbcDeviceRepository jdbcDeviceRepository;
+	
+	@Autowired
 	private JdbcDramaRepository jdbcDramaRepository;
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
@@ -60,7 +71,7 @@ public class NotificationService {
 	
 	@Autowired
 	private JdbcNotificationsRepository jdbcNotificationsRepository;
-
+	int count=0;
 	// Injecting resource application.properties.
 	@Autowired
 	@Qualifier("applicationProperties")
@@ -74,16 +85,13 @@ public class NotificationService {
 	 */
 	@Transactional
 	public void addNotification(Notifications notifications) throws Exception {
-//		String username = notifications.get();
 
 		NotificationsDTO notificationDTO = ObjectMapper.mapToNotificationsDTO(notifications);
-		LOG.info("#addNotification - " + "addNotification notificationDTO toString : - " + notificationDTO.toString());
+//		LOG.info("#addNotification - " + "addNotification notificationDTO toString : - " + notificationDTO.toString());
 
 		int notifyID = jdbcNotificationsRepository.addNotifications(notificationDTO);
-		LOG.info("#addNotification - " + "addNotification notifyID : - " + notifyID);
-		LOG.info("#addNotification - " + "addNotification notifyID : - " + notifyID);
+	
 		notifications.setId(notifyID);
-		sendPost(notifications);
 		try {
 			refreshNotificationList();
 		} catch (IOException io) {
@@ -107,7 +115,11 @@ public class NotificationService {
 	 */
 		public void refreshNotificationList() throws IOException {
 		List<NotificationsTable> notificationsTables = ObjectMapper.mapToNotificationsDTO(jdbcNotificationsRepository.getAllNotifications());
-
+		System.out.println("#deleteNotification notificationsTables.size() - " +notificationsTables.size());
+		
+		if(notificationsTables!= null && notificationsTables.size()>10 && (notificationsTables.size()!=0)){
+			deleteNotificationByIds(notificationsTables);
+		}
 		ResourceLoader resourceLoader = new FileSystemResourceLoader();
 		Resource resource = resourceLoader
 				.getResource(applicationProperties.getProperty(Constants.JSON_FILES.notification_filename.name()));
@@ -120,35 +132,28 @@ public class NotificationService {
 		}
 	}
 
-	/**
-	 * Delete users from database
-	 * 
-	 * @param
-	 * 
-	 * @return
-	 */
-	public void deleteUsers(int[] ids) {
-		LOG.info("#deleteUser - " + "Deleting total number of users from database - " + ids.length);
 
-		for (int id : ids) {
+	private void deleteNotificationByIds(List<NotificationsTable> notificationsTables) throws IOException {
+	System.out.println("#deleteNotification notificationsTables.size() - " +notificationsTables.size());
+		
+		for (int i=0;i<notificationsTables.size()-10;i++) {
 			try {
-
-				boolean isDelete = jdbcUserRepository.deleteUserBy(id);
-
+				NotificationsTable notificationsTable=notificationsTables.get(i);
+				System.out.println("#deleteNotification notificationsTable.getId() - " +notificationsTable.getId());
+				
+				boolean isDelete = jdbcNotificationsRepository.deleteNotificationsById(notificationsTable.getId());
 				if (!isDelete) {
-					LOG.info("#deleteUser - " + "failed to delete user with ID - " + id);
+					LOG.info("#deleteNotification - " + "failed to delete Notification with notificationsTable.getId() - " + notificationsTable.getId());
 				} else {
 					refreshNotificationList();
 				}
-			} catch (DataAccessException | IOException dae) {
+			} catch (DataAccessException dae) {
 
 				LOG.error(dae.getMessage());
-				throw new IllegalStateException("Error : Failed to delete user!");
+				throw new IllegalStateException("Error : Failed to delete Notification!");
 			}
-
 		}
 	}
-
 	/**
 	 * Delete users from database
 	 * 
@@ -157,17 +162,17 @@ public class NotificationService {
 	 * @return
 	 * @throws IOException
 	 */
-	public void deleteNotification(String[] messages) throws IOException {
-		System.out.println("#deleteNotification messages.length - " +messages.length);
+	public void deleteNotification(Integer[] ids) throws IOException {
+		System.out.println("#deleteNotification ids.length - " +ids.length);
 		
-		for (String message : messages) {
+		for (int id : ids) {
 			try {
-				System.out.println("#deleteNotification message - " +message);
+				System.out.println("#deleteNotification id - " +id);
 				
-				boolean isDelete = jdbcNotificationsRepository.deleteNotificationsBy(message);
+				boolean isDelete = jdbcNotificationsRepository.deleteNotificationsById(id);
 
 				if (!isDelete) {
-					LOG.info("#deleteNotification - " + "failed to delete Notification with messages - " + messages);
+					LOG.info("#deleteNotification - " + "failed to delete Notification with id - " + id);
 				} else {
 					refreshNotificationList();
 				}
@@ -179,35 +184,7 @@ public class NotificationService {
 		}
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param user
-	 */
-	@Transactional
-	public boolean updateUser(Users users) {
-		boolean isUpdated = false;
-		try {
 
-			// Convert Users POJO to UsersDTO
-			UsersDTO u = ObjectMapper.mapToUsersDTO(users);
-
-			// TODO add exception
-			isUpdated = jdbcUserRepository.updateUser(u);
-			isUpdated = jdbcGroupRepository.updateGroupOfUser(users.getUsername(), users.getGroup());
-			isUpdated = jdbcRolesRepository.updateRoleOfUser(users.getUsername(), users.getRole());
-
-			refreshNotificationList();
-
-		} catch (DataAccessException dae) {
-			LOG.error(dae.getMessage());
-			throw new IllegalStateException("Failed user update : status - " + isUpdated);
-		} catch (IOException e) {
-			throw new IllegalStateException(e);
-		}
-		return isUpdated;
-
-	}
 
 	/**
 	 * 
@@ -225,154 +202,6 @@ public class NotificationService {
 			throw new IllegalStateException("Error : Failed to add user!");
 		}
 	
-	}
-
-	/**
-	 * This is the service layer with users and its role and Group
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	@Transactional
-	public Users getUserWithRoleAndGroup(String username) {
-
-		Users users = null;
-		
-		
-//		try {
-
-		
-			
-			// get Users information from user table
-			users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
-		
-			// get Role information with role table
-			String role = jdbcRolesRepository.getRoleBy(users.getId());
-			if (role != null) {
-				users.setRole(role);
-			} else {
-				users.setRole("User");
-			}
-
-			// //get Group information
-			String groupName = jdbcGroupRepository.findGroupBy(users.getId());
-			if (groupName != null) {
-				users.setGroup(groupName);
-			} else {
-				users.setGroup("None");
-			}
-
-			return users;
-/*
-		} catch (DataAccessException dae) {
-			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
-			// LOG.error(dae.getMessage());
-			// throw new IllegalAccessError("Failed to get user from database
-			// with ID - " + userId);
-			return users;
-		}*/
-	}
-	/**
-	 * This is the service layer with users and its role and Group
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	@Transactional
-	public Users getUserWithRoleAndGroup(int id) {
-		
-		Users users = null;
-		
-		
-		try {
-			
-			
-			
-			// get Users information from user table
-			users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(id));
-			
-			// get Role information with role table
-			String role = jdbcRolesRepository.getRoleBy(users.getId());
-			if (role != null) {
-				users.setRole(role);
-			} else {
-				users.setRole("User");
-			}
-			
-			// //get Group information
-			String groupName = jdbcGroupRepository.findGroupBy(users.getId());
-			if (groupName != null) {
-				users.setGroup(groupName);
-			} else {
-				users.setGroup("None");
-			}
-			
-			return users;
-			
-		} catch (DataAccessException dae) {
-			System.out.println("getUserWithRoleAndGroup DataAccessException " + dae);
-			// LOG.error(dae.getMessage());
-			// throw new IllegalAccessError("Failed to get user from database
-			// with ID - " + userId);
-			return users;
-		}
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public List<GroupsDTO> getAllGroups() {
-
-		try {
-			return jdbcGroupRepository.getAllGroups();
-		} catch (DataAccessException dae) {
-			LOG.error(dae.getMessage());
-			throw new IllegalAccessError("Error: All groups cannot be retrieved");
-		}
-
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public List<RolesDTO> getAllRoles() {
-
-		try {
-			return jdbcRolesRepository.getAllRoles();
-		} catch (DataAccessException dae) {
-			LOG.error(dae.getMessage());
-			throw new IllegalAccessError("Error: All roles cannot be retrieved");
-		}
-
-	}
-
-	/**
-	 * Returns User object on success.
-	 * 
-	 * 
-	 * @param username
-	 * @return
-	 */
-	public Users getUserByUsername(String username) {
-
-		Users user = null;
-
-		// Throws user invalid on bad paramters
-		if (username.trim().isEmpty() || !CommonUtilities.isValidEmail(username))
-			throw new UserDataAccessException(
-					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userinvalid.name()));
-
-		// throws exception user not found
-		try {
-			user = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
-		} catch (EmptyResultDataAccessException e) {
-			throw new UserDataAccessException(
-					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()), e);
-		}
-
-		return user;
 	}
 
 	public Notifications getNotificationByMessage(String message) {
@@ -400,66 +229,19 @@ public class NotificationService {
 		}
 		
 	}
-	// HTTP POST request
-		public void sendPost(Notifications notifications) throws Exception {
-			String urlParameters=null;
-			String url = "http://localhost:8080/notify/";
-			URL obj = new URL(url);
-			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
-
-			//add reuqest header
-			con.setRequestMethod("POST");
-//			con.setRequestProperty("User-Agent", USER_AGENT);
-			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-
-			if(notifications!=null && notifications.getMessage()!=null){
-				if(notifications.getUserId()!=0 && notifications.getRealnamee()!=null){
-					 urlParameters = "realname="+notifications.getRealnamee()+"&message="+notifications.getMessage();
-	
-				}
-				else if(notifications.getDramaId()!=0 && notifications.getDramaTitle()!=null){
-					 urlParameters = "dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
-						
-				}else if(notifications.getDramaId()>0 && notifications.getUserId()>0 && notifications.getDramaTitle()!=null && notifications.getRealnamee()!=null)
-						{
-					 urlParameters =  "realname="+notifications.getRealnamee()+"&dramaTitle="+notifications.getDramaTitle()+"&message="+notifications.getMessage();
-				}
-				else{
-					 urlParameters =  "message="+notifications.getMessage();
-						
-				}
-			}
-			
-			// Send post request
-			con.setDoOutput(true);
-			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(urlParameters);
-			wr.flush();
-			wr.close();
-
-			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + urlParameters);
-			System.out.println("Response Code : " + responseCode);
-
-			BufferedReader in = new BufferedReader(
-			        new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			StringBuffer response = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				response.append(inputLine);
-			}
-			in.close();
-
-			//print result
-			System.out.println(response.toString());
-
-		}
-		public Users getUserDetailById(int id) {
+			public Users getUserDetailById(int id) {
 
 			return ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(id));
 		}
+		public List<DeviceDTO> getDeviceToken() {
+			try {
+				return jdbcDeviceRepository.getAllDeviceDTO();
+			} catch (DataAccessException dae) {
+				LOG.error(dae.getMessage());
+				throw new IllegalAccessError("Error: All roles cannot be retrieved");
+			}
+		}
+		
 
 
 	

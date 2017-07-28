@@ -70,10 +70,13 @@ public class JdbcRatingsRepository implements RatingsRespository {
 	}
 
 	@Override
-	public int updateRating(int id, RatingsDTO ratingsDTO) {
-		SqlParameterSource parameter = new MapSqlParameterSource("id", Integer.valueOf(id));
+	public int updateRating( RatingsDTO ratingsDTO) {
+		System.out.println("Creating namedParamJdbcTemplate== ratingsDTO.toString() " + ratingsDTO.toString());
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(ratingsDTO);
+
+		System.out.println("Creating namedParamJdbcTemplate== ratingsDTO.toString() " + params.toString());
 		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.RATING_QUERIES.update_ratings.name()),
-				parameter);
+				params);
 	}
 
 	@Override

@@ -2,7 +2,6 @@
 # @author - PJD 24/03/17
 # 
 #
-
 DROP TABLE IF EXISTS adverts_types;
 CREATE TABLE adverts_types
 (  

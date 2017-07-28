@@ -29,7 +29,7 @@ public interface RatingsRespository {
 	 * 
 	 * @param rating
 	 */
-	public int updateRating(int id,RatingsDTO ratingsDTO);
+	public int updateRating(RatingsDTO ratingsDTO);
 
 
 	/**

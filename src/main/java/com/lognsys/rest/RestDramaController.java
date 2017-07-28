@@ -2,6 +2,7 @@ package com.lognsys.rest;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -12,6 +13,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,12 +30,15 @@ import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.dao.jdbc.JdbcDramaRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcRatingsRepository;
 import com.lognsys.model.Drama;
 import com.lognsys.model.Ratings;
+import com.lognsys.model.Users;
 import com.lognsys.service.DramaService;
 import com.lognsys.service.RatingService;
+import com.lognsys.util.Constants;
 import com.lognsys.util.PushNotificationHelper;
 
 
@@ -46,6 +51,16 @@ public class RestDramaController {
 	private DramaService dramaService;
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
+
+	@Autowired
+	private JdbcDramaRepository jdbcDramaRepository;
+	
+	// Injecting resource application.properties.
+		@Autowired
+		@Qualifier("applicationProperties")
+		private Properties applicationProperties;
+
+	
 	
 	
 //	list all  drama with group name  even if customer has not assign groupname
@@ -59,67 +74,77 @@ public class RestDramaController {
 	}
 // detail screen of drama with  respect to drama id
 	@GetMapping("/getdramadetailbyid/{id}")
-	public ResponseEntity getDramaById(@PathVariable("id") int id) {
+	public ResponseEntity<?> getDramaById(@PathVariable("id") int id) {
 		DramasDTO dramasDTO=null;
 		try {
-			
-			 dramasDTO = dramaService.findByDrama(id);
-			
-
-			return new ResponseEntity(dramasDTO, HttpStatus.OK);
+			if(id>0){
+				 dramasDTO = dramaService.findByDrama(id);
+				return new ResponseEntity<DramasDTO>(dramasDTO, HttpStatus.OK);
+			}
+			else{
+				String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name());
+				return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+			}
 		} catch (Exception e) {
 			System.out.println("manageDrama getDramaById dramasDTO "+dramasDTO);
 			
 			if (dramasDTO == null) {
-				return new ResponseEntity("No Dramas found for id " + id, HttpStatus.NOT_FOUND);
+				String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name());
+				return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
 			}
 		}
-		return new ResponseEntity(dramasDTO, HttpStatus.OK);
+		return new ResponseEntity<DramasDTO>(dramasDTO, HttpStatus.OK);
 		
 	}
 
 	
 	// list all  drama with group name  
 		@GetMapping("/getalldramaandgroup/{group_name}")
-		public ResponseEntity<List<DramasGroupsDTO>> getAllDramasAndGroup(@PathVariable("group_name") String group_name) {
+		public ResponseEntity<?> getAllDramasAndGroup(@PathVariable("group_name") String group_name) {
 			
-//			return  jdbcGroupRepository.getDramasByGroup(group_name);
-		
 			try {
 				if(jdbcGroupRepository.getDramasByGroup(group_name).size()>0){
-					return new ResponseEntity(jdbcGroupRepository.getDramasByGroup(group_name), HttpStatus.OK);
+					return new ResponseEntity<List<DramasGroupsDTO>>(jdbcGroupRepository.getDramasByGroup(group_name), HttpStatus.OK);
 				}
 				else{
-					return new ResponseEntity("No Drama found with group name : " + group_name, HttpStatus.NOT_FOUND);
-					
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name())+" with group name :"+group_name;
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
 				}
 			} catch (Exception e) {
 				System.out.println("manageDrama getDramaById  jdbcGroupRepository.getDramasByGroup(group_name) "+ jdbcGroupRepository.getDramasByGroup(group_name));
 				
 				if ( jdbcGroupRepository.getDramasByGroup(group_name) == null) {
-					return new ResponseEntity("No Drama found with group name " + group_name, HttpStatus.NOT_FOUND);
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name())+" with group name :"+group_name;
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);
 				}
 			}
-			return  new ResponseEntity(jdbcGroupRepository.getDramasByGroup(group_name), HttpStatus.OK);
+			return  new ResponseEntity<List<DramasGroupsDTO>>(jdbcGroupRepository.getDramasByGroup(group_name), HttpStatus.OK);
 		
 		}
 
 	
 	
 	@PostMapping(value = "/createdrama")
-	public ResponseEntity createDrama(@RequestBody Drama dramas) {
-		System.out.println("RestDramaController createDrama ");
+	public ResponseEntity<?> createDrama(@RequestBody Drama dramas) {
 		
-		dramaService.addDrama(dramas);
+		boolean isExists = jdbcDramaRepository.isExists(dramas.getTitle());
 		
-		return new ResponseEntity(dramas, HttpStatus.OK);
-	}
+		if (isExists) {
+			String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaexists.name());
+			return new ResponseEntity<String>(str, HttpStatus.FOUND);
+
+		} else {
+			int dramaId=dramaService.addDrama(dramas);
+			dramas.setId(dramaId);
+			return new ResponseEntity<Drama>(dramas, HttpStatus.CREATED);
+		}
+	}/*
 	@DeleteMapping("/deletedrama/{dramaIds}")
 	public ResponseEntity deleteDrama(@PathVariable("dramaIds") String dramaIds) {
 		{
 			System.out.println("RestDramaController deleteDrama "+dramaIds);
 		
-			/*JSONParser parser = new JSONParser();
+			JSONParser parser = new JSONParser();
 			try {
 				
 				Object obj = parser.parse(dramaIds);
@@ -146,30 +171,27 @@ public class RestDramaController {
 			} catch (ParseException e) {
 				System.out.println("RestDramaController ParseException "+e);
 				
-			}	*/
+			}	
 		}
 		return new ResponseEntity(dramaIds, HttpStatus.OK);
 
 	}
-
+*/
 
 	@PutMapping("/updatedrama/{id}")
-	public ResponseEntity updateDrama(@PathVariable int id, @RequestBody DramasDTO dramasDTO) {
+	public ResponseEntity<?> updateDrama(@PathVariable int id, @RequestBody DramasDTO dramasDTO) {
 		System.out.println("RestDramaController updateDrama ");
 		
-		boolean Updatecount =dramaService.updateDrama(id,dramasDTO);
-		System.out.println("RestDramaController updateDrama Updatecount "+Updatecount);
+		boolean updatecCount =dramaService.updateDrama(id,dramasDTO);
+		System.out.println("RestDramaController updateDrama updatecCount "+updatecCount);
 		
-		if (Updatecount==false) {
-			return new ResponseEntity("Drama Does not exist ...!", HttpStatus.NOT_FOUND);
+		if (updatecCount==false) {
+			String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name());
+			return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);
 		}
-
-		return new ResponseEntity(Updatecount, HttpStatus.OK);
+		else{
+			return new ResponseEntity<DramasDTO>(dramasDTO, HttpStatus.OK);
+			
+		}
 	}
-	
-
-	
-
-
-
 }

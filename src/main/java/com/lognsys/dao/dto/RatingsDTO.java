@@ -15,7 +15,6 @@ public class RatingsDTO {
 	private String rating_date;
 	private int dramas_id;
 	private int users_id;
-	private String last_edit;
 	
 	
 	
@@ -71,4 +70,11 @@ public class RatingsDTO {
 	public void setRating(double rating) {
 		this.rating = rating;
 	}
+
+	@Override
+	public String toString() {
+		return "RatingsDTO [id=" + id + ", rating=" + rating + ", rating_date=" + rating_date + ", dramas_id="
+				+ dramas_id + ", users_id=" + users_id +  "]";
 	}
+	
+}

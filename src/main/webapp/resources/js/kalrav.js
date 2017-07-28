@@ -703,10 +703,9 @@ $(document)
                             event.preventDefault();
                        
                     });
-            
-            
-            
            //=====================================================NOTIFICATION LIST===========================================================================
+           
+            
             var checkedRows = [];
 
             // check individual row
@@ -815,7 +814,7 @@ $(document)
                 });
 
 
-            // Userlist edit function
+            // Notificationlist edit function
             $('#notificationedit').click(
                 function(event) {
 
@@ -847,9 +846,7 @@ $(document)
                                 //append html subelements
                                 $(regUserElements).appendTo("#editform");
                                 
-                                //mark username field as read-only
-//                                $("#username").prop("readonly", true);
-
+                                
                                 dialog = $("#dialog-form").dialog({
                                     autoOpen: false,
                                     resizable: false,
@@ -1026,4 +1023,4 @@ $(document)
             //  END OF CARD ADD/REMOVE ROW
      
             
-        });
+ }); //end of document ready function

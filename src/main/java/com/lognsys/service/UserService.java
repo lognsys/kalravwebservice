@@ -78,6 +78,9 @@ public class UserService {
 		LOG.info("#addUser - " + "Adding USER to corresponding ROLE - " + users.getRole());
 		jdbcUserRepository.addUserAndRole(userID, users.getRole());
 
+		LOG.info("#addUser - " + "Adding USER with  device - " + users.getDevice());
+		jdbcUserRepository.addUserAndDevice(userID, users.getDevice());
+
 		try {
 			refreshUserList();
 		} catch (IOException io) {

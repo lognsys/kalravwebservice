@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Properties;
 
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +22,8 @@ import com.lognsys.dao.jdbc.JdbcAuditoriumRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.service.AuditoriumService;
 import com.lognsys.service.DramaService;
+import com.lognsys.util.Constants;
+
 
 @RestController
 public class RestAuditoriumController {
@@ -29,24 +33,34 @@ public class RestAuditoriumController {
 	private JdbcAuditoriumRepository jdbcAuditoriumRepository;
 	
 	
+	// Injecting resource application.properties.
+		@Autowired
+		@Qualifier("applicationProperties")
+		private Properties applicationProperties;
+
+	
 	
 	// list all  auditoriumlist 
-	@GetMapping("/auditoriumlist/{dramas_id}")
-	public ResponseEntity<JSONArray>  getAuditoriumList(@PathVariable("dramas_id") int dramas_id) {
+	@GetMapping("/auditoriumlist/{dramas_id}/{strDate}")
+	public ResponseEntity<?>  getAuditoriumList(@PathVariable("dramas_id") int dramas_id ,@PathVariable("strDate")  String strDate) {
 		
 				try {
-					
-						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id);		
+					System.out.println("getAuditoriumList String date "+strDate);  
+						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id,strDate);		
 						if(jsonArray!= null && jsonArray.size()>0)
 						{
-							return new ResponseEntity(jsonArray, HttpStatus.OK);
+							return new ResponseEntity<JSONArray>(jsonArray, HttpStatus.OK);
 						}
 						else{
-							return new ResponseEntity("No audotorium available : " , HttpStatus.NOT_FOUND);
+							String str = applicationProperties.getProperty(Constants.REST_MSGS.response_auditoriumempty.name());
+							return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+						
 						}
 				} catch (Exception e) {
 					System.out.println("#RestAuditoriumController Exception e"+e);
-					return new ResponseEntity("No auditorium found with drama : " , HttpStatus.NOT_FOUND);
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_auditoriumempty.name());
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+				
 					
 				}
 				

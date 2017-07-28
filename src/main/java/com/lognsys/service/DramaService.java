@@ -68,7 +68,7 @@ public class DramaService {
 	 * @return
 	 */
 	@Transactional
-	public void addDrama(Drama dramas) {
+	public int addDrama(Drama dramas) {
 		String dramaTitle = dramas.getTitle();
 		System.out.println("DramaService addDrama  dramaTitle "+dramaTitle);
 		
@@ -76,13 +76,6 @@ public class DramaService {
 		System.out.println("DramaService addDrama  dramasDTO "+dramasDTO);
 		
 		try {
-			boolean isExists = jdbcDramaRepository.isExists(dramaTitle);
-			System.out.println("DramaService addDrama  isExists "+isExists);
-			
-			if (isExists) {
-				LOG.info("Found drama in database with dramaTitle - " + dramaTitle);
-
-			} else {
 				int dramaID =jdbcDramaRepository.addDrama(dramasDTO);
 				System.out.println("#addUser - " + "Adding drama in database with dramaID - " + dramaID);
 				
@@ -92,7 +85,7 @@ public class DramaService {
 				System.out.println("#addUser - " + "Adding DRAMA to corresponding Auditorium - " + dramas.getAuditorium());
 				jdbcDramaRepository.addDramaAndAuditorium(dramaID, dramas.getAuditorium());
 
-			}
+				return dramaID;
 		} catch (DataAccessException dae) {
 			System.out.println("DramaService addDrama  Exception "+dae);
 			

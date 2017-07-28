@@ -26,10 +26,10 @@ public class Constants {
 	}
 
 	public enum NOTIFICATION_QUERIES {
-		insert_notification, select_notification, delete_notification, select_notification_message
+		insert_notification, select_notification, delete_notification, select_notification_message,delete_notification_by_id,
 	}
 	public enum DEVICE_QUERIES {
-		insert_devices,select_devices_exists,update_devices
+		insert_user_devices,select_devices_exists,update_devices,select_all_devices
 		}
 
 	/**
@@ -97,7 +97,7 @@ public class Constants {
 	 * application.properties. Failure to do will create a bug
 	 */
 	public enum REST_MSGS {
-		response_userempty, response_userinvalid, response_userexists
+		response_userempty, response_userinvalid, response_userexists,response_dramaexists,response_dramaempty,response_auditoriumempty,response_ratingsuccess
 	}
 
 	/**

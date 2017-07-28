@@ -20,6 +20,10 @@ public class UsersTable {
 
 	private String status;
 
+	public UsersTable() {
+		super();
+	}
+
 	public UsersTable(int id, String name, String email, String group, String status) {
 		super();
 		this.id = id;

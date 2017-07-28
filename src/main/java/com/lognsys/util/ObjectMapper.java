@@ -272,7 +272,7 @@ public class ObjectMapper {
 	public static DeviceDTO mapToDeviceDTO(Device device) {
 		// TODO: Current setting of group to null, but need to change to value
 
-		return new DeviceDTO(device.getId(), device.getDeviceToken());
+		return new DeviceDTO(device.getDeviceToken());
 
 	}
 

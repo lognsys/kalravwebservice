@@ -18,7 +18,9 @@ import com.lognsys.dao.DeviceRespository;
 import com.lognsys.dao.DramaRespository;
 import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasDTO;
+import com.lognsys.dao.dto.NotificationsDTO;
 import com.lognsys.dao.jdbc.rowmapper.DramaUserIDRowMapper;
+import com.lognsys.model.Device;
 import com.lognsys.util.Constants;
 
 @Repository("deviceRepository")
@@ -37,13 +39,15 @@ public class JdbcDeviceRepository implements DeviceRespository {
 	public int addDevice(DeviceDTO deviceDTO)  throws DataAccessException{
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(deviceDTO);
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
-		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DEVICE_QUERIES.insert_devices.name()),
+		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DEVICE_QUERIES.insert_user_devices.name()),
 				params, keyHolder);
 		return keyHolder.getKey().intValue();
 	}
 
 	@Override
 	public boolean isExists(String deviceToken)  throws DataAccessException{
+		System.out.println(" isExists deviceToken==================================== "+deviceToken);
+		
 		SqlParameterSource param = new MapSqlParameterSource("deviceToken", deviceToken);
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.DEVICE_QUERIES.select_devices_exists.name()), param, Integer.class) > 0;
@@ -62,8 +66,13 @@ public class JdbcDeviceRepository implements DeviceRespository {
 
 	@Override
 	public List<DeviceDTO> getAllDeviceDTO()  throws DataAccessException{
-		// TODO Auto-generated method stub
-		return null;
+		List<DeviceDTO> listDeviceDTO = namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.DEVICE_QUERIES.select_all_devices.name()),
+				new BeanPropertyRowMapper<DeviceDTO>(DeviceDTO.class));
+		System.out.println("JdbcNotificationsRepository-Service listDeviceDTO : " +listDeviceDTO);
+		System.out.println("JdbcNotificationsRepository-Service listDeviceDTO size : " +listDeviceDTO.size());
+		
+		return listDeviceDTO;
 	}
 
 	@Override
@@ -89,6 +98,8 @@ public class JdbcDeviceRepository implements DeviceRespository {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 
 	/**
 	 * Add users object into database

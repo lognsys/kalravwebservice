@@ -89,7 +89,7 @@ public class TestJdbcUserRepository {
 		Users users = new Users();
 
 		users.setFirstname("Priyank");
-		users.setLastname("Doshi");
+		users.setlastname("Doshi");
 		
 
 		users.setUsername("doshipriyank");

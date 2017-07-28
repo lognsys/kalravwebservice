@@ -76,9 +76,9 @@ public class RatingService {
 		}
 	}
 	
-	public int updateRating(int id,RatingsDTO ratingsDTO) {
+	public int updateRating(RatingsDTO ratingsDTO) {
 		
-		return jdbcRatingsRepository.updateRating(id,ratingsDTO);
+		return jdbcRatingsRepository.updateRating(ratingsDTO);
 
 	}
 }

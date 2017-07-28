@@ -4,10 +4,15 @@ public class DeviceDTO {
 
 	private int id;
 	private String deviceToken="";
-
+public DeviceDTO() {
+		
+	}
 	public DeviceDTO(int id, String deviceToken) {
 		
 		this.id = id;
+		this.deviceToken = deviceToken;
+	}
+	public DeviceDTO( String deviceToken) {
 		this.deviceToken = deviceToken;
 	}
 	public int getId() {
@@ -21,6 +26,10 @@ public class DeviceDTO {
 	}
 	public void setDeviceToken(String deviceToken) {
 		this.deviceToken = deviceToken;
+	}
+	@Override
+	public String toString() {
+		return "DeviceDTO [id=" + id + ", deviceToken=" + deviceToken + "]";
 	}
 	
 }

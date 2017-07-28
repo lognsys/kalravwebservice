@@ -306,6 +306,7 @@
 			<version>0.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>kalravweb</finalName>
