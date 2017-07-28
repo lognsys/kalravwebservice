@@ -18,17 +18,23 @@
 		</div>
 		<!--/.row-->
 
-
+		<!-- errors -->
 		<div id="errors">
 			<ul id="error_list"></ul>
 		</div>
+
+		<!--  -->
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
+
+					<!-- panel heading with glyph icon -->
 					<div class="panel-heading">
 						<svg class="glyph stroked male user">
 							<use xlink:href="#stroked-male-user"></use></svg>
 					</div>
+
+
 					<div class="panel-body">
 						<table id="userTable" data-toggle="table"
 							data-url="static/tables/users.json" data-show-refresh="true"
@@ -47,6 +53,8 @@
 								</tr>
 							</thead>
 						</table>
+
+
 						<div class="action_buttons">
 							<hr>
 							<button id="useradd" type="submit"
@@ -60,8 +68,8 @@
 						</div>
 					</div>
 
-				</div>
 
+				</div>
 			</div>
 		</div>
 		<!--/.row-->

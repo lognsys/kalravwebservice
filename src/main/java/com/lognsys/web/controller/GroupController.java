@@ -18,6 +18,7 @@ import com.lognsys.service.GroupService;
 
 @Controller
 public class GroupController {
+
 	@Autowired
 	private GroupService groupService;
 
@@ -43,10 +44,9 @@ public class GroupController {
 	 * @return
 	 * @throws IOException
 	 */
-	@RequestMapping(value = "/grouplist", method = RequestMethod.GET)
+	@RequestMapping(value = "/group", method = RequestMethod.GET)
 	public String showGroupsList(Model model, HttpServletRequest request) throws IOException {
-		// groupService.refreshUserList();
-		return "userlist";
+		return "group";
 	}
 
 	/**
@@ -124,13 +124,13 @@ public class GroupController {
 		return "dashboard";
 
 	}
-	
+
 	/**
 	 * 
 	 * @return
 	 */
 	public String manageGroups() {
 		return null;
-		
+
 	}
 }

@@ -105,7 +105,7 @@ public class Constants {
 	 */
 
 	public enum EXCEPTIONS_MSG {
-		exception_userinvalid, exception_userempty
+		exception_userinvalid, exception_userempty, exception_allgroups
 	}
 
 	public enum DEFAULT_GROUP {

@@ -1,6 +1,14 @@
 /*
  * kalrav.js
  * @author : 01/04/17 - PJD
+ * 
+ * Description : 
+ * This contains all the jquery code used for CRUD of Users module , 
+ * Group module , Drama module etc.
+ * 
+ * Notes: 
+ * 1. JQuery delegate function is used for dynamically generated html
+ * 2. Bootstrap 
  */
 $(document)
     .ready(
@@ -256,7 +264,7 @@ $(document)
                                     valid = valid && checkLength(zipcode, "zipcode", 6, 6);
                                     valid = valid && checkLength(company_name, "company", 3, 80);
                                     valid = valid && checkLength(phone, "phone", 10, 10);
-                                    valid = valid && checkRegexp(username, emailRegex, "eg. pdoshi@yahoo.com");
+                                    valid = valid && checkRegexp(username, emailRegex, "eg. xyz@abc.com");
 
                                     //valid = valid && checkLength( password, "password", 5, 16 );
                                     //valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
@@ -695,9 +703,10 @@ $(document)
                             event.preventDefault();
                        
                     });
-           //=====================================================NOTIFICATION LIST===========================================================================
-           
             
+            
+            
+           //=====================================================NOTIFICATION LIST===========================================================================
             var checkedRows = [];
 
             // check individual row
@@ -941,5 +950,80 @@ $(document)
                     event.preventDefault();
                 });
             //=====================================================NOTIFICATION LIST===========================================================================
-               
+            
+            
+            /******************************************** GROUP.JSP MODULE **********************************************/
+           //START OF CARD HOVER ADD/REMOVE Button  
+            $('.subgroup_add').hover(function(){
+            	$(this).addClass('w3-text-light-grey').removeClass('w3-text-blue');
+            } , function(){
+            	$(this).addClass('w3-text-blue').removeClass('w3-text-light-grey');
+            });
+            
+            $('.subgroup_remove').hover(function(){
+            	$(this).addClass('w3-text-light-grey').removeClass('w3-text-red');
+            } , function(){
+            	$(this).addClass('w3-text-red').removeClass('w3-text-light-grey');
+            });
+            // END OF CARD HOVER ADD/REMOVE buttons
+         
+            //START OF CARD-EDIT INPLACE FROM SPAN TO INPUT
+            var switchToInput = function () {
+                var $input = $("<input>", {
+                    val:  (!$(this).text().trim()) ? "Enter Subgroup" : $(this).text(),
+                    
+                    type: "text"
+                });
+                $input.addClass("subgroup_name");
+                $(this).replaceWith($input);
+                $input.on("blur", switchToSpan);
+                $input.select();
+            }
+     
+            var switchToSpan = function () {
+                var $span = $("<span>", {
+                    text: (!$(this).val()) ? "Enter Subgroup" : $(this).val(),
+                });
+                $span.addClass("subgroup_name");
+                $(this).replaceWith($span);
+                $span.on("click", switchToInput);
+            }
+            $(document).delegate( '.subgroup_name','click',  switchToInput);
+            //END OF CARD-EDIT INPLACE
+            
+            
+            //START OF CARD ADD/REMOVE SUBGROUP ROW 
+            var tpl_add_row = '<div><input class="subgroup_name" type="text" name="subgroupname">'
+									+'<i class="material-icons subgroup_add w3-text-blue w3-right">add</i>'
+									+'<i class="material-icons subgroup_remove w3-text-red w3-right">remove</i>'
+									+'<hr class="line_break"></div>'; 
+            var tpl_add_button='<button class=".add_button_subgroup w3-button w3-blue w3-round">Add Sub-Group</button>';
+            
+            
+            var totalDivsInSubgroup = $('div.subgroup > div').length;
+            
+            //Adding Subgroup
+            $(document).delegate( '.subgroup_add','click',  function () {
+            	$(this).closest('.subgroup').append(tpl_add_row);
+            });
+            
+            //Deleting Subgroup
+            $(document).delegate( '.subgroup_remove','click',  function () {
+            	//get the parent element of this child
+            	$parent = $(this).closest('.subgroup');
+            	
+            	//remove the cuurent div
+            	$(this).parent('div').remove();
+            	
+            	//get length of the total div
+            	var totalDivsInSubgroup = $parent.children('div').length;
+            	
+            	if(totalDivsInSubgroup == 0) {
+            		$parent.append(tpl_add_button);
+            	}
+            	
+            });
+            //  END OF CARD ADD/REMOVE ROW
+     
+            
         });

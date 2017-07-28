@@ -18,12 +18,16 @@
 <link rel='apple-touch-icon' type='image/png' sizes='72x72' href='static/images/apple-icon-57x57.png'> <!-- iPad -->
 <link rel='apple-touch-icon' type='image/png' sizes='114x114' href='static/images/apple-icon-114x114.png'> <!-- iPhone4 -->
 
+<!-- W3 School  -->
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
 <!-- Bootstrap  -->
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
+<!-- Custom CSS -->
 <link rel="stylesheet" href="static/css/styles.css">
 
 <!-- lumino stylesheet in csshome  -->
@@ -38,15 +42,15 @@
 <link rel="stylesheet" href="static/csshome/datepicker3.css">
 <link rel="stylesheet" href="static/csshome/styles.css">
 <link rel="stylesheet" href="static/csshome/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 <!-- jquery -->
 <script src="webjars/jquery/2.2.3/jquery.min.js"></script>
 <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script
-  src="https://code.jquery.com/jquery-2.2.4.min.js"
-  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
   crossorigin="anonymous"></script>
+  
 <!-- lumino javascript in js  -->
 <script type="text/javascript" src="static/js/bootstrap-table.js"></script>
 <script type="text/javascript" src="static/js/bootstrap.js"></script>
@@ -56,22 +60,23 @@
 <script type="text/javascript" src="static/js/easypiechart-data.js"></script>
 <script type="text/javascript" src="static/js/easypiechart.js"></script>
 <script type="text/javascript" src="static/js/html5shiv.min.js"></script>
-<!-- <script type="text/javascript" src="static/js/jquery-1.11.1.min.js"></script> -->
 <script type="text/javascript" src="static/js/kalrav.glyphs.js"></script>
 <script type="text/javascript" src="static/js/lumino.glyphs.js"></script>
 <script type="text/javascript" src="static/js/respond.js"></script>
-<!-- glyph icons from https://glyphs.co/docs/getting-started/installation  -->
-<script type="text/javascript" src="//kit.glyphs.co/4uq709.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-
 <script type="text/javascript" src="static/js/bootstrap-datetimepicker.js" ></script>
-<script type="text/javascript" src="static/js/bootstrap-datetimepicker.fr.js" ></script>	
-	
-	
+
+<!-- adding mustache template engine  -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
 
 <!-- load kalrav.js after jquery -->
 <script type="text/javascript" src="static/js/kalrav.js"></script>
+
+ <!-- glyph icons from https://glyphs.co/docs/getting-started/installation  -->
+<script type="text/javascript" src="https://kit.glyphs.co/3ko27b.js"></script>
+
+
+
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
 </head>
 

@@ -1,5 +1,12 @@
 package com.lognsys.dao.jdbc;
 
+/**
+ * Description :  Groups DTO Object is mapped with fields in MySQL table
+ * 
+ * Update: 
+ * PJD - 18/07/17 : Fields is_subgroup & parent_id is added to fields
+ * 
+ */
 import java.util.List;
 import java.util.Properties;
 import javax.annotation.Resource;
@@ -12,7 +19,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
 import com.lognsys.dao.GroupRepository;
 import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.GroupsDTO;
@@ -24,18 +30,15 @@ import com.lognsys.util.Constants;
 @Repository
 public class JdbcGroupRepository implements GroupRepository {
 
-	// Injecting namedParamterTemplate
 	@Autowired
 	private NamedParameterJdbcTemplate namedParamJdbcTemplate;
 
-	/**
-	 * Injecting resource sql.properties.
-	 */
+	// Injecting resource sql.properties.
 	@Resource(name = "sqlProperties")
 	private Properties sqlProperties;
 
 	/**
-	 * returns all the groups
+	 * Returns all Groups & SubGroups
 	 */
 	@Override
 	public List<GroupsDTO> getAllGroups() {
@@ -48,7 +51,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	}
 
 	/**
-	 * Returns the group_name for a particular user
+	 * Returns name from groups
 	 * 
 	 * @param user_id
 	 * 
@@ -62,7 +65,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	}
 
 	/**
-	 * Returns list of users for a particular group
+	 * Returns list of users by group/sub_group name
 	 * 
 	 * @param group_name
 	 */
@@ -177,47 +180,18 @@ public class JdbcGroupRepository implements GroupRepository {
 	}
 
 	/**
-	 * Add all groups and its respective sub groups
-	 * 
-	 * @param drama_id
-	 * @param group
-	 */
-	public void addGroupAndSubGroup(int group_id, String sub_group_name) {
-
-		try {
-			SqlParameterSource param = new MapSqlParameterSource().addValue("group_id", group_id)
-					.addValue("sub_group_name", sub_group_name);
-			namedParamJdbcTemplate
-					.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_subgroups_groups.name()), param);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Update group of a user
 	 * 
 	 * @param userName
-	 * @param roleName
+	 * @param group_name
 	 * @return
 	 */
+	@Override
 	public boolean updateGroupOfUser(String userName, String group_name) {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("username", userName).addValue("group_name",
 				group_name);
 		return namedParamJdbcTemplate
 				.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.update_group_byuser.name()), param) == 1;
-	}
-
-	/**
-	 * 
-	 * @param group_name
-	 * @return
-	 */
-	public List<String> getSubGroupsBy(String group_name) {
-		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
-		return namedParamJdbcTemplate.queryForList(
-				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_subgroup_bygroup.name()), param, String.class);
-
 	}
 
 }

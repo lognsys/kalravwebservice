@@ -8,34 +8,38 @@ import com.lognsys.dao.dto.UsersGroupsDTO;
 
 public interface GroupRepository {
 
+	// NOTE: This applies to both groups and subgroups
 	public List<GroupsDTO> getAllGroups();
 
+	// NOTE: This applies to both group and subgroup
 	public String findGroupBy(int user_id);
 
 	public List<UsersGroupsDTO> getUsersByGroup(String group_name);
 
+	// NOTE: this applies to both group and subgroup
 	public boolean addGroup(String group_id);
 
+	// NOTE: this applies to both group and subgroup
 	public int addGroup(GroupsDTO groupsDTO);
 
-	public int findIDBy(String groupname);
+	// NOTE: this applies to both group and subgroup
+	public int findIDBy(String name);
 
+	// NOTE: This applies to both and subgroup
 	public List<UsersGroupsDTO> getAllUsersAndGroup();
 
-	/**
-	 * Check if group exists by title
-	 * 
-	 * @param group_name
-	 * @return
-	 */
+	// NOTE: This applies to both group and subgroup
 	public boolean isExists(String group_name);
 
+	// NOTE: This applies to both group and
 	public String findGroupByDramaId(int drama_id);
 
+	// NOTE: This workd for group and subgroup
 	public List<DramasGroupsDTO> getDramasByGroup(String group_name);
 
 	public List<DramasGroupsDTO> getAllDramasAndGroup();
 
+	// NOTE: This applies to only group and subgroup
 	public boolean updateGroupOfUser(String userName, String group_name);
 
 }
