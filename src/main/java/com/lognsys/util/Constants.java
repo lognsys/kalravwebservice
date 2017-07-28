@@ -31,7 +31,9 @@ public class Constants {
 	public enum DEVICE_QUERIES {
 		insert_user_devices,select_devices_exists,update_devices,select_all_devices
 		}
-
+	public enum BOOKING_QUERIES {
+		insert_booking, select_booking_all
+	}
 	/**
 	 * enum contains keys of queries defined in sql.properties.
 	 * 

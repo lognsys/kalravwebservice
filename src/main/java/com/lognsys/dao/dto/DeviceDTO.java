@@ -1,5 +1,8 @@
 package com.lognsys.dao.dto;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class DeviceDTO {
 
 	private int id;
