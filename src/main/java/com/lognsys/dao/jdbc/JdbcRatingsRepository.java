@@ -19,6 +19,7 @@ import com.lognsys.dao.DramaRespository;
 import com.lognsys.dao.RatingsRespository;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.RatingsDTO;
+import com.lognsys.dao.jdbc.resultset.BookingResultSetExtractor;
 import com.lognsys.dao.jdbc.rowmapper.DramaUserIDRowMapper;
 import com.lognsys.dao.jdbc.rowmapper.RatingByUserIDAndDramaIDRowMapper;
 import com.lognsys.dao.jdbc.rowmapper.UserByUserIDRowMapper;
@@ -81,8 +82,11 @@ public class JdbcRatingsRepository implements RatingsRespository {
 
 	@Override
 	public List<RatingsDTO> getAllRatings() {
-		// TODO Auto-generated method stub
-		return null;
+		List<RatingsDTO> listdramas = namedParamJdbcTemplate.query(
+				sqlProperties.getProperty(Constants.RATING_QUERIES.select_all_ratings.name()),
+				new BeanPropertyRowMapper<RatingsDTO>(RatingsDTO.class));
+		return listdramas;
+	
 	}
 	@Override
 	public RatingsDTO findRatingByUserIDAndDramaID(int users_id, int dramas_id) {
@@ -91,8 +95,7 @@ public class JdbcRatingsRepository implements RatingsRespository {
 		parameter.put("users_id",users_id);
 		parameter.put("dramas_id", dramas_id);
 		
-		return namedParamJdbcTemplate.queryForObject(
-				sqlProperties.getProperty(Constants.RATING_QUERIES.select_users_id_and_dramas_id.name()), parameter,
+		return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.RATING_QUERIES.select_users_id_and_dramas_id.name()), parameter,
 				new RatingByUserIDAndDramaIDRowMapper());
 	}
 }

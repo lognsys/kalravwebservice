@@ -23,9 +23,13 @@ public class Ratings {
 		this.users_id = users_id;
 	}
 
+	
+
 	public Ratings() {
 		// TODO Auto-generated constructor stub
 	}
+
+
 
 	public String getRating_date() {
 		return rating_date;

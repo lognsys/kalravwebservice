@@ -4,8 +4,14 @@ public class Device {
 
 	private int id;
 	private String deviceToken;
-
+	private int users_id;
 	
+	public int getUsers_id() {
+		return users_id;
+	}
+	public void setUsers_id(int users_id) {
+		this.users_id = users_id;
+	}
 	public Device() {
 		super();
 	}

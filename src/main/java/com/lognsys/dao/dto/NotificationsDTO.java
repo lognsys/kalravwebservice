@@ -3,11 +3,8 @@ package com.lognsys.dao.dto;
 public class NotificationsDTO {
 
 	private int id;
-//	private int users_id;
-//	private int dramas_id;
 	private boolean notify=true;
 	private String message;
-
 	private int userId;
 	private String realname;
 	private int dramaId;

@@ -22,6 +22,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 
 import com.lognsys.dao.dto.AuditoriumsDTO;
+import com.lognsys.dao.dto.BookingDTO;
 import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasAuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
@@ -31,6 +32,7 @@ import com.lognsys.dao.dto.NotificationsDTO;
 import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
+import com.lognsys.model.Booking;
 import com.lognsys.model.Device;
 import com.lognsys.model.Drama;
 import com.lognsys.model.DramasTable;
@@ -271,9 +273,10 @@ public class ObjectMapper {
 	 */
 	public static DeviceDTO mapToDeviceDTO(Device device) {
 		// TODO: Current setting of group to null, but need to change to value
-
-		return new DeviceDTO(device.getDeviceToken());
-
+		DeviceDTO deviceDTO =new DeviceDTO();
+		deviceDTO.setUsers_id(device.getUsers_id());
+		deviceDTO.setDeviceToken(device.getDeviceToken());
+		return deviceDTO;
 	}
 
 	/**
@@ -291,5 +294,20 @@ public class ObjectMapper {
 			e.printStackTrace();
 		}
 		return users;
+	}
+	
+	
+	public static BookingDTO mapToBookingDTO(Booking booking) {
+
+		BookingDTO bookingDTO = new BookingDTO();
+
+		bookingDTO.setBooking_date(booking.getBooking_date());
+		bookingDTO.setConfirmation_no(booking.getConfirmation_no());
+		bookingDTO.setUsers_id(booking.getUsers_id());
+		bookingDTO.setBooking_seatcount(booking.getBooking_seatcount());
+		bookingDTO.setDramas_auditoriums_id(booking.getDramas_auditoriums_id());
+
+		return bookingDTO;
+
 	}
 }

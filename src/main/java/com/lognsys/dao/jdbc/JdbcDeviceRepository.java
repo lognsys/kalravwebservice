@@ -19,6 +19,7 @@ import com.lognsys.dao.DramaRespository;
 import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.NotificationsDTO;
+import com.lognsys.dao.jdbc.rowmapper.DeviceByIDRowMapper;
 import com.lognsys.dao.jdbc.rowmapper.DramaUserIDRowMapper;
 import com.lognsys.model.Device;
 import com.lognsys.util.Constants;
@@ -76,36 +77,31 @@ public class JdbcDeviceRepository implements DeviceRespository {
 	}
 
 	@Override
-	public boolean deleteDeviceBy(Integer id)  throws DataAccessException{
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteDeviceByUserId(Integer users_id)  throws DataAccessException{
+		SqlParameterSource parameter = new MapSqlParameterSource("users_id", Integer.valueOf(users_id));
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DEVICE_QUERIES.delete_device.name()),
+				parameter) == 1;
 	}
 
 	@Override
-	public DeviceDTO findDeviceById(Integer id)  throws DataAccessException{
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public DeviceDTO findDeviceByUsersId(Integer users_id)  throws DataAccessException{
+		System.out.println("DeviceDTO findDeviceById  users_id "+users_id);
 
-	@Override
-	public boolean deleteDeviceBy(String deviceToken)  throws DataAccessException{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public DeviceDTO findDeviceById(String deviceToken) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+		SqlParameterSource parameter = new MapSqlParameterSource("users_id", Integer.valueOf(users_id));
+		return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.DEVICE_QUERIES.select_device_by_id.name()),
+				parameter, new DeviceByIDRowMapper());
 	
+	}
 
-	/**
-	 * Add users object into database
-	 * 
-	 * @param users
-	 */
+	@Override
+	public boolean isExists(Integer users_id) {
+
+		SqlParameterSource param = new MapSqlParameterSource("users_id", users_id);
+		return namedParamJdbcTemplate.queryForObject(
+				sqlProperties.getProperty(Constants.DEVICE_QUERIES.select_devices_exists.name()), param,
+				Integer.class) > 0;
+	}
+
 
 
 }

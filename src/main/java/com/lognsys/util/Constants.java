@@ -29,10 +29,10 @@ public class Constants {
 		insert_notification, select_notification, delete_notification, select_notification_message,delete_notification_by_id,
 	}
 	public enum DEVICE_QUERIES {
-		insert_user_devices,select_devices_exists,update_devices,select_all_devices
+		insert_user_devices,select_devices_exists,update_devices,select_all_devices,select_device_by_id,delete_device
 		}
 	public enum BOOKING_QUERIES {
-		insert_booking, select_booking_all
+		insert_booking, select_booking_all,delete_booking_by_Id,select_booking_by_users_id
 	}
 	/**
 	 * enum contains keys of queries defined in sql.properties.
@@ -52,7 +52,7 @@ public class Constants {
 	}
 
 	public enum RATING_QUERIES {
-		insert_ratings, select_dramas, delete_dramas, select_ratings_exists, update_ratings, select_users_id_and_dramas_id
+		insert_ratings, select_ratings_exists, update_ratings, select_users_id_and_dramas_id,select_all_ratings
 	}
 
 	/**
@@ -88,6 +88,9 @@ public class Constants {
 
 	public enum AUDITORIUMS_FIELDNAME {
 		auditoriumsId, auditorium_name, address, latitude, longitude
+	}
+	public enum BOOKING_FIELD_NAMES {
+		id, booking_date, confirmation_no, users_id, booking_seatcount, dramas_auditoriums_id
 	}
 
 	// REST URL constants

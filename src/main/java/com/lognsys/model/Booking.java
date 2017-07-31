@@ -1,9 +1,9 @@
-package com.lognsys.dao.dto;
+package com.lognsys.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class BookingDTO {
+public class Booking {
 	private int id;
 
     private String booking_date="";
@@ -14,7 +14,7 @@ public class BookingDTO {
 
     private int booking_seatcount;
     private int dramas_auditoriums_id;
-	public BookingDTO(int id, String booking_date, String confirmation_no, int users_id, int booking_seatcount,
+	public Booking(int id, String booking_date, String confirmation_no, int users_id, int booking_seatcount,
 			int dramas_auditoriums_id) {
 		super();
 		this.id = id;
@@ -24,7 +24,7 @@ public class BookingDTO {
 		this.booking_seatcount = booking_seatcount;
 		this.dramas_auditoriums_id = dramas_auditoriums_id;
 	}
-	public BookingDTO() {
+	public Booking() {
 		// TODO Auto-generated constructor stub
 	}
 	public int getId() {

@@ -22,6 +22,12 @@ public interface DeviceRespository {
 	 * @return
 	 */
 	public boolean isExists(String deviceToken);
+	/**
+	 * Check if device exists by Token
+	 * @param Token
+	 * @return
+	 */
+	public boolean isExists(Integer users_id);
 
 	/**
 	 * Update device information, enable/disable etc..
@@ -42,7 +48,7 @@ public interface DeviceRespository {
 	 * Delete drama by id
 	 * @param id
 	 */
-	public boolean deleteDeviceBy(Integer id);
+	public boolean deleteDeviceByUserId(Integer users_id);
 
 	/**
 	 * Get drama by Id
@@ -50,20 +56,7 @@ public interface DeviceRespository {
 	 * @param id
 	 * @return
 	 */
-	public DeviceDTO findDeviceById(Integer id);
+	public DeviceDTO findDeviceByUsersId(Integer users_id);
 	
-	/**
-	 * Delete drama by title
-	 * @param id
-	 */
-	public boolean deleteDeviceBy(String deviceToken);
-
-	/**
-	 * Get drama by deviceToken
-	 * 
-	 * @param title
-	 * @return DramasDTO
-	 */
-	public DeviceDTO findDeviceById(String deviceToken);
 
 }
