@@ -7,6 +7,7 @@ public class RowSeatDTO {
 	private String row_name;
 	private int seat_num;
 	private int auditoriums_id;
+	private String seatCount;
 	private String auditorium_name;
 
 	public RowSeatDTO(int row_num, String row_name, int seat_num, int auditoriums_id) {
@@ -64,6 +65,13 @@ public class RowSeatDTO {
 		this.auditoriums_id = auditoriums_id;
 	}
 
+	public String getSeatCount() {
+		return seatCount;
+	}
+
+	public void setSeatCount(String seatCount) {
+		this.seatCount = seatCount;
+	}
 
 	public String getAuditorium_name() {
 		return auditorium_name;
