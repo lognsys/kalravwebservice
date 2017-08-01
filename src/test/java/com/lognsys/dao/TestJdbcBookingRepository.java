@@ -1,5 +1,10 @@
 package com.lognsys.dao;
 
+
+import static org.junit.Assert.assertEquals;
+
+//import org.junit.Assert;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -60,8 +65,10 @@ public class TestJdbcBookingRepository  {
 		booking.setBooking_seatcount(4);
 		booking.setDramas_auditoriums_id(1);
 		boolean isAdded=jdbcBookingRepository.addBooking(ObjectMapper.mapToBookingDTO(booking));
+		
 		Assert.isTrue(isAdded, "isAdded booking - " + isAdded );
 		
+	
 	}
 	@Test
 	public void getAllBooking() {
@@ -74,7 +81,7 @@ public class TestJdbcBookingRepository  {
     @Transactional
     @Rollback(true)
 	public void deleteBookingById() {
-	boolean isDelete=jdbcBookingRepository.deleteBookingById(4);
+	boolean isDelete=jdbcBookingRepository.deleteBookingById(5);
 	Assert.isTrue(isDelete, "isDelete booking - " + isDelete );
 	
 	}

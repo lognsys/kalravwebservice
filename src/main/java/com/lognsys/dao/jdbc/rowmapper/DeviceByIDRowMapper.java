@@ -18,6 +18,8 @@ public class DeviceByIDRowMapper implements RowMapper<DeviceDTO> {
 		deviceDTO.setId(rs.getInt("id"));
 		deviceDTO.setUsers_id(rs.getInt("users_id"));
 		deviceDTO.setDeviceToken(rs.getString("deviceToken"));
+		System.out.println("DeviceDTO mapRow deviceDTO.toString "+deviceDTO.toString());
+
 		return deviceDTO;
 	}
 }

@@ -16,9 +16,12 @@ import org.springframework.stereotype.Repository;
 
 import com.lognsys.dao.DeviceRespository;
 import com.lognsys.dao.DramaRespository;
+import com.lognsys.dao.dto.BookingDTO;
 import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.NotificationsDTO;
+import com.lognsys.dao.jdbc.resultset.BookingResultSetExtractor;
+import com.lognsys.dao.jdbc.resultset.DeviceResultSetExtractor;
 import com.lognsys.dao.jdbc.rowmapper.DeviceByIDRowMapper;
 import com.lognsys.dao.jdbc.rowmapper.DramaUserIDRowMapper;
 import com.lognsys.model.Device;
@@ -37,12 +40,14 @@ public class JdbcDeviceRepository implements DeviceRespository {
 	private Properties sqlProperties;
 
 	@Override
-	public int addDevice(DeviceDTO deviceDTO)  throws DataAccessException{
+	public boolean addDevice(DeviceDTO deviceDTO)  throws DataAccessException{
+		System.out.println(" addDevice deviceDTO.toString()=============================== "+deviceDTO.toString());
+		
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(deviceDTO);
-		final KeyHolder keyHolder = new GeneratedKeyHolder();
-		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DEVICE_QUERIES.insert_user_devices.name()),
-				params, keyHolder);
-		return keyHolder.getKey().intValue();
+		return namedParamJdbcTemplate
+				.update(sqlProperties.getProperty(Constants.DEVICE_QUERIES.insert_user_devices.name()), params) == 1;
+
+	
 	}
 
 	@Override
@@ -84,12 +89,13 @@ public class JdbcDeviceRepository implements DeviceRespository {
 	}
 
 	@Override
-	public DeviceDTO findDeviceByUsersId(Integer users_id)  throws DataAccessException{
+	public List<DeviceDTO>  findDeviceByUsersId(Integer users_id)  throws DataAccessException{
 		System.out.println("DeviceDTO findDeviceById  users_id "+users_id);
 
 		SqlParameterSource parameter = new MapSqlParameterSource("users_id", Integer.valueOf(users_id));
-		return namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(Constants.DEVICE_QUERIES.select_device_by_id.name()),
-				parameter, new DeviceByIDRowMapper());
+		return namedParamJdbcTemplate.query(sqlProperties.getProperty(Constants.DEVICE_QUERIES.select_device_by_id.name()),
+				parameter, new DeviceResultSetExtractor());
+		
 	
 	}
 

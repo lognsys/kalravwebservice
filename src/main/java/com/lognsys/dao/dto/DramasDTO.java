@@ -26,9 +26,7 @@ public class DramasDTO {
     private String writer="";
     private String music="";
     private String avg_rating="";
-
     private String drama_language="";
-    
     
 public DramasDTO(int id, String title, String imageurl) {
 		super();

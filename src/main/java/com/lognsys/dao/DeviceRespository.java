@@ -13,7 +13,7 @@ public interface DeviceRespository {
 	 * 
 	 * @param device
 	 */
-	public int addDevice(DeviceDTO deviceDTO);
+	public boolean addDevice(DeviceDTO deviceDTO);
 	
 	
 	/**
@@ -56,7 +56,7 @@ public interface DeviceRespository {
 	 * @param id
 	 * @return
 	 */
-	public DeviceDTO findDeviceByUsersId(Integer users_id);
+	public List<DeviceDTO> findDeviceByUsersId(Integer users_id);
 	
 
 }

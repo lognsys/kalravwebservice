@@ -17,8 +17,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.lognsys.dao.NotificationRespository;
@@ -43,11 +45,13 @@ public class TestJdbcNotificationsRepository {
 	}
 	
 	@Test
+    @Transactional
+    @Rollback(true)
 	public void addNotifications() {
 		NotificationsDTO notificationdto =new NotificationsDTO();
 //		id, notify, message, userId, dramaId, realname, dramaTitle, last_edit
 		notificationdto.setNotify(true);
-		notificationdto.setMessage("Hello World");
+		notificationdto.setMessage("this World");
 		notificationdto.setUserId(40);
 		notificationdto.setDramaId(5);
 		notificationdto.setRealname("Priyank Doshi");
@@ -65,8 +69,10 @@ public class TestJdbcNotificationsRepository {
 	}
 
 	@Test
+    @Transactional
+    @Rollback(true)
 	public void deleteNotificationsBy() {
-		String message="tgee";
+		String message="test";
 		boolean isDelete=jdbcNotificationsRepository.deleteNotificationsBy(message);
 		Assert.isTrue(isDelete, "isDelete booking - " + isDelete );
 		
@@ -81,8 +87,10 @@ public class TestJdbcNotificationsRepository {
 	}
 
 	@Test
+    @Transactional
+    @Rollback(true)
 	public void deleteNotificationsById() {
-		boolean isDelete=jdbcNotificationsRepository.deleteNotificationsById(36);
+		boolean isDelete=jdbcNotificationsRepository.deleteNotificationsById(34);
 		Assert.isTrue(isDelete, "isDelete deleteNotificationsById - " + isDelete );
 	
 	}

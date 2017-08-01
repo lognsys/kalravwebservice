@@ -15,8 +15,10 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.lognsys.dao.BookingRepository;
@@ -50,6 +52,8 @@ public class TestJdbcRatingsRepository  {
 	 * @param id, rating, rating_date, users_id, dramas_id, last_edit
 	 */
 	@Test
+    @Transactional
+    @Rollback(true)
 	public void addRating() {
 		Ratings ratings = new Ratings();
 
@@ -72,6 +76,8 @@ public class TestJdbcRatingsRepository  {
 	}
 
 	@Test
+    @Transactional
+    @Rollback(true)
 	public void updateRating() {
 		int users_id=40;
 		int dramas_id=5;

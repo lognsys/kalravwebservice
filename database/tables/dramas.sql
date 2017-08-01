@@ -28,10 +28,7 @@ CREATE TABLE dramas
 			       
 	#Optional description
 	description varchar(45) not null default '',
-				       
-	#foreign key auditorium.id 
-	auditorium_id varchar(45) not null default '',
-					    
+				 	    
 	#Optional date 		
 	date datetime not null default current_timestamp,
 

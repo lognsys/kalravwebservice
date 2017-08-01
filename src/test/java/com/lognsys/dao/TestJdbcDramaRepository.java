@@ -15,8 +15,10 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.lognsys.dao.dto.DramasDTO;
@@ -37,18 +39,34 @@ public class TestJdbcDramaRepository  {
 
 	
 	@Test
+    @Transactional
+    @Rollback(true)
 	public void addDrama() {
 //		id, title, genre, star_cast, director, writer, description, auditorium_id, date, avg_rating, imageurl, drama_length, music, drama_language, last_edit
-		Drama dramas=new Drama(9,"History of India","Historic", "Priyank Doshi","Priyank Doshi", "Priyank Doshi", "description", "2017-08-08","http://www.gmail.com","2 hour", "Asian music", "5","Hindi, English");
+		Drama dramas=new Drama();
+		dramas.setTitle("History of India");
+		dramas.setGenre("Historic");
+		dramas.setStar_cast("Priyank Doshi");
+		dramas.setDirector("Priyank Doshi");
+		dramas.setWriter("Priyank Doshi");
+		dramas.setDescription("description");
+		dramas.setDate("2017-08-08");
+		dramas.setAvg_rating( "5");
+		dramas.setImageurl("http://www.gmail.com");
+		dramas.setDrama_length("2 hour");
+		dramas.setMusic("Asian music");
+		dramas.setDrama_language("Hindi, English");
+		
 		DramasDTO dramasDTO = ObjectMapper.mapToDramasDTO(dramas);
-		System.out.println("DramaService addDrama  dramasDTO "+dramasDTO);
 		int dramaID =jdbcDramaRepository.addDrama(dramasDTO);
 		Assert.notNull(dramasDTO, "Check list of dramasDTO NOT NULL");
-			
+				
 	}
 	@Test
+    @Transactional
+    @Rollback(true)
 	public void deleteDramasById() {
-				boolean isDelete = jdbcDramaRepository.deleteDramaBy(7);
+				boolean isDelete = jdbcDramaRepository.deleteDramaBy(16);
 				System.out.println("manageDrama deleteDramas isDelete "+isDelete);
 				Assert.isTrue(isDelete, "Check list of deleteDramasById ");
 	}
@@ -59,6 +77,8 @@ public class TestJdbcDramaRepository  {
 	 * @return
 	 */
 	@Test
+    @Transactional
+    @Rollback(true)
 	public void deleteDramasByTitle() {
 		
 				String title="History of India";

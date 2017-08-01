@@ -92,6 +92,9 @@ public class Constants {
 	public enum BOOKING_FIELD_NAMES {
 		id, booking_date, confirmation_no, users_id, booking_seatcount, dramas_auditoriums_id
 	}
+	public enum DEVICE_FIELD_NAMES {
+		id, users_id, deviceToken
+	}
 
 	// REST URL constants
 	public static final String DRAMA_LIST_URL = "/dramalist";

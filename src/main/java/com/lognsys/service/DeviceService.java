@@ -28,7 +28,7 @@ public class DeviceService {
 	private JdbcDeviceRepository jdbcDeviceRepository;
 	
 	@Transactional(rollbackFor = IllegalArgumentException.class)
-	public int addDevice(Device device) {
+	public boolean addDevice(Device device) {
 		String deviceToken = device.getDeviceToken();
 		
 		
@@ -44,9 +44,9 @@ public class DeviceService {
 			if (isExists) {
 				throw new IllegalArgumentException("Device already exists in database with deviceToken - " + deviceToken);
 			}
-				int deviceId =jdbcDeviceRepository.addDevice(deviceDTO);
-				System.out.println("#DeviceService - " + "Adding deviceDTO in database with deviceId ==========================- " + deviceId);
-			return deviceId;	
+			boolean isTrue =jdbcDeviceRepository.addDevice(deviceDTO);
+				System.out.println("#DeviceService - " + "Adding deviceDTO in database with isTrue ==========================- " + isTrue);
+			return isTrue;	
 			
 		
 	}
