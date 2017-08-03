@@ -22,6 +22,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 
 import com.lognsys.dao.dto.AuditoriumsDTO;
+import com.lognsys.dao.dto.BookedSeatsDTO;
 import com.lognsys.dao.dto.BookingDTO;
 import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.DramasAuditoriumsDTO;
@@ -32,6 +33,7 @@ import com.lognsys.dao.dto.NotificationsDTO;
 import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
+import com.lognsys.model.BookedSeats;
 import com.lognsys.model.Booking;
 import com.lognsys.model.Device;
 import com.lognsys.model.Drama;
@@ -304,10 +306,24 @@ public class ObjectMapper {
 		bookingDTO.setBooking_date(booking.getBooking_date());
 		bookingDTO.setConfirmation_no(booking.getConfirmation_no());
 		bookingDTO.setUsers_id(booking.getUsers_id());
-		bookingDTO.setBooking_seatcount(booking.getBooking_seatcount());
-		bookingDTO.setDramas_auditoriums_id(booking.getDramas_auditoriums_id());
+		bookingDTO.setDramas_id(booking.getDramas_id());
+		bookingDTO.setAuditorium_id(booking.getAuditorium_id());
+		bookingDTO.setPrice(booking.getPrice());
+		bookingDTO.setStatus(booking.getStatus());
 
 		return bookingDTO;
+
+	}
+	
+	public static BookedSeatsDTO mapToBookedSeatsDTO(BookedSeats bookedSeats) {
+
+		BookedSeatsDTO bookedSeatsDTO = new BookedSeatsDTO();
+
+		bookedSeatsDTO.setBooking_id(bookedSeats.getBooking_id());
+		bookedSeatsDTO.setRow_seats_id(bookedSeats.getRow_seats_id());
+		bookedSeatsDTO.setRefer_seat_id(bookedSeats.getRefer_seat_id());
+
+		return bookedSeatsDTO;
 
 	}
 }

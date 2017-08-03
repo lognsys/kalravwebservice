@@ -28,3 +28,5 @@ CREATE TABLE IF NOT EXISTS `kalrav`.`booking` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
+ALTER TABLE `kalrav`.`booking` 
+ADD COLUMN `status` VARCHAR(45) NOT NULL AFTER `price`;

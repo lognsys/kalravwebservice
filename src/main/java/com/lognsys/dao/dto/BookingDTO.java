@@ -2,6 +2,7 @@ package com.lognsys.dao.dto;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
 @Document
 public class BookingDTO {
 	private int id;
@@ -11,22 +12,62 @@ public class BookingDTO {
     private String confirmation_no="";
 
     private int users_id;
+    private int dramas_id;
+    private int auditorium_id;
+    private double price;
+    private String status;
 
-    private int booking_seatcount;
-    private int dramas_auditoriums_id;
-	public BookingDTO(int id, String booking_date, String confirmation_no, int users_id, int booking_seatcount,
-			int dramas_auditoriums_id) {
+
+	private static enum STATUS {
+		Active, Passive
+	}
+	public BookingDTO() {
+		super();
+	}
+	public BookingDTO(int id, String booking_date, String confirmation_no, int users_id, int dramas_id,
+			int auditorium_id, double price,String status) {
 		super();
 		this.id = id;
 		this.booking_date = booking_date;
 		this.confirmation_no = confirmation_no;
 		this.users_id = users_id;
-		this.booking_seatcount = booking_seatcount;
-		this.dramas_auditoriums_id = dramas_auditoriums_id;
+		this.dramas_id = dramas_id;
+		this.auditorium_id = auditorium_id;
+		this.price = price;
+		this.status = status;
 	}
-	public BookingDTO() {
-		// TODO Auto-generated constructor stub
+	public BookingDTO(int id, String booking_date, String confirmation_no, int users_id, int dramas_id,
+			int auditorium_id, double price,boolean enabled) {
+		super();
+		this.id = id;
+		this.booking_date = booking_date;
+		this.confirmation_no = confirmation_no;
+		this.users_id = users_id;
+		this.dramas_id = dramas_id;
+		this.auditorium_id = auditorium_id;
+		this.price = price;
+		setStatus(enabled);
+		this.status = getStatus();
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setStatus(boolean enabled) {
+		if (enabled) {
+			this.status = STATUS.Active.name();
+		} else {
+			this.status = STATUS.Passive.name();
+		}
+	}
+	
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -51,24 +92,30 @@ public class BookingDTO {
 	public void setUsers_id(int users_id) {
 		this.users_id = users_id;
 	}
-	public int getBooking_seatcount() {
-		return booking_seatcount;
+	public int getDramas_id() {
+		return dramas_id;
 	}
-	public void setBooking_seatcount(int booking_seatcount) {
-		this.booking_seatcount = booking_seatcount;
+	public void setDramas_id(int dramas_id) {
+		this.dramas_id = dramas_id;
 	}
-	public int getDramas_auditoriums_id() {
-		return dramas_auditoriums_id;
+	public int getAuditorium_id() {
+		return auditorium_id;
 	}
-	public void setDramas_auditoriums_id(int dramas_auditoriums_id) {
-		this.dramas_auditoriums_id = dramas_auditoriums_id;
+	public void setAuditorium_id(int auditorium_id) {
+		this.auditorium_id = auditorium_id;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 	@Override
 	public String toString() {
 		return "BookingDTO [id=" + id + ", booking_date=" + booking_date + ", confirmation_no=" + confirmation_no
-				+ ", users_id=" + users_id + ", booking_seatcount=" + booking_seatcount + ", dramas_auditoriums_id="
-				+ dramas_auditoriums_id + "]";
+				+ ", users_id=" + users_id + ", dramas_id=" + dramas_id + ", auditorium_id=" + auditorium_id
+				+ ", price=" + price + "]";
 	}
-  
+    
     
 }

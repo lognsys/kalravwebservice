@@ -34,6 +34,9 @@ public class Constants {
 	public enum BOOKING_QUERIES {
 		insert_booking, select_booking_all,delete_booking_by_Id,select_booking_by_users_id
 	}
+	public enum BOOKEDSEATS_QUERIES {
+		insert_bookedseats, select_bookedseats_all,delete_bookedseats_by_Id,select_bookedseats_by_users_id
+	}
 	/**
 	 * enum contains keys of queries defined in sql.properties.
 	 * 
@@ -90,7 +93,10 @@ public class Constants {
 		auditoriumsId, auditorium_name, address, latitude, longitude
 	}
 	public enum BOOKING_FIELD_NAMES {
-		id, booking_date, confirmation_no, users_id, booking_seatcount, dramas_auditoriums_id
+		id, booking_date, confirmation_no, users_id, dramas_id, auditorium_id,price,status
+	}
+	public enum BOOKEDSEATS_FIELD_NAMES {
+		id, booking_id, row_seats_id, refer_seat_id
 	}
 	public enum DEVICE_FIELD_NAMES {
 		id, users_id, deviceToken
