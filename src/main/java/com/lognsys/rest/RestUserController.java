@@ -75,7 +75,7 @@ public class RestUserController {
 	 */
 	@RequestMapping(value = "/createuser", method = { RequestMethod.POST })
 	public ResponseEntity<?> createUser(@RequestBody Users users) {
-
+			 
 		boolean isExists = jdbcUserRepository.isExists(users.getUsername());
 
 		if (isExists) {
@@ -85,9 +85,15 @@ public class RestUserController {
 		} else {
 
 			try {
-				int userId = userService.addUser(users);
-				users.setId(userId);
+				int id = userService.addUser(users);
+				  System.out.println("createUser users id "+id);
+					users.setId(id);
+					  System.out.println("createUser users.getId() "+users.getId());
+					  System.out.println("createUser users.toString() =====  "+users.toString());
+				return new ResponseEntity<Users>(users, HttpStatus.CREATED);
 			} catch (IOException e) {
+				  System.out.println("createUser IOException "+e);
+					
 				e.printStackTrace();
 			}
 
@@ -125,8 +131,13 @@ public class RestUserController {
 		Users user = null;
 
 		try {
+			
 			user = userService.getUserWithRoleAndGroup(username);
+			  System.out.println("getSingleUserBy user toString() "+user.toString());
+				
 		} catch (UserDataAccessException ue) {
+			  System.out.println("getSingleUserBy UserDataAccessException "+ue);
+				
 			// check if user is null
 			if (ue.getMessage()
 					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()))) {

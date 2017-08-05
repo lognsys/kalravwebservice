@@ -3,7 +3,6 @@ package com.lognsys.model;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
-@Document
 public class Booking {
 	private int id;
 
@@ -13,7 +12,7 @@ public class Booking {
 
     private int users_id;
     private int dramas_id;
-    private int auditorium_id;
+    private int auditoriums_id;
     private double price;
     private String status;
 
@@ -25,26 +24,26 @@ public class Booking {
 		super();
 	}
 	public Booking(int id, String booking_date, String confirmation_no, int users_id, int dramas_id,
-			int auditorium_id, double price,String status) {
+			int auditoriums_id, double price,String status) {
 		super();
 		this.id = id;
 		this.booking_date = booking_date;
 		this.confirmation_no = confirmation_no;
 		this.users_id = users_id;
 		this.dramas_id = dramas_id;
-		this.auditorium_id = auditorium_id;
+		this.auditoriums_id = auditoriums_id;
 		this.price = price;
 		this.status = status;
 	}
 	public Booking(int id, String booking_date, String confirmation_no, int users_id, int dramas_id,
-			int auditorium_id, double price,boolean enabled) {
+			int auditoriums_id, double price,boolean enabled) {
 		super();
 		this.id = id;
 		this.booking_date = booking_date;
 		this.confirmation_no = confirmation_no;
 		this.users_id = users_id;
 		this.dramas_id = dramas_id;
-		this.auditorium_id = auditorium_id;
+		this.auditoriums_id = auditoriums_id;
 		this.price = price;
 		setStatus(enabled);
 		this.status = getStatus();
@@ -99,11 +98,12 @@ public class Booking {
 	public void setDramas_id(int dramas_id) {
 		this.dramas_id = dramas_id;
 	}
-	public int getAuditorium_id() {
-		return auditorium_id;
+	
+	public int getAuditoriums_id() {
+		return auditoriums_id;
 	}
-	public void setAuditorium_id(int auditorium_id) {
-		this.auditorium_id = auditorium_id;
+	public void setAuditoriums_id(int auditoriums_id) {
+		this.auditoriums_id = auditoriums_id;
 	}
 	public double getPrice() {
 		return price;
@@ -114,7 +114,7 @@ public class Booking {
 	@Override
 	public String toString() {
 		return "Booking [id=" + id + ", booking_date=" + booking_date + ", confirmation_no=" + confirmation_no
-				+ ", users_id=" + users_id + ", dramas_id=" + dramas_id + ", auditorium_id=" + auditorium_id
+				+ ", users_id=" + users_id + ", dramas_id=" + dramas_id + ", auditoriums_id=" + auditoriums_id
 				+ ", price=" + price + "]";
 	}
     

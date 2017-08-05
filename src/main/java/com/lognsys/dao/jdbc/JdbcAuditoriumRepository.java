@@ -136,7 +136,7 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 	// Add Row_Seat
 	public boolean addRow_Seat(RowSeatDTO rowSeatDTO) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(rowSeatDTO);
-		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.ROW_QUERIES.insert_rowseat.name()),
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.ROWSEAT_QUERIES.insert_rowseat.name()),
 				params) == 1;
 	}
 

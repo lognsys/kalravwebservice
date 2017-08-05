@@ -57,12 +57,9 @@ public class JdbcBookingRepository implements BookingRepository {
 	 */
 	@Override
 	public int addBooking(BookingDTO bookingDTO) throws DataAccessException{
-//		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(bookingDTO);
-//		return namedParamJdbcTemplate
-//				.update(sqlProperties.getProperty(Constants.BOOKING_QUERIES.insert_booking.name()), params) == 1;
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(bookingDTO);
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
-		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DRAMA_QUERIES.insert_dramas.name()),
+		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.BOOKING_QUERIES.insert_booking.name()),
 				params, keyHolder);
 		return keyHolder.getKey().intValue();
 	}

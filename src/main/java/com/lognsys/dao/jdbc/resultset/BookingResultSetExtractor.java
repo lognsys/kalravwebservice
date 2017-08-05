@@ -31,7 +31,7 @@ public class BookingResultSetExtractor implements ResultSetExtractor<List<Bookin
 					rs.getString(Constants.BOOKING_FIELD_NAMES.confirmation_no.name()),
 					rs.getInt(Constants.BOOKING_FIELD_NAMES.users_id.name()),
 					rs.getInt(Constants.BOOKING_FIELD_NAMES.dramas_id.name()),
-					rs.getInt(Constants.BOOKING_FIELD_NAMES.auditorium_id.name()),
+					rs.getInt(Constants.BOOKING_FIELD_NAMES.auditoriums_id.name()),
 					rs.getDouble(Constants.BOOKING_FIELD_NAMES.price.name()),
 					rs.getString(Constants.BOOKING_FIELD_NAMES.status.name()));
 

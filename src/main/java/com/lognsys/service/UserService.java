@@ -64,29 +64,37 @@ public class UserService {
 
 		// Check if User Exists
 		boolean isExists = jdbcUserRepository.isExists(username);
+
+		  System.out.println("addUser users isExists "+isExists);
 		if (isExists)
 			throw new IllegalArgumentException("User already exists in database with username - " + username);
 
 		// adding user into database users
 		LOG.info("#addUser - " + "Adding USER in database with - " + username);
-		int userID = jdbcUserRepository.addUser(usersDTO);
-
+		
+		int users_id = jdbcUserRepository.addUser(usersDTO);
+		  System.out.println("addUser users users_id "+users_id);
+		  System.out.println("addUser users users.getGroup()) "+users.getGroup());
+				
 		// adding user into
 		LOG.info("#addUser - " + "Adding USER to corresponding GROUP - " + users.getGroup());
-		jdbcUserRepository.addUserAndGroup(userID, users.getGroup());
+		jdbcUserRepository.addUserAndGroup(users_id, users.getGroup());
 
+		  System.out.println("addUser users  users.getRole() "+ users.getRole());
+			
 		LOG.info("#addUser - " + "Adding USER to corresponding ROLE - " + users.getRole());
-		jdbcUserRepository.addUserAndRole(userID, users.getRole());
-
-		LOG.info("#addUser - " + "Adding USER with  device - " + users.getDevice());
-		jdbcUserRepository.addUserAndDevice(userID, users.getDevice());
+		jdbcUserRepository.addUserAndRole(users_id, users.getRole());
+		 System.out.println("addUser users  users.getDevice() "+ users.getDevice());
+			
+		LOG.info("#addUser - " + "Adding USER with  users_id - " + users_id);
+		jdbcUserRepository.addUserAndDevice(users_id, users.getDevice());
 
 		try {
 			refreshUserList();
 		} catch (IOException io) {
 			LOG.fatal("UserService#addUser refresUserList - " + io.getMessage());
 		}
-		return userID;
+		return users_id;
 	}
 
 	/**

@@ -35,7 +35,7 @@ public class Constants {
 		insert_booking, select_booking_all,delete_booking_by_Id,select_booking_by_users_id
 	}
 	public enum BOOKEDSEATS_QUERIES {
-		insert_bookedseats, select_bookedseats_all,delete_bookedseats_by_Id,select_bookedseats_by_users_id
+		insert_bookedseats,select_booked_seats,delete_bookedseats_by_Id
 	}
 	/**
 	 * enum contains keys of queries defined in sql.properties.
@@ -49,9 +49,9 @@ public class Constants {
 
 	}
 
-	public enum ROW_QUERIES {
+	public enum ROWSEAT_QUERIES {
 
-		insert_rowseat
+		insert_rowseat,select_rowseat_all,delete_by_id,select_rowseat_by_auditoriums_id,get_select_id
 	}
 
 	public enum RATING_QUERIES {
@@ -93,15 +93,17 @@ public class Constants {
 		auditoriumsId, auditorium_name, address, latitude, longitude
 	}
 	public enum BOOKING_FIELD_NAMES {
-		id, booking_date, confirmation_no, users_id, dramas_id, auditorium_id,price,status
+		id, booking_date, confirmation_no, users_id, dramas_id, auditoriums_id,price,status
 	}
 	public enum BOOKEDSEATS_FIELD_NAMES {
-		id, booking_id, row_seats_id, refer_seat_id
+		id, booking_id, row_seats_id, seat_status
 	}
 	public enum DEVICE_FIELD_NAMES {
 		id, users_id, deviceToken
 	}
-
+	public enum ROWSEAT_FIELD_NAMES {
+		id, row_num, row_name, seat_num, auditoriums_id
+	}
 	// REST URL constants
 	public static final String DRAMA_LIST_URL = "/dramalist";
 

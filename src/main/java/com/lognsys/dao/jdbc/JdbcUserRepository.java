@@ -1,5 +1,6 @@
 package com.lognsys.dao.jdbc;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
 import javax.annotation.Resource;
@@ -170,7 +171,7 @@ public class JdbcUserRepository implements UserRespository {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("users_id", users_id).addValue("role", role);
 		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.ROLES_QUERIES.insert_users_roles.name()),
 				param);
-
+		
 	}
 
 	/**
@@ -188,10 +189,15 @@ public class JdbcUserRepository implements UserRespository {
 	}
 
 	public void addUserAndDevice(int users_id, String device) {
-
-		SqlParameterSource param = new MapSqlParameterSource().addValue("users_id", users_id).addValue("deviceToken", device);
+		Hashtable<String, Object> parameter = new Hashtable<>();
+		parameter.put("users_id",(users_id));
+		parameter.put("deviceToken", device);
+		  System.out.println("addUserAndDevice      parameter "+parameter+" parameter size "+parameter.size());
+			
 		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.DEVICE_QUERIES.insert_user_devices.name()),
-				param);
+				parameter);
+		
+		
 	}
 
 }

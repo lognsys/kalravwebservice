@@ -71,4 +71,28 @@ public class RestBookingController {
 			}
 			  return new ResponseEntity<String>("Fail  to  add booking ",HttpStatus.NOT_FOUND);
 		}
+		
+
+		@RequestMapping(value = "/bookedseats", method = { RequestMethod.POST })
+		public ResponseEntity<?> bookedseats(@RequestBody String response) {
+			String unique = null;
+			try {
+				  System.out.println("bookedseats response "+response);
+				    
+				JSONObject jsonObject=bookingService.getBookedSeats(response);
+				  System.out.println("bookedseats jsonObject "+jsonObject);
+					
+				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.FOUND);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (org.json.simple.parser.ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			  return new ResponseEntity<String>("Fail  to  add booking ",HttpStatus.NOT_FOUND);
+		}
 }
