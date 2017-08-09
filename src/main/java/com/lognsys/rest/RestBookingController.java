@@ -60,13 +60,14 @@ public class RestBookingController {
 				
 				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.FOUND);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				 System.out.println("bookingconfirm IOException "+e);
 				e.printStackTrace();
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
+				 System.out.println("bookingconfirm ParseException "+e);
 				e.printStackTrace();
 			} catch (org.json.simple.parser.ParseException e) {
-				// TODO Auto-generated catch block
+				 System.out.println("bookingconfirm ParseException 1 :  "+e);
+				   
 				e.printStackTrace();
 			}
 			  return new ResponseEntity<String>("Fail  to  add booking ",HttpStatus.NOT_FOUND);
