@@ -1,3 +1,6 @@
+drop  table row_seat;
+
+
 CREATE TABLE IF NOT EXISTS `kalrav`.`row_seat` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `row_num` INT(11) NOT NULL DEFAULT 0,

@@ -57,20 +57,29 @@ public class RestBookingController {
 				  System.out.println("bookingconfirm response "+response);
 				    
 				JSONObject jsonObject=bookingService.addBooking(response);
-				
-				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.FOUND);
+				System.out.println("=========bookingconfirm jsonObject ============"+jsonObject);
+				  
+				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.CREATED);
 			} catch (IOException e) {
 				 System.out.println("bookingconfirm IOException "+e);
-				e.printStackTrace();
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_bookingmempty.name());
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+				  
+//				e.printStackTrace();
 			} catch (ParseException e) {
 				 System.out.println("bookingconfirm ParseException "+e);
-				e.printStackTrace();
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_bookingmempty.name());
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+				  
+//				e.printStackTrace();
 			} catch (org.json.simple.parser.ParseException e) {
 				 System.out.println("bookingconfirm ParseException 1 :  "+e);
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_bookingmempty.name());
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
 				   
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
-			  return new ResponseEntity<String>("Fail  to  add booking ",HttpStatus.NOT_FOUND);
+
 		}
 		
 

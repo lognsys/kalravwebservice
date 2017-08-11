@@ -70,15 +70,24 @@ public class BookingService {
         booking.setUsers_id((int) users_id);
        
         long dramas_id=(long) obj2.get("dramas_id");
+       
         System.out.println("addBooking dramas_id "+dramas_id);
         booking.setDramas_id((int) dramas_id);
-        
-        long auditoriums_id=(long) obj2.get("auditoriums_id");
+
+        long auditoriums_id = new Long((long) obj2.get("auditoriums_id"));
+
+//        String auditoriums_id= (String) obj2.get("auditoriums_id");
+//        long auditoriums_id=(long) obj2.get("auditoriums_id");
         System.out.println("addBooking auditoriums_id "+auditoriums_id);
-        booking.setAuditoriums_id((int) auditoriums_id);
+        booking.setAuditoriums_id((int)(auditoriums_id) );
        
+        Long l = new Long((long) obj2.get("price"));
+        System.out.println("addBooking Long l "+l);
+         double prices = l;
+         
+        System.out.println("addBooking prices "+prices);
         
-        booking.setPrice((double) obj2.get("price"));
+        booking.setPrice(prices);
         
         booking.setStatus(true);
         booking.setStatus(booking.getStatus());
@@ -95,7 +104,7 @@ public class BookingService {
         uniqueCode =generateUniqueCode(conformationcode);
         booking.setConfirmation_no(uniqueCode);
         int bookingId = jdbcBookingRepository.addBooking(ObjectMapper.mapToBookingDTO(booking));
-      
+        booking.setId(bookingId);
         addBookedSeatsDetails(bookingId,jsonArraySeatnumber,booking.getAuditoriums_id());
 
        	 JSONObject obj=new JSONObject();

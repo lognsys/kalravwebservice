@@ -65,9 +65,17 @@ public class RestDramaController {
 	
 //	list all  drama with group name  even if customer has not assign groupname
 	@GetMapping("/getalldramaandgroup")
-	public List getAllDramasAndGroup() {
+	public  ResponseEntity<?>  getAllDramasAndGroup() {
 		{
-			return jdbcGroupRepository.getAllDramasAndGroup();
+			try {
+				 List<DramasGroupsDTO> lists=jdbcGroupRepository.getAllDramasAndGroup();
+				 return new ResponseEntity<List<DramasGroupsDTO>>(lists,HttpStatus.CREATED);
+			} catch (Exception e) { 
+				System.out.println("jdbcGroupRepository IOException "+e);
+			String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name());
+			return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+		  
+			}
 				
 		}
 	
@@ -103,6 +111,8 @@ public class RestDramaController {
 		public ResponseEntity<?> getAllDramasAndGroup(@PathVariable("group_name") String group_name) {
 			
 			try {
+				
+				if(group_name!=null)
 				if(jdbcGroupRepository.getDramasByGroup(group_name).size()>0){
 					return new ResponseEntity<List<DramasGroupsDTO>>(jdbcGroupRepository.getDramasByGroup(group_name), HttpStatus.OK);
 				}
