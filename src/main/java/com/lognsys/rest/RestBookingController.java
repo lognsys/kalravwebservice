@@ -92,7 +92,7 @@ public class RestBookingController {
 				JSONObject jsonObject=bookingService.getBookedSeats(response);
 				  System.out.println("bookedseats jsonObject "+jsonObject);
 					
-				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.FOUND);
+				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.CREATED);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
