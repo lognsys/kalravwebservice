@@ -200,4 +200,18 @@ public class JdbcUserRepository implements UserRespository {
 		
 	}
 
+	@Override
+	public boolean updateUserDevice(String device, String username) {
+		
+		Hashtable<String, Object> parameter = new Hashtable<>();
+		parameter.put("device",(device));
+		parameter.put("username", username);
+	
+		boolean isUpdate = false;
+		isUpdate = namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.USER_QUERIES.update_users_device.name()),
+				parameter) == 1;
+	
+		return isUpdate;
+	}
+
 }

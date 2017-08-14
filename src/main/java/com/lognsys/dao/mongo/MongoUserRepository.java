@@ -67,6 +67,12 @@ public class MongoUserRepository implements UserRespository {
 		return null;
 	}
 
+	@Override
+	public boolean updateUserDevice(String device, String username) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 
 

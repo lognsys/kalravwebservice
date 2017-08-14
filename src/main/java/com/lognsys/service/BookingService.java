@@ -213,6 +213,7 @@ public class BookingService {
         JSONObject obj2 =new JSONObject((Map) obj1);
         System.out.println("getBookedSeats obj2 "+obj2);
         Booking booking=new Booking();
+        
         long dramas_id=(long) obj2.get("dramas_id");
         System.out.println("getBookedSeats dramas_id "+dramas_id);
         booking.setDramas_id((int) dramas_id);
@@ -220,6 +221,7 @@ public class BookingService {
         long auditoriums_id=(long) obj2.get("auditoriums_id");
         System.out.println("getBookedSeats auditoriums_id "+auditoriums_id);
         booking.setAuditoriums_id((int) auditoriums_id);
+        
         List<BookedRowSeatTable> list = ObjectMapper.mapToBookedRowSeatTable(
         		jdbcBookedSeatsRepository.getBookedRowSeatsDTO(
         				booking.getDramas_id(),

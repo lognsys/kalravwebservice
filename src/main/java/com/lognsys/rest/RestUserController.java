@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Properties;
 import javax.ws.rs.Produces;
 import org.apache.log4j.Logger;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -125,14 +126,15 @@ public class RestUserController {
 	 * @param username
 	 * @return
 	 * @throws JsonProcessingException
+	 * @throws ParseException 
 	 */
-	@RequestMapping(value = "/getuser/{username:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getSingleUserBy(@PathVariable String username) throws JsonProcessingException {
+	@RequestMapping(value = "/getuser/{username:.+}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getSingleUserBy(@RequestBody String response) throws JsonProcessingException, ParseException {
 		Users user = null;
 
 		try {
 			
-			user = userService.getUserWithRoleAndGroup(username);
+			user = userService.getUserWithRoleAndGroup(response);
 			  System.out.println("getSingleUserBy user toString() "+user.toString());
 				
 		} catch (UserDataAccessException ue) {
@@ -159,4 +161,48 @@ public class RestUserController {
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
 
 	}
+
+	/**
+	 * 
+	 * @param username
+	 * @param DEVICE
+	 * @return
+	 * @throws JsonProcessingException
+	 * @throws ParseException 
+	 */
+	@RequestMapping(value = "/getuser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getUserByUsernameAndDevice(@RequestBody String response) throws JsonProcessingException, ParseException {
+		Users user = null;
+
+		try {
+			
+			user = userService.getUserWithRoleAndGroup(response);
+			  System.out.println("getSingleUserBy user toString() "+user.toString());
+				
+		} catch (UserDataAccessException ue) {
+			  System.out.println("getSingleUserBy UserDataAccessException "+ue);
+				
+			// check if user is null
+			if (ue.getMessage()
+					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()))) {
+
+				return new ResponseEntity<String>(
+						applicationProperties.getProperty(Constants.REST_MSGS.response_userempty.name()),
+						HttpStatus.NOT_FOUND);
+			}
+
+			if (ue.getMessage()
+					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userinvalid.name()))) {
+				return new ResponseEntity<String>(
+						applicationProperties.getProperty(Constants.REST_MSGS.response_userinvalid.name()),
+						HttpStatus.BAD_REQUEST);
+			}
+
+		}
+
+		return new ResponseEntity<Users>(user, HttpStatus.OK);
+
+	}
+
+
 }

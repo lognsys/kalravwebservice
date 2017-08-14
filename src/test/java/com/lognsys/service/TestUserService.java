@@ -2,6 +2,8 @@ package com.lognsys.service;
 
 import java.io.IOException;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,10 +69,15 @@ public class TestUserService {
 	}
 	
 	@Test
-	public void testUserService(){
+	public void testUserService() throws ParseException{
 		String username = "lognsystems@gmail.com";
+		String device = "device";
 		
-		Users user = userService.getUserWithRoleAndGroup(username);
+		JSONObject jsonObject=new JSONObject();
+		jsonObject.put("username", username);
+		jsonObject.put("device", device);
+		
+		Users user = userService.getUserWithRoleAndGroup(jsonObject.toString());
 		System.out.println("Users - "+user);
 		
 		
