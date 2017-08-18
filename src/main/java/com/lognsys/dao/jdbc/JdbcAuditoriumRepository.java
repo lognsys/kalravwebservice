@@ -118,11 +118,12 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 	}
 
 	@Override
-	public List<AuditoriumsDTO> getAuditoriumListBy(int id, int dramas_id) {
+	public List<AuditoriumsDTO> getAuditoriumListBy(int id, int dramas_id ,String date) {
 		// SqlParameterSource parameter = new MapSqlParameterSource("id", id);
-		Hashtable<String, Integer> parameter = new Hashtable<>();
+		Hashtable<String, Object> parameter = new Hashtable<>();
 		parameter.put("id", id);
 		parameter.put("dramas_id", dramas_id);
+		parameter.put("date", date);
 		System.out.println("#AuditoriumService================ dramas_id "+dramas_id);
 		
 		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(

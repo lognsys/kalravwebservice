@@ -45,8 +45,9 @@ public class RestAuditoriumController {
 	public ResponseEntity<?>  getAuditoriumList(@PathVariable("dramas_id") int dramas_id ,@PathVariable("strDate")  String strDate) {
 		
 				try {
-					System.out.println("getAuditoriumList String date "+strDate);  
-						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id,strDate);		
+						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id,strDate);	
+
+						System.out.println("getAuditoriumList jsonArray.length "+jsonArray.size());  
 						if(jsonArray!= null && jsonArray.size()>0)
 						{
 							return new ResponseEntity<JSONArray>(jsonArray, HttpStatus.OK);
