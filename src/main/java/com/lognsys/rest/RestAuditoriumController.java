@@ -41,11 +41,11 @@ public class RestAuditoriumController {
 	
 	
 	// list all  auditoriumlist 
-	@GetMapping("/auditoriumlist/{dramas_id}/{strDate}")
-	public ResponseEntity<?>  getAuditoriumList(@PathVariable("dramas_id") int dramas_id ,@PathVariable("strDate")  String strDate) {
+	@GetMapping("/auditoriumlist/{dramas_id}")
+	public ResponseEntity<?>  getAuditoriumList(@PathVariable("dramas_id") int dramas_id ) {
 		
 				try {
-						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id,strDate);	
+						JSONArray jsonArray= auditoriumService.getAuditoriumList(dramas_id);	
 
 						System.out.println("getAuditoriumList jsonArray.length "+jsonArray.size());  
 						if(jsonArray!= null && jsonArray.size()>0)

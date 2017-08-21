@@ -27,6 +27,10 @@ CREATE TABLE IF NOT EXISTS `kalrav`.`booking` (
     REFERENCES `kalrav`.`dramas_auditoriums` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
+ENGINE = InnoDB;
+
+
 ALTER TABLE `kalrav`.`booking` 
 ADD COLUMN `status` VARCHAR(45) NOT NULL AFTER `price`;
+alter  table booking  modify booking_date varchar(20);
+  

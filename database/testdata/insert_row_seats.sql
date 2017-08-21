@@ -24,3 +24,31 @@ insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "Y"
 insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "Y",10,1);
 insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "Y",11,1);
 
+
+
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",1,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",2,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",3,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",4,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",5,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",6,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",7,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",8,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",9,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",10,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",11,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (1, "JJ",12,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",1,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",2,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",3,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",4,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",5,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",6,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",7,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",8,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",9,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",10,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",11,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",12,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",13,3);
+

@@ -101,10 +101,13 @@ public class BookingService {
           
         String conformationcode=String.valueOf(booking.getDramas_id())+String.valueOf(booking.getUsers_id())+String.valueOf(booking.getAuditoriums_id())+booking.getBooking_date();
         // Encode using basic encoder
-        uniqueCode =generateUniqueCode(conformationcode);
+        uniqueCode =generateUniqueCode(conformationcode).trim();
         booking.setConfirmation_no(uniqueCode);
         int bookingId = jdbcBookingRepository.addBooking(ObjectMapper.mapToBookingDTO(booking));
         booking.setId(bookingId);
+        System.out.println("===================================================\n ");
+        System.out.println("addBooking bookingId ==== "+bookingId);
+    	
         addBookedSeatsDetails(bookingId,jsonArraySeatnumber,booking.getAuditoriums_id());
 
        	 JSONObject obj=new JSONObject();

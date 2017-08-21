@@ -20,3 +20,16 @@ CREATE TABLE `kalrav`.`booked_seats` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
  );
+ ALTER TABLE `kalrav`.`booked_seats` 
+DROP FOREIGN KEY `fk_row_seats_id`;
+ALTER TABLE `kalrav`.`booked_seats` 
+DROP INDEX `fk_row_seats_id` ,
+ADD INDEX `fk_row_seats_id1` (`row_seats_id` ASC);
+ALTER TABLE `kalrav`.`booked_seats` 
+ADD CONSTRAINT `fk_row_seats_id1`
+  FOREIGN KEY (`row_seats_id`)
+  REFERENCES `kalrav`.`row_seat` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+  
+ 

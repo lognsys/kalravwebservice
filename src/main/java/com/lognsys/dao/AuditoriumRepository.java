@@ -9,7 +9,7 @@ public interface AuditoriumRepository {
 
 	public List<AuditoriumsDTO> getAllAuditoriums();
 
-	public List<AuditoriumsDTO> findAuditoriumBy(int drama_id,Date strDate);
+	public List<AuditoriumsDTO> findAuditoriumBy(int drama_id);
 
 	public boolean addAuditoriums(AuditoriumsDTO auditoriumsDTO);
 

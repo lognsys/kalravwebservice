@@ -54,7 +54,6 @@ public class RestBookingController {
 		public ResponseEntity<?> bookingconfirm(@RequestBody String response) {
 			String unique = null;
 			try {
-				  System.out.println("bookingconfirm response "+response);
 				    
 				JSONObject jsonObject=bookingService.addBooking(response);
 				System.out.println("=========bookingconfirm jsonObject ============"+jsonObject);
