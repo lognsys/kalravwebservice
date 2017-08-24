@@ -51,3 +51,7 @@ on dramas (title);
 
 create index drama_director_idx 
 on dramas (director);
+
+ALTER TABLE `kalrav`.`dramas` 
+CHANGE COLUMN `date` `date` VARCHAR(20) NOT NULL DEFAULT 0 ;
+

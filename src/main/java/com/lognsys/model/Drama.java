@@ -201,4 +201,12 @@ public class Drama {
 		this.group = group;
 	}
 
+	@Override
+	public String toString() {
+		return "Drama [id=" + id + ", title=" + title + ", genre=" + genre + ", star_cast=" + star_cast + ", director="
+				+ director + ", writer=" + writer + ", description=" + description + ", date=" + date + ", imageurl="
+				+ imageurl + ", drama_length=" + drama_length + ", music=" + music + ", avg_rating=" + avg_rating
+				+ ", drama_language=" + drama_language + ", group=" + group + ", auditorium=" + auditorium + "]";
+	}
+
 }

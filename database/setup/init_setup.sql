@@ -44,6 +44,6 @@ mysql kalrav < ${PROJECT_DIR}/database/tables/users_roles.sql
 
 mysql kalrav < ${PROJECT_DIR}/database/tables/confirmation_codes.sql
 mysql kalrav < ${PROJECT_DIR}/database/tables/booking.sql
-mysql kalrav < ${PROJECT_DIR}/database/tables/all_dramas_seats.sql 
+mysql kalrav < ${PROJECT_DIR}/database/tables/booked_seats.sql 
 mysql kalrav < ${PROJECT_DIR}/database/tables/notifications.sql 
 
