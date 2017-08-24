@@ -1,21 +1,16 @@
 package com.lognsys.dao;
 
 import static org.junit.Assert.assertEquals;
-
 import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
-
+import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.UsersGroupsDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
-import com.lognsys.util.Constants;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:datasource-context.xml" })
@@ -38,21 +33,21 @@ public class TestJdbcGroupRepository {
 	
 	@Test
 	public void testGetAllUsersAndGroup() {
-		String group_name_1 = "ladies";
+		String group_name_1 = "JJC/YoungOnes";
 		List<UsersGroupsDTO> ug1 = groupRepo.getUsersByGroup(group_name_1);
 		org.junit.Assert.assertEquals("No of Users in Ladies Group", 3, ug1.size());
 		
-		String group_name_2 = "couple";
+		String group_name_2 = "Kalrav/Couple ";
 		List<UsersGroupsDTO> ug2 = groupRepo.getUsersByGroup(group_name_2);
 		org.junit.Assert.assertEquals("No of Users in Couple Group", 4, ug2.size());
 	}
 
 	
 	@Test
-	public void testfindGroupBy(){
+	public void testfindGroupByUserId(){
 		int user_id = 6;
 		
-		String expected = "ladies";
+		String expected = "NONE";
 		String actual = groupRepo.findGroupBy(user_id);
 		assertEquals(expected, actual);
 	}
@@ -64,8 +59,17 @@ public class TestJdbcGroupRepository {
 		String group_name = "Couple";
 		boolean isUpdate = groupRepo.updateGroupOfUser(userName, group_name);
 		Assert.isTrue(isUpdate, "Update User - "+userName+"- with Group - "+group_name);
-		
-		
+	}
+	
+	@Test
+	public void testGetAllGroups() {
+		List<GroupsDTO> list=groupRepo.getAllGroups();
 		
 	}
+	
+	@Test
+	public void testCountGroups(){
+		assertEquals(17, groupRepo.getGroupCount());
+	}
+
 }

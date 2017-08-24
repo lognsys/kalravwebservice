@@ -46,6 +46,7 @@ public class UserService {
 	@Qualifier("applicationProperties")
 	private Properties applicationProperties;
 
+	
 	/**
 	 * Add user to database.. Check if user already exists in db
 	 * 
@@ -71,13 +72,16 @@ public class UserService {
 		LOG.info("#addUser - " + "Adding USER in database with - " + username);
 		int userID = jdbcUserRepository.addUser(usersDTO);
 
-		// adding user into
+		// adding user into group
 		LOG.info("#addUser - " + "Adding USER to corresponding GROUP - " + users.getGroup());
 		jdbcUserRepository.addUserAndGroup(userID, users.getGroup());
 
+		//add user to role
 		LOG.info("#addUser - " + "Adding USER to corresponding ROLE - " + users.getRole());
 		jdbcUserRepository.addUserAndRole(userID, users.getRole());
 
+		System.out.println("USER - iD" + userID);
+		
 		LOG.info("#addUser - " + "Adding USER with  device - " + users.getDevice());
 		jdbcUserRepository.addUserAndDevice(userID, users.getDevice());
 
@@ -116,6 +120,7 @@ public class UserService {
 	 * @param
 	 * 
 	 * @return
+	 * @deprecated
 	 */
 	public void deleteUsers(int[] ids) {
 		LOG.info("#deleteUser - " + "Deleting total number of users from database - " + ids.length);
@@ -146,6 +151,8 @@ public class UserService {
 	 *            emailID
 	 * @return
 	 * @throws IOException
+	 * @deprecated
+	 * 
 	 */
 	public void deleteUsers(String[] emailIDs) throws IOException {
 		LOG.info("#deleteUser - " + "Deleting total number of users from database - " + emailIDs.length);
@@ -358,7 +365,6 @@ public class UserService {
 
 	/**
 	 * Returns User object on success.
-	 * 
 	 * 
 	 * @param username
 	 * @return

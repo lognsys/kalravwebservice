@@ -637,3 +637,16 @@ Responsive: Portrait tablets and up @media screen and (min-width: 768px) {
 	clear: both;
 	margin : 10px 0;
 }
+
+/* jquery ui dialog css*/
+.ui-dialog .ui-dialog-title {
+  text-align: center;
+  font-size: 110% !important;
+    color: #FFFFFF !important;
+}
+
+.ui-dialog > .ui-widget-header {background: #3399ff;}
+
+.ui-button.ui-corner-all.ui-widget.ui-button-icon-only.ui-dialog-titlebar-close {
+    display: none;
+}

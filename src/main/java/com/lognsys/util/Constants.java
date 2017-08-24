@@ -26,17 +26,21 @@ public class Constants {
 	}
 
 	public enum NOTIFICATION_QUERIES {
-		insert_notification, select_notification, delete_notification, select_notification_message,delete_notification_by_id,
+		insert_notification, select_notification, delete_notification, select_notification_message, delete_notification_by_id,
 	}
+
 	public enum DEVICE_QUERIES {
-		insert_user_devices,select_devices_exists,update_devices,select_all_devices,select_device_by_id,delete_device
-		}
+		insert_user_devices, select_devices_exists, update_devices, select_all_devices, select_device_by_id, delete_device
+	}
+
 	public enum BOOKING_QUERIES {
-		insert_booking, select_booking_all,delete_booking_by_Id,select_booking_by_users_id
+		insert_booking, select_booking_all, delete_booking_by_Id, select_booking_by_users_id
 	}
+
 	public enum BOOKEDSEATS_QUERIES {
-		insert_bookedseats, select_bookedseats_all,delete_bookedseats_by_Id,select_bookedseats_by_users_id
+		insert_bookedseats, select_bookedseats_all, delete_bookedseats_by_Id, select_bookedseats_by_users_id
 	}
+
 	/**
 	 * enum contains keys of queries defined in sql.properties.
 	 * 
@@ -45,7 +49,11 @@ public class Constants {
 	 */
 	public enum GROUP_QUERIES {
 
-		insert_user_groups, insert_groups, insert_dramas_groups, insert_drama_auditoriums, select_groups_all, insert_subgroups_groups, select_groupname_byuserid, select_id_bygroupname, select_usersbygroups, select_usersgroups_all, select_groupname_bydramaid, select_dramasbygroups, select_dramasgroups_all, select_groups_exists, update_group_byuser, select_subgroup_bygroup
+		insert_user_groups, insert_groups, insert_dramas_groups, insert_drama_auditoriums, 
+		select_groups_all, insert_subgroups_groups, select_groupname_byuserid, select_id_bygroupname, 
+		select_usersbygroups, select_usersgroups_all, select_groupname_bydramaid, select_dramasbygroups, 
+		select_dramasgroups_all, select_groups_exists, update_group_byuser, select_subgroup_bygroup, 
+		select_count_groups, delete_groups, select_has_subgroup
 
 	}
 
@@ -55,7 +63,7 @@ public class Constants {
 	}
 
 	public enum RATING_QUERIES {
-		insert_ratings, select_ratings_exists, update_ratings, select_users_id_and_dramas_id,select_all_ratings
+		insert_ratings, select_ratings_exists, update_ratings, select_users_id_and_dramas_id, select_all_ratings
 	}
 
 	/**
@@ -82,6 +90,7 @@ public class Constants {
 	}
 
 	public enum DRAMA_FIELD_NAMES {
+
 		dramasId, title, imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating, group_name, auditorium_name, group_id, auditorium_id, dramas_language
 	}
 
@@ -92,12 +101,15 @@ public class Constants {
 	public enum AUDITORIUMS_FIELDNAME {
 		auditoriumsId, auditorium_name, address, latitude, longitude
 	}
+
 	public enum BOOKING_FIELD_NAMES {
-		id, booking_date, confirmation_no, users_id, dramas_id, auditorium_id,price,status
+		id, booking_date, confirmation_no, users_id, dramas_id, auditorium_id, price, status
 	}
+
 	public enum BOOKEDSEATS_FIELD_NAMES {
 		id, booking_id, row_seats_id, refer_seat_id
 	}
+
 	public enum DEVICE_FIELD_NAMES {
 		id, users_id, deviceToken
 	}
@@ -111,7 +123,7 @@ public class Constants {
 	 * application.properties. Failure to do will create a bug
 	 */
 	public enum REST_MSGS {
-		response_userempty, response_userinvalid, response_userexists,response_dramaexists,response_dramaempty,response_auditoriumempty,response_ratingsuccess
+		response_userempty, response_userinvalid, response_userexists, response_dramaexists, response_dramaempty, response_auditoriumempty, response_ratingsuccess
 	}
 
 	/**
@@ -125,7 +137,7 @@ public class Constants {
 	public enum DEFAULT_GROUP {
 		NONE
 	}
-	
+
 	public enum DEFAULT_ROLE {
 		GUEST
 	}

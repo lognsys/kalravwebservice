@@ -4,23 +4,17 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -29,16 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.GroupsDTO;
-import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.model.Drama;
-import com.lognsys.model.Users;
 import com.lognsys.service.DramaService;
-import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
 import com.lognsys.util.ObjectMapper;
 

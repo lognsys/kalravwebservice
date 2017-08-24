@@ -21,8 +21,8 @@
 	<!-- **************************************************************** -->
 
 	<mvc:resources mapping="/static/**" location="/resources/" />
-	<mvc:resources mapping="/webjars/**" location="/webjars/" />
-<!-- 	<mvc:resources mapping="/resources/**" location="/resources/csshome" />
+	<!-- <mvc:resources mapping="/webjars/**" location="/webjars/" /> 
+	<mvc:resources mapping="/resources/**" location="/resources/csshome" />
 	<mvc:resources mapping="/resources/**" location="/resources/js" /> -->
 
 	<!-- Default handler -->

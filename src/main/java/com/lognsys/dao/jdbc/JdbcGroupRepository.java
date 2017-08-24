@@ -91,19 +91,6 @@ public class JdbcGroupRepository implements GroupRepository {
 
 	}
 
-	/**
-	 * Add new groups to the database.
-	 * 
-	 * @param group_name
-	 */
-	@Override
-	public boolean addGroup(String group_name) {
-		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
-		return namedParamJdbcTemplate
-				.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_user_groups.name()), param) == 1;
-
-	}
-
 	@Override
 	public int findIDBy(String groupname) {
 		// TODO Auto-generated method stub
@@ -159,7 +146,7 @@ public class JdbcGroupRepository implements GroupRepository {
 		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_groups_exists.name()), param,
-				Integer.class) > 0;
+				Integer.class) == 1;
 
 	}
 
@@ -193,5 +180,39 @@ public class JdbcGroupRepository implements GroupRepository {
 		return namedParamJdbcTemplate
 				.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.update_group_byuser.name()), param) == 1;
 	}
+
+	/**
+	 * Get total count of Groups and its corresponding subgroup
+	 */
+	@Override
+	public int getGroupCount() {
+
+		SqlParameterSource param = new MapSqlParameterSource(null);
+
+		return namedParamJdbcTemplate.queryForObject(
+				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_count_groups.name()), param, Integer.class);
+	}
+
+	
+	/**
+	 * delete group 
+	 */
+	@Override
+	public boolean deleteGroup(String group_name) {
+		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.delete_groups.name()),
+				param) == 1;
+	}
+
+	@Override
+	public boolean hasSubgroups(String group_name) {
+		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
+		return namedParamJdbcTemplate.queryForObject(
+				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_has_subgroup.name()), param,
+				Integer.class) > 0 ;
+	}
+	
+	
+	
 
 }
