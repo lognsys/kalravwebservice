@@ -63,25 +63,10 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 
 	@Override
 
-	public List<AuditoriumsDTO> findAuditoriumBy(int dramas_id,Date strDate) {
+	public List<AuditoriumsDTO> findAuditoriumBy(int dramas_id) {
 		
 		Hashtable<String, Object> parameter = new Hashtable<>();
 		parameter.put("dramas_id",(dramas_id));
-		parameter.put("date", strDate);
-	
-		 System.out.println("parameter toString =="+parameter.toString());  
-
-		 System.out.println("parameter keys =="+parameter.keys());  
-
-		 System.out.println("parameter values =="+parameter.values());  
-		 
-		/*
-		 * SqlParameterSource parameter = new MapSqlParameterSource("dramas_id",
-		 * dramas_id); return
-		 * namedParamJdbcTemplate.queryForObject(sqlProperties.getProperty(
-		 * Constants.AUDITORIUM_QUERIES.select_auditorium_name_bydramaid.name())
-		 * , parameter, new AuditoriumDramaIDRowMapper());
-		 */
 		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.select_new_name_id_auditorium_by_dramaId.name()),
 				parameter, new BeanPropertyRowMapper<AuditoriumsDTO>(AuditoriumsDTO.class));
@@ -118,11 +103,12 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 	}
 
 	@Override
-	public List<AuditoriumsDTO> getAuditoriumListBy(int id, int dramas_id) {
+	public List<AuditoriumsDTO> getAuditoriumListBy(int id, int dramas_id ,String date) {
 		// SqlParameterSource parameter = new MapSqlParameterSource("id", id);
-		Hashtable<String, Integer> parameter = new Hashtable<>();
+		Hashtable<String, Object> parameter = new Hashtable<>();
 		parameter.put("id", id);
 		parameter.put("dramas_id", dramas_id);
+		parameter.put("date", date);
 		System.out.println("#AuditoriumService================ dramas_id "+dramas_id);
 		
 		List<AuditoriumsDTO> listauditoriums = namedParamJdbcTemplate.query(
@@ -136,7 +122,7 @@ public class JdbcAuditoriumRepository implements AuditoriumRepository {
 	// Add Row_Seat
 	public boolean addRow_Seat(RowSeatDTO rowSeatDTO) {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(rowSeatDTO);
-		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.ROW_QUERIES.insert_rowseat.name()),
+		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.ROWSEAT_QUERIES.insert_rowseat.name()),
 				params) == 1;
 	}
 

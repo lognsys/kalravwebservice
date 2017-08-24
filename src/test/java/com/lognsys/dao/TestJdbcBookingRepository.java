@@ -63,7 +63,7 @@ public class TestJdbcBookingRepository  {
 		booking.setConfirmation_no("KAL001");
 		booking.setUsers_id(40);
 		booking.setDramas_id(4);
-		booking.setAuditorium_id(1);
+		booking.setAuditoriums_id(1);
 		booking.setPrice(100.00);
 		jdbcBookingRepository.addBooking(ObjectMapper.mapToBookingDTO(booking));
 		

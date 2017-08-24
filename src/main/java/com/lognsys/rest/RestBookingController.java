@@ -54,11 +54,44 @@ public class RestBookingController {
 		public ResponseEntity<?> bookingconfirm(@RequestBody String response) {
 			String unique = null;
 			try {
-				  System.out.println("bookingconfirm response "+response);
 				    
 				JSONObject jsonObject=bookingService.addBooking(response);
-				
-				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.FOUND);
+				System.out.println("=========bookingconfirm jsonObject ============"+jsonObject);
+				  
+				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.CREATED);
+			} catch (IOException e) {
+				 System.out.println("bookingconfirm IOException "+e);
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_bookingmempty.name());
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+				  
+//				e.printStackTrace();
+			} catch (ParseException e) {
+				 System.out.println("bookingconfirm ParseException "+e);
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_bookingmempty.name());
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+				  
+//				e.printStackTrace();
+			} catch (org.json.simple.parser.ParseException e) {
+				 System.out.println("bookingconfirm ParseException 1 :  "+e);
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_bookingmempty.name());
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+				   
+//				e.printStackTrace();
+			}
+
+		}
+		
+
+		@RequestMapping(value = "/bookedseats", method = { RequestMethod.POST })
+		public ResponseEntity<?> bookedseats(@RequestBody String response) {
+			String unique = null;
+			try {
+				  System.out.println("bookedseats response "+response);
+				    
+				JSONObject jsonObject=bookingService.getBookedSeats(response);
+				  System.out.println("bookedseats jsonObject "+jsonObject);
+					
+				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.CREATED);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -3,21 +3,20 @@ package com.lognsys.model;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
-@Document
 public class BookedSeats {
 	private int id;
     private int  booking_id;
     private int row_seats_id;
-    private int refer_seat_id;
+    private  String seat_status;
 	public BookedSeats() {
 		super();
 	}
-	public BookedSeats(int id, int booking_id, int row_seats_id, int refer_seat_id) {
+	public BookedSeats(int id, int booking_id, int row_seats_id,  String seat_status) {
 		super();
 		this.id = id;
 		this.booking_id = booking_id;
 		this.row_seats_id = row_seats_id;
-		this.refer_seat_id = refer_seat_id;
+		this.seat_status = seat_status;
 	}
 	public int getId() {
 		return id;
@@ -37,12 +36,13 @@ public class BookedSeats {
 	public void setRow_seats_id(int row_seats_id) {
 		this.row_seats_id = row_seats_id;
 	}
-	public int getRefer_seat_id() {
-		return refer_seat_id;
+	public String getSeat_status() {
+		return seat_status;
 	}
-	public void setRefer_seat_id(int refer_seat_id) {
-		this.refer_seat_id = refer_seat_id;
+	public void setSeat_status(String seat_status) {
+		this.seat_status = seat_status;
 	}
+
 	
     
 }

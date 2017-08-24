@@ -3,33 +3,34 @@ package com.lognsys.dao;
 import java.util.Date;
 import java.util.List;
 import com.lognsys.dao.dto.AuditoriumsDTO;
-import com.lognsys.dao.dto.BookedRowSeatsDTO;
 import com.lognsys.dao.dto.BookedSeatsDTO;
 import com.lognsys.dao.dto.BookingDTO;
 import com.lognsys.dao.dto.DramasAuditoriumsDTO;
+import com.lognsys.dao.dto.RowSeatDTO;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.model.RowSeat;
 
-public interface BookedSeatsRepository {
+public interface RowSeatRepository {
 
 	/**
 	 * Get All bookings
 	 * 
 	 * @return
 	 */
-//	public List<BookedSeatsDTO> getAllBookedSeats();
+	public List<RowSeatDTO> getAllRowSeat();
 
 	/**
 	 * Add booking into database
 	 * 
 	 * @param bookingDTO
 	 */
-	public int addBookedSeats(BookedSeatsDTO bookedSeatsDTO);
+	public int addRowSeat(RowSeatDTO rowSeatDTO);
 
 	/**
 	 * Delete booking by id
 	 * @param id
 	 */
-	public boolean deleteBookedSeatsById(Integer id);
+	public boolean deleteRowSeatById(Integer id);
 /*
 	*//**
 	 * Update booking information, etc..
@@ -42,6 +43,8 @@ public interface BookedSeatsRepository {
 		 * 
 		 * @param booking
 		 */
-		 public  List<BookedSeatsDTO> findBookedSeatsByUserId(int users_id);
-		 public  List<BookedRowSeatsDTO> getBookedRowSeatsDTO(int dramas_id,int auditoriums_id);
+		 public  List<RowSeatDTO> findRowSeatByAuditoriumId(int auditoriums_id);
+		
+		 public  int getRowSeats(int row_num,String row_name,int auditoriums_id);
+
 }

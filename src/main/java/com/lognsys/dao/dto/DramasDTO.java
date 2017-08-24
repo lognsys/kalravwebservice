@@ -28,11 +28,13 @@ public class DramasDTO {
     private String avg_rating="";
     private String drama_language="";
     
-public DramasDTO(int id, String title, String imageurl) {
+public DramasDTO(int id, String title,String date, String imageurl) {
 		super();
 		this.id = id;
 		this.title = title;
+		this.date = date;
 		this.imageurl = imageurl;
+		this.date = date;
 	}
 
 public DramasDTO(int id, String title, String imageurl, String drama_length, String date, String genre,

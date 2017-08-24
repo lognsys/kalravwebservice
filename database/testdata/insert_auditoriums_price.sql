@@ -58,3 +58,48 @@ values(17, 3,2,350,13,21,'2017-05-17 09:25');
 
 insert into auditoriums_price (id,auditoriums_id,dramas_id,price,istart,iend,last_edit)
 values(18, 3,2,500,22,26,'2017-05-17 09:25');
+
+
+
+
+
+
+
+
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(1,3,200,1,12);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(1,3,350,13,21);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(1,3,500,22,26);
+
+
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(1,4,200,1,12);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(1,4,350,13,21);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(1,4,500,22,26);
+
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(3,5,200,1,12);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(3,5,350,13,21);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(3,5,500,22,26);
+
+
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(1,6,200,1,12);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(1,6,350,13,21);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(1,6,500,22,26);
+
+
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(2,16,200,1,12);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(2,16,350,13,21);
+insert into auditoriums_price (auditoriums_id,dramas_id,price,istart,iend)
+values(2,16,500,22,26);

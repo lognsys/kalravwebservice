@@ -1,6 +1,6 @@
-package com.lognsys.dao.dto;
+package com.lognsys.model;
 
-public class RowSeatDTO {
+public class RowSeat {
 
 	private int id;
 	private int row_num;
@@ -9,58 +9,58 @@ public class RowSeatDTO {
 	private int auditoriums_id;
 	private String auditorium_name;
 	private String seatCount;
-	public RowSeatDTO(int id, int row_num, String row_name, int seat_num, int auditoriums_id) {
+
+	public RowSeat(int row_num, String row_name, int seat_num, int auditoriums_id) {
 		super();
-		this.id = id;
+
 		this.row_num = row_num;
 		this.row_name = row_name;
 		this.seat_num = seat_num;
 		this.auditoriums_id = auditoriums_id;
+
 	}
-	public RowSeatDTO() {
+
+	public RowSeat() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	public RowSeatDTO(int row_num, String row_name, int seat_num, int auditoriums_id) {
-		this.row_num = row_num;
-		this.row_name = row_name;
-		this.seat_num = seat_num;
-		this.auditoriums_id = auditoriums_id;
-	}
-	public RowSeatDTO(int row_num,int seat_num, int auditoriums_id) {
-		this.row_num = row_num;
-		this.seat_num = seat_num;
-		this.auditoriums_id = auditoriums_id;
-	}	public RowSeatDTO(int row_num,int seat_num) {
-		this.row_num = row_num;
-		this.seat_num = seat_num;
-	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public int getRow_num() {
 		return row_num;
 	}
+
 	public void setRow_num(int row_num) {
 		this.row_num = row_num;
 	}
+
 	public String getRow_name() {
 		return row_name;
 	}
+
 	public void setRow_name(String row_name) {
 		this.row_name = row_name;
 	}
+
 	public int getSeat_num() {
 		return seat_num;
 	}
+
 	public void setSeat_num(int seat_num) {
 		this.seat_num = seat_num;
 	}
+
 	public int getAuditoriums_id() {
 		return auditoriums_id;
 	}
+
 	public void setAuditoriums_id(int auditoriums_id) {
 		this.auditoriums_id = auditoriums_id;
 	}

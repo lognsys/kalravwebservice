@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS dramas_auditoriums
     date DATE NOT NULL,
 	
     #drama_time
-    time TIME NOT NULL,
+    time varchar(20) NOT NULL,
 	
     last_edit timestamp not null default current_timestamp on update current_timestamp,
 

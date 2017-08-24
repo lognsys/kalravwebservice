@@ -2,8 +2,12 @@ package com.lognsys.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.FileSystemResourceLoader;
@@ -13,9 +17,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.RolesDTO;
 import com.lognsys.dao.dto.UsersDTO;
+import com.lognsys.dao.jdbc.JdbcDeviceRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcRolesRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
@@ -34,6 +41,8 @@ public class UserService {
 
 	@Autowired
 	private JdbcUserRepository jdbcUserRepository;
+	@Autowired
+	private JdbcDeviceRepository jdbcDeviceRepository;
 
 	@Autowired
 	private JdbcGroupRepository jdbcGroupRepository;
@@ -65,32 +74,40 @@ public class UserService {
 
 		// Check if User Exists
 		boolean isExists = jdbcUserRepository.isExists(username);
+
+		  System.out.println("addUser users isExists "+isExists);
 		if (isExists)
 			throw new IllegalArgumentException("User already exists in database with username - " + username);
 
 		// adding user into database users
 		LOG.info("#addUser - " + "Adding USER in database with - " + username);
-		int userID = jdbcUserRepository.addUser(usersDTO);
 
+		
+		int users_id = jdbcUserRepository.addUser(usersDTO);
+		  System.out.println("addUser users users_id "+users_id);
+		  System.out.println("addUser users users.getGroup()) "+users.getGroup());
+				
 		// adding user into group
 		LOG.info("#addUser - " + "Adding USER to corresponding GROUP - " + users.getGroup());
-		jdbcUserRepository.addUserAndGroup(userID, users.getGroup());
+		jdbcUserRepository.addUserAndGroup(users_id, users.getGroup());
 
-		//add user to role
+	
+        //Adding user to corresponding role
 		LOG.info("#addUser - " + "Adding USER to corresponding ROLE - " + users.getRole());
-		jdbcUserRepository.addUserAndRole(userID, users.getRole());
 
-		System.out.println("USER - iD" + userID);
-		
-		LOG.info("#addUser - " + "Adding USER with  device - " + users.getDevice());
-		jdbcUserRepository.addUserAndDevice(userID, users.getDevice());
+		jdbcUserRepository.addUserAndRole(users_id, users.getRole());
+		 System.out.println("addUser users  users.getDevice() "+ users.getDevice());
+			
+		LOG.info("#addUser - " + "Adding USER with  users_id - " + users_id);
+		jdbcUserRepository.addUserAndDevice(users_id, users.getDevice());
+
 
 		try {
 			refreshUserList();
 		} catch (IOException io) {
 			LOG.fatal("UserService#addUser refresUserList - " + io.getMessage());
 		}
-		return userID;
+		return users_id;
 	}
 
 	/**
@@ -238,10 +255,23 @@ public class UserService {
 	 * 
 	 * @param userId
 	 * @return
+	 * @throws ParseException 
 	 */
 	@Transactional(rollbackFor = UserDataAccessException.class)
-	public Users getUserWithRoleAndGroup(String username) {
-
+	public Users getUserWithRoleAndGroup(String response) throws ParseException {
+		JSONParser parser = new JSONParser();
+		Object obj1 = parser.parse(response);
+		   
+        JSONObject obj2 =new JSONObject((Map) obj1);
+        System.out.println("getUserWithRoleAndGroup obj2 "+obj2);
+        
+        String username=(String) obj2.get("username");
+        System.out.println("getUserWithRoleAndGroup username "+username);
+        
+        String device=(String) obj2.get("device");
+        System.out.println("getUserWithRoleAndGroup device "+device);
+        
+		
 		// Throw exception on invalid paramter or empty paramter
 		if (username.isEmpty() || !CommonUtilities.isValidEmail(username))
 			throw new UserDataAccessException(
@@ -281,7 +311,25 @@ public class UserService {
 		} else {
 			users.setRole(Constants.DEFAULT_GROUP.NONE.toString());
 		}
-
+		
+		
+		if(!(users.getDevice().equals(device))){
+//			update user
+			DeviceDTO deviceDTO= new DeviceDTO();
+			deviceDTO.setUsers_id(users.getId());
+			deviceDTO.setDeviceToken(device);
+			boolean isUpdateDeviceDTO =jdbcDeviceRepository.updateDevice(deviceDTO);
+			System.out.println("getUserWithRoleAndGroup isUpdateDeviceDTO "+isUpdateDeviceDTO);
+			   
+			boolean isUpdate=jdbcUserRepository.updateUserDevice(device,username);
+			System.out.println("getUserWithRoleAndGroup isUpdate "+isUpdate);
+		      
+			if(isUpdate){
+				users.setDevice(device);
+			}
+			  System.out.println("getUserWithRoleAndGroup users.getDevice  "+users.getDevice());
+				 
+		}
 		return users;
 
 	}

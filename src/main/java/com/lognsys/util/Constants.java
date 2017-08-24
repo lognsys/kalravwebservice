@@ -9,7 +9,7 @@ public class Constants {
 	 * be added to USER_QUERIES enum
 	 */
 	public enum USER_QUERIES {
-		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email, update_users, select_users_username
+		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email, update_users, select_users_username,update_users_device
 	}
 
 	public enum ROLES_QUERIES {
@@ -57,9 +57,9 @@ public class Constants {
 
 	}
 
-	public enum ROW_QUERIES {
+	public enum ROWSEAT_QUERIES {
 
-		insert_rowseat
+		insert_rowseat,select_rowseat_all,delete_by_id,select_rowseat_by_auditoriums_id,get_select_id
 	}
 
 	public enum RATING_QUERIES {
@@ -104,16 +104,19 @@ public class Constants {
 
 	public enum BOOKING_FIELD_NAMES {
 		id, booking_date, confirmation_no, users_id, dramas_id, auditorium_id, price, status
+
 	}
 
 	public enum BOOKEDSEATS_FIELD_NAMES {
-		id, booking_id, row_seats_id, refer_seat_id
+		id, booking_id, row_seats_id, seat_status
 	}
 
 	public enum DEVICE_FIELD_NAMES {
 		id, users_id, deviceToken
 	}
-
+	public enum ROWSEAT_FIELD_NAMES {
+		id, row_num, row_name, seat_num, auditoriums_id
+	}
 	// REST URL constants
 	public static final String DRAMA_LIST_URL = "/dramalist";
 
@@ -123,7 +126,10 @@ public class Constants {
 	 * application.properties. Failure to do will create a bug
 	 */
 	public enum REST_MSGS {
-		response_userempty, response_userinvalid, response_userexists, response_dramaexists, response_dramaempty, response_auditoriumempty, response_ratingsuccess
+		response_userempty, response_userinvalid, response_userexists,
+		response_dramaexists,response_dramaempty,
+		response_auditoriumempty,
+
 	}
 
 	/**

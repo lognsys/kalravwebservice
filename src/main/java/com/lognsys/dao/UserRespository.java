@@ -62,5 +62,12 @@ public interface UserRespository {
 	 * @param users
 	 */
 	 public boolean updateUser(UsersDTO user);
+	 
+		/**
+		 * Update user device.
+		 * 
+		 * @param users
+		 */	 
+	 public boolean updateUserDevice(String device, String username);
 
 }

@@ -1,54 +1,41 @@
 
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(1, 1,1,'2017-06-29','06:25','2017-05-17 09:25');
+select * from dramas;
+select * from auditoriums_price;
 
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(2, 2,1,'2017-06-29','09:25','2017-05-17 09:25');
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(1,1,'2017-09-17',"11:25 am");
 
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(3, 3,1,'2017-06-30','09:25','2017-05-17 09:25');
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(1,2,'2017-08-18',"12:30 pm");
+
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(1,3,'2017-08-19',"1:25 pm");
+
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(1,4,'2017-08-20',"4:25 pm");
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(1,6,'2017-08-22',"6:25 am");
 
 
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(2,1,'2017-09-17',"7:25 pm");
 
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(4, 1,2,'2017-07-1','09:25','2017-05-17 09:25');
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(2,2,'2017-08-21',"12:30 pm");
 
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(5, 2,2,'2017-07-1','06:25','2017-05-17 09:25');
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(2,16,'2017-08-23',"1:25 pm");
 
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(6, 3,2,'2017-07-2','09:25','2017-05-17 09:25');
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(3,1,'2017-08-19',"10:25 am");
 
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(7, 1,3,'2017-07-3','10:25','2017-05-17 09:25');
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(3,2,'2017-08-21',"5:30 pm");
 
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(8, 2,3,'2017-07-4','11:25','2017-05-17 09:25');
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(3,5,'2017-08-21',"1:25 pm");
 
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(9, 1,1,'2017-07-24','09:25','2017-07-17 09:25');
-
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(10, 2,1,'2017-07-26','11:25','2017-07-17 09:25');
-
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(11, 3,1,'2017-07-28','08:00','2017-07-17 09:25');
-
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(12, 1,2,'2017-07-24','01:25','2017-05-17 09:25');
-
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(13, 2,2,'2017-07-25','06:25','2017-05-17 09:25');
-
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(14, 3,2,'2017-07-26','09:25','2017-05-17 09:25');
-
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(15, 1,3,'2017-07-26','10:25','2017-05-17 09:25');
-
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(16, 2,3,'2017-07-27','12:25','2017-05-17 09:25');
-
-insert into dramas_auditoriums (id,auditoriums_id,dramas_id,date,time,last_edit)
-values(17, 3,3,'2017-07-28','4:25','2017-05-17 09:25');
-
+insert into dramas_auditoriums (auditoriums_id,dramas_id,date,time)
+values(3,5,'2017-08-16',"1:25 pm");
+update dramas_auditoriums set time="01:25 pm"
+where id=13
