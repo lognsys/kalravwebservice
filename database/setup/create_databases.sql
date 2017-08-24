@@ -16,18 +16,6 @@ create database if not exists kalrav default character set utf8 default collate 
 create user 'kalravdba'@'localhost' identified by 'kal-dba999dev';
 create user 'kalravrw'@'localhost' identified by 'kal-rw8dev';
 
-#create user 'paprdba'@'50.18.63.233' identified by 'papr-dba999dev';
-#create user 'paprdba'@'128.48.204.0/255.255.255.0' identified by 'papr-dba999dev';
-
-#create user 'paprrw'@'localhost' identified by 'papr-rw8dev';
-#create user 'paprrw'@'50.18.63.233' identified by 'papr-rw8dev';
-#create user 'paprrw'@'128.48.204.0/255.255.255.0' identified by 'papr-rw8dev';
-
-#create user 'paprro'@'localhost' identified by 'papr-ro7dev';
-#create user 'paprro'@'50.18.63.233' identified by 'papr-ro7dev';
-#create user 'paprro'@'128.48.204.0/255.255.255.0' identified by 'papr-ro7dev';
-
 grant all on kalrav.* to 'kalravdba'@'localhost';
 grant SELECT, INSERT, DELETE, UPDATE on kalrav.* to 'kalravdba'@'localhost';
-#grant all on kalrav.* to 'kalravdba'@'50.18.63.233';
-#grant all on kalrav.* to 'kalravdba'@'128.48.204.0/255.255.255.0';
+

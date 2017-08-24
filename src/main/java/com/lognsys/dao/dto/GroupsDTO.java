@@ -49,4 +49,11 @@ public class GroupsDTO {
 		this.parent_id = parent_id;
 	}
 
+	@Override
+	public String toString() {
+		return "GroupsDTO [id=" + id + ", group_name=" + group_name + ", is_subgroup=" + is_subgroup + ", parent_id="
+				+ parent_id + "]";
+	}
+
+
 }

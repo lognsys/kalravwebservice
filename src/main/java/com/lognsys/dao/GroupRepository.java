@@ -17,9 +17,6 @@ public interface GroupRepository {
 	public List<UsersGroupsDTO> getUsersByGroup(String group_name);
 
 	// NOTE: this applies to both group and subgroup
-	public boolean addGroup(String group_id);
-
-	// NOTE: this applies to both group and subgroup
 	public int addGroup(GroupsDTO groupsDTO);
 
 	// NOTE: this applies to both group and subgroup
@@ -41,5 +38,14 @@ public interface GroupRepository {
 
 	// NOTE: This applies to only group and subgroup
 	public boolean updateGroupOfUser(String userName, String group_name);
+	
+	//Get total count of Groups & its SubGroups
+	public int getGroupCount();
+  
+	//This is group or subgroup
+ 	public boolean deleteGroup(String group_name);
+	
+ 	//Make sure group has sub groups
+	public boolean hasSubgroups(String group_name);
 
 }

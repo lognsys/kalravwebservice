@@ -5,7 +5,7 @@
 VAR=$1
 
 usage() {
- echo "Argument Required: (nutritional | funfacts | ayurvedic)"
+ echo "Argument Required: (auditorium | row_seat)"
 }
 
 if [ -z "$VAR" ];

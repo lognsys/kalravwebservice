@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS kalrav.devices (
     
    #Required start cast
 	deviceToken varchar(255) not null default '',
+	#last_edit
 	last_edit TIMESTAMP not null default current_timestamp on update current_timestamp
 	
 ) ENGINE=InnoDB default CHARSET=utf8;

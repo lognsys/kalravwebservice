@@ -15,11 +15,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import com.lognsys.dao.NotificationRespository;
-import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.NotificationsDTO;
-import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.rowmapper.NotificationByIDRowMapper;
-import com.lognsys.dao.jdbc.rowmapper.UserByUserIDRowMapper;
 import com.lognsys.util.Constants;
 
 @Repository("notificationsRepository")

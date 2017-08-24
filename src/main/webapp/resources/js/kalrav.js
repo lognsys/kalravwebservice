@@ -6,6 +6,8 @@
  * This contains all the jquery code used for CRUD of Users module , 
  * Group module , Drama module etc.
  * 
+ * CHANGELOG : PJD - 25/07/17 Created Group Module
+ * 
  * Notes: 
  * 1. JQuery delegate function is used for dynamically generated html
  * 2. Bootstrap 
@@ -950,25 +952,49 @@ $(document)
             
             
             /******************************************** GROUP.JSP MODULE **********************************************/
-           //START OF CARD HOVER ADD/REMOVE Button  
-            $('.subgroup_add').hover(function(){
-            	$(this).addClass('w3-text-light-grey').removeClass('w3-text-blue');
-            } , function(){
-            	$(this).addClass('w3-text-blue').removeClass('w3-text-light-grey');
+            
+            // HTML TEMPLATES ////
+            //add subgroup input field
+            var tpl_add_subgroup_row = '<div><input class="subgroup_name" type="text" name="subgroupname">'
+									+'<i class="material-icons subgroup_add w3-text-blue w3-right">add</i>'
+									+'<i class="material-icons subgroup_remove w3-text-red w3-right">remove</i>'
+									+'<hr class="line_break"></div>'; 
+            //subgroup button
+            var tpl_add_button='<button class="button_add_subgroup w3-button w3-blue w3-round">Add Sub-Group</button>';
+            //add row for col
+            var tpl_add_group_row='<div class="row w3-row row_append_group"></div>';
+            // group card 
+            var tpl_add_groupcard='<div class="card_group w3-margin w3-col s3 w3-card"><header class="w3-container w3-light-grey w3-padding w3-center"><span class="w3-margin-left w3-text-grey" style="font-size: 150%"></span><i class="material-icons group_delete close w3-right">close</i></header><div class="subgroup w3-container w3-padding w3-center"><button class="button_add_subgroup w3-button w3-blue w3-round">Add Sub-Group</button></div><div class="card_button w3-container w3-padding"><button class="w3-button w3-green w3-round  w3-margin-left w3-right">Save</button><button class="w3-button w3-round w3-right ">Cancel</button></div></div>';
+            
+            //DEFINE FIELDS 
+            var addGroupAndSubgroup = [];
+            var removeGroupAndSugroup = [];
+            
+           // HOVER CHANGE COLOR ADD/DELETE BUTTON  
+            $(document).delegate( '.subgroup_add', 'mouseover mouseout',  function(event){
+            	 if( event.type === 'mouseover' )  {
+            		 $(this).addClass('w3-text-light-grey').removeClass('w3-text-blue');
+            	 } else {
+            		 $(this).addClass('w3-text-blue').removeClass('w3-text-light-grey');
+            	
+            	 }	 
             });
             
-            $('.subgroup_remove').hover(function(){
-            	$(this).addClass('w3-text-light-grey').removeClass('w3-text-red');
-            } , function(){
-            	$(this).addClass('w3-text-red').removeClass('w3-text-light-grey');
+            $(document).delegate( '.subgroup_remove','mouseover mouseout',  function(event){
+            	 if( event.type === 'mouseover' )  {
+            		 $(this).addClass('w3-text-light-grey').removeClass('w3-text-red');
+            	 } else {
+            		 $(this).addClass('w3-text-red').removeClass('w3-text-light-grey');
+            	 }
             });
             // END OF CARD HOVER ADD/REMOVE buttons
+            
          
-            //START OF CARD-EDIT INPLACE FROM SPAN TO INPUT
+            //START OF EDIT INPLACE FROM SPAN TO INPUT
             var switchToInput = function () {
                 var $input = $("<input>", {
                     val:  (!$(this).text().trim()) ? "Enter Subgroup" : $(this).text(),
-                    
+                    placeholder:  (!$(this).text().trim()) ? "Enter Subgroup" : $(this).text(),
                     type: "text"
                 });
                 $input.addClass("subgroup_name");
@@ -986,41 +1012,158 @@ $(document)
                 $span.on("click", switchToInput);
             }
             $(document).delegate( '.subgroup_name','click',  switchToInput);
-            //END OF CARD-EDIT INPLACE
+            //END OF EDIT INPLACE
+   
             
             
             //START OF CARD ADD/REMOVE SUBGROUP ROW 
-            var tpl_add_row = '<div><input class="subgroup_name" type="text" name="subgroupname">'
-									+'<i class="material-icons subgroup_add w3-text-blue w3-right">add</i>'
-									+'<i class="material-icons subgroup_remove w3-text-red w3-right">remove</i>'
-									+'<hr class="line_break"></div>'; 
-            var tpl_add_button='<button class=".add_button_subgroup w3-button w3-blue w3-round">Add Sub-Group</button>';
-            
-            
-            var totalDivsInSubgroup = $('div.subgroup > div').length;
-            
-            //Adding Subgroup
+            //ADD SUBGROUP
             $(document).delegate( '.subgroup_add','click',  function () {
-            	$(this).closest('.subgroup').append(tpl_add_row);
+            	$(this).closest('.subgroup').append(tpl_add_subgroup_row);
             });
             
-            //Deleting Subgroup
+            //DELETE SUBGROUP
             $(document).delegate( '.subgroup_remove','click',  function () {
             	//get the parent element of this child
-            	$parent = $(this).closest('.subgroup');
+            	var $parent = $(this).closest('.subgroup');
             	
-            	//remove the cuurent div
+            	//remove the current div
             	$(this).parent('div').remove();
             	
             	//get length of the total div
             	var totalDivsInSubgroup = $parent.children('div').length;
             	
+            	//After removing all subgroup rows add Button
             	if(totalDivsInSubgroup == 0) {
             		$parent.append(tpl_add_button);
             	}
             	
             });
             //  END OF CARD ADD/REMOVE ROW
-     
             
- }); //end of document ready function
+           
+            //START OF ADD SUBGROUP BUTTON (when all subgroup deleted)
+            $(document).delegate( '.button_add_subgroup','click',  function () {
+            	$(this).hide();
+            	$(this).closest('.subgroup').append(tpl_add_subgroup_row);
+            });
+            //END OF ADD SUBGROUP BUTTON
+       
+            //DELET CARD 
+            //TODO check for sub groups before delete it
+            $(document).delegate('.group_delete', 'click', function() {
+            	//get the no of child elements
+            	
+            	var $parent = $(this).closest('.row_append_group');
+            	var count = $parent.children('.card_group').length;
+            	
+            	//remove card
+            	$(this).closest('.card_group').remove();
+            
+            	if(count == 1)
+            		$parent.remove();
+            });
+            //end of delete card
+            
+            //START OF ADD NEW GROUP
+            var textValue;
+            $('.button_add_group').click(function() {
+            	$("#groupDialog").dialog("open");
+            	 $('#group_name').val("");
+            		
+            });
+            
+            $("#groupDialog").dialog({
+                autoOpen  : false,
+                modal     : true,
+                title     : "ENTER GROUP",
+                buttons   : {
+                	 	     'Cancel' : function() {
+                	 	    	 $(this).dialog('close');
+                	 	    	$("#error").remove();
+                	 	 	},
+                	 	 	  'Save' : function() {
+                	 		      
+                	 	 		  textValue = $('#group_name').val();
+                	 		      var errorMsg ="";
+                	 		      var isValid = true;
+                 	 	 		
+                	 		     
+                	 		      if(textValue != ""  ) {
+                	 		    	  isValid = true;
+                	 		      } else {
+                	 		    	  isValid = false
+                	 		    	  errorMsg = "<br/> Group Name cannot be empty...";
+                	 		      }
+                	 		      
+                	 		     var regx = /^[A-Za-z0-9]+$/;
+                	 		     
+                	 		    if (!regx.test(textValue)) {
+                	 		    	isValid=false;
+                	 		    	errorMsg = errorMsg+"<br/> Group Name cannot have special characters...";
+                	 		      } else isValid=true;
+                	 		    
+                	 		    
+                	 		    if(isValid) {
+                	 		    	addCard(textValue);
+                	 		    	$("#error").remove();
+                	 		    	$(this).dialog('close');
+                	 		    } else {
+                	 		    	
+                	 		    	if($('#error').length == 0){
+                	 		    		$(this).append('<p id="error">'+errorMsg+'</p>');
+                	 		    		$("#error").css({"color":"red", "padding-top":"5px" });
+                	 		    	} 
+                	 		    }
+                	 		 },
+                	 	}
+            });
+            
+            // add card in each row. Max 3 cards/row
+            function addCard(group_name) {
+            	//check total rows
+            	var rows = $('.row_append_group').length;
+            	
+            	//add row if not exists
+            	if(rows == 0) {
+            		$('.add_group').append(tpl_add_group_row);
+            		$('.row_append_group').append(tpl_add_groupcard);
+            		$('.card_group:last').find('header > span').text(group_name);
+            	}
+            	
+            	//add card to existing rows
+            	if(rows > 0) {
+            		
+            		    var row;
+            		    var total_no_cards = 0;
+            		    		    
+            			for (var i = 0; i < rows; i++) {
+            				row = $('.row_append_group').eq(i);
+            				total_no_cards = row.find('.card_group').length;
+            				if(total_no_cards < 3) {
+            					break;
+            				}
+            			}
+            			
+            		    //check if cards in row < 3
+            		    if(total_no_cards < 3) {
+            		    	$(row).append(tpl_add_groupcard);
+            		    	$(row).children('.card_group:last').find('header > span').text(group_name); //Adding value to span
+            		    } 
+            		
+            		    //Add new row when row is full(max 3 /row)
+            		    if (total_no_cards == 3) {
+            		    	//add new row
+            		    	$('.add_group').append(tpl_add_group_row);
+            		    	//re-check length of rows added and new card group in row
+                			var rows = $('.row_append_group').length;
+            		    	var row = $('.row_append_group').eq(rows-1);
+            		    	$(row).append(tpl_add_groupcard);
+             //Adding value to span
+            		}
+            	}
+            }
+           //END OF ADD NEW GROUP 
+            
+            
+ }); //end of document jQuery
