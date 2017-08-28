@@ -77,13 +77,20 @@ public class DramaService {
 		
 		try {
 				int dramaID =jdbcDramaRepository.addDrama(dramasDTO);
-				System.out.println("#addUser - " + "Adding drama in database with dramaID - " + dramaID);
+				System.out.println("#addDrama - " + "Adding drama in database with dramaID - " + dramaID);
 				
-				System.out.println("#addUser - " + "Adding DRAMA to corresponding GROUP - " + dramas.getGroup());
+				System.out.println("#addDrama - " + "Adding DRAMA to corresponding GROUP - " + dramas.getGroup());
 				jdbcDramaRepository.addDramaAndGroup(dramaID, dramas.getGroup());
 
-				System.out.println("#addUser - " + "Adding DRAMA to corresponding Auditorium - " + dramas.getAuditorium());
-				jdbcDramaRepository.addDramaAndAuditorium(dramaID, dramas.getAuditorium());
+				System.out.println("#addDrama - " + "Adding DRAMA to corresponding Auditorium - " + dramas.getAuditorium());
+				String[] splitString=dramas.getDate().split(" ");
+				String date=splitString[0];
+				String time=splitString[1];
+				
+				System.out.println("#addDrama - " + "Adding DRAMA to corresponding Auditorium date- " + date);
+				System.out.println("#addDrama - " + "Adding DRAMA to corresponding Auditorium time- " + time);
+				
+				jdbcDramaRepository.addDramaAndAuditorium(dramaID, dramas.getAuditorium(),date,time);
 
 				return dramaID;
 		} catch (DataAccessException dae) {

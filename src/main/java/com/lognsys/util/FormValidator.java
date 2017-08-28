@@ -27,7 +27,7 @@ public class FormValidator implements Validator {
 	String ID_PATTERN = "[0-9]+";
 	String STRING_PATTERN = "[a-z \\s A-Z]+";
 	String MOBILE_PATTERN = "[0-9]{10}";
-	String RATING_PATTERN = "[0-5]{1}";
+	String RATING_PATTERN = "[0.1-5.0]{2}";
 	String ZIPCODE_PATTERN = "[0-9]{6}";
 	String STRING_NUMERIC_PATTERN = "[a-z \\s A-Z] [0-9]";
 	private static final String TIME12HOURS_PATTERN =
@@ -74,7 +74,8 @@ public class FormValidator implements Validator {
 //			System.out.println("Form Validation target Drama "+target);
 			
 			Drama dramas = (Drama) target;
-			
+
+			validateDramaLanguage(dramas, errors);
 			validateTitle(dramas,errors);
 			validateDramaLength(dramas,errors);
 			validateDramaGenre(dramas,errors);
@@ -100,6 +101,11 @@ public class FormValidator implements Validator {
 	}
 
 
+	private void validateDramaLanguage(Drama dramas, Errors errors) {
+		ValidationUtils.rejectIfEmpty(errors, "drama_language", "required.drama_language", "Please Select Drama Language.");
+
+	}
+
 	private void validateMessage(Notifications notifications, Errors errors) {
 		// TODO Auto-generated method stub
 		ValidationUtils.rejectIfEmpty(errors, "message", "required.message", "message is required.");
@@ -108,14 +114,14 @@ public class FormValidator implements Validator {
 	private void validateAverageRating(Drama dramas, Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "avg_rating", "required.avg_rating", "Average rating is required.");
 
-		// phone number validation
+		/*// phone number validation
 		if (!(dramas.getAvg_rating() != null && dramas.getAvg_rating().isEmpty())) {
 			pattern = Pattern.compile(RATING_PATTERN);
 			matcher = pattern.matcher(dramas.getAvg_rating());
 			if (!matcher.matches()) {
 				errors.rejectValue("avg_rating", "avg_rating.incorrect", "Enter a correct Average rating ");
 			}
-		}
+		}*/
 	}
 
 	private void validateMusic(Drama dramas, Errors errors) {

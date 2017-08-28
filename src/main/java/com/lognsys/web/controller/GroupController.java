@@ -45,10 +45,10 @@ public class GroupController {
 	 * 
 	 */
 	@RequestMapping(value = "/groupadd", method = RequestMethod.POST)
-	public void addGroup(@RequestBody String groups) {
+	public String addGroup(@RequestBody String groups) {
 		System.out.println("Groups - "+groups);
 		//groupService.addGroupOrSubGroup(groupsDTO);
-		return group;
+		return "group";
 	}
 
 //	@RequestMapping(value = "/deletegroup", method = RequestMethod.POST)

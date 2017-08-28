@@ -141,11 +141,14 @@ public class JdbcDramaRepository implements DramaRespository {
 	 * @param drama_id
 	 * @param group
 	 */
-	public void addDramaAndAuditorium(int dramas_id, String auditorium_name) throws DataAccessException{
+	public void addDramaAndAuditorium(int dramas_id, String auditorium_name,String date,String time) throws DataAccessException{
 
 		try {
-			SqlParameterSource param = new MapSqlParameterSource().addValue("dramas_id", dramas_id).addValue("auditorium_name",
-					auditorium_name);
+			SqlParameterSource param = new MapSqlParameterSource()
+					.addValue("dramas_id", dramas_id)
+					.addValue("auditorium_name",auditorium_name)
+					.addValue("date",date)
+					.addValue("time",time);
 			namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.AUDITORIUM_QUERIES.insert_dramas_auditoriums.name()),
 					param);
 		} catch (Exception e) {

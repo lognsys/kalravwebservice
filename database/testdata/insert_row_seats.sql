@@ -51,4 +51,20 @@ insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH
 insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",11,3);
 insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",12,3);
 insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",13,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",14,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",15,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",16,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",17,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",5,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",18,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",19,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",20,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",21,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",22,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",23,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",24,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",25,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",26,3);
+insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (2, "HH",27,3);
+
 
