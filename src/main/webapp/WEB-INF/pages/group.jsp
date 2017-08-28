@@ -22,7 +22,7 @@
 		<!-- Panel with Add Group -->
 		<div class="row">
 			<div class="col-lg-12">
-				<div class="panel panel-default">
+				<div class="panel panel-default add_group">
 					<div class="panel-heading">
 						<svg class="glyph social myspace">
                      <use xlink:href="#social-myspace" />
@@ -47,6 +47,7 @@
 											style="font-size: 150%"><c:out value="${group.key}" /></span>
 										<i class="material-icons group_delete close w3-right">close</i>
 									</header>
+									
 									<!-- SUBGROUPS -->
 									<div class="subgroup w3-container w3-padding w3-center">
 										<c:choose>
@@ -73,9 +74,11 @@
 									</div>
 									<div class="w3-container w3-padding">
 										<button
-											class="button_card_save w3-button w3-green w3-round  w3-margin-left w3-right">Save</button>
-										<button
-											class="button_card_cancel w3-button w3-round w3-right ">Cancel</button>
+											class="button_card_save w3-button w3-green w3-round" style="width:100%">Save</button>
+<!-- 										<button
+											class="button_card_save w3-button w3-green w3-round  w3-margin-left w3-right">Save</button> -->
+										<!-- <button
+											class="button_card_cancel w3-button w3-round w3-right ">Cancel</button> -->
 									</div>
 								</div>
 								<!-- end of card_group --> 

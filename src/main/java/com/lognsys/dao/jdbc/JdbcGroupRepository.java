@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Properties;
 import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -41,7 +44,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	 * Returns all Groups & SubGroups
 	 */
 	@Override
-	public List<GroupsDTO> getAllGroups() {
+	public List<GroupsDTO> getAllGroups() throws DataAccessException {
 
 		List<GroupsDTO> groupslist = namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_groups_all.name()),
@@ -57,7 +60,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	 * 
 	 */
 	@Override
-	public String findGroupBy(int users_id) {
+	public String findGroupBy(int users_id) throws DataAccessException {
 		SqlParameterSource param = new MapSqlParameterSource("users_id", users_id);
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_groupname_byuserid.name()), param,
@@ -70,7 +73,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	 * @param group_name
 	 */
 	@Override
-	public List<UsersGroupsDTO> getUsersByGroup(String group_name) {
+	public List<UsersGroupsDTO> getUsersByGroup(String group_name) throws DataAccessException {
 
 		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
 		return namedParamJdbcTemplate.query(
@@ -80,14 +83,23 @@ public class JdbcGroupRepository implements GroupRepository {
 	}
 
 	/**
-	 * Returns all users of respective groups
+	 * 
+	 * 
+	 * Returns all users to the corresponding to that Group
+	 * @return List<UsersGroupDTO>
 	 */
 	@Override
-	public List<UsersGroupsDTO> getAllUsersAndGroup() {
+	public List<UsersGroupsDTO> getAllUsersAndGroup() throws DataAccessException {
 
-		return namedParamJdbcTemplate.query(
+		List<UsersGroupsDTO> listOfUsersWithGroup = namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_usersgroups_all.name()),
 				new UserGroupsResultSetExtractor());
+
+		//th
+		if(listOfUsersWithGroup.isEmpty())
+			throw new EmptyResultDataAccessException(0);
+		
+		return listOfUsersWithGroup;
 
 	}
 
@@ -103,7 +115,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	 * @param drama_id
 	 */
 	@Override
-	public String findGroupByDramaId(int drama_id) {
+	public String findGroupByDramaId(int drama_id) throws DataAccessException {
 		SqlParameterSource param = new MapSqlParameterSource("drama_id", drama_id);
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_groupname_bydramaid.name()), param,
@@ -115,7 +127,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	 * Returns all Dramas of particular group
 	 */
 	@Override
-	public List<DramasGroupsDTO> getDramasByGroup(String group_name) {
+	public List<DramasGroupsDTO> getDramasByGroup(String group_name) throws DataAccessException {
 
 		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
 		return namedParamJdbcTemplate.query(
@@ -128,7 +140,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	 * Returns all drama of a prticule group
 	 */
 	@Override
-	public List<DramasGroupsDTO> getAllDramasAndGroup() {
+	public List<DramasGroupsDTO> getAllDramasAndGroup() throws DataAccessException {
 
 		return namedParamJdbcTemplate.query(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_dramasgroups_all.name()),
@@ -141,7 +153,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	 * @param group_name
 	 */
 	@Override
-	public boolean isExists(String group_name) {
+	public boolean isExists(String group_name) throws DataAccessException {
 
 		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
 		return namedParamJdbcTemplate.queryForObject(
@@ -158,7 +170,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	 * @param GroupsDTO
 	 */
 	@Override
-	public int addGroup(GroupsDTO groupsDTO) {
+	public int addGroup(GroupsDTO groupsDTO) throws DuplicateKeyException, DataAccessException {
 		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(groupsDTO);
 		final KeyHolder keyHolder = new GeneratedKeyHolder();
 		namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.insert_groups.name()), params,
@@ -174,7 +186,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	 * @return
 	 */
 	@Override
-	public boolean updateGroupOfUser(String userName, String group_name) {
+	public boolean updateGroupOfUser(String userName, String group_name) throws DataAccessException {
 		SqlParameterSource param = new MapSqlParameterSource().addValue("username", userName).addValue("group_name",
 				group_name);
 		return namedParamJdbcTemplate
@@ -186,33 +198,30 @@ public class JdbcGroupRepository implements GroupRepository {
 	 */
 	@Override
 	public int getGroupCount() {
-
 		SqlParameterSource param = new MapSqlParameterSource(null);
-
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_count_groups.name()), param, Integer.class);
 	}
 
-	
 	/**
-	 * delete group 
+	 * delete group
 	 */
 	@Override
-	public boolean deleteGroup(String group_name) {
+	public boolean deleteGroup(String group_name) throws DataAccessException {
 		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
 		return namedParamJdbcTemplate.update(sqlProperties.getProperty(Constants.GROUP_QUERIES.delete_groups.name()),
 				param) == 1;
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public boolean hasSubgroups(String group_name) {
 		SqlParameterSource param = new MapSqlParameterSource("group_name", group_name);
 		return namedParamJdbcTemplate.queryForObject(
 				sqlProperties.getProperty(Constants.GROUP_QUERIES.select_has_subgroup.name()), param,
-				Integer.class) > 0 ;
+				Integer.class) > 0;
 	}
-	
-	
-	
 
 }

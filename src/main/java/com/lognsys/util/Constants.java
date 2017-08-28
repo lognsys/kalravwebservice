@@ -9,7 +9,7 @@ public class Constants {
 	 * be added to USER_QUERIES enum
 	 */
 	public enum USER_QUERIES {
-		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email, update_users, select_users_username,update_users_device
+		insert_users, select_users, delete_users, select_users_exists, select_users_id, delete_users_email, update_users, select_users_username, update_users_device
 	}
 
 	public enum ROLES_QUERIES {
@@ -38,7 +38,7 @@ public class Constants {
 	}
 
 	public enum BOOKEDSEATS_QUERIES {
-		insert_bookedseats, select_bookedseats_all, delete_bookedseats_by_Id, select_bookedseats_by_users_id
+		insert_bookedseats, select_booked_seats, select_bookedseats_all, delete_bookedseats_by_Id, select_bookedseats_by_users_id
 	}
 
 	/**
@@ -49,17 +49,13 @@ public class Constants {
 	 */
 	public enum GROUP_QUERIES {
 
-		insert_user_groups, insert_groups, insert_dramas_groups, insert_drama_auditoriums, 
-		select_groups_all, insert_subgroups_groups, select_groupname_byuserid, select_id_bygroupname, 
-		select_usersbygroups, select_usersgroups_all, select_groupname_bydramaid, select_dramasbygroups, 
-		select_dramasgroups_all, select_groups_exists, update_group_byuser, select_subgroup_bygroup, 
-		select_count_groups, delete_groups, select_has_subgroup
+		insert_user_groups, insert_groups, insert_dramas_groups, insert_drama_auditoriums, select_groups_all, insert_subgroups_groups, select_groupname_byuserid, select_id_bygroupname, select_usersbygroups, select_usersgroups_all, select_groupname_bydramaid, select_dramasbygroups, select_dramasgroups_all, select_groups_exists, update_group_byuser, select_subgroup_bygroup, select_count_groups, delete_groups, select_has_subgroup
 
 	}
 
 	public enum ROWSEAT_QUERIES {
 
-		insert_rowseat,select_rowseat_all,delete_by_id,select_rowseat_by_auditoriums_id,get_select_id
+		insert_rowseat, select_rowseat_all, delete_by_id, select_rowseat_by_auditoriums_id, get_select_id
 	}
 
 	public enum RATING_QUERIES {
@@ -90,7 +86,6 @@ public class Constants {
 	}
 
 	public enum DRAMA_FIELD_NAMES {
-
 		dramasId, title, imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating, group_name, auditorium_name, group_id, auditorium_id, dramas_language
 	}
 
@@ -103,8 +98,7 @@ public class Constants {
 	}
 
 	public enum BOOKING_FIELD_NAMES {
-		id, booking_date, confirmation_no, users_id, dramas_id, auditorium_id, price, status
-
+		id, booking_date, confirmation_no, users_id, dramas_id, auditoriums_id, price, status
 	}
 
 	public enum BOOKEDSEATS_FIELD_NAMES {
@@ -114,6 +108,7 @@ public class Constants {
 	public enum DEVICE_FIELD_NAMES {
 		id, users_id, deviceToken
 	}
+
 	public enum ROWSEAT_FIELD_NAMES {
 		id, row_num, row_name, seat_num, auditoriums_id
 	}
@@ -129,15 +124,14 @@ public class Constants {
 		response_userempty, response_userinvalid, response_userexists,
 		response_dramaexists,response_dramaempty,
 		response_auditoriumempty,
-
+		response_ratingsuccess,response_bookingmempty	
 	}
 
 	/**
 	 * Exception Messages
 	 */
-
 	public enum EXCEPTIONS_MSG {
-		exception_userinvalid, exception_userempty, exception_allgroups
+		exception_userinvalid, exception_userempty, exception_allgroups, exception_database, exception_groupduplicate
 	}
 
 	public enum DEFAULT_GROUP {

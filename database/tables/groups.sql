@@ -1,4 +1,5 @@
 # group.sql 
+#
 # @author pdoshi
 #
 #
@@ -18,7 +19,7 @@ CREATE TABLE IF NOT EXISTS groups
 	
 	last_edit timestamp not null default current_timestamp on update current_timestamp,
 	
-	UNIQUE(group_name)
+	UNIQUE KEY `uk_groups` (group_name, parent_id)
 
 ) ENGINE =InnoDB default CHARSET=utf8;
 

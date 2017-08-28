@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -36,14 +38,17 @@ import com.lognsys.model.Users;
 import com.lognsys.service.UserService;
 import com.lognsys.util.FormValidator;
 
-//TODO Logging required for base controller
 @Controller
 public class BaseController {
 
+	private Logger LOG = Logger.getLogger(getClass());
+	
 	@Autowired
 	private UserService userService;
 
 	/**
+	 * 
+	 * This method redirects to login page
 	 * 
 	 * @param model
 	 * @param request
@@ -55,6 +60,8 @@ public class BaseController {
 	}
 
 	/**
+	 * This method goes to login page if wrong credentials or empty credentials
+	 * else goes to Dahsbaord page
 	 * 
 	 * @param error
 	 * @return
@@ -67,9 +74,7 @@ public class BaseController {
 			model.addObject("error", "Invalid username or password!");
 			model.setViewName("login");
 		} else {
-
 			model.setViewName("dashboard");
-
 			return model;
 		}
 
@@ -77,15 +82,15 @@ public class BaseController {
 	}
 
 	/**
+	 * Returns to Dashboard page
 	 * 
-	 * @param error
+	 * @param Model
+	 * @param HttpServeltRequest
 	 * @return
 	 */
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String dashboard(Model model, HttpServletRequest request) {
-
 		return "dashboard";
-
 	}
 
 	/**
@@ -152,9 +157,7 @@ public class BaseController {
 					emailIDs[i] = jsonObject.get("email").toString();
 
 				}
-
 				userService.deleteUsers(emailIDs);
-
 			} catch (ParseException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -205,15 +208,11 @@ public class BaseController {
 				e.printStackTrace();
 			}
 			return "userlist";
-
 		}
-
 		return "dashboard";
-
 	}
 
 	/**
-	 * 
 	 * 
 	 * 
 	 * @param model
@@ -239,6 +238,7 @@ public class BaseController {
 			groupsList.add(group.getGroup_name());
 		}
 
+		//populate to JSP page
 		Users user = new Users();
 		model.addAttribute("users", user);
 		model.addAttribute("rolesList", rolesList);
@@ -249,6 +249,7 @@ public class BaseController {
 
 	/**
 	 * 
+	 * 
 	 * @param user
 	 * @param result
 	 * @param model
@@ -256,7 +257,7 @@ public class BaseController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String saveForm(@ModelAttribute("users") Users user, BindingResult result, ModelMap model) {
-		System.out.println("Adding User - " + user.toString());
+		
 
 		FormValidator formValidator = new FormValidator();
 		formValidator.validate(user, result);
@@ -282,6 +283,7 @@ public class BaseController {
 			model.addAttribute("rolesList", rolesList);
 			model.addAttribute("groupsList", groupsList);
 			return "register";
+
 		} else {
 			try {
 				userService.addUser(user);

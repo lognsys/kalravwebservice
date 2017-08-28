@@ -18,43 +18,46 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
+import com.lognsys.exception.GroupDataAccessException;
 import com.lognsys.util.Constants;
 
 @Service("groupService")
 public class GroupService {
 
-	//Logging 
+	// Logging
 	Logger LOG = Logger.getLogger(this.getClass());
 
 	@Autowired
-	private  JdbcGroupRepository jdbcGroupRepository;
+	private JdbcGroupRepository jdbcGroupRepository;
 
 	@Autowired
 	@Qualifier("applicationProperties")
 	private Properties applicationProperties;
-	
-	//Global variable
+
+	// Global variable
 	private static Map<String, List<String>> groupMap = new HashMap<>();
 
 	/**
-	 * This method returns Map <String, List<String> of Groups and Subgroups
-	 * 
-	 * FIXED - made static group
+	 * This method returns Map <String, List<String> of Groups and Subgroups It
+	 * returns updated map
 	 * 
 	 * @return
 	 */
-	public  Map<String, List<String>> getAllGroupAndSubGroup() {
-	
+	public Map<String, List<String>> getAllGroupAndSubGroup() {
+
 		// Sort Groups and Subgroups by having Groups at the beginning
 		int groupCount = jdbcGroupRepository.getGroupCount();
-		
-		if(groupMap.size() == groupCount)
+
+		if (groupMap.size() == groupCount)
 			return groupMap;
-		
-		//This method will return all groups and subgroup arraylist
+
+		// This method will return all groups and subgroup arraylist
 		List<GroupsDTO> listOfGroup = jdbcGroupRepository.getAllGroups();
 
 		// Sorting of Groups in the beginning
@@ -94,25 +97,21 @@ public class GroupService {
 						break;
 				}
 
-				
 				// check subgroup parentID is equal to GroupID
 				if (g.getParent_id() == groupID) {
-						
-						List<String> subgroupList = groupMap.get(groupName);
-						subgroupList.add(g.getGroup_name());
-						groupMap.put(groupName, subgroupList);
-					
+
+					List<String> subgroupList = groupMap.get(groupName);
+					subgroupList.add(g.getGroup_name());
+					groupMap.put(groupName, subgroupList);
+
 				} else {
-					
-					//do nothing
+					// do nothing
 				}
 			}
 		}
 		return groupMap;
 	}
 
-	
-	
 	/**
 	 * This method return list of groups and corresponding subgroup
 	 * 
@@ -129,23 +128,59 @@ public class GroupService {
 		}
 		return listOfGroups;
 	}
-	
-	
+
 	/**
 	 * 
-	 * Add Group or Subgroup
+	 * @param GroupsDTO
 	 */
-	public void addGroup(GroupsDTO groupsDTO){
-		jdbcGroupRepository.addGroup(groupsDTO);
+	@Transactional(rollbackFor = GroupDataAccessException.class)
+	public void addGroupOrSubGroup(GroupsDTO groupsDTO) {
+
+		String group_name = groupsDTO.getGroup_name();
+
+		try {
+			jdbcGroupRepository.addGroup(groupsDTO);
+		} catch (DuplicateKeyException de) {
+			LOG.warn(de.getMessage());
+			throw new GroupDataAccessException(
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_groupduplicate.name()) + " : "
+							+ group_name);
+		} catch (DataAccessException dae) {
+			dae.printStackTrace();
+			throw new GroupDataAccessException(
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_database.name()) + " : "
+							+ group_name);
+		}
+	}
+
+	/**
+	 * Remove subgroup
+	 * 
+	 * @param groupsDTO
+	 */
+	public void removeGroup(String group_name) {
+
+		try {
+			jdbcGroupRepository.deleteGroup(group_name);
+		} catch (DataAccessException dae) {
+			dae.printStackTrace();
+		}
 	}
 
 	/**
 	 * 
-	 * @param groupsDTO
+	 * @param listOfGroups
 	 */
-	public void removeSubgroup(GroupsDTO groupsDTO){
-		
+	public void removeGroupsOrSubGroups(List<String> listOfGroups) {
+
+		try {
+
+			for (String name : listOfGroups) {
+				jdbcGroupRepository.deleteGroup(name);
+			}
+		} catch (DataAccessException dae) {
+			dae.printStackTrace();
+		}
 	}
-	
-	
+
 }

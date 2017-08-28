@@ -60,7 +60,7 @@ public class UserService {
 	 * Add user to database.. Check if user already exists in db
 	 * 
 	 * TODO : Add rollbackFor is users exists TODO : Add exception for users and
-	 * roles and groups which has unqieu constraints
+	 * roles and groups which has unique constraints
 	 * 
 	 * @return
 	 * @throws IOException
@@ -111,8 +111,9 @@ public class UserService {
 	}
 
 	/**
-	 * Synchronize users with mysql database
-	 *
+	 * This method synchronizes the users from the database and
+	 * loads it into Users.json file. 
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -137,7 +138,7 @@ public class UserService {
 	 * @param
 	 * 
 	 * @return
-	 * @deprecated
+	 *
 	 */
 	public void deleteUsers(int[] ids) {
 		LOG.info("#deleteUser - " + "Deleting total number of users from database - " + ids.length);
@@ -168,7 +169,7 @@ public class UserService {
 	 *            emailID
 	 * @return
 	 * @throws IOException
-	 * @deprecated
+	 * 
 	 * 
 	 */
 	public void deleteUsers(String[] emailIDs) throws IOException {

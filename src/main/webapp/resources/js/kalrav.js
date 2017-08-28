@@ -4,7 +4,8 @@
  * 
  * Description : 
  * This contains all the jquery code used for CRUD of Users module , 
- * Group module , Drama module etc.
+ * Group module , Drama module.
+ * 
  * 
  * CHANGELOG : PJD - 25/07/17 Created Group Module
  * 
@@ -132,7 +133,7 @@ $(document)
                     }
                 });
 
-            // Userlist add function
+            // Userlist add function will call /register page
             $('#useradd').click(
                 function(event) {
                     window.location.href = "http://localhost:8080/register";
@@ -291,6 +292,8 @@ $(document)
                     window.location.href = "http://localhost:8080/dashboard";
                     event.preventDefault();
                 });
+            
+            
 
             /*********************************** Drama table function ***********************************/
 
@@ -364,7 +367,7 @@ $(document)
                     event.preventDefault();
                 });
 
-            //            DELETE FUNCTION
+            //DELETE FUNCTION
             $('#dramadelete').click(
                 function(event) {
 
@@ -389,7 +392,7 @@ $(document)
                     }
                 });
 
-            //            EDIT FUNCTION
+            //EDIT FUNCTION
 
             // Userlist edit function
             $('#dramaedit').click(
@@ -537,12 +540,7 @@ $(document)
                 $('#myTable').append('<tr><td><input type="text" class="fname" /></td><td><input type="button" class="buttonDelete" " /></td></tr>')
             });
             
-         /*   // Userlist add function
-            $('#edit_button').click(
-                function(event) {
-                    window.location.href = "http://localhost:8080/groupedit";
-                    event.preventDefault();
-                });*/
+
 
             // groupdetail edit function
             $('#edit_button').click(
@@ -672,12 +670,16 @@ $(document)
                                     valid = valid && checkRegexp(username, emailRegex, "eg. pdoshi@yahoo.com");
 
                                     //valid = valid && checkLength( password, "password", 5, 16 );
-                                    //valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+                                    //valid = valid && checkRegexp( name, /^[a-zA-Z]([a-zA-Z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+                                    valid = valid && checkRegexp( fname, /^[a-zA-Z]([a-zA-Z_\s])+$/i, "First Name may consist of Upper Case, Lower Case, underscores, spaces and must begin with a letter." );
+                                    valid = valid && checkRegexp( lname, /^[a-zA-Z]([a-zA-Z_\s])+$/i, "Last Name may consist of Upper Case, Lower Case, underscores, spaces and must begin with a letter." );
+                                    valid = valid && checkRegexp( address, /^[a-zA-Z]([a-zA-Z_\s])+$/i,"Address Name may consist of Upper Case, Lower Case, underscores, spaces and must begin with a letter." );
+                                    valid = valid && checkRegexp( city, /^[a-zA-Z]([a-zA-Z_\s])+$/i, "City may consist of Upper Case, Lower Case, underscores, spaces and must begin with a letter." );
+                                    valid = valid && checkRegexp( state, /^[a-zA-Z]([a-zA-Z_\s])+$/i, "State may consist of Upper Case, Lower Case, underscores, spaces and must begin with a letter." );
+                                    valid = valid && checkRegexp( phone, /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im, "Phone number must be in format eg: 123-456-7890, 1234567890" );
                                     //valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
                                     return valid;
                                 }
-
-
                             }
 
                         });
@@ -705,6 +707,9 @@ $(document)
                             event.preventDefault();
                        
                     });
+            
+            /*********************************** END OF DRAMA DETAILS ***********************************/
+            
            //=====================================================NOTIFICATION LIST===========================================================================
            
             
@@ -962,21 +967,25 @@ $(document)
             //subgroup button
             var tpl_add_button='<button class="button_add_subgroup w3-button w3-blue w3-round">Add Sub-Group</button>';
             //add row for col
-            var tpl_add_group_row='<div class="row w3-row row_append_group"></div>';
+            var tpl_add_group_row='<div class="row w3-row w3-margin-left row_append_group"></div>';
             // group card 
-            var tpl_add_groupcard='<div class="card_group w3-margin w3-col s3 w3-card"><header class="w3-container w3-light-grey w3-padding w3-center"><span class="w3-margin-left w3-text-grey" style="font-size: 150%"></span><i class="material-icons group_delete close w3-right">close</i></header><div class="subgroup w3-container w3-padding w3-center"><button class="button_add_subgroup w3-button w3-blue w3-round">Add Sub-Group</button></div><div class="card_button w3-container w3-padding"><button class="w3-button w3-green w3-round  w3-margin-left w3-right">Save</button><button class="w3-button w3-round w3-right ">Cancel</button></div></div>';
+            var tpl_add_groupcard='<div class="card_group w3-margin w3-col s3 w3-card"><header class="w3-container w3-light-grey w3-padding w3-center"><span class="w3-margin-left w3-text-grey" style="font-size: 150%"></span><i class="material-icons group_delete close w3-right">close</i></header><div class="subgroup w3-container w3-padding w3-center"><button class="button_add_subgroup w3-button w3-blue w3-round">Add Sub-Group</button></div><div class="card_button w3-container w3-padding"><button class="button_card_save w3-button w3-green w3-round"  style="width:100%">Save</button></div></div>';
             
             //DEFINE FIELDS 
-            var addGroupAndSubgroup = [];
-            var removeGroupAndSugroup = [];
+            var addSubgroup = [];
+            var removeSubgroup = [];
+            var groupObj={};
+            var key_delete = "delete";
+            var key_add = "add";
+            var const_group = "group";
+            var const_subgroup = "subgroup";
             
-           // HOVER CHANGE COLOR ADD/DELETE BUTTON  
+           // HOVER CHANGE COLOR ADD/DELETE SUBGROUP BUTTON  
             $(document).delegate( '.subgroup_add', 'mouseover mouseout',  function(event){
             	 if( event.type === 'mouseover' )  {
             		 $(this).addClass('w3-text-light-grey').removeClass('w3-text-blue');
             	 } else {
             		 $(this).addClass('w3-text-blue').removeClass('w3-text-light-grey');
-            	
             	 }	 
             });
             
@@ -1049,28 +1058,64 @@ $(document)
             });
             //END OF ADD SUBGROUP BUTTON
        
-            //DELET CARD 
-            //TODO check for sub groups before delete it
+            
+            //DELETE CARD 
+            //FIXED: DELETE CARD WILL DELETE SUBGROUPS AS WELL AS GROUPS       
             $(document).delegate('.group_delete', 'click', function() {
-            	//get the no of child elements
-            	
+          
             	var $parent = $(this).closest('.row_append_group');
+              	
+            	//get the no of total cards in a row,
+            	//delete row if all cards are deleted
             	var count = $parent.children('.card_group').length;
             	
+            	//current_card 
+            	var current_card = $(this).closest('.card_group');
+            	
             	//remove card
-            	$(this).closest('.card_group').remove();
-            
+            	current_card.remove();
+            	
+            	//get group_name from card header > span
+            	var group_name = current_card.find('header > span').text();
+            	
+            	groupObj[const_group] = group_name; 
+           
+            	//for each function 
+            	current_card.find('.subgroup_name').each(function() {
+            		addSubgroup.push($(this).text());
+            	});
+            	
+            	//add subgroup 
+            	if(addSubgroup.length > 0) {
+            		groupObj[const_subgroup] = addSubgroup;
+            	} 
+            	
+            	console.log("GROUP - "+JSON.stringify(groupObj));
+            	
+                $.ajax({
+                    url: '/groupadd',
+                    type: "POST",
+                    data: JSON.stringify(groupObj),
+                    success: function(data) {
+                    	groupObj=[];
+                    }
+                	
+                });
+   
+            	
+            	
+            	//if last card (card=1) deleted then delete entire row with selector (.row_append_group)
             	if(count == 1)
             		$parent.remove();
             });
             //end of delete card
             
             //START OF ADD NEW GROUP
+            //Call AJAX to SAVE NEW GROUP INTO DB
             var textValue;
             $('.button_add_group').click(function() {
             	$("#groupDialog").dialog("open");
-            	 $('#group_name').val("");
-            		
+            	$('#group_name').val("");
             });
             
             $("#groupDialog").dialog({
@@ -1080,7 +1125,7 @@ $(document)
                 buttons   : {
                 	 	     'Cancel' : function() {
                 	 	    	 $(this).dialog('close');
-                	 	    	$("#error").remove();
+                	 	    	 $("#error").remove();
                 	 	 	},
                 	 	 	  'Save' : function() {
                 	 		      
@@ -1115,7 +1160,7 @@ $(document)
                 	 		    		$("#error").css({"color":"red", "padding-top":"5px" });
                 	 		    	} 
                 	 		    }
-                	 		 },
+                	 		 }
                 	 	}
             });
             
@@ -1133,7 +1178,6 @@ $(document)
             	
             	//add card to existing rows
             	if(rows > 0) {
-            		
             		    var row;
             		    var total_no_cards = 0;
             		    		    
@@ -1148,18 +1192,24 @@ $(document)
             		    //check if cards in row < 3
             		    if(total_no_cards < 3) {
             		    	$(row).append(tpl_add_groupcard);
-            		    	$(row).children('.card_group:last').find('header > span').text(group_name); //Adding value to span
+            		    
+            		    	//Adding value to span
+            		    	$(row).children('.card_group:last').find('header > span').text(group_name); 
             		    } 
             		
             		    //Add new row when row is full(max 3 /row)
             		    if (total_no_cards == 3) {
+            		   	
             		    	//add new row
             		    	$('.add_group').append(tpl_add_group_row);
+            		    	
             		    	//re-check length of rows added and new card group in row
                 			var rows = $('.row_append_group').length;
-            		    	var row = $('.row_append_group').eq(rows-1);
+                			var row = $('.row_append_group').eq(rows-1);
             		    	$(row).append(tpl_add_groupcard);
-             //Adding value to span
+            		    	
+            		    	//Adding value to span
+            		    	$(row).children('.card_group:last').find('header > span').text(group_name);  
             		}
             	}
             }

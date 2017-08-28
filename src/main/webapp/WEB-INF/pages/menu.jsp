@@ -20,7 +20,7 @@
 						xlink:href="#stroked-video"></use></svg> Dramas
 		</a></li>
 		
-		<li><a href="${pageContext.request.contextPath}/groupdetails"> <svg
+		<li><a href="${pageContext.request.contextPath}/group"> <svg
 					class="glyph stroked video">
 			<use xmlns:xlink="http://www.w3.org/1999/xlink"
 						xlink:href="#stroked-video"></use></svg> Group
