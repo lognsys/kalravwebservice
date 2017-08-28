@@ -21,14 +21,10 @@
 	<!-- **************************************************************** -->
 
 	<mvc:resources mapping="/static/**" location="/resources/" />
-<<<<<<< HEAD
 	<mvc:resources mapping="/webjars/**" location="/webjars/" />
+	<mvc:resources mapping="/images/**" location="/images/" /> 
 	
 <!-- 	<mvc:resources mapping="/resources/**" location="/resources/csshome" />
-=======
-	<!-- <mvc:resources mapping="/webjars/**" location="/webjars/" /> 
-	<mvc:resources mapping="/resources/**" location="/resources/csshome" />
->>>>>>> 641827bf4adbbb2a861e3e85937526c44e78467a
 	<mvc:resources mapping="/resources/**" location="/resources/js" /> -->
 
 	<!-- Default handler -->
@@ -48,5 +44,9 @@
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.tiles3.TilesView"></property>
 	</bean>
+
+<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="20848820" />
+</bean>
 
 </beans>
