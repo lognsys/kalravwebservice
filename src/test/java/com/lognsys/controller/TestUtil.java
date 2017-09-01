@@ -1,4 +1,4 @@
-package com.lognsys.rest;
+package com.lognsys.controller;
 
 import java.nio.charset.Charset;
 

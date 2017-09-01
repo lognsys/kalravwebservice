@@ -17,6 +17,8 @@
 
 <!-- identifying beans using Restcontroller -->
 	<context:component-scan base-package="com.lognsys.rest" />
+<!-- identifying beans using Restcontroller -->
+	<context:component-scan base-package="com.lognsys.controller" />
 
 	<!-- Ensures that configuration properties are read from a property file -->
 	<context:property-placeholder location="classpath:application.properties"
