@@ -10,12 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.service.GroupService;
 
 @Controller
+@RequestMapping("/group")
 public class GroupController {
 
 	@Autowired
@@ -28,8 +26,10 @@ public class GroupController {
 	 * @param request
 	 * @return
 	 * @throws IOException
+	 * 
+	 *  NOTE: 
 	 */
-	@RequestMapping(value = "/group", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String getGroupsAndSubgroup(Model model, HttpServletRequest request) {
 
 		Map<String, List<String>> mapOfGroup = groupService.getAllGroupAndSubGroup();
@@ -44,15 +44,17 @@ public class GroupController {
 	 * @param GroupsDTO
 	 * 
 	 */
-	@RequestMapping(value = "/groupadd", method = RequestMethod.POST)
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addGroup(@RequestBody String groups) {
 		System.out.println("Groups - "+groups);
 		//groupService.addGroupOrSubGroup(groupsDTO);
 		return "group";
 	}
 
-//	@RequestMapping(value = "/deletegroup", method = RequestMethod.POST)
-//	public void deleteGroup() {
-//		groupService.removeSubgroup(groupsDTO);
-//	}
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public String deleteGroup(@RequestBody String groups) {
+		System.out.println("Groups - "+groups);
+		//groupService.addGroupOrSubGroup(groupsDTO);
+		return "group";
+	}
 }

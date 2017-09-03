@@ -28,7 +28,14 @@
 			pattern="/userlist" />
 
 		<security:intercept-url access="permitAll"
-			pattern="/groupadd" />
+			pattern="/group/add" />
+			
+			
+		<security:intercept-url access="permitAll"
+			pattern="/group/delete" />
+			
+		<security:intercept-url access="permitAll"
+			pattern="/group" />
 			
 			
 		<security:intercept-url access="permitAll"
