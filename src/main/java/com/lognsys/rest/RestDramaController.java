@@ -67,15 +67,18 @@ public class RestDramaController {
 	@GetMapping("/getalldramaandgroup")
 	public  ResponseEntity<?>  getAllDramasAndGroup() {
 		{
-			try {
-				 List<DramasGroupsDTO> lists=jdbcGroupRepository.getAllDramasAndGroup();
-				 return new ResponseEntity<List<DramasGroupsDTO>>(lists,HttpStatus.CREATED);
-			} catch (Exception e) { 
+//			try {
+				System.out.println("jdbcGroupRepository getAllDramasAndGroup ");
+				 List<DramasGroupsDTO> lists=dramaService.getAllDramasAndGroup() /*jdbcGroupRepository.getAllDramasAndGroup()*/;
+				 System.out.println("jdbcGroupRepository getAllDramasAndGroup lists size "+lists.size());
+					
+				 return new ResponseEntity<List<DramasGroupsDTO>>(lists,HttpStatus.OK);
+			/*} catch (Exception e) { 
 				System.out.println("jdbcGroupRepository IOException "+e);
 			String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name());
 			return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
 		  
-			}
+			}*/
 				
 		}
 	
@@ -85,14 +88,9 @@ public class RestDramaController {
 	public ResponseEntity<?> getDramaById(@PathVariable("id") int id) {
 		DramasDTO dramasDTO=null;
 		try {
-			if(id>0){
 				 dramasDTO = dramaService.findByDrama(id);
 				return new ResponseEntity<DramasDTO>(dramasDTO, HttpStatus.OK);
-			}
-			else{
-				String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name());
-				return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
-			}
+			
 		} catch (Exception e) {
 			System.out.println("manageDrama getDramaById dramasDTO "+dramasDTO);
 			

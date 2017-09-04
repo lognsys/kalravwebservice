@@ -68,16 +68,18 @@ public class DramaController {
 	
 	@Autowired
 	DramaService dramaService;
-	  private final Path rootLocation;
-
-	 private final StorageService storageService;
-
-	    @Autowired
-	    public DramaController(StorageService storageService,StorageProperties properties) {
-	        this.storageService = storageService;
-	        this.rootLocation = Paths.get(properties.getLocation());
-	    }
+	  private  Path rootLocation;
+	 private  StorageService storageService;
+	 String message;
+	 
+	 
+//	    @Autowired
+//	    public DramaController(StorageService storageService,StorageProperties properties) {
+//	        this.storageService = storageService;
+//	        this.rootLocation = Paths.get(properties.getLocation());
+//	    }
 	
+
 	@RequestMapping(value = "/dramalist", method = RequestMethod.GET)
 	public String showDramas(Model model, HttpServletRequest request) {
 		List<DramasDTO> listOfDramas = dramaService.getDramas();

@@ -75,6 +75,26 @@ public class Drama {
 	public Drama() {
 	}
 
+	public Drama(String title, String genre, String star_cast, String director, String writer, String description,
+			String date, String imageurl, String drama_length, String music, String avg_rating, String group,
+			String auditorium, String drama_language) {
+		super();
+		this.title = title;
+		this.genre = genre;
+		this.star_cast = star_cast;
+		this.director = director;
+		this.writer = writer;
+		this.description = description;
+		this.date = date;
+		this.imageurl = imageurl;
+		this.drama_length = drama_length;
+		this.music = music;
+		this.avg_rating = avg_rating;
+		this.group = group;
+		this.auditorium = auditorium;
+		this.drama_language=drama_language;
+	}
+
 	public String getDrama_language() {
 		return drama_language;
 	}

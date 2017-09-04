@@ -17,7 +17,9 @@ CREATE TABLE IF NOT EXISTS dramas_groups
 
 alter table  dramas_groups add index (dramas_id);
 alter table  dramas_groups add index (groups_id);
-alter table  dramas_groups add constraint constr_dramasid UNIQUE (dramas_id);
+#alter table  dramas_groups add constraint constr_dramasid UNIQUE (dramas_id);
+alter table  dramas_groups add constraint constr_groupssid UNIQUE (groups_id);
+
 alter table  dramas_groups add foreign key (dramas_id) 
    references  dramas (id) on delete cascade
    			 on update cascade;

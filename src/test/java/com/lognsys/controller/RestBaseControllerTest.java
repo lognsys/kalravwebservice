@@ -50,6 +50,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
@@ -139,30 +140,72 @@ public class RestBaseControllerTest {
 	        assertNull(formObject.getId());
 	        assertThat(formObject.getRealname(), is("realname"));
 	    }
+	/*   @Test
+	    public void findAllUsers() throws Exception {
+		  	 
+		   Users first=new Users();
+		  	
+		     first.setAuth_id("1234");
+		     first.setAddress("Malad");
+		     first.setBirthdate("1991-05-13");
+		     first.setCity("Mumbai");
+		     first.setDevice("Xml1234");
+		     first.setEnabled(true);
+		     first.setFirstname("reena");
+		     first.setGroup("JJC");
+		     first.setlastname("More");
+		     first.setNotification(true);
+		     first.setPhone("7788998877");
+		     first.setProvenance("Android");
+		     first.setRealname("Mana More");
+		     first.setRole("GUEST");
+		     first.setState("Maharashtra");
+		     first.setUsername("Maharashtra@gmail.com");
+		     first.setZipcode("401107");
+		     
+			 Users second=new Users();
+			 
+			 second.setAuth_id("1234");
+			 second.setAddress("Malad");
+			 second.setBirthdate("1991-05-13");
+			 second.setCity("Mumbai");
+			 second.setDevice("Xml1234");
+			 second.setEnabled(true);
+			 second.setFirstname("reena");
+			 second.setGroup("JJC");
+			 second.setlastname("More");
+			 second.setNotification(true);
+			 second.setPhone("7788998877");
+			 second.setProvenance("Android");
+			 second.setRealname("Mana More");
+			 second.setRole("GUEST");
+			 second.setState("Maharashtra");
+			 second.setUsername("Maharashtra@gmail.com");
+			 second.setZipcode("401107");
+			 
+			 Mockito.when(this.userService.refreshUserList()).thenReturn(Arrays.asList(first, second));
 	 
-//
-//	    @Test
-//	    public void findById_UserEntryToModelAndRenderView() throws Exception {
-//	        Users found = new Users();
-//	        found.setId(66);
-//	             
-//	 
-//	        Mockito.when(userService.getUserWithRoleAndGroup(66)).thenReturn(userService.getUserWithRoleAndGroup(66));
-//	 
-//	       
-//	        mockMvc.perform(get("/getsingleuser/{id}", 66))
-//	                .andExpect(status().isOk())
-//	                .andExpect(view().name("userlist"))
-//	                .andExpect(forwardedUrl("/WEB-INF/pages/userlist.jsp"));
-//	 
-//	        verify(userService, times(1)).getUserWithRoleAndGroup(66);
-//	        verifyNoMoreInteractions(userService);
-//	    }
-//
-//
-//		private Object hasProperty(String string, Matcher<Object> matcher) {
-//			// TODO Auto-generated method stub
-//			return null;
-//		}
-//	 
+	        mockMvc.perform(get("/"))
+	                .andExpect(status().isOk())
+	                .andExpect(view().name("todo/list"))
+	                .andExpect(forwardedUrl("/WEB-INF/jsp/todo/list.jsp"))
+	                .andExpect(model().attribute("todos", hasSize(2)))
+	                .andExpect(model().attribute("todos", hasItem(
+	                        allOf(
+	                                hasProperty("id", is(1L)),
+	                                hasProperty("description", is("Lorem ipsum")),
+	                                hasProperty("title", is("Foo"))
+	                        )
+	                )))
+	                .andExpect(model().attribute("todos", hasItem(
+	                        allOf(
+	                                hasProperty("id", is(2L)),
+	                                hasProperty("description", is("Lorem ipsum")),
+	                                hasProperty("title", is("Bar"))
+	                        )
+	                )));
+	 
+	        verify(todoServiceMock, times(1)).findAll();
+	        verifyNoMoreInteractions(todoServiceMock);
+	    }*/
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lognsys.dao.dto.AuditoriumsDTO;
 import com.lognsys.dao.dto.DramasDTO;
+import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.dao.dto.RatingsDTO;
 import com.lognsys.dao.dto.RolesDTO;
@@ -317,6 +318,23 @@ public class DramaService {
 		}
 		return dramaList;
 	}
-
+	public List<DramasGroupsDTO> getAllDramasAndGroup() {
 	
+		try			 {
+			System.out.println("jdbcGroupRepository getAllDramasAndGroup ");
+			 List<DramasGroupsDTO> lists=jdbcGroupRepository.getAllDramasAndGroup();
+			 System.out.println("jdbcGroupRepository getAllDramasAndGroup lists size "+lists.size());
+				
+			 return lists;
+		} catch (Exception e) { 
+			System.out.println("jdbcGroupRepository IOException "+e);
+			throw new IllegalStateException("Error : Failed to add dramaList !");
+		}
+	}	
+	
+	public boolean exists(Drama drama) {
+		
+		return jdbcDramaRepository.isExists(drama.getTitle());
+
+	}
 }

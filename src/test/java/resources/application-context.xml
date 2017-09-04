@@ -25,4 +25,8 @@
 		order="2" ignore-unresolvable="true" />
 <bean id="multipartResolver"
     class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+    
+    <bean id="dramaService" name="dramaService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="com.lognsys.service"/>
+    </bean>
 </beans>
