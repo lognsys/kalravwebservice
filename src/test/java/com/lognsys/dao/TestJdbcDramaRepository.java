@@ -39,12 +39,12 @@ public class TestJdbcDramaRepository  {
 
 	
 	@Test
-    @Transactional
-    @Rollback(true)
+//    @Transactional
+//    @Rollback(true)
 	public void addDrama() {
 //		id, title, genre, star_cast, director, writer, description, auditorium_id, date, avg_rating, imageurl, drama_length, music, drama_language, last_edit
 		Drama dramas=new Drama();
-		dramas.setTitle("History of India");
+		dramas.setTitle("Hello ");
 		dramas.setGenre("Historic");
 		dramas.setStar_cast("Priyank Doshi");
 		dramas.setDirector("Priyank Doshi");
@@ -62,30 +62,30 @@ public class TestJdbcDramaRepository  {
 		Assert.notNull(dramasDTO, "Check list of dramasDTO NOT NULL");
 				
 	}
-	@Test
-    @Transactional
-    @Rollback(true)
-	public void deleteDramasById() {
-				boolean isDelete = jdbcDramaRepository.deleteDramaBy(16);
-				System.out.println("manageDrama deleteDramas isDelete "+isDelete);
-				Assert.isTrue(isDelete, "Check list of deleteDramasById ");
-	}
-	/*
-	*//**
-	 * Delete drama from database
-	 * @param String title
-	 * @return
-	 */
-	@Test
-    @Transactional
-    @Rollback(true)
-	public void deleteDramasByTitle() {
-		
-				String title="History of India";
-				System.out.println("title "+title);
-				boolean isDelete = jdbcDramaRepository.deleteDramaBy(title);
-				Assert.isTrue(isDelete, "Check list of deleteDramasByTitle ");
-	}
+//	@Test
+//    @Transactional
+//    @Rollback(true)
+//	public void deleteDramasById() {
+//				boolean isDelete = jdbcDramaRepository.deleteDramaBy(16);
+//				System.out.println("manageDrama deleteDramas isDelete "+isDelete);
+//				Assert.isTrue(isDelete, "Check list of deleteDramasById ");
+//	}
+//	/*
+//	*//**
+//	 * Delete drama from database
+//	 * @param String title
+//	 * @return
+//	 */
+//	@Test
+//    @Transactional
+//    @Rollback(true)
+//	public void deleteDramasByTitle() {
+//		
+//				String title="History of India";
+//				System.out.println("title "+title);
+//				boolean isDelete = jdbcDramaRepository.deleteDramaBy(title);
+//				Assert.isTrue(isDelete, "Check list of deleteDramasByTitle ");
+//	}
 	
 	@Test
 	public void findByDrama() {

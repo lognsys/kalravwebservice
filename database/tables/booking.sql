@@ -31,6 +31,6 @@ ENGINE = InnoDB;
 
 
 ALTER TABLE `kalrav`.`booking` 
-ADD COLUMN `status` VARCHAR(45) NOT NULL AFTER `price`;
+ADD COLUMN `status` VARCHAR(45) NOT NULL ;
 alter  table booking  modify booking_date varchar(20);
   

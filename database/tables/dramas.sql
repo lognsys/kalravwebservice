@@ -2,7 +2,7 @@
 #  @author - PJD 04/04/17 created table dramas
 #  
 # CHANGE LOG : MS - 27/04/17 add column drama_length,music
-#
+#CHANGE LOG : MS  drama name as unique
 
 DROP TABLE IF EXISTS dramas;
 
@@ -30,7 +30,7 @@ CREATE TABLE dramas
 	description varchar(45) not null default '',
 				 	    
 	#Optional date 		
-	date datetime not null default current_timestamp,
+	date VARCHAR(20) NOT NULL DEFAULT 0 ,#datetime not null default current_timestamp,
 
 	#Optional avg_rating
 	avg_rating double(2,1) not null default 0,
@@ -46,7 +46,7 @@ CREATE TABLE dramas
 	
 ) ENGINE=InnoDB default CHARSET=utf8;
 
-create index dramas_title_idx 
+create unique index dramas_title_idx 
 on dramas (title);
 
 create index drama_director_idx 

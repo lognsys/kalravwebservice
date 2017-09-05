@@ -67,18 +67,18 @@ public class RestDramaController {
 	@GetMapping("/getalldramaandgroup")
 	public  ResponseEntity<?>  getAllDramasAndGroup() {
 		{
-//			try {
-				System.out.println("jdbcGroupRepository getAllDramasAndGroup ");
+			try {
+//				System.out.println("jdbcGroupRepository getAllDramasAndGroup ");
 				 List<DramasGroupsDTO> lists=dramaService.getAllDramasAndGroup() /*jdbcGroupRepository.getAllDramasAndGroup()*/;
-				 System.out.println("jdbcGroupRepository getAllDramasAndGroup lists size "+lists.size());
+//				 System.out.println("jdbcGroupRepository getAllDramasAndGroup lists size "+lists.size());
 					
 				 return new ResponseEntity<List<DramasGroupsDTO>>(lists,HttpStatus.OK);
-			/*} catch (Exception e) { 
+			} catch (Exception e) { 
 				System.out.println("jdbcGroupRepository IOException "+e);
 			String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name());
 			return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
 		  
-			}*/
+			}
 				
 		}
 	
@@ -87,12 +87,15 @@ public class RestDramaController {
 	@GetMapping("/getdramadetailbyid/{id}")
 	public ResponseEntity<?> getDramaById(@PathVariable("id") int id) {
 		DramasDTO dramasDTO=null;
-		try {
+		try { System.out.println(" getDramaById  ");
+		
 				 dramasDTO = dramaService.findByDrama(id);
-				return new ResponseEntity<DramasDTO>(dramasDTO, HttpStatus.OK);
+				 System.out.println(" getDramaById dramasDTO "+dramasDTO);
+					
+				 return new ResponseEntity<DramasDTO>(dramasDTO, HttpStatus.OK);
 			
 		} catch (Exception e) {
-			System.out.println("manageDrama getDramaById dramasDTO "+dramasDTO);
+			System.out.println(" getDramaById dramasDTO "+dramasDTO);
 			
 			if (dramasDTO == null) {
 				String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name());
@@ -134,15 +137,21 @@ public class RestDramaController {
 	
 	@PostMapping(value = "/createdrama")
 	public ResponseEntity<?> createDrama(@RequestBody Drama dramas) {
+		System.out.println("RestDramaController createDrama "+dramas.getTitle());
+			
+//		boolean isExists = jdbcDramaRepository.isExists(dramas.getTitle());
+//		System.out.println("RestDramaController createDrama dramaService.exists(dramas)== "+dramaService.exists(dramas));
 		
-		boolean isExists = jdbcDramaRepository.isExists(dramas.getTitle());
-		
-		if (isExists) {
+		if (dramaService.exists(dramas)) {
 			String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaexists.name());
 			return new ResponseEntity<String>(str, HttpStatus.FOUND);
-
 		} else {
+			System.out.println("RestDramaController createDrama else dramas toString \n"+dramas.toString());
+			System.out.println("RestDramaController createDrama else dramaService \n "+dramaService);
+//			System.out.println("RestDramaController createDrama else dramaService.addDrama(dramas) "+dramaService.addDrama(dramas));
+			
 			int dramaId=dramaService.addDrama(dramas);
+			System.out.println("RestDramaController createDrama else dramaId "+dramaId);
 			dramas.setId(dramaId);
 			return new ResponseEntity<Drama>(dramas, HttpStatus.CREATED);
 		}

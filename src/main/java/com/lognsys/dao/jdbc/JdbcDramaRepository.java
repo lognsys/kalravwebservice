@@ -52,11 +52,20 @@ public class JdbcDramaRepository implements DramaRespository {
 	 * 
 	 */
 	@Override
-	public boolean isExists(String title)  throws DataAccessException{
+	public boolean isExists(String title){
 
+		System.out.println("isExists title - "+title);
 		SqlParameterSource param = new MapSqlParameterSource("title", title);
-		return namedParamJdbcTemplate.queryForObject(
-				sqlProperties.getProperty(Constants.DRAMA_QUERIES.select_dramas_exists.name()), param, Integer.class) > 0;
+		Integer val;
+		 val = namedParamJdbcTemplate.queryForObject(
+					sqlProperties.getProperty(Constants.DRAMA_QUERIES.select_dramas_exists.name()), param, Integer.class) ;
+		
+			System.out.println("isExists val - "+val);
+			
+		if(val != null && val > 0)
+			return true;
+		else
+		return false;
 	}
 
 	/**

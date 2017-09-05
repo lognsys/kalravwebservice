@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -250,6 +251,8 @@ public class DramaService {
 			
 			return jdbcDramaRepository.findDramaById(id);
 		} catch (Exception dae) {
+			 System.out.println(" getDramaById Exception  "+dae);
+				
 			return jdbcDramaRepository.findDramaById(id);
 //			throw new IllegalAccessError("Failed to get drama from database with ID - " + id);
 		}
@@ -335,6 +338,16 @@ public class DramaService {
 	public boolean exists(Drama drama) {
 		
 		return jdbcDramaRepository.isExists(drama.getTitle());
+
+	}
+	public void add(Drama dramas) {
+
+		try {
+			addDrama(dramas);
+		} catch (DataAccessException dae) {
+			LOG.error(dae.getMessage());
+			throw new IllegalAccessError("Error: All Auditoriums cannot be retrieved");
+		}
 
 	}
 }
