@@ -975,7 +975,9 @@ $(document)
             var addSubgroup = [];
             var removeSubgroup = [];
             var groupObj={};
-            var key_delete = "delete";
+            
+            //Constants
+            var key_delete = "remove";
             var key_add = "add";
             var const_group = "group";
             var const_subgroup = "subgroup";
@@ -996,7 +998,7 @@ $(document)
             		 $(this).addClass('w3-text-red').removeClass('w3-text-light-grey');
             	 }
             });
-            // END OF CARD HOVER ADD/REMOVE buttons
+            // END OF CARD HOVER ADD/REMOVE BUTTON
             
          
             //START OF EDIT INPLACE FROM SPAN TO INPUT
@@ -1031,24 +1033,104 @@ $(document)
             	$(this).closest('.subgroup').append(tpl_add_subgroup_row);
             });
             
-            //DELETE SUBGROUP
+            //START OF DELETE SUBGROUP
+        	var delete_subgroup = {};
+        	var subgroupObj = {};
+        	var notifyCount = 0;
+        	var detachSubGroups = [];
+        	
+        	//click on "-" sign to remove subgroup
             $(document).delegate( '.subgroup_remove','click',  function () {
-            	//get the parent element of this child
+            	
+            
+            	
+            	//get the parent element of this child button ".subgroup_remove"
             	var $parent = $(this).closest('.subgroup');
             	
-            	//remove the current div
-            	$(this).parent('div').remove();
+            	//show all the hidden sub groups if not deleted
+            	//$parent.children().show();
             	
-            	//get length of the total div
+            	//get groupname from ".card_group"
+            	var group_name = $parent.closest('.card_group').find('header > span').text();
+            	
+            	//STEP: 1 if subgroupObj is null then add group
+            	if(subgroupObj.group == null) {
+            		subgroupObj[const_group] = group_name;
+            	}
+            	
+            	//STEP: 2 check if other group's subgroup is selected
+            	if(subgroupObj.group !== group_name) {
+            		//open dialog when user clicks on different Group's Subgroup and leave current one.
+            		 var message="Please save your changes for Group - "+subgroupObj.group;
+                	 var title = "Warning";
+            		generalDialog(message, title);
+                 	
+            	} else {
+            		
+                 	//remove the current div of element ".subgroup_remove"
+                	$(this).parent('div').remove();
+                	
+                	//get subgroup name from current card
+                	var subgroup_name = $(this).parent('div').children('span.subgroup_name').text();
+                	addSubgroup.push(subgroup_name);
+           
+            	}
+            
+            
+            	//get length of the total div of subgroups
             	var totalDivsInSubgroup = $parent.children('div').length;
             	
-            	//After removing all subgroup rows add Button
+            	//After removing all subgroup rows. "Add Subgroup" Button is added
             	if(totalDivsInSubgroup == 0) {
             		$parent.append(tpl_add_button);
             	}
             	
+            	//check if addSubgroup
+            	if(addSubgroup.length > 0) {
+            		subgroupObj[const_subgroup] = addSubgroup;
+            		delete_subgroup[key_delete] = subgroupObj;
+            	}
+            
             });
-            //  END OF CARD ADD/REMOVE ROW
+            
+            $('.button_card_save').click(function() {
+            	
+            	//get the group_name to check with subgroup object and compare group
+            	var group_name = $(this).closest('.card_group').find('header > span').text();
+            	
+            	if(group_name !== delete_subgroup[key_delete][const_group]) {
+            		var message = "Please Save changes for Group - "+delete_subgroup[key_delete][const_group];
+            		var title = "Warning";
+            		generalDialog(message, title);
+            		return;
+            	}
+            	
+            	  $.ajax({
+                      url: '/group/delete',
+                      type: "POST",
+                      data: JSON.stringify(delete_subgroup),
+                      success: function(data) {
+                    	var title = "Success";
+                    	var message = "Successfully saved changes for Group - "+delete_subgroup[key_delete][const_group];
+                    	generalDialog(message, title);
+                      	console.log("AJAX Success: Successfully delete groups and subgroups");
+                      	delete delete_subgroup[key_delete][const_group];
+                      	delete delete_subgroup[key_delete][const_subgroup];
+                      	addSubgroup.splice(0, addSubgroup.length );
+                      },
+                  	failure: function(data) {
+                  		var title = "Error";
+                  		var message = "Unexpected error occured while saving changes for Group - "+delete_subgroup[key_delete][const_group]+"\n Please try again..";
+                  		generalDialog(message, title);
+                  		console.log("AJAX Failure: Failed to delete groups and subgroups");
+                      }
+                  });
+            	  
+            	  
+            });
+            
+            
+            //  END OF REMOVE SUBGROUP 
             
            
             //START OF ADD SUBGROUP BUTTON (when all subgroup deleted)
@@ -1059,9 +1141,13 @@ $(document)
             //END OF ADD SUBGROUP BUTTON
        
             
+            
+            
             //DELETE CARD 
             //FIXED: DELETE CARD WILL DELETE SUBGROUPS AS WELL AS GROUPS       
             $(document).delegate('.group_delete', 'click', function() {
+            	
+            	var delete_group = {};
           
             	var $parent = $(this).closest('.row_append_group');
               	
@@ -1079,31 +1165,38 @@ $(document)
             	var group_name = current_card.find('header > span').text();
             	
             	groupObj[const_group] = group_name; 
-           
+            
+            	//reset subgroup
+            	addSubgroup.splice(0,addSubgroup.length);
+            	
             	//for each function 
             	current_card.find('.subgroup_name').each(function() {
             		addSubgroup.push($(this).text());
             	});
             	
+            
             	//add subgroup 
             	if(addSubgroup.length > 0) {
             		groupObj[const_subgroup] = addSubgroup;
             	} 
-            	
-            	console.log("GROUP - "+JSON.stringify(groupObj));
+            
+            	//add group_obj with 
+            	delete_group[key_delete] = groupObj;
             	
                 $.ajax({
-                    url: '/groupadd',
+                    url: '/group/delete',
                     type: "POST",
-                    data: JSON.stringify(groupObj),
+                    data: JSON.stringify(delete_group),
                     success: function(data) {
-                    	groupObj=[];
+                    	console.log("AJAX Success: delete groups and subgroups");
+                    },
+                	complete: function(data) {
+                    	delete delete_group[key_delete][const_group];
+                    	delete delete_group[key_delete][const_subgroup];
+                    	console.log("AJAX Complete: delete groups and subgroups");
                     }
-                	
                 });
-   
-            	
-            	
+  
             	//if last card (card=1) deleted then delete entire row with selector (.row_append_group)
             	if(count == 1)
             		$parent.remove();
@@ -1214,6 +1307,27 @@ $(document)
             	}
             }
            //END OF ADD NEW GROUP 
+            
+          
+            //general dialog box for different sort of messages
+            function generalDialog(message, title){
+            	//open dialog when user clicks on different Group's Subgroup and leave current one.
+        		$('<div></div>').dialog({
+        				modal: true,
+        				title: title,
+        				open: function() {
+        					$(this).html(message);
+        				},
+        				buttons: {
+        				    Close: function() {
+        				   // $parent.children().show();
+        				    $( this ).dialog( "close" );
+        				}
+        	
+        			    }
+        	 	});
+            }
+            
             
             
  }); //end of document jQuery

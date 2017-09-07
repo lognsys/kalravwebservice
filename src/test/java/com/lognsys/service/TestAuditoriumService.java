@@ -1,27 +1,12 @@
 package com.lognsys.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.List;
-
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.google.gson.JsonElement;
-import com.lognsys.dao.dto.AuditoriumsDTO;
-import com.lognsys.dao.dto.DramasDTO;
-import com.lognsys.dao.jdbc.JdbcAuditoriumRepository;
-import com.lognsys.util.ObjectMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:application-context.xml", "classpath:datasource-context.xml",
