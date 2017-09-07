@@ -1,6 +1,5 @@
 package com.lognsys.service;
 
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -60,7 +59,7 @@ public class NotificationService {
 
 	@Autowired
 	private JdbcDeviceRepository jdbcDeviceRepository;
-	
+
 	@Autowired
 	private JdbcDramaRepository jdbcDramaRepository;
 	@Autowired
@@ -68,10 +67,10 @@ public class NotificationService {
 
 	@Autowired
 	private JdbcRolesRepository jdbcRolesRepository;
-	
+
 	@Autowired
 	private JdbcNotificationsRepository jdbcNotificationsRepository;
-	int count=0;
+	int count = 0;
 	// Injecting resource application.properties.
 	@Autowired
 	@Qualifier("applicationProperties")
@@ -81,29 +80,33 @@ public class NotificationService {
 	 * Add user to database.. Check if user already exists in db
 	 * 
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Transactional
-	public void addNotification(Notifications notifications) throws Exception {
+	public Notifications addNotification(Notifications notifications) throws Exception {
 
 		NotificationsDTO notificationDTO = ObjectMapper.mapToNotificationsDTO(notifications);
-//		LOG.info("#addNotification - " + "addNotification notificationDTO toString : - " + notificationDTO.toString());
+		// LOG.info("#addNotification - " + "addNotification notificationDTO
+		// toString : - " + notificationDTO.toString());
 
 		int notifyID = jdbcNotificationsRepository.addNotifications(notificationDTO);
-	
+
 		notifications.setId(notifyID);
 		try {
 			refreshNotificationList();
 		} catch (IOException io) {
 			LOG.fatal("UserService#addUser refresUserList - " + io.getMessage());
 		}
+		return notifications;
 	}
-	public String getUserRealnameById(int id){
-		UsersDTO usersDTO=jdbcUserRepository.findUserById(id);
+
+	public String getUserRealnameById(int id) {
+		UsersDTO usersDTO = jdbcUserRepository.findUserById(id);
 		return usersDTO.getRealname();
 	}
-	public String getDramaTitleById(int id){
-		DramasDTO dramasDTO=jdbcDramaRepository.findDramaById(id);
+
+	public String getDramaTitleById(int id) {
+		DramasDTO dramasDTO = jdbcDramaRepository.findDramaById(id);
 		return dramasDTO.getTitle();
 	}
 
@@ -113,11 +116,18 @@ public class NotificationService {
 	 * @return
 	 * @throws IOException
 	 */
-		public void refreshNotificationList() throws IOException {
-		List<NotificationsTable> notificationsTables = ObjectMapper.mapToNotificationsDTO(jdbcNotificationsRepository.getAllNotifications());
-		System.out.println("#deleteNotification notificationsTables.size() - " +notificationsTables.size());
+	public List<NotificationsTable> getAllNotifications(){
+		List<NotificationsTable> notificationsTables = ObjectMapper
+				.mapToNotificationsDTO(jdbcNotificationsRepository.getAllNotifications());
+		return notificationsTables;
+	}
+	
+	public void refreshNotificationList() throws IOException {
 		
-		if(notificationsTables!= null && notificationsTables.size()>10 && (notificationsTables.size()!=0)){
+		List<NotificationsTable> notificationsTables =getAllNotifications();
+		System.out.println("#deleteNotification notificationsTables.size() - " + notificationsTables.size());
+
+		if (notificationsTables != null && notificationsTables.size() > 10 && (notificationsTables.size() != 0)) {
 			deleteNotificationByIds(notificationsTables);
 		}
 		ResourceLoader resourceLoader = new FileSystemResourceLoader();
@@ -132,18 +142,19 @@ public class NotificationService {
 		}
 	}
 
-
 	private void deleteNotificationByIds(List<NotificationsTable> notificationsTables) throws IOException {
-	System.out.println("#deleteNotification notificationsTables.size() - " +notificationsTables.size());
-		
-		for (int i=0;i<notificationsTables.size()-10;i++) {
+		System.out.println("#deleteNotification notificationsTables.size() - " + notificationsTables.size());
+
+		for (int i = 0; i < notificationsTables.size() - 10; i++) {
 			try {
-				NotificationsTable notificationsTable=notificationsTables.get(i);
-				System.out.println("#deleteNotification notificationsTable.getId() - " +notificationsTable.getId());
-				
+				NotificationsTable notificationsTable = notificationsTables.get(i);
+				System.out.println("#deleteNotification notificationsTable.getId() - " + notificationsTable.getId());
+
 				boolean isDelete = jdbcNotificationsRepository.deleteNotificationsById(notificationsTable.getId());
 				if (!isDelete) {
-					LOG.info("#deleteNotification - " + "failed to delete Notification with notificationsTable.getId() - " + notificationsTable.getId());
+					LOG.info("#deleteNotification - "
+							+ "failed to delete Notification with notificationsTable.getId() - "
+							+ notificationsTable.getId());
 				} else {
 					refreshNotificationList();
 				}
@@ -154,6 +165,7 @@ public class NotificationService {
 			}
 		}
 	}
+
 	/**
 	 * Delete users from database
 	 * 
@@ -163,12 +175,12 @@ public class NotificationService {
 	 * @throws IOException
 	 */
 	public void deleteNotification(Integer[] ids) throws IOException {
-		System.out.println("#deleteNotification ids.length - " +ids.length);
-		
+		System.out.println("#deleteNotification ids.length - " + ids.length);
+
 		for (int id : ids) {
 			try {
-				System.out.println("#deleteNotification id - " +id);
-				
+				System.out.println("#deleteNotification id - " + id);
+
 				boolean isDelete = jdbcNotificationsRepository.deleteNotificationsById(id);
 
 				if (!isDelete) {
@@ -184,8 +196,6 @@ public class NotificationService {
 		}
 	}
 
-
-
 	/**
 	 * 
 	 * This method updates json and refreshed the list of Users
@@ -194,31 +204,30 @@ public class NotificationService {
 	 */
 	public List<UsersDTO> getUsers() {
 
-		
 		try {
 			return jdbcUserRepository.getAllUsers();
 		} catch (DataAccessException dae) {
 			LOG.error(dae.getMessage());
 			throw new IllegalStateException("Error : Failed to add user!");
 		}
-	
+
 	}
 
 	public Notifications getNotificationByMessage(String message) {
 
 		Notifications notifications = null;
 
-			// get Users information from user table
+		// get Users information from user table
 		notifications = ObjectMapper.mapToNotifications(jdbcNotificationsRepository.findUserByMessage(message));
-	
 
-			return notifications;
+		return notifications;
 
 	}
+
 	/*
 	*//**
-	 * @return returns the list of drama from database
-	 */
+		 * @return returns the list of drama from database
+		 */
 	public List<DramasDTO> getDramas() {
 
 		try {
@@ -227,22 +236,21 @@ public class NotificationService {
 			LOG.error(dae.getMessage());
 			throw new IllegalAccessError("Error: All roles cannot be retrieved");
 		}
-		
+
 	}
-			public Users getUserDetailById(int id) {
 
-			return ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(id));
+	public Users getUserDetailById(int id) {
+
+		return ObjectMapper.mapToUsers(jdbcUserRepository.findUserById(id));
+	}
+
+	public List<DeviceDTO> getDeviceToken() {
+		try {
+			return jdbcDeviceRepository.getAllDeviceDTO();
+		} catch (DataAccessException dae) {
+			LOG.error(dae.getMessage());
+			throw new IllegalAccessError("Error: All roles cannot be retrieved");
 		}
-		public List<DeviceDTO> getDeviceToken() {
-			try {
-				return jdbcDeviceRepository.getAllDeviceDTO();
-			} catch (DataAccessException dae) {
-				LOG.error(dae.getMessage());
-				throw new IllegalAccessError("Error: All roles cannot be retrieved");
-			}
-		}
-		
+	}
 
-
-	
 }

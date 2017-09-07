@@ -259,6 +259,16 @@ public class ObjectMapper {
 
 	}
 
+	public static List<Notifications> mapToNotificationsDTOTable(List<NotificationsTable> notificationstables) {
+
+		List<Notifications> list = new ArrayList<>();
+		for (NotificationsTable ndto : notificationstables) {
+			list.add(new Notifications((ndto).getId(), (ndto).getNotify(), (ndto).getMessage(),
+					(ndto).getRealname(), (ndto).getDramaTitle()));
+		}
+		return list;
+
+	}
 	public static Notifications mapToNotifications(NotificationsDTO notificationsDTO) {
 
 		Notifications newNotifications = new Notifications(notificationsDTO.getId(), notificationsDTO.isNotify(),

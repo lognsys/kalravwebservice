@@ -29,6 +29,13 @@ public class NotificationsDTO {
 		this.message = message;
 	}
 
+	public NotificationsDTO(int id, boolean notify, String message, String realname, String dramaTitle) {
+		this.id=id;
+		this.notify=notify;
+		this.message=message;
+		this.realname=realname;
+		this.dramaTitle=dramaTitle;
+	}
 	public int getId() {
 		return id;
 	}

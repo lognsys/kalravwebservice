@@ -120,7 +120,7 @@ public class NotificationController {
 		FormValidator formValidator = new FormValidator();
 		formValidator.validate(notification, result);
 
-		if (result.hasErrors()) {
+		if (result!=null && result.hasErrors()) {
 			System.out.println("Adding Errors - " + notification.toString());
 			
 			// CALL database to get dramas & users
@@ -147,11 +147,7 @@ public class NotificationController {
 		} else {
 			try {
 				if(notification.getUserId()!=0){
-						
 					notification.setRealname(notificationService.getUserRealnameById(notification.getUserId()));
-//					System.out.println("Adding notification getRealnamee  \n " + notification.getRealnamee());
-//					System.out.println("Adding notification -toString  " + notification.toString());
-						
 				}
 				else{
 					notification.setRealname("");
@@ -205,34 +201,7 @@ public class NotificationController {
 					
 					e.printStackTrace();
 				}
-				
-				/*try {
-					Hashtable<String, String> hash=new Hashtable<>();
-					hash.put("id", "19");
-					hash.put("notify", String.valueOf(notification.isNotify()));
-					hash.put("message", notification.getMessage());
-					hash.put("userId",String.valueOf(notification.getUserId()));
-					hash.put("realname", notification.getRealnamee());
-					hash.put("dramaId", String.valueOf(notification.getDramaId()));
-					hash.put("dramaTitle", notification.getDramaTitle());
-						
-					
-					URL url = new URL("http://localhost:8080/notify/"+hash);
-					System.out.println("url    " + url);
-					
-					HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-					  httpCon.setDoOutput(true);
-					  httpCon.setRequestMethod("POST");
-					  OutputStreamWriter out = new OutputStreamWriter(
-					      httpCon.getOutputStream());
-					  System.out.println("Response Code "+httpCon.getResponseCode());
-					  System.out.println("Response message "+httpCon.getResponseMessage());
-					  out.close();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-				
+	
 				return "notificationlist";
 
 			 

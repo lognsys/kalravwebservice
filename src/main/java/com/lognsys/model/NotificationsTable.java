@@ -38,6 +38,10 @@ public class NotificationsTable {
 		this.notify = getNotify();
 	}*/
 
+	public NotificationsTable() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public boolean getNotify() {
 		return notify;
 	}
