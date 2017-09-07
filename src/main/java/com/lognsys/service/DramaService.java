@@ -259,7 +259,25 @@ public class DramaService {
 		
 
 	}
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public DramasDTO findDramaByTitle(String title) {
 
+		try {
+			
+			return jdbcDramaRepository.findDramaByTitle(title);
+		} catch (Exception dae) {
+			 System.out.println(" getDramaById Exception  "+dae);
+				
+			return jdbcDramaRepository.findDramaByTitle(title);
+//			throw new IllegalAccessError("Failed to get drama from database with ID - " + id);
+		}
+		
+
+	}
 	/**
 	 * 
 	 * @return

@@ -122,7 +122,7 @@ public class JdbcDramaRepository implements DramaRespository {
 	}
 
 	@Override
-	public DramasDTO findDramaById(String title) {
+	public DramasDTO findDramaByTitle(String title) {
 
 		SqlParameterSource param = new MapSqlParameterSource("title", title);
 		return namedParamJdbcTemplate.queryForObject(

@@ -63,6 +63,6 @@ public interface DramaRespository {
 	 * @param title
 	 * @return DramasDTO
 	 */
-	public DramasDTO findDramaById(String title);
+	public DramasDTO findDramaByTitle(String title);
 
 }

@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bson.util.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -56,11 +58,11 @@ public class TestDramaController {
 	
 	private MockMvc mockMvc;
 
-    @Mock
-    private DramaService dramaServiceMock;
-//    @Mock
-//    private RestDramaController restdramaController;
 
+	@Mock //Mokito Mock Object
+	@Autowired
+    private DramaService dramaServiceMock;
+    
     @InjectMocks
     private RestDramaController dramaController;
 
@@ -69,77 +71,11 @@ public class TestDramaController {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(dramaController)
-                .addFilters(new CORSFilter())
                 .build();
     }
-    // =========================================== Get All DramasDTO By ID =========================================
-
-//    @Test
-//    public void test_get_allDramasAndGroup_success() throws Exception {
-////    	
-//        List<Drama> dramas = Arrays.asList(
-//        	    new Drama(1, "Romeo and Juliet", "Tragedy", "star_cast", "director","writer",
-//						"description","2017-05-17 09:25:07","http://www.pictures.zimbio.com/gi/Twyla+Tharp+2011+Juilliard+School+Commencement+bTePZyFwnJFl.jpg",
-//						 "1:00:00 - 2:00:00","music","3.5","GUEST","Kalrav", "language"),
-//                new Drama(2, "The Kite Runner", "Tragedy", "star_cast", "director","writer",
-//						"description","2017-05-17 09:25:07","http://www.pictures.zimbio.com/gi/Twyla+Tharp+2011+Juilliard+School+Commencement+bTePZyFwnJFl.jpg",
-//						 "1:00:00 - 2:00:00","music","3.5","GUEST","Kalrav", "language"));
-//        
-//        List<DramasGroupsDTO> dgDTO=new ArrayList<>();
-//        
-//        dgDTO.add(new DramasGroupsDTO(1,new GroupsDTO(1, "NONE"), com.lognsys.util.ObjectMapper.mapToDramasDTO(dramas.get(0))));
-//        dgDTO.add(new DramasGroupsDTO(2,new GroupsDTO(2, "Kalrav"), com.lognsys.util.ObjectMapper.mapToDramasDTO(dramas.get(1))));
-//        
-//        
-//        when(dramaServiceMock.getAllDramasAndGroup()).thenReturn(dgDTO);
-//
-//        mockMvc.perform(get("/getalldramaandgroup"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-//                .andExpect(jsonPath("$", hasSize(2)))
-//                .andExpect(jsonPath("$[0].id", is(1)))
-//                .andExpect(jsonPath("$[1].id", is(2)));
-//        verify(dramaServiceMock, times(1)).getAllDramasAndGroup();
-//        verifyNoMoreInteractions(dramaServiceMock);
-//    }
-//    
-//    // =========================================== Get DramasDTO By ID =========================================
-//
-//    @Test
-//    public void test_get_by_id_success() throws Exception {
-//    	DramasDTO drama = new DramasDTO(1, "Romeo and Juliet","http://www.pictures.zimbio.com/gi/Twyla+Tharp+2011+Juilliard+School+Commencement+bTePZyFwnJFl.jpg",
-//				 "1:00:00 - 2:00:00","2017-05-17 09:25:07",
-//				 "Tragedy", "star_cast","description", "director","writer",
-//				"music","3.5", "language");
-//
-//        when(dramaServiceMock.findByDrama(1)).thenReturn(drama);
-//
-//        mockMvc.perform(get("/getdramadetailbyid/{id}", 1))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-//                .andExpect(jsonPath("$.id", is(1)))
-//                .andExpect(jsonPath("$.title", is("Romeo and Juliet")));
-//
-//        verify(dramaServiceMock, times(1)).findByDrama(1);
-//        verifyNoMoreInteractions(dramaServiceMock);
-//    }
-//    
-//
-//    @Test
-//    public void test_get_by_id_fail_404_not_found() throws Exception {
-//        when(dramaServiceMock.findByDrama(2)).thenReturn(null);
-//
-//        mockMvc.perform(get("/users/{id}", 2))
-//                .andExpect(status().isNotFound());
-//
-//        verify(dramaServiceMock, times(1)).findByDrama(1);
-////        verifyNoMoreInteractions(dramaServiceMock);
-//    }
-
-    // =========================================== Create New User ========================================
-
+   
     @Test
-    public void test_create_user_success() throws Exception {
+    public void test_create_success() throws Exception {
     	Drama dramas=  new Drama();
     	
 		dramas.setTitle("Hello ");
@@ -156,126 +92,109 @@ public class TestDramaController {
 		dramas.setDrama_language("Hindi, English");
 		dramas.setGroup("NONE");
 		dramas.setAuditorium("Kalrav");
+		dramaServiceMock.addDrama(dramas);
 		when(dramaServiceMock.exists(dramas)).thenReturn(false);
+		
 		when(dramaServiceMock.addDrama(dramas)).thenReturn(1);
 
-	    doNothing().when(dramaServiceMock).add(dramas);
-		/*  when(dramaServiceMock.addDrama(dramas)).thenReturn(1);
-      
-     
-        mockMvc.perform(
-                post("/createdrama")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString((dramas))))
-                .andExpect(status().isCreated());
-//                .andExpect(header().string("location", containsString("http://localhost/getalldramaandgroup")));
-
-//        verify(dramaServiceMock, times(1)).exists(dramas);
-        verify(dramaServiceMock, times(1)).addDrama(dramas);
-        verifyNoMoreInteractions(dramaServiceMock);*/
+	 
     }
-//
-//    @Test
-//    public void test_create_user_fail_404_not_found() throws Exception {
-//        User user = new User("username exists");
-//
-//        when(userService.exists(user)).thenReturn(true);
-//
-//        mockMvc.perform(
-//                post("/users")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(user)))
-//                .andExpect(status().isConflict());
-//
-//        verify(userService, times(1)).exists(user);
-//        verifyNoMoreInteractions(userService);
-//    }
-//
-//    // =========================================== Update Existing User ===================================
-//
-//    @Test
-//    public void test_update_user_success() throws Exception {
-//        User user = new User(1, "Arya Stark");
-//
-//        when(userService.findById(user.getId())).thenReturn(user);
-//        doNothing().when(userService).update(user);
-//
-//        mockMvc.perform(
-//                put("/users/{id}", user.getId())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(user)))
-//                .andExpect(status().isOk());
-//
-//        verify(userService, times(1)).findById(user.getId());
-//        verify(userService, times(1)).update(user);
-//        verifyNoMoreInteractions(userService);
-//    }
-//
-//    @Test
-//    public void test_update_user_fail_404_not_found() throws Exception {
-//        User user = new User(999, "user not found");
-//
-//        when(userService.findById(user.getId())).thenReturn(null);
-//
-//        mockMvc.perform(
-//                put("/users/{id}", user.getId())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(user)))
-//                .andExpect(status().isNotFound());
-//
-//        verify(userService, times(1)).findById(user.getId());
-//        verifyNoMoreInteractions(userService);
-//    }
-//
-//    // =========================================== Delete User ============================================
-//
-//    @Test
-//    public void test_delete_user_success() throws Exception {
-//        User user = new User(1, "Arya Stark");
-//
-//        when(userService.findById(user.getId())).thenReturn(user);
-//        doNothing().when(userService).delete(user.getId());
-//
-//        mockMvc.perform(
-//                delete("/users/{id}", user.getId()))
-//                .andExpect(status().isOk());
-//
-//        verify(userService, times(1)).findById(user.getId());
-//        verify(userService, times(1)).delete(user.getId());
-//        verifyNoMoreInteractions(userService);
-//    }
-//
-//    @Test
-//    public void test_delete_user_fail_404_not_found() throws Exception {
-//        User user = new User(999, "user not found");
-//
-//        when(userService.findById(user.getId())).thenReturn(null);
-//
-//        mockMvc.perform(
-//                delete("/users/{id}", user.getId()))
-//                .andExpect(status().isNotFound());
-//
-//        verify(userService, times(1)).findById(user.getId());
-//        verifyNoMoreInteractions(userService);
-//    }
-//
-//    // =========================================== CORS Headers ===========================================
-//
-//    @Test
-//    public void test_cors_headers() throws Exception {
-//        mockMvc.perform(get("/users"))
-//                .andExpect(header().string("Access-Control-Allow-Origin", "*"))
-//                .andExpect(header().string("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE"))
-//                .andExpect(header().string("Access-Control-Allow-Headers", "*"))
-//                .andExpect(header().string("Access-Control-Max-Age", "3600"));
-//    }
-//
-    public static String asJsonString(final Object obj) {
-        try {
-            final ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+    @Test
+    public void test_CRUD() throws Exception {
+	Drama dramas=  new Drama();
+		dramas.setId(1);
+		dramas.setTitle("Hello 1");
+		dramas.setGenre("Historic");
+		dramas.setStar_cast("Priyank Doshi");
+		dramas.setDirector("Priyank Doshi");
+		dramas.setWriter("Priyank Doshi");
+		dramas.setDescription("description");
+		dramas.setDate("2017-08-08");
+		dramas.setAvg_rating( "5");
+		dramas.setImageurl("http://www.gmail.com");
+		dramas.setDrama_length("2 hour");
+		dramas.setMusic("Asian music");
+		dramas.setDrama_language("Hindi, English");
+		dramas.setGroup("NONE");
+		dramas.setAuditorium("Kalrav");
+		
+		
+		Drama dramas2=  new Drama();
+
+		dramas2.setId(2);
+		dramas2.setTitle("Hello 2");
+		dramas2.setGenre("Historic");
+		dramas2.setStar_cast("Priyank Doshi");
+		dramas2.setDirector("Priyank Doshi");
+		dramas2.setWriter("Priyank Doshi");
+		dramas2.setDescription("description");
+		dramas2.setDate("2017-08-08");
+		dramas2.setAvg_rating( "5");
+		dramas2.setImageurl("http://www.gmail.com");
+		dramas2.setDrama_length("2 hour");
+		dramas2.setMusic("Asian music");
+		dramas2.setDrama_language("Hindi, English");
+		dramas2.setGroup("NONE");
+		dramas2.setAuditorium("Kalrav");
+		
+		
+		Drama dramas3=  new Drama();
+
+		dramas3.setId(3);
+		dramas3.setTitle("Hello 3");
+		dramas3.setGenre("Historic");
+		dramas3.setStar_cast("Priyank Doshi");
+		dramas3.setDirector("Priyank Doshi");
+		dramas3.setWriter("Priyank Doshi");
+		dramas3.setDescription("description");
+		dramas3.setDate("2017-08-08");
+		dramas3.setAvg_rating( "5");
+		dramas3.setImageurl("http://www.gmail.com");
+		dramas3.setDrama_length("2 hour");
+		dramas3.setMusic("Asian music");
+		dramas3.setDrama_language("Hindi, English");
+		dramas3.setGroup("NONE");
+		dramas3.setAuditorium("Kalrav");
+		
+		DramasDTO dto=com.lognsys.util.ObjectMapper.mapToDramasDTO(dramas);
+		DramasDTO dto2=com.lognsys.util.ObjectMapper.mapToDramasDTO(dramas2);
+		DramasDTO dto3=com.lognsys.util.ObjectMapper.mapToDramasDTO(dramas3);
+		
+//		READ ALL DRAMAS=====
+		when(dramaServiceMock.getDramas()).thenReturn(Arrays.asList(dto, dto2,dto3));
+		System.out.println(Arrays.asList(dto, dto2,dto3));
+		
+
+//		FIND a DRAMA BY TITLE=====
+		when(dramaServiceMock.findDramaByTitle("Hello 2")).thenReturn(dto2);
+		when(dramaServiceMock.findDramaByTitle("Hello 2")).thenReturn(dto);
+		when(dramaServiceMock.findDramaByTitle("Hello 2")).thenThrow(RuntimeException.class);
+		System.out.println("thenReturn by title dto2 "+dto2);
+		
+
+//		Create a DRAMA BY=====
+		when(dramaServiceMock.addDrama(dramas2)).thenReturn(dramas2.getId());
+		System.out.println("Create a DRAMA by dramas2  "+dramas2.getId());
+		when(dramaServiceMock.addDrama(dramas)).thenReturn(1);
+		
+
+//		UPDATE a DRAMA BY ID 1 and drama obje=====
+		dto.setTitle("Savior");
+		
+		when(dramaServiceMock.updateDrama(1, dto)).thenReturn(true);
+		System.out.println("UPDATE a DRAMA by  dto  "+ dto.toString());
+		
+		
+
+//		exists a DRAMA =====
+		when(dramaServiceMock.exists(dramas)).thenReturn(true);
+		System.out.println("exists a DRAMA dramaServiceMock.exists(dramas)  "+ dramaServiceMock.exists(dramas));
+		
+		
+
+//		FIND a DRAMA BY TITLE=====
+		 when(dramaServiceMock.findByDrama(dto.getId())).thenReturn(dto);
+		 
     }
 }

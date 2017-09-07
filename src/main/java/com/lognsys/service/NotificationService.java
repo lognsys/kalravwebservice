@@ -169,12 +169,11 @@ public class NotificationService {
 	/**
 	 * Delete users from database
 	 * 
-	 * @param String
-	 *            emailID
+	 * @param String emailID
 	 * @return
 	 * @throws IOException
 	 */
-	public void deleteNotification(Integer[] ids) throws IOException {
+	public boolean deleteNotification(Integer[] ids) throws IOException {
 		System.out.println("#deleteNotification ids.length - " + ids.length);
 
 		for (int id : ids) {
@@ -185,8 +184,10 @@ public class NotificationService {
 
 				if (!isDelete) {
 					LOG.info("#deleteNotification - " + "failed to delete Notification with id - " + id);
+					return false;
 				} else {
 					refreshNotificationList();
+					return true;
 				}
 			} catch (DataAccessException dae) {
 
@@ -194,6 +195,7 @@ public class NotificationService {
 				throw new IllegalStateException("Error : Failed to delete Notification!");
 			}
 		}
+		return false;
 	}
 
 	/**
