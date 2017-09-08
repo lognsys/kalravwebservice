@@ -147,7 +147,7 @@ public class DramaService {
 	 * 
 	 * @return
 	 */
-	public void deleteDramas(Integer[] ids) {
+	public boolean deleteDramas(Integer[] ids) {
 		System.out.println("manageDrama deleteDramas ids length "+ids.length);
 		
 		for (int id : ids) {
@@ -158,7 +158,7 @@ public class DramaService {
 				System.out.println("manageDrama deleteDramas isDelete "+isDelete);
 				
 				if (!isDelete)
-					LOG.info("#deleteDrama - " + "failed to delete dramas with ID - " + id);
+					return false;
 
 			} catch (DataAccessException dae) {
 
@@ -167,6 +167,7 @@ public class DramaService {
 			}
 
 		}
+		return true;
 	}
 	/*
 	*//**

@@ -27,6 +27,7 @@ import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcRolesRepository;
 import com.lognsys.dao.jdbc.JdbcUserRepository;
 import com.lognsys.exception.UserDataAccessException;
+import com.lognsys.model.Drama;
 import com.lognsys.model.Users;
 import com.lognsys.model.UsersTable;
 import com.lognsys.util.CommonUtilities;
@@ -73,10 +74,7 @@ public class UserService {
 		UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
 
 		// Check if User Exists
-		boolean isExists = jdbcUserRepository.isExists(username);
-
-		  System.out.println("addUser users isExists "+isExists);
-		if (isExists)
+		if (exists(users))
 			throw new IllegalArgumentException("User already exists in database with username - " + username);
 
 		// adding user into database users
@@ -140,7 +138,7 @@ public class UserService {
 	 * @return
 	 *
 	 */
-	public void deleteUsers(int[] ids) {
+	public boolean deleteUsers(Integer[] ids) {
 		LOG.info("#deleteUser - " + "Deleting total number of users from database - " + ids.length);
 
 		for (int id : ids) {
@@ -149,7 +147,7 @@ public class UserService {
 				boolean isDelete = jdbcUserRepository.deleteUserBy(id);
 
 				if (!isDelete) {
-					LOG.info("#deleteUser - " + "failed to delete user with ID - " + id);
+					return false;
 				} else {
 					refreshUserList();
 				}
@@ -158,8 +156,8 @@ public class UserService {
 				LOG.error(dae.getMessage());
 				throw new IllegalStateException("Error : Failed to delete user!");
 			}
-
-		}
+			
+		}return true;
 	}
 
 	/**
@@ -437,5 +435,9 @@ public class UserService {
 
 		return user;
 	}
+public boolean exists(Users users) {
+		
+		return jdbcUserRepository.isExists(users.getUsername());
 
+	}
 }

@@ -50,35 +50,48 @@ public class RatingService {
 	 * 
 	 * @return
 	 */
-	public void addRating(Ratings rating) {
-		int drama_id =rating.getDramas_id();
+	public int addRating(RatingsDTO ratingsDTO) {
+		int drama_id =ratingsDTO.getDramas_id();
 		System.out.println("DramaService addRating  drama_id "+drama_id);
 		
-		RatingsDTO ratingsDTO = ObjectMapper.mapToRatingsDTO(rating);
+//		RatingsDTO ratingsDTO = ObjectMapper.mapToRatingsDTO(rating);
 		System.out.println("DramaService addRating  ratingsDTO "+ratingsDTO);
 		
 		try {
-			boolean isExists = jdbcRatingsRepository.isExists(ratingsDTO);
-			System.out.println("DramaService addRating  isExists "+isExists);
 			
-			if (isExists) {
+			if (exists(ratingsDTO)) {
 				LOG.info("Found Rating in database with dramaTitle - " + drama_id);
 
 			} else {
-				jdbcRatingsRepository.addRating(ratingsDTO);
-				System.out.println("DramaService addRating  added ");
-				
+			
+			return jdbcRatingsRepository.addRating(ratingsDTO);
+			
 			}
 		} catch (DataAccessException dae) {
 			System.out.println("DramaService addRating  DataAccessException "+dae);
 			
 			throw new IllegalStateException("Error : Failed to add rating!");
 		}
+		return 0;
 	}
 	
 	public int updateRating(RatingsDTO ratingsDTO) {
 		
 		return jdbcRatingsRepository.updateRating(ratingsDTO);
 
+	}	public boolean exists(RatingsDTO ratingsDTO) {
+		
+		return jdbcRatingsRepository.isExists(ratingsDTO);
+
 	}
+public List<RatingsDTO> getAllRatings() {
+		
+		return jdbcRatingsRepository.getAllRatings();
+
+	}	
+public RatingsDTO FindRatingByUserIdAndDramaId(RatingsDTO ratingsDTO) {
+	
+	return jdbcRatingsRepository.findRatingByUserIDAndDramaID(ratingsDTO.getUsers_id(),ratingsDTO.getDramas_id());
+
+}	
 }

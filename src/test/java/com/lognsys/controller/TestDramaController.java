@@ -15,6 +15,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -41,9 +43,11 @@ import com.lognsys.dao.dto.DramasDTO;
 import com.lognsys.dao.dto.DramasGroupsDTO;
 import com.lognsys.dao.dto.GroupsDTO;
 import com.lognsys.model.Drama;
+import com.lognsys.model.Notifications;
 import com.lognsys.rest.RestDramaController;
 import com.lognsys.service.DramaService;
 import com.lognsys.util.*;
+import com.lognsys.web.controller.DramaController;
 
 import static org.hamcrest.Matchers.*;
 /*
@@ -64,7 +68,7 @@ public class TestDramaController {
     private DramaService dramaServiceMock;
     
     @InjectMocks
-    private RestDramaController dramaController;
+    private DramaController dramaController;
 
     @Before
     public void init(){
@@ -195,6 +199,33 @@ public class TestDramaController {
 
 //		FIND a DRAMA BY TITLE=====
 		 when(dramaServiceMock.findByDrama(dto.getId())).thenReturn(dto);
-		 
+
+			
+ /*
+  * DELETE
+ */
+		 try {
+				dramaServiceMock.addDrama(dramas);
+				dramaServiceMock.addDrama(dramas2);	
+				dramaServiceMock.addDrama(dramas3);	
+
+				List<Drama> lists=new ArrayList<Drama>();
+				
+					lists.add(dramas);
+					lists.add(dramas2);
+					lists.add(dramas3);
+					
+					Integer[] arryIds =new Integer[lists.size()];
+					for(int i=0;i< lists.size();i++){
+						arryIds[i]=lists.get(i).getId();
+						
+					}
+
+				    when(dramaServiceMock.deleteDramas(arryIds)).thenReturn(true);
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+			 
     }
 }
