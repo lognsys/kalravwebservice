@@ -7,5 +7,5 @@ insert into dramas_groups(groups_id, dramas_id) values(3,2);
 insert into dramas_groups(groups_id, dramas_id) values(1,2);
 insert into dramas_groups(groups_id, dramas_id) values(2,1);
 insert into dramas_groups(groups_id, dramas_id) values(3,2);
-insert into dramas_groups(groups_id, dramas_id) values(1,14);
+insert into dramas_groups(groups_id, dramas_id) values(4,3);
 insert into dramas_groups(groups_id, dramas_id) values(11,3);

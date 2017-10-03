@@ -1,0 +1,2 @@
+insert into refer_seat_status(seat_status_code,seat_status_description) values("Not Available","Already Booked");
+insert into refer_seat_status(seat_status_code,seat_status_description) values("Available","Not Booked Yet");
