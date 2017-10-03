@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ import com.lognsys.model.Ratings;
 import com.lognsys.model.Users;
 import com.lognsys.service.RatingService;
 import com.lognsys.util.Constants;
-
+@ContextConfiguration
 @Produces("application/json")
 @RestController
 public class RestRatingController {
@@ -38,7 +39,7 @@ public class RestRatingController {
 	// Injecting resource application.properties.
 	@Autowired
 	@Qualifier("applicationProperties")
-	private Properties applicationProperties;
+	public Properties applicationProperties;
 	
 	
 	/**
@@ -58,10 +59,9 @@ public class RestRatingController {
 		
 		try {
 			System.out.println("Creating User toString " + ratingsDTO.toString());
-			boolean isExists = jdbcRatingsRepository.isExists(ratingsDTO);
 			
 			
-			if (isExists) {
+			if (ratingService.exists(ratingsDTO)) {
 				System.out.println(" isExists ratingsDTO.toString() " + ratingsDTO.toString());
 				ratingsDTO = (jdbcRatingsRepository.findRatingByUserIDAndDramaID(ratingsDTO.getUsers_id(),ratingsDTO.getDramas_id()));
 				System.out.println("Creating isExists ratingsDTO.toString()  " + ratingsDTO.toString());
@@ -71,13 +71,27 @@ public class RestRatingController {
 				
 				return new ResponseEntity<RatingsDTO>(ratingsDTO, HttpStatus.OK);
 			} else {
-				int ID = jdbcRatingsRepository.addRating(ratingsDTO);
+
+				System.out.println("Creating User ratingsDTO=========== " + ratingsDTO.toString());
+				System.out.println("Creating User ratingService=========== " +ratingService);
+				int ID = ratingService.addRating(ratingsDTO); //jdbcRatingsRepository.addRating(ratingsDTO);
 				ratingsDTO.setId(ID);
 				System.out.println("Creating User ID " + ID);
 				System.out.println("Creating User usersDTO tostring after add " + ratingsDTO.toString());
-				String str = applicationProperties.getProperty(Constants.REST_MSGS.response_ratingsuccess.name());
-				return new ResponseEntity<RatingsDTO>(ratingsDTO, HttpStatus.CREATED);
-			}
+				if(applicationProperties!=null){
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_ratingsuccess.name());
+					return new ResponseEntity<RatingsDTO>(ratingsDTO, HttpStatus.CREATED);
+					
+				}
+				else{
+
+					 Properties applicationProperties = new Properties();
+					
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.response_ratingsuccess.name());
+					return new ResponseEntity<RatingsDTO>(ratingsDTO, HttpStatus.CREATED);
+				
+				}
+				}
 		}
 		catch (Exception e) {
 			

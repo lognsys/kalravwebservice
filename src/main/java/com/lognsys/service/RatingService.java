@@ -52,27 +52,20 @@ public class RatingService {
 	 */
 	public int addRating(RatingsDTO ratingsDTO) {
 		int drama_id =ratingsDTO.getDramas_id();
-		System.out.println("DramaService addRating  drama_id "+drama_id);
+		int ratingId=0;
+		System.out.println("RatingService addRating  drama_id "+drama_id);
 		
 //		RatingsDTO ratingsDTO = ObjectMapper.mapToRatingsDTO(rating);
-		System.out.println("DramaService addRating  ratingsDTO "+ratingsDTO);
-		
-		try {
-			
+
+		System.out.println("RatingService addRating  exists(ratingsDTO) "+exists(ratingsDTO));
 			if (exists(ratingsDTO)) {
 				LOG.info("Found Rating in database with dramaTitle - " + drama_id);
-
-			} else {
-			
-			return jdbcRatingsRepository.addRating(ratingsDTO);
-			
 			}
-		} catch (DataAccessException dae) {
-			System.out.println("DramaService addRating  DataAccessException "+dae);
+			ratingId=jdbcRatingsRepository.addRating(ratingsDTO);
+
+			System.out.println("RatingService addRating  ratingId "+ratingId);
+			return ratingId ;
 			
-			throw new IllegalStateException("Error : Failed to add rating!");
-		}
-		return 0;
 	}
 	
 	public int updateRating(RatingsDTO ratingsDTO) {

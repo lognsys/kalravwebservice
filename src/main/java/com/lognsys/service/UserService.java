@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import javax.activity.InvalidActivityException;
+
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,6 +20,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.lognsys.dao.dto.DeviceDTO;
 import com.lognsys.dao.dto.GroupsDTO;
@@ -440,4 +444,22 @@ public boolean exists(Users users) {
 		return jdbcUserRepository.isExists(users.getUsername());
 
 	}
+
+/*public Users saveFrom(Users users) throws InvalidActivityException{
+
+    String firstName = users.getFirstname();
+
+    if(!StringUtils.isEmpty(firstName) && "Dave".equalsIgnoreCase(firstName)) {
+        throw new InvalidActivityException("Sorry Dave");
+    }
+
+   UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
+
+    int id = jdbcUserRepository.addUser(usersDTO);
+
+    users.setId(id);
+
+    return users;
+
 }
+*/}

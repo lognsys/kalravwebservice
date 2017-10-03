@@ -11,6 +11,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,12 +34,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.lognsys.model.Notifications;
 import com.lognsys.model.NotificationsTable;
 import com.lognsys.service.NotificationService;
@@ -44,6 +53,8 @@ import com.lognsys.web.controller.NotificationController;
 @WebAppConfiguration()
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestNotificationController {
+
+	private static final String BASE_URL = "http://localhost:8080/";
 
 	@Mock //Mokito Mock Object
 	@Autowired
@@ -68,6 +79,22 @@ public class TestNotificationController {
 		 Notifications added = new Notifications(1,true,"HelloWorld");
 		 
 		when(notificationService.addNotification(added)).thenReturn(added);
+		
+   	 String url = BASE_URL + "/sendnotification";
+   	    //... more
+   	    com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+   	    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+   	    ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+   	    String requestJson=ow.writeValueAsString(added );
+
+   	    mockMvc.perform(post(url)
+   	    		.contentType(MediaType.APPLICATION_JSON_VALUE)
+   	    		.param("message", "helloWorld")
+   	    		.param("realame", "Priyank")
+   	    		.param("dramaTitle", "ThisIsIt"));
+		   	   /* .requestAttr("notifications", new Notifications(1,true,"HelloWorld")))
+        .andExpect(model().attributeHasFieldErrors("notifications", "realname"))
+        .andExpect(model().attribute("notifications", hasProperty("dramaTitle", nullValue())));*/
 	}
 	
 	/*

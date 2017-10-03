@@ -125,6 +125,7 @@ public class BaseController {
 	 */
 	@RequestMapping(value = "/userlist", method = RequestMethod.GET)
 	public String showUsers(Model model, HttpServletRequest request) throws IOException {
+		System.out.println("showUsers - " );
 		userService.refreshUserList();
 		return "userlist";
 	}
@@ -221,7 +222,8 @@ public class BaseController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String showRegister(Model model, HttpServletRequest request) {
-
+		System.out.println("showRegister - " );
+		
 		// CALL database to get roles & groups
 		List<RolesDTO> listOfRolesDTO = userService.getAllRoles();
 		List<GroupsDTO> listOfGroupsDTO = userService.getAllGroups();

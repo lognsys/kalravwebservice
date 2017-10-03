@@ -1,5 +1,7 @@
 package com.lognsys.dao;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,46 +25,50 @@ public class TestJdbcUserRepository {
 
 	}
 
-	// @Test
-	// public void testCreateUser() {
-	// Users users = new Users();
+	 @Test
+	 public void testCreateUser() {
+	 Users users = new Users();
+	
+	 users.setAuth_id("123456789");
+	
+	 users.setRealname("Priyank Doshi");
+	
+	 users.setUsername("doshipriyank11@gmail.com");
+	
+	 users.setPhone("9867544359");
+	
+	 users.setState("Maharashtra");
+	
+	 users.setCity("Mumbai");
+	
+	 users.setDevice("ABXCS67868");
+	
+	 users.setZipcode("400067");
+	
+//	 users.setCompany_name("LognSystems");
+	
+	 users.setAddress("Kandivali West");
+	
+//	 users.setLocation("Kandivali West Again...");
+	
+	 users.setProvenance("Web");
+	
+	 users.setNotification(true);
 	//
-	// users.setAuth_id("123456789");
+	 java.util.Date dt = new java.util.Date();
+	 java.text.SimpleDateFormat sdf = new
+	 java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	 String currentTime = sdf.format(dt);
+	 users.setBirthdate(currentTime);
+//	   assertNull(users.getId());
 	//
-	// users.setRealname("Priyank Doshi");
+	 UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
+	int id= userRepo.addUser(usersDTO);
+	users.setId(id);
+	 assertNotNull(users.getId());
+     assertTrue(users.getId() > 0);
 	//
-	// users.setUsername("doshipriyank");
-	//
-	// users.setPhone("9867544359");
-	//
-	// users.setState("Maharashtra");
-	//
-	// users.setCity("Mumbai");
-	//
-	// users.setDevice("ABXCS67868");
-	//
-	// users.setZipcode("400067");
-	//
-	// users.setCompany_name("LognSystems");
-	//
-	// users.setAddress("Kandivali West");
-	//
-	// users.setLocation("Kandivali West Again...");
-	//
-	// users.setProvenance("Web");
-	//
-	// users.setNotification(true);
-	//
-	// java.util.Date dt = new java.util.Date();
-	// java.text.SimpleDateFormat sdf = new
-	// java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	// String currentTime = sdf.format(dt);
-	// users.setBirthdate(currentTime);
-	//
-	// UsersDTO usersDTO = ObjectMapper.mapToUsersDTO(users);
-	// userRepo.addUser(usersDTO);
-	//
-	// }
+	 }
 	//
 	// /**
 	// * This test will only run once successfully.
@@ -92,7 +98,7 @@ public class TestJdbcUserRepository {
 		users.setlastname("Doshi");
 		
 
-		users.setUsername("doshipriyank");
+		users.setUsername("doshipriyank11@gmail.com");
 
 		users.setPhone("9867544359");
 
@@ -112,12 +118,11 @@ public class TestJdbcUserRepository {
 	@Test
 	public void testGetUser(){
 		
-		String username = "lognsystems@gmail.com";
+		String username = "doshipriyank@gmail.com";
 		
 		UsersDTO usersDTO = userRepo.findUserByUsername(username);
 		Assert.notNull(usersDTO, "UserObject Null");
 		
-	
 		
 	}
 

@@ -18,6 +18,7 @@ import static junit.framework.Assert.assertNull;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -117,6 +118,16 @@ public class TestBaseController {
                 .standaloneSetup(controller)
                 .build();
     }
+ 
+    @Test
+    public void testGetSignupForm() throws Exception {
+        this.mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("login"))
+        		.andExpect(model().attribute("dashboard", any(BaseController.class)));
+
+    }
+   
     
     @Test
     public void test_create_success() throws Exception {
@@ -141,7 +152,7 @@ public class TestBaseController {
 	     
 	     userService.addUser(users);
 	     System.out.println("thenReturn userService.exists(users) "+userService.exists(users));
-			
+	   
 	     when(userService.exists(users)).thenReturn(true);
 
 	     System.out.println("thenReturn userService.exists(users) ==============="+userService.exists(users));
