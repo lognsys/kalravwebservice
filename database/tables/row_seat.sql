@@ -1,4 +1,4 @@
-drop  table if exsists row_seat;
+drop  table if exists row_seat;
 
 CREATE TABLE IF NOT EXISTS `kalrav`.`row_seat` (
   `id` INT NOT NULL AUTO_INCREMENT,

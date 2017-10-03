@@ -24,7 +24,7 @@ mysql kalrav < ${PROJECT_DIR}/database/testdata/insert_ratings.sql
 #mysql kalrav < ${PROJECT_DIR}/database/testdata/admob_adverts.sql 
 
 #auditoriums
-mysql kalrav < ${PROJECT_DIR}/database/testdata/insert_auditoriums.sql
+mysql kalrav < ${PROJECT_DIR}/database/testdata/insert_auditorium.sql
 mysql kalrav < ${PROJECT_DIR}/database/testdata/insert_row_seat.sql
 mysql kalrav < ${PROJECT_DIR}/database/testdata/insert_dramas_auditoriums.sql
 mysql kalrav < ${PROJECT_DIR}/database/testdata/insert_auditoriums_price.sql
