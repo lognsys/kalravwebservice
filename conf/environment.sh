@@ -1,1 +1,1 @@
-environment_dev.sh
+environment_prod.sh
