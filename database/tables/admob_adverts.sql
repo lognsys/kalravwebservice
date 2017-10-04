@@ -2,6 +2,7 @@
 # @author - PJD 01-04-17
 #
 #
+
 drop table if exists admob_adverts;
 
 CREATE TABLE IF NOT EXISTS admob_adverts 

@@ -33,3 +33,20 @@ create index ratings_date_idx on ratings(rating_date);
 
 ALTER TABLE `kalrav`.`ratings` 
 CHANGE COLUMN `rating` `rating` DOUBLE NOT NULL DEFAULT '0' ;
+
+ALTER TABLE `kalrav`.`ratings` 
+ADD CONSTRAINT `dramas_id`
+  FOREIGN KEY (`dramas_id`)
+  REFERENCES `kalrav`.`dramas` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+ALTER TABLE `kalrav`.`ratings` 
+ADD INDEX `users_id_idx` (`users_id` ASC);
+ALTER TABLE `kalrav`.`ratings` 
+DROP FOREIGN KEY `users_id`;
+ALTER TABLE `kalrav`.`ratings` 
+ADD CONSTRAINT `users_id`
+  FOREIGN KEY (`users_id`)
+  REFERENCES `kalrav`.`users` (`id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION;

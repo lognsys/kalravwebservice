@@ -1,3 +1,10 @@
+# author : monika 
+# delete : if we delete by group_id && dramas_id in drama_group than that drama will be removed from  that drama_group
+
+
+
+
+
 drop table if exists dramas_groups;
 
 CREATE TABLE IF NOT EXISTS dramas_groups 

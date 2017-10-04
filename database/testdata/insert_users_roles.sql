@@ -28,5 +28,3 @@ insert into users_roles (users_id,roles_id)
 values (14, 3);
 insert into users_roles (users_id,roles_id)
 values (15, 2);
-insert into users_roles (users_id,roles_id)
-values (16, 2);

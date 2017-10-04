@@ -9,6 +9,7 @@
 #   3/12/2014 dbb drop privileges for paprro jreport testing
 #   3/12/2014 dbb drop access to westproto except paprdba@localhost
 
+
 create database if not exists kalrav default character set utf8 default collate utf8_general_ci;
 
 # Access from CDL desktops for development: 128.48.204.*
