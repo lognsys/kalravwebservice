@@ -125,7 +125,7 @@ $(document)
                             type: "POST",
                             data: params,
                             success: function(data) {
-                                window.location.href = "http://13.126.167.5:8080/userlist"
+                                window.location.href = "http://localhost:8080/userlist"
                             }
                         });
 
@@ -136,7 +136,7 @@ $(document)
             // Userlist add function will call /register page
             $('#useradd').click(
                 function(event) {
-                    window.location.href = "http://13.126.167.5:8080/register";
+                    window.location.href = "http://localhost:8080/register";
                     event.preventDefault();
                 });
 
@@ -289,7 +289,7 @@ $(document)
             // Userlist delete function
             $('#usercancel').click(
                 function(event) {
-                    window.location.href = "http://13.126.167.5:8080/dashboard";
+                    window.location.href = "http://localhost:8080/dashboard";
                     event.preventDefault();
                 });
             
@@ -363,7 +363,7 @@ $(document)
             $('#dramaadd').click(
                 function(event) {
                     console.log("Event === " + event);
-                    window.location.href = "http://13.126.167.5:8080/dramadetail";
+                    window.location.href = "http://localhost:8080/dramadetail";
                     event.preventDefault();
                 });
 
@@ -384,7 +384,7 @@ $(document)
                             type: "POST",
                             data: params,
                             success: function(data) {
-                                window.location.href = "http://13.126.167.5:8080/dramalist"
+                                window.location.href = "http://localhost:8080/dramalist"
                             }
                         });
 
@@ -528,7 +528,7 @@ $(document)
             // Userlist delete function
             $('#dramacancel').click(
                 function(event) {
-                    window.location.href = "http://13.126.167.5:8080/dashboard";
+                    window.location.href = "http://localhost:8080/dashboard";
                     event.preventDefault();
                 });
 
@@ -700,7 +700,7 @@ $(document)
                                 type: "POST",
                                 data: params,
                                 success: function(data) {
-                                    window.location.href = "http://13.126.167.5:8080/groupdetails"
+                                    window.location.href = "http://localhost:8080/groupdetails"
                                 }
                             });
 
@@ -805,7 +805,7 @@ $(document)
                             type: "POST",
                             data: params,
                             success: function(data) {
-                                window.location.href = "http://13.126.167.5:8080/notificationlist"
+                                window.location.href = "http://localhost:8080/notificationlist"
                             }
                         });
 
@@ -816,7 +816,7 @@ $(document)
             // notificationlist add function
             $('#notificationadd').click(
                 function(event) {
-                    window.location.href = "http://13.126.167.5:8080/sendnotification";
+                    window.location.href = "http://localhost:8080/sendnotification";
                     event.preventDefault();
                 });
 
@@ -950,7 +950,7 @@ $(document)
             // Userlist delete function
             $('#notificationcancel').click(
                 function(event) {
-                    window.location.href = "http://13.126.167.5:8080/dashboard";
+                    window.location.href = "http://localhost:8080/dashboard";
                     event.preventDefault();
                 });
             //=====================================================NOTIFICATION LIST===========================================================================
