@@ -235,23 +235,29 @@ public class BookingService {
         System.out.println("getBookedSeats list "+list);
         System.out.println("getBookedSeats list size  "+list.size());
         JSONArray jsonArray=new JSONArray();
-        
-        for(int i=0;i<list.size();i++){
-        	JSONObject jsonObject=new JSONObject();
-        	jsonObject.put("i", list.get(i).getRow_num());
-        	jsonObject.put("j", list.get(i).getSeat_number());
-        	
+        if(list!=null && list.size()>0){
+        	 for(int i=0;i<list.size();i++){
+             	JSONObject jsonObject=new JSONObject();
+             	jsonObject.put("i", list.get(i).getRow_num());
+             	jsonObject.put("j", list.get(i).getSeat_number());
+             	
 
-            System.out.println("getBookedSeats jsonObject "+jsonObject);
-        	jsonArray.add(jsonObject);
+                 System.out.println("getBookedSeats jsonObject "+jsonObject);
+             	jsonArray.add(jsonObject);
+             }
+             System.out.println("getBookedSeats jsonArray "+jsonArray);
+             System.out.println("getBookedSeats jsonArray size "+jsonArray.size());
+           
+
+           	
         }
-        System.out.println("getBookedSeats jsonArray "+jsonArray);
-        System.out.println("getBookedSeats jsonArray size "+jsonArray.size());
-    	JSONObject jsonObjectfinal=new JSONObject();
-        
-        jsonObjectfinal.put("seatnumberdetails", jsonArray);
+        else{
+        	
+        }
 
-        System.out.println("getBookedSeats jsonObjectfinal "+jsonObjectfinal);
+     	JSONObject jsonObjectfinal=new JSONObject();
+        jsonObjectfinal.put("seatnumberdetails", jsonArray);
+         System.out.println("getBookedSeats jsonObjectfinal "+jsonObjectfinal);
 		return jsonObjectfinal;
 	}
 	

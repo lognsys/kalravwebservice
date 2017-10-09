@@ -77,15 +77,19 @@ public class RestBookingController {
 					
 				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.CREATED);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				 System.out.println("bookedseats ParseException 1 :  "+e);
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.check_no_seats_booked.name());
+					return new ResponseEntity<String>(str, HttpStatus.OK);	
+				
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (org.json.simple.parser.ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				 System.out.println("bookingconfirm ParseException 1 :  "+e);
+					String str = applicationProperties.getProperty(Constants.REST_MSGS.fail_booked_seats.name());
+					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+				   
 			}
-			  return new ResponseEntity<String>("Fail  to  add booking ",HttpStatus.NOT_FOUND);
-		}
+			return null;
+			  }
 }

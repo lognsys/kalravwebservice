@@ -125,11 +125,7 @@ $(document)
                             type: "POST",
                             data: params,
                             success: function(data) {
-<<<<<<< HEAD
-                                window.location.href = "http://localhost:8080/userlist"
-=======
-                                window.location.href = "http://kalravapi.lognsys.com:8080/userlist"
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                                window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/userlist"
                             }
                         });
 
@@ -140,11 +136,7 @@ $(document)
             // Userlist add function will call /register page
             $('#useradd').click(
                 function(event) {
-<<<<<<< HEAD
-                    window.location.href = "http://localhost:8080/register";
-=======
-                    window.location.href = "http://kalravapi.lognsys.com:8080/register";
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/register";
                     event.preventDefault();
                 });
 
@@ -297,11 +289,7 @@ $(document)
             // Userlist delete function
             $('#usercancel').click(
                 function(event) {
-<<<<<<< HEAD
-                    window.location.href = "http://localhost:8080/dashboard";
-=======
-                    window.location.href = "http://kalravapi.lognsys.com:8080/dashboard";
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dashboard";
                     event.preventDefault();
                 });
             
@@ -375,11 +363,7 @@ $(document)
             $('#dramaadd').click(
                 function(event) {
                     console.log("Event === " + event);
-<<<<<<< HEAD
-                    window.location.href = "http://localhost:8080/dramadetail";
-=======
-                    window.location.href = "http://kalravapi.lognsys.com:8080/dramadetail";
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dramadetail";
                     event.preventDefault();
                 });
 
@@ -400,11 +384,7 @@ $(document)
                             type: "POST",
                             data: params,
                             success: function(data) {
-<<<<<<< HEAD
-                                window.location.href = "http://localhost:8080/dramalist"
-=======
-                                window.location.href = "http://kalravapi.lognsys.com:8080/dramalist"
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                                window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dramalist"
                             }
                         });
 
@@ -548,11 +528,7 @@ $(document)
             // Userlist delete function
             $('#dramacancel').click(
                 function(event) {
-<<<<<<< HEAD
-                    window.location.href = "http://localhost:8080/dashboard";
-=======
-                    window.location.href = "http://kalravapi.lognsys.com:8080/dashboard";
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dashboard";
                     event.preventDefault();
                 });
 
@@ -723,12 +699,8 @@ $(document)
                                 url: '/groupdetails',
                                 type: "POST",
                                 data: params,
-                                success: function(data) {
-<<<<<<< HEAD
-                                    window.location.href = "http://localhost:8080/groupdetails"
-=======
-                                    window.location.href = "http://kalravapi.lognsys.com:8080/groupdetails"
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                                success: function(data) {window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/groupdetails"
+
                                 }
                             });
 
@@ -833,11 +805,7 @@ $(document)
                             type: "POST",
                             data: params,
                             success: function(data) {
-<<<<<<< HEAD
-                                window.location.href = "http://localhost:8080/notificationlist"
-=======
-                                window.location.href = "http://kalravapi.lognsys.com:8080/notificationlist"
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                                window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/notificationlist"
                             }
                         });
 
@@ -848,11 +816,8 @@ $(document)
             // notificationlist add function
             $('#notificationadd').click(
                 function(event) {
-<<<<<<< HEAD
-                    window.location.href = "http://localhost:8080/sendnotification";
-=======
-                    window.location.href = "http://kalravapi.lognsys.com:8080/sendnotification";
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/sendnotification";
+
                     event.preventDefault();
                 });
 
@@ -986,11 +951,7 @@ $(document)
             // Userlist delete function
             $('#notificationcancel').click(
                 function(event) {
-<<<<<<< HEAD
-                    window.location.href = "http://localhost:8080/dashboard";
-=======
-                    window.location.href = "http://kalravapi.lognsys.com:8080/dashboard";
->>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dashboard";
                     event.preventDefault();
                 });
             //=====================================================NOTIFICATION LIST===========================================================================
