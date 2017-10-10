@@ -105,9 +105,6 @@ public class BookingService {
         booking.setConfirmation_no(uniqueCode);
         int bookingId = jdbcBookingRepository.addBooking(ObjectMapper.mapToBookingDTO(booking));
         booking.setId(bookingId);
-        System.out.println("===================================================\n ");
-        System.out.println("addBooking bookingId ==== "+bookingId);
-    	
         addBookedSeatsDetails(bookingId,jsonArraySeatnumber,booking.getAuditoriums_id());
 
        	 JSONObject obj=new JSONObject();
