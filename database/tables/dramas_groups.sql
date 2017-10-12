@@ -33,3 +33,6 @@ alter table  dramas_groups add foreign key (dramas_id)
 alter table  dramas_groups add foreign key (groups_id) 
    references  groups (id) on delete cascade
    			 on update cascade;
+
+ALTER TABLE `kalrav`.`dramas_groups` 
+DROP INDEX `constr_groupssid` ;
