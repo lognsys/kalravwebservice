@@ -272,7 +272,7 @@ public class UserService {
         System.out.println("getUserWithRoleAndGroup username "+username);
         
         String device=(String) obj2.get("device");
-        System.out.println("getUserWithRoleAndGroup device "+device);
+//        System.out.println("getUserWithRoleAndGroup device "+device);
         
 		
 		// Throw exception on invalid paramter or empty paramter
@@ -320,7 +320,11 @@ public class UserService {
 //			update user
 			DeviceDTO deviceDTO= new DeviceDTO();
 			deviceDTO.setUsers_id(users.getId());
+			if(device!=null)
 			deviceDTO.setDeviceToken(device);
+			else
+			deviceDTO.setDeviceToken(users.getDevice());
+
 			boolean isUpdateDeviceDTO =jdbcDeviceRepository.updateDevice(deviceDTO);
 			System.out.println("getUserWithRoleAndGroup isUpdateDeviceDTO "+isUpdateDeviceDTO);
 			   
