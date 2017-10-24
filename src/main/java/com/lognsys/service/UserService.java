@@ -270,9 +270,12 @@ public class UserService {
         
         String username=(String) obj2.get("username");
         System.out.println("getUserWithRoleAndGroup username "+username);
+        String device;
         
-        String device=(String) obj2.get("device");
-//        System.out.println("getUserWithRoleAndGroup device "+device);
+        if(obj2.get("device")!=null)
+        	device=(String) obj2.get("device");
+        else
+        	device=null;
         
 		
 		// Throw exception on invalid paramter or empty paramter
@@ -315,7 +318,10 @@ public class UserService {
 			users.setRole(Constants.DEFAULT_GROUP.NONE.toString());
 		}
 		
-		
+	if(users.getDevice()!=null && device!=null){
+		System.out.println("getUserWithRoleAndGroup device "+device);
+		System.out.println("getUserWithRoleAndGroup users.getDevice() "+users.getDevice());
+        
 		if(!(users.getDevice().equals(device))){
 //			update user
 			DeviceDTO deviceDTO= new DeviceDTO();
@@ -337,6 +343,7 @@ public class UserService {
 			  System.out.println("getUserWithRoleAndGroup users.getDevice  "+users.getDevice());
 				 
 		}
+	}
 		return users;
 
 	}
