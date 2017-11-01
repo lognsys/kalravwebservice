@@ -28,6 +28,7 @@
  * 13) CANCEL BUTTON  RETURNS SUBGROUPS OF DESIGNATED GROUP IN ORIGINAL FORM
  * 14) DIALOG BOX ON WORKING ON DIFFERENT GROUP AND NOT SAVING CHANGES OF PREVIOUS GROUP 
  * 15) DELETE GROUP AND REMOVE IF LAST GROUP
+ * 16) CANCEL BUTTON WORKS ON CURRENT GROUP OR THROWS ERROR
  * 
  */
 $(document)
@@ -1052,6 +1053,17 @@ $(document)
                     generalDialog(message, title);
                     return false;
                 }
+                
+                for (var i in init_subgroups) {
+                	
+                	if($(this).val().trim() === init_subgroups[i]) {
+                	     var message = "Subgroup already exists.<br> If subgroup is removed from list please save it before re-adding.";
+                         var title = "Error";
+                         generalDialog(message, title);
+                         return false;
+                    
+                	}
+                } 
 
                 var $span = $("<span>", {
                     text: (!$(this).val()) ? "Enter Sub-Group" : $(this).val(),
@@ -1243,22 +1255,31 @@ $(document)
                     	$this_card.find('.subgroup').children().remove();
                     	$this_card.find('.subgroup').append(tpl_add_button);
                     } else {
-                     // loop through each existing subgroup and remove
-                	$this_card.find('span.subgroup_name').each(function(index) {
+                    	//remove add button
+                    	$this_card.find('.button_add_subgroup').remove(); 
+                    	
+                     // loop through each subgroup and remove all subgroups
+                	$this_card.find('.subgroup_name').each(function(index) {
                 		//remove all the rows of subgroup_name
                 		$(this).parent().remove();
                    
                     });
                 	
                 	
+                	
+                	//again add old subgroups, thus reverse the changes
                 	  for(var i in init_subgroups) {
-                		  
+                		  //replace dummy value "placeholder_subgroup" with subgroup name
                 		  var row_subgroup =  tpl_add_subgroup_row_span.replace("placeholder_name",init_subgroups[i]);
                 		  $this_card.find('.subgroup').append(row_subgroup);
-                		  
                 	  }
                     
                     }
+                    
+                    delete groupObj[const_group];
+                    delete groupObj[const_subgroup];
+                    isSubgroupPopulated = false;
+                    init_subgroups.splice(0, init_subgroups.length);
                 }
             });
             
@@ -1421,7 +1442,7 @@ $(document)
 
                     }
 
-                    //CLEARING AND RESETING OBJECTS
+                    //CLEARING AND RESETING OBJECTS ONCE SAVED SUCCESSFULLY
                     countSubgroup = 0;
                     delete groupObj[const_group];
                     delete groupObj[const_subgroup];
@@ -1712,7 +1733,9 @@ $(document)
 
                 // loop through each newly added subgroup
                 $this_card.find('span.subgroup_name').each(function(index) {
-                    _initArr.push($(this).text());
+                	
+                		_initArr.push($(this).text());
+                	
                 });
 
                 return _initArr;
