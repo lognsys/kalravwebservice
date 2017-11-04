@@ -73,12 +73,10 @@
 										</c:choose>
 									</div>
 									<div class="w3-container w3-padding">
-										<button
-											class="button_card_save w3-button w3-green w3-round" style="width:100%">Save</button>
-<!-- 										<button
-											class="button_card_save w3-button w3-green w3-round  w3-margin-left w3-right">Save</button> -->
-										<!-- <button
-											class="button_card_cancel w3-button w3-round w3-right ">Cancel</button> -->
+								<!-- 		<button
+											class="button_card_save w3-button w3-green w3-round" style="width:100%">Save</button> -->
+									<button class="button_card_cancel w3-button w3-round">Cancel</button>
+									<button class="button_card_save w3-margin-left w3-button w3-green w3-round w3-right" style="width:35%">Save</button>
 									</div>
 								</div>
 								<!-- end of card_group --> 
@@ -93,9 +91,6 @@
 					</div>
 				</div>
 			</div>
-
-
-
 <!-- End of Panel -->
 
 <!-- Dialog box -->
