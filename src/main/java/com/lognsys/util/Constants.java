@@ -124,7 +124,8 @@ public class Constants {
 		response_userempty, response_userinvalid, response_userexists,
 		response_dramaexists,response_dramaempty,
 		response_auditoriumempty,
-		response_ratingsuccess,response_bookingmempty,check_no_seats_booked	,fail_booked_seats
+		response_ratingsuccess,response_bookingmempty,check_no_seats_booked	,fail_booked_seats,
+		response_internalserver
 	}
 
 	/**

@@ -196,8 +196,18 @@ public class RestUserController {
 						applicationProperties.getProperty(Constants.REST_MSGS.response_userinvalid.name()),
 						HttpStatus.BAD_REQUEST);
 			}
+<<<<<<< HEAD
 			
 		}
+=======
+			else {
+				return new ResponseEntity<String>(
+						applicationProperties.getProperty(Constants.REST_MSGS.response_internalserver.name()),
+						HttpStatus.INTERNAL_SERVER_ERROR);
+				
+			}
+			}
+>>>>>>> 1ace145233e96e509a9c5bc20f6da3f070457f6d
 
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
 

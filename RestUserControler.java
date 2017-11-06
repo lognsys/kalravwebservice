@@ -1,0 +1,4084 @@
+diff --git a/database/tables/booking.sql b/database/tables/booking.sql
+index e7cd1fa..b77fc3b 100644
+--- a/database/tables/booking.sql
++++ b/database/tables/booking.sql
+@@ -1,41 +1,36 @@
+-
++#
++# @author - pdoshi
++# Description : This is used for booking confirmration
++# CHANGE LOG :
++# Updated Foreign key dramas_id to dramas_auditoriums_id
++#
+ drop table if exists booking;
+ 
+-CREATE TABLE `kalrav`.`booking` (
+-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+-  `booking_date` VARCHAR(45) NOT NULL,
+-  `confirmation_no` VARCHAR(65) NOT NULL,
++CREATE TABLE IF NOT EXISTS `kalrav`.`booking` (
++  `id` INT NOT NULL AUTO_INCREMENT,
++  `booking_date` varchar(20) NOT NULL default "",
++  `confirmation_no` VARCHAR(64) NOT NULL,
+   `users_id` INT(11) NOT NULL,
+-  `booking_seatcount` INT(11) NOT NULL,
+-  `dramas_id` INT(11) NOT NULL,
+-  `status` VARCHAR(45) NOT NULL,
+-  `auditoriums_id` INT(11) NOT NULL,
++  `booking_seatcount` INT NOT NULL,
+   `last_edit` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
++  `dramas_auditoriums_id` INT(11) NOT NULL,
+   PRIMARY KEY (`id`),
+-  INDEX `fk_busers_id` (`users_id` ASC),
+-  INDEX `fk_bdramas_id` (`dramas_id` ASC),
+-  INDEX `fk_bauditoriums_id` (`auditoriums_id` ASC),
+-  CONSTRAINT `fk_busers_id`
+-    FOREIGN KEY (`users_id`)
+-    REFERENCES `kalrav`.`users` (`id`)
+-    ON DELETE CASCADE
+-    ON UPDATE NO ACTION,
+-  CONSTRAINT `fk_bdramas_id`
+-    FOREIGN KEY (`dramas_id`)
+-    REFERENCES `kalrav`.`dramas` (`id`)
+-    ON DELETE NO ACTION
+-    ON UPDATE NO ACTION,
+-  CONSTRAINT `fk_bauditoriums_id`
+-    FOREIGN KEY (`auditoriums_id`)
+-    REFERENCES `kalrav`.`auditoriums` (`id`)
++  INDEX `fk_booking_users1_idx` (`users_id` ASC),
++  INDEX `fk_booking_dramas_auditoriums_id_idx` (`dramas_auditoriums_id` ASC),
++ CONSTRAINT `fk_booking_users1`
++  FOREIGN KEY (`users_id`)
++  REFERENCES `kalrav`.`users` (`id`)
++  ON DELETE CASCADE
++  ON UPDATE CASCADE,
++  CONSTRAINT `fk_booking_dramas_auditoriums_id`
++    FOREIGN KEY (`dramas_auditoriums_id`)
++    REFERENCES `kalrav`.`dramas_auditoriums` (`id`)
+     ON DELETE NO ACTION
+     ON UPDATE NO ACTION)
+-ENGINE = InnoDB
+-DEFAULT CHARACTER SET = utf8;
++ENGINE = InnoDB;
+ 
+-ALTER TABLE `kalrav`.`booking` 
+-ADD COLUMN `price` DOUBLE NOT NULL AFTER `last_edit`;
+ 
+ ALTER TABLE `kalrav`.`booking` 
+-DROP COLUMN `booking_seatcount`;
++ADD COLUMN `status` VARCHAR(45) NOT NULL ;
+ 
++  
+\ No newline at end of file
+diff --git a/database/tables/dramas_groups.sql b/database/tables/dramas_groups.sql
+index 2d9a120..35e1ce4 100644
+--- a/database/tables/dramas_groups.sql
++++ b/database/tables/dramas_groups.sql
+@@ -33,6 +33,3 @@ alter table  dramas_groups add foreign key (dramas_id)
+ alter table  dramas_groups add foreign key (groups_id) 
+    references  groups (id) on delete cascade
+    			 on update cascade;
+-
+-ALTER TABLE `kalrav`.`dramas_groups` 
+-DROP INDEX `constr_groupssid` ;
+diff --git a/database/testdata/insert_booking.sql b/database/testdata/insert_booking.sql
+index 857826b..5737dd6 100644
+--- a/database/testdata/insert_booking.sql
++++ b/database/testdata/insert_booking.sql
+@@ -1,10 +1,10 @@
+-insert into booking (booking_date, confirmation_no, users_id,dramas_id,auditoriums_id,price, status)
+-values ('2017-10-1 09:25:07',"abskqboh12lknqf", 8,1,1,100.30,"Booked");
+-insert into booking (booking_date, confirmation_no, users_id, dramas_id,auditoriums_id,price, status)
+-values ('2017-10-3 09:25:07',"slkvnlvascm", 6,1,2,490.30,"Pending");
+-insert into booking (booking_date, confirmation_no, users_id, dramas_id,auditoriums_id,price, status)
+-values ('2017-10-4 09:25:07',"abskqboh12lknqf", 7,1,3,,500.56,"Booked");
+-insert into booking (booking_date, confirmation_no, users_id, dramas_id,auditoriums_id,price, status)
+-values ('2017-10-16 09:25:07',"slkvnlvascm", 4,3,3,450.50,"Pending");
+-insert into booking (booking_date, confirmation_no, users_id, dramas_id,auditoriums_id,price, status)
+-values ('2017-10-17 09:25:07',"abskqboh12lknqf", 5,2,2,2500.00,"Booked");
++insert into booking (booking_date, confirmation_no, users_id, booking_seatcount, dramas_auditoriums_id, status)
++values ('2017-10-1 09:25:07',"abskqboh12lknqf", 1,5,1,"Booked");
++insert into booking (booking_date, confirmation_no, users_id, booking_seatcount, dramas_auditoriums_id, status)
++values ('2017-10-3 09:25:07',"slkvnlvascm", 2,4,2,"Pending");
++insert into booking (booking_date, confirmation_no, users_id, booking_seatcount, dramas_auditoriums_id, status)
++values ('2017-10-4 09:25:07',"abskqboh12lknqf", 3,10,3,"Booked");
++insert into booking (booking_date, confirmation_no, users_id, booking_seatcount, dramas_auditoriums_id, status)
++values ('2017-10-16 09:25:07',"slkvnlvascm", 4,15,4,"Pending");
++insert into booking (booking_date, confirmation_no, users_id, booking_seatcount, dramas_auditoriums_id, status)
++values ('2017-10-17 09:25:07',"abskqboh12lknqf", 5,2,2,"Booked");
+\ No newline at end of file
+diff --git a/hs_err_pid4491.log b/hs_err_pid4491.log
+deleted file mode 100644
+index c8ca13d..0000000
+--- a/hs_err_pid4491.log
++++ /dev/null
+@@ -1,589 +0,0 @@
+-#
+-# There is insufficient memory for the Java Runtime Environment to continue.
+-# Native memory allocation (mmap) failed to map 65536 bytes for committing reserved memory.
+-# Possible reasons:
+-#   The system is out of physical RAM or swap space
+-#   In 32 bit mode, the process size limit was hit
+-# Possible solutions:
+-#   Reduce memory load on the system
+-#   Increase physical memory or swap space
+-#   Check if swap backing store is full
+-#   Use 64 bit Java on a 64 bit OS
+-#   Decrease Java heap size (-Xmx/-Xms)
+-#   Decrease number of Java threads
+-#   Decrease Java thread stack sizes (-Xss)
+-#   Set larger code cache with -XX:ReservedCodeCacheSize=
+-# This output file may be truncated or incomplete.
+-#
+-#  Out of Memory Error (os_linux.cpp:2651), pid=4491, tid=0x00007f26bfb1c700
+-#
+-# JRE version: OpenJDK Runtime Environment (8.0_141-b16) (build 1.8.0_141-b16)
+-# Java VM: OpenJDK 64-Bit Server VM (25.141-b16 mixed mode linux-amd64 compressed oops)
+-# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+-#
+-
+----------------  T H R E A D  ---------------
+-
+-Current thread (0x00007f26d00b5800):  JavaThread "C2 CompilerThread0" daemon [_thread_in_vm, id=4511, stack(0x00007f26bfa1c000,0x00007f26bfb1d000)]
+-
+-Stack: [0x00007f26bfa1c000,0x00007f26bfb1d000],  sp=0x00007f26bfb185d0,  free space=1009k
+-Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+-V  [libjvm.so+0xa1c7ed]
+-V  [libjvm.so+0x4cb7fa]
+-V  [libjvm.so+0x87b6b0]
+-V  [libjvm.so+0x875d6e]
+-V  [libjvm.so+0xa195e4]
+-V  [libjvm.so+0x5d567c]
+-V  [libjvm.so+0x456fe6]
+-V  [libjvm.so+0x45138b]
+-V  [libjvm.so+0x455bb1]
+-V  [libjvm.so+0x88c662]
+-V  [libjvm.so+0x893df1]
+-V  [libjvm.so+0x478f15]
+-V  [libjvm.so+0x47a12e]
+-V  [libjvm.so+0x3d4c08]
+-V  [libjvm.so+0x482cb6]
+-V  [libjvm.so+0x483b20]
+-V  [libjvm.so+0x9c6aa2]
+-V  [libjvm.so+0x878862]
+-C  [libpthread.so.0+0x7dc5]  start_thread+0xc5
+-
+-
+-Current CompileTask:
+-C2:  10480 5678       4       com.sun.tools.javac.code.Scope::remove (203 bytes)
+-
+-
+----------------  P R O C E S S  ---------------
+-
+-Java Threads: ( => current thread )
+-  0x00007f26d00c7000 JavaThread "Service Thread" daemon [_thread_blocked, id=4513, stack(0x00007f26bf81a000,0x00007f26bf91b000)]
+-  0x00007f26d00c2000 JavaThread "C1 CompilerThread1" daemon [_thread_in_vm, id=4512, stack(0x00007f26bf91b000,0x00007f26bfa1c000)]
+-=>0x00007f26d00b5800 JavaThread "C2 CompilerThread0" daemon [_thread_in_vm, id=4511, stack(0x00007f26bfa1c000,0x00007f26bfb1d000)]
+-  0x00007f26d00b3000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=4510, stack(0x00007f26bfb1d000,0x00007f26bfc1e000)]
+-  0x00007f26d0089800 JavaThread "Finalizer" daemon [_thread_blocked, id=4509, stack(0x00007f26bfc1e000,0x00007f26bfd1f000)]
+-  0x00007f26d0085000 JavaThread "Reference Handler" daemon [_thread_blocked, id=4508, stack(0x00007f26bfd1f000,0x00007f26bfe20000)]
+-  0x00007f26d0009000 JavaThread "main" [_thread_blocked, id=4506, stack(0x00007f26d6ca3000,0x00007f26d6da4000)]
+-
+-Other Threads:
+-  0x00007f26d007b000 VMThread [stack: 0x00007f26bfe20000,0x00007f26bff21000] [id=4507]
+-  0x00007f26d00ca000 WatcherThread [stack: 0x00007f26bf719000,0x00007f26bf81a000] [id=4514]
+-
+-VM state:not at safepoint (normal execution)
+-
+-VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
+-[0x00007f26d0005ae0] CodeCache_lock - owner thread: 0x00007f26d00b5800
+-[0x00007f26d0007160] Compile_lock - owner thread: 0x00007f26d00c2000
+-[0x00007f26d0007260] MethodCompileQueue_lock - owner thread: 0x00007f26d00c2000
+-
+-Heap:
+- def new generation   total 17984K, used 1871K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K,   2% used [0x00000000f0600000, 0x00000000f0651fe8, 0x00000000f15a0000)
+-  from space 1984K,  77% used [0x00000000f15a0000, 0x00000000f1721c70, 0x00000000f1790000)
+-  to   space 1984K,   0% used [0x00000000f1790000, 0x00000000f1790000, 0x00000000f1980000)
+- tenured generation   total 39828K, used 37633K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  94% used [0x00000000f5950000, 0x00000000f7e10600, 0x00000000f7e10600, 0x00000000f8035000)
+- Metaspace       used 24966K, capacity 25464K, committed 25600K, reserved 1073152K
+-  class space    used 2636K, capacity 2778K, committed 2816K, reserved 1048576K
+-
+-Card table byte_map: [0x00007f26d6c1d000,0x00007f26d6c9b000] byte_map_base: 0x00007f26d649a000
+-
+-Polling page: 0x00007f26d6dad000
+-
+-CodeCache: size=245760Kb used=16322Kb max_used=16322Kb free=229437Kb
+- bounds [0x00007f26c0df7000, 0x00007f26c1df7000, 0x00007f26cfdf7000]
+- total_blobs=5787 nmethods=5396 adapters=302
+- compilation: enabled
+-
+-Compilation events (10 events):
+-Event: 10.425 Thread 0x00007f26d00c2000 nmethod 5812 0x00007f26c1df19d0 code [0x00007f26c1df1b60, 0x00007f26c1df1e30]
+-Event: 10.425 Thread 0x00007f26d00c2000 5813       2       org.apache.maven.repository.internal.DefaultArtifactDescriptorReader::getRelocation (18 bytes)
+-Event: 10.425 Thread 0x00007f26d00c2000 nmethod 5813 0x00007f26c1debfd0 code [0x00007f26c1dec140, 0x00007f26c1dec2b0]
+-Event: 10.428 Thread 0x00007f26d00c2000 5816   !   2       java.io.BufferedReader::readLine (304 bytes)
+-Event: 10.429 Thread 0x00007f26d00c2000 nmethod 5816 0x00007f26c1df1f50 code [0x00007f26c1df2180, 0x00007f26c1df2fb8]
+-Event: 10.429 Thread 0x00007f26d00c2000 5817       2       org.apache.maven.model.CiManagement::getNotifiers (23 bytes)
+-Event: 10.429 Thread 0x00007f26d00c2000 nmethod 5817 0x00007f26c1df3b90 code [0x00007f26c1df3d00, 0x00007f26c1df3ef0]
+-Event: 10.429 Thread 0x00007f26d00c2000 5818   !   2       java.util.Collections$SynchronizedMap::get (25 bytes)
+-Event: 10.430 Thread 0x00007f26d00c2000 nmethod 5818 0x00007f26c1df3f90 code [0x00007f26c1df4100, 0x00007f26c1df4400]
+-Event: 10.459 Thread 0x00007f26d00c2000 5819       2       org.apache.maven.model.MailingList::<init> (5 bytes)
+-
+-GC Heap History (10 events):
+-Event: 8.852 GC heap before
+-{Heap before GC invocations=54 (full 3):
+- def new generation   total 17984K, used 16456K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K, 100% used [0x00000000f0600000, 0x00000000f15a0000, 0x00000000f15a0000)
+-  from space 1984K,  23% used [0x00000000f1790000, 0x00000000f1802330, 0x00000000f1980000)
+-  to   space 1984K,   0% used [0x00000000f15a0000, 0x00000000f15a0000, 0x00000000f1790000)
+- tenured generation   total 39828K, used 29592K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  74% used [0x00000000f5950000, 0x00000000f7636308, 0x00000000f7636400, 0x00000000f8035000)
+- Metaspace       used 24297K, capacity 24786K, committed 25088K, reserved 1071104K
+-  class space    used 2590K, capacity 2745K, committed 2816K, reserved 1048576K
+-Event: 8.857 GC heap after
+-Heap after GC invocations=55 (full 3):
+- def new generation   total 17984K, used 741K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K,   0% used [0x00000000f0600000, 0x00000000f0600000, 0x00000000f15a0000)
+-  from space 1984K,  37% used [0x00000000f15a0000, 0x00000000f16595c8, 0x00000000f1790000)
+-  to   space 1984K,   0% used [0x00000000f1790000, 0x00000000f1790000, 0x00000000f1980000)
+- tenured generation   total 39828K, used 29592K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  74% used [0x00000000f5950000, 0x00000000f7636308, 0x00000000f7636400, 0x00000000f8035000)
+- Metaspace       used 24297K, capacity 24786K, committed 25088K, reserved 1071104K
+-  class space    used 2590K, capacity 2745K, committed 2816K, reserved 1048576K
+-}
+-Event: 9.314 GC heap before
+-{Heap before GC invocations=55 (full 3):
+- def new generation   total 17984K, used 16741K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K, 100% used [0x00000000f0600000, 0x00000000f15a0000, 0x00000000f15a0000)
+-  from space 1984K,  37% used [0x00000000f15a0000, 0x00000000f16595c8, 0x00000000f1790000)
+-  to   space 1984K,   0% used [0x00000000f1790000, 0x00000000f1790000, 0x00000000f1980000)
+- tenured generation   total 39828K, used 29592K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  74% used [0x00000000f5950000, 0x00000000f7636308, 0x00000000f7636400, 0x00000000f8035000)
+- Metaspace       used 24661K, capacity 25138K, committed 25344K, reserved 1071104K
+-  class space    used 2617K, capacity 2777K, committed 2816K, reserved 1048576K
+-Event: 9.321 GC heap after
+-Heap after GC invocations=56 (full 3):
+- def new generation   total 17984K, used 1555K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K,   0% used [0x00000000f0600000, 0x00000000f0600000, 0x00000000f15a0000)
+-  from space 1984K,  78% used [0x00000000f1790000, 0x00000000f1914cf0, 0x00000000f1980000)
+-  to   space 1984K,   0% used [0x00000000f15a0000, 0x00000000f15a0000, 0x00000000f1790000)
+- tenured generation   total 39828K, used 29592K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  74% used [0x00000000f5950000, 0x00000000f7636308, 0x00000000f7636400, 0x00000000f8035000)
+- Metaspace       used 24661K, capacity 25138K, committed 25344K, reserved 1071104K
+-  class space    used 2617K, capacity 2777K, committed 2816K, reserved 1048576K
+-}
+-Event: 9.895 GC heap before
+-{Heap before GC invocations=56 (full 3):
+- def new generation   total 17984K, used 17555K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K, 100% used [0x00000000f0600000, 0x00000000f15a0000, 0x00000000f15a0000)
+-  from space 1984K,  78% used [0x00000000f1790000, 0x00000000f1914cf0, 0x00000000f1980000)
+-  to   space 1984K,   0% used [0x00000000f15a0000, 0x00000000f15a0000, 0x00000000f1790000)
+- tenured generation   total 39828K, used 29592K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  74% used [0x00000000f5950000, 0x00000000f7636308, 0x00000000f7636400, 0x00000000f8035000)
+- Metaspace       used 24810K, capacity 25272K, committed 25344K, reserved 1071104K
+-  class space    used 2628K, capacity 2778K, committed 2816K, reserved 1048576K
+-Event: 9.915 GC heap after
+-Heap after GC invocations=57 (full 3):
+- def new generation   total 17984K, used 1984K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K,   0% used [0x00000000f0600000, 0x00000000f0600000, 0x00000000f15a0000)
+-  from space 1984K, 100% used [0x00000000f15a0000, 0x00000000f1790000, 0x00000000f1790000)
+-  to   space 1984K,   0% used [0x00000000f1790000, 0x00000000f1790000, 0x00000000f1980000)
+- tenured generation   total 39828K, used 32771K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  82% used [0x00000000f5950000, 0x00000000f7950d80, 0x00000000f7950e00, 0x00000000f8035000)
+- Metaspace       used 24810K, capacity 25272K, committed 25344K, reserved 1071104K
+-  class space    used 2628K, capacity 2778K, committed 2816K, reserved 1048576K
+-}
+-Event: 10.088 GC heap before
+-{Heap before GC invocations=57 (full 3):
+- def new generation   total 17984K, used 17984K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K, 100% used [0x00000000f0600000, 0x00000000f15a0000, 0x00000000f15a0000)
+-  from space 1984K, 100% used [0x00000000f15a0000, 0x00000000f1790000, 0x00000000f1790000)
+-  to   space 1984K,   0% used [0x00000000f1790000, 0x00000000f1790000, 0x00000000f1980000)
+- tenured generation   total 39828K, used 32771K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  82% used [0x00000000f5950000, 0x00000000f7950d80, 0x00000000f7950e00, 0x00000000f8035000)
+- Metaspace       used 24852K, capacity 25272K, committed 25344K, reserved 1071104K
+-  class space    used 2629K, capacity 2778K, committed 2816K, reserved 1048576K
+-Event: 10.110 GC heap after
+-Heap after GC invocations=58 (full 3):
+- def new generation   total 17984K, used 1983K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K,   0% used [0x00000000f0600000, 0x00000000f0600000, 0x00000000f15a0000)
+-  from space 1984K,  99% used [0x00000000f1790000, 0x00000000f197fff8, 0x00000000f1980000)
+-  to   space 1984K,   0% used [0x00000000f15a0000, 0x00000000f15a0000, 0x00000000f1790000)
+- tenured generation   total 39828K, used 35660K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  89% used [0x00000000f5950000, 0x00000000f7c23180, 0x00000000f7c23200, 0x00000000f8035000)
+- Metaspace       used 24852K, capacity 25272K, committed 25344K, reserved 1071104K
+-  class space    used 2629K, capacity 2778K, committed 2816K, reserved 1048576K
+-}
+-Event: 10.436 GC heap before
+-{Heap before GC invocations=58 (full 3):
+- def new generation   total 17984K, used 17983K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K, 100% used [0x00000000f0600000, 0x00000000f15a0000, 0x00000000f15a0000)
+-  from space 1984K,  99% used [0x00000000f1790000, 0x00000000f197fff8, 0x00000000f1980000)
+-  to   space 1984K,   0% used [0x00000000f15a0000, 0x00000000f15a0000, 0x00000000f1790000)
+- tenured generation   total 39828K, used 35660K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  89% used [0x00000000f5950000, 0x00000000f7c23180, 0x00000000f7c23200, 0x00000000f8035000)
+- Metaspace       used 24966K, capacity 25464K, committed 25600K, reserved 1073152K
+-  class space    used 2636K, capacity 2778K, committed 2816K, reserved 1048576K
+-Event: 10.457 GC heap after
+-Heap after GC invocations=59 (full 3):
+- def new generation   total 17984K, used 1543K [0x00000000f0600000, 0x00000000f1980000, 0x00000000f5950000)
+-  eden space 16000K,   0% used [0x00000000f0600000, 0x00000000f0600000, 0x00000000f15a0000)
+-  from space 1984K,  77% used [0x00000000f15a0000, 0x00000000f1721c70, 0x00000000f1790000)
+-  to   space 1984K,   0% used [0x00000000f1790000, 0x00000000f1790000, 0x00000000f1980000)
+- tenured generation   total 39828K, used 37633K [0x00000000f5950000, 0x00000000f8035000, 0x0000000100000000)
+-   the space 39828K,  94% used [0x00000000f5950000, 0x00000000f7e10600, 0x00000000f7e10600, 0x00000000f8035000)
+- Metaspace       used 24966K, capacity 25464K, committed 25600K, reserved 1073152K
+-  class space    used 2636K, capacity 2778K, committed 2816K, reserved 1048576K
+-}
+-
+-Deoptimization events (10 events):
+-Event: 9.939 Thread 0x00007f26d0009000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f26c1b60214 method=com.sun.tools.javac.code.Types$19.visitClassType(Lcom/sun/tools/javac/code/Type$ClassType;Ljava/lang/Void;)Lcom/sun/tools/javac/util/List; @ 22
+-Event: 10.052 Thread 0x00007f26d0009000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00007f26c1b06d04 method=com.sun.tools.javac.code.Types.rank(Lcom/sun/tools/javac/code/Type;)I @ 88
+-Event: 10.223 Thread 0x00007f26d0009000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f26c1ae8dac method=com.sun.tools.javac.code.Types$13.visitClassType(Lcom/sun/tools/javac/code/Type$ClassType;Ljava/lang/Object;)Ljava/lang/Object; @ 3
+-Event: 10.223 Thread 0x00007f26d0009000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f26c1b1f29c method=com.sun.tools.javac.code.Types$13.visitClassType(Lcom/sun/tools/javac/code/Type$ClassType;Lcom/sun/tools/javac/code/Symbol;)Lcom/sun/tools/javac/code/Type; @ 59
+-Event: 10.223 Thread 0x00007f26d0009000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f26c1ae8dac method=com.sun.tools.javac.code.Types$13.visitClassType(Lcom/sun/tools/javac/code/Type$ClassType;Ljava/lang/Object;)Ljava/lang/Object; @ 3
+-Event: 10.223 Thread 0x00007f26d0009000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f26c1b1f29c method=com.sun.tools.javac.code.Types$13.visitClassType(Lcom/sun/tools/javac/code/Type$ClassType;Lcom/sun/tools/javac/code/Symbol;)Lcom/sun/tools/javac/code/Type; @ 59
+-Event: 10.232 Thread 0x00007f26d0009000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f26c1ae8dac method=com.sun.tools.javac.code.Types$13.visitClassType(Lcom/sun/tools/javac/code/Type$ClassType;Ljava/lang/Object;)Ljava/lang/Object; @ 3
+-Event: 10.232 Thread 0x00007f26d0009000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f26c1b1f29c method=com.sun.tools.javac.code.Types$13.visitClassType(Lcom/sun/tools/javac/code/Type$ClassType;Lcom/sun/tools/javac/code/Symbol;)Lcom/sun/tools/javac/code/Type; @ 59
+-Event: 10.232 Thread 0x00007f26d0009000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f26c1ae8dac method=com.sun.tools.javac.code.Types$13.visitClassType(Lcom/sun/tools/javac/code/Type$ClassType;Ljava/lang/Object;)Ljava/lang/Object; @ 3
+-Event: 10.232 Thread 0x00007f26d0009000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00007f26c1b1f29c method=com.sun.tools.javac.code.Types$13.visitClassType(Lcom/sun/tools/javac/code/Type$ClassType;Lcom/sun/tools/javac/code/Symbol;)Lcom/sun/tools/javac/code/Type; @ 59
+-
+-Internal exceptions (10 events):
+-Event: 2.579 Thread 0x00007f26d0009000 Implicit null exception at 0x00007f26c1187475 to 0x00007f26c1187659
+-Event: 3.225 Thread 0x00007f26d0009000 Implicit null exception at 0x00007f26c1498749 to 0x00007f26c149925d
+-Event: 4.793 Thread 0x00007f26d0009000 Implicit null exception at 0x00007f26c1192fed to 0x00007f26c1194279
+-Event: 4.881 Thread 0x00007f26d0009000 Exception <a 'java/lang/ClassNotFoundException': com/sun/tools/javac/api/JavacTool> (0x00000000f0756518) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/classfile/systemDictionary.cpp, line 
+-Event: 6.182 Thread 0x00007f26d0009000 Exception <a 'java/io/FileNotFoundException'> (0x00000000f06e27f0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jni.cpp, line 709]
+-Event: 6.187 Thread 0x00007f26d0009000 Exception <a 'java/io/FileNotFoundException'> (0x00000000f0709ee0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jni.cpp, line 709]
+-Event: 6.187 Thread 0x00007f26d0009000 Exception <a 'java/io/FileNotFoundException'> (0x00000000f070ad38) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jni.cpp, line 709]
+-Event: 9.856 Thread 0x00007f26d0009000 Exception <a 'java/io/FileNotFoundException'> (0x00000000f1391ab0) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jni.cpp, line 709]
+-Event: 9.857 Thread 0x00007f26d0009000 Exception <a 'java/io/FileNotFoundException'> (0x00000000f1393328) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jni.cpp, line 709]
+-Event: 9.857 Thread 0x00007f26d0009000 Exception <a 'java/io/FileNotFoundException'> (0x00000000f1394180) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jni.cpp, line 709]
+-
+-Events (10 events):
+-Event: 10.304 Thread 0x00007f26d0009000 DEOPT PACKING pc=0x00007f26c1c21ee4 sp=0x00007f26d6da0e70
+-Event: 10.304 Thread 0x00007f26d0009000 DEOPT UNPACKING pc=0x00007f26c0e3e373 sp=0x00007f26d6da0bc8 mode 0
+-Event: 10.338 Thread 0x00007f26d0009000 DEOPT PACKING pc=0x00007f26c1ab0b07 sp=0x00007f26d6da01f0
+-Event: 10.338 Thread 0x00007f26d0009000 DEOPT UNPACKING pc=0x00007f26c0e3e373 sp=0x00007f26d6d9ff90 mode 0
+-Event: 10.377 loading class java/util/WeakHashMap$EntrySet
+-Event: 10.381 loading class java/util/WeakHashMap$EntrySet done
+-Event: 10.381 loading class java/util/WeakHashMap$EntryIterator
+-Event: 10.381 loading class java/util/WeakHashMap$EntryIterator done
+-Event: 10.435 Executing VM operation: GenCollectForAllocation
+-Event: 10.458 Executing VM operation: GenCollectForAllocation done
+-
+-
+-Dynamic libraries:
+-00400000-00401000 r-xp 00000000 ca:01 141374                             /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/bin/java
+-00600000-00601000 rw-p 00000000 ca:01 141374                             /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/bin/java
+-01fa4000-01fc5000 rw-p 00000000 00:00 0                                  [heap]
+-f0600000-f1980000 rw-p 00000000 00:00 0 
+-f1980000-f5950000 ---p 00000000 00:00 0 
+-f5950000-f8035000 rw-p 00000000 00:00 0 
+-f8035000-100000000 ---p 00000000 00:00 0 
+-100000000-1002c0000 rw-p 00000000 00:00 0 
+-1002c0000-140000000 ---p 00000000 00:00 0 
+-7f2694000000-7f2694021000 rw-p 00000000 00:00 0 
+-7f2694021000-7f2698000000 ---p 00000000 00:00 0 
+-7f269c000000-7f269d4f8000 rw-p 00000000 00:00 0 
+-7f269d4f8000-7f26a0000000 ---p 00000000 00:00 0 
+-7f26a0000000-7f26a0f3e000 rw-p 00000000 00:00 0 
+-7f26a0f3e000-7f26a4000000 ---p 00000000 00:00 0 
+-7f26a4000000-7f26a4021000 rw-p 00000000 00:00 0 
+-7f26a4021000-7f26a8000000 ---p 00000000 00:00 0 
+-7f26a9ad7000-7f26b0000000 r--p 00000000 ca:01 3350                       /usr/lib/locale/locale-archive
+-7f26b0000000-7f26b0021000 rw-p 00000000 00:00 0 
+-7f26b0021000-7f26b4000000 ---p 00000000 00:00 0 
+-7f26b4000000-7f26b4021000 rw-p 00000000 00:00 0 
+-7f26b4021000-7f26b8000000 ---p 00000000 00:00 0 
+-7f26b8000000-7f26b8217000 rw-p 00000000 00:00 0 
+-7f26b8217000-7f26bc000000 ---p 00000000 00:00 0 
+-7f26bdc00000-7f26bdc40000 rw-p 00000000 00:00 0 
+-7f26bdc40000-7f26bde00000 ---p 00000000 00:00 0 
+-7f26bdf5f000-7f26be15f000 rw-p 00000000 00:00 0 
+-7f26be362000-7f26be562000 rw-p 00000000 00:00 0 
+-7f26be562000-7f26be762000 rw-p 00000000 00:00 0 
+-7f26be762000-7f26be7dc000 r--s 012bd000 ca:01 141432                     /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/lib/tools.jar
+-7f26be7dc000-7f26be7df000 r--s 0001b000 ca:01 397782                     /home/kalrav/.m2/repository/junit/junit/3.8.2/junit-3.8.2.jar
+-7f26be7df000-7f26be7ed000 r--s 0008f000 ca:01 397781                     /home/kalrav/.m2/repository/com/google/collections/google-collections/1.0/google-collections-1.0.jar
+-7f26be7ed000-7f26be7ee000 r--s 0000a000 ca:01 397780                     /home/kalrav/.m2/repository/commons-logging/commons-logging-api/1.1/commons-logging-api-1.1.jar
+-7f26be7ee000-7f26be7f5000 r--s 00051000 ca:01 397132                     /home/kalrav/.m2/repository/log4j/log4j/1.2.12/log4j-1.2.12.jar
+-7f26be7f5000-7f26be7f9000 r--s 0001d000 ca:01 397779                     /home/kalrav/.m2/repository/org/apache/xbean/xbean-reflect/3.4/xbean-reflect-3.4.jar
+-7f26be7f9000-7f26be7fa000 r--s 00004000 ca:01 397771                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-compiler-javac/2.2/plexus-compiler-javac-2.2.jar
+-7f26be7fa000-7f26be7fc000 r--s 00000000 ca:01 397770                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-compiler-manager/2.2/plexus-compiler-manager-2.2.jar
+-7f26be7fc000-7f26be7fe000 r--s 00005000 ca:01 397769                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-compiler-api/2.2/plexus-compiler-api-2.2.jar
+-7f26be7fe000-7f26be800000 r--s 00000000 ca:01 397763                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-component-annotations/1.5.5/plexus-component-annotations-1.5.5.jar
+-7f26be800000-7f26be802000 r--s 00002000 ca:01 397762                     /home/kalrav/.m2/repository/org/apache/maven/shared/maven-shared-incremental/1.1/maven-shared-incremental-1.1.jar
+-7f26be802000-7f26be804000 r--s 00006000 ca:01 397761                     /home/kalrav/.m2/repository/com/google/code/findbugs/jsr305/2.0.1/jsr305-2.0.1.jar
+-7f26be804000-7f26be807000 r--s 00023000 ca:01 397760                     /home/kalrav/.m2/repository/org/apache/maven/shared/maven-shared-utils/0.1/maven-shared-utils-0.1.jar
+-7f26be807000-7f26be80b000 r--s 00030000 ca:01 397729                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-utils/1.5.1/plexus-utils-1.5.1.jar
+-7f26be80b000-7f26be80d000 r--s 00009000 ca:01 395752                     /home/kalrav/.m2/repository/org/apache/maven/plugins/maven-compiler-plugin/3.1/maven-compiler-plugin-3.1.jar
+-7f26be80d000-7f26be80f000 r--s 0000d000 ca:01 397529                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.13/plexus-interpolation-1.13.jar
+-7f26be80f000-7f26be810000 r--s 00001000 ca:01 397528                     /home/kalrav/.m2/repository/org/sonatype/plexus/plexus-build-api/0.0.4/plexus-build-api-0.0.4.jar
+-7f26be810000-7f26be812000 r--s 00009000 ca:01 397522                     /home/kalrav/.m2/repository/org/apache/maven/shared/maven-filtering/1.1/maven-filtering-1.1.jar
+-7f26be812000-7f26be816000 r--s 00033000 ca:01 397521                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-utils/2.0.5/plexus-utils-2.0.5.jar
+-7f26be816000-7f26be819000 r--s 0001b000 ca:01 397520                     /home/kalrav/.m2/repository/junit/junit/3.8.1/junit-3.8.1.jar
+-7f26be819000-7f26be81b000 r--s 00002000 ca:01 397491                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-interactivity-api/1.0-alpha-4/plexus-interactivity-api-1.0-alpha-4.jar
+-7f26be81b000-7f26be81d000 r--s 00006000 ca:01 397508                     /home/kalrav/.m2/repository/commons-cli/commons-cli/1.0/commons-cli-1.0.jar
+-7f26be81d000-7f26be81e000 r--s 00001000 ca:01 397500                     /home/kalrav/.m2/repository/org/apache/maven/doxia/doxia-sink-api/1.0-alpha-7/doxia-sink-api-1.0-alpha-7.jar
+-7f26be81e000-7f26be81f000 r--s 00002000 ca:01 397499                     /home/kalrav/.m2/repository/org/apache/maven/reporting/maven-reporting-api/2.0.6/maven-reporting-api-2.0.6.jar
+-7f26be81f000-7f26be821000 r--s 00006000 ca:01 395733                     /home/kalrav/.m2/repository/org/apache/maven/plugins/maven-resources-plugin/2.6/maven-resources-plugin-2.6.jar
+-7f26be821000-7f26be825000 r--s 00034000 ca:01 397358                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-utils/3.0/plexus-utils-3.0.jar
+-7f26be825000-7f26be827000 r--s 00005000 ca:01 395714                     /home/kalrav/.m2/repository/org/apache/maven/plugins/maven-clean-plugin/2.5/maven-clean-plugin-2.5.jar
+-7f26be827000-7f26bea27000 rw-p 00000000 00:00 0 
+-7f26bea27000-7f26bea39000 r-xp 00000000 ca:01 11854                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libnio.so
+-7f26bea39000-7f26bec38000 ---p 00012000 ca:01 11854                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libnio.so
+-7f26bec38000-7f26bec39000 rw-p 00011000 ca:01 11854                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libnio.so
+-7f26bec39000-7f26bec50000 r-xp 00000000 ca:01 11853                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libnet.so
+-7f26bec50000-7f26bee50000 ---p 00017000 ca:01 11853                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libnet.so
+-7f26bee50000-7f26bee51000 rw-p 00017000 ca:01 11853                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libnet.so
+-7f26bee51000-7f26bf051000 rw-p 00000000 00:00 0 
+-7f26bf051000-7f26bf056000 r--s 000b3000 ca:01 11903                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/jsse.jar
+-7f26bf056000-7f26bf256000 rw-p 00000000 00:00 0 
+-7f26bf256000-7f26bf456000 rw-p 00000000 00:00 0 
+-7f26bf456000-7f26bf458000 r-xp 00000000 ca:01 140601                     /usr/local/maven/apache-maven-3.5.0/lib/jansi-native/linux64/libjansi.so
+-7f26bf458000-7f26bf657000 ---p 00002000 ca:01 140601                     /usr/local/maven/apache-maven-3.5.0/lib/jansi-native/linux64/libjansi.so
+-7f26bf657000-7f26bf658000 rw-p 00001000 ca:01 140601                     /usr/local/maven/apache-maven-3.5.0/lib/jansi-native/linux64/libjansi.so
+-7f26bf658000-7f26bf665000 r--s 0008c000 ca:01 141326                     /usr/local/maven/apache-maven-3.5.0/lib/maven-core-3.5.0.jar
+-7f26bf665000-7f26bf669000 r--s 00020000 ca:01 141346                     /usr/local/maven/apache-maven-3.5.0/lib/maven-resolver-api-1.0.3.jar
+-7f26bf669000-7f26bf66c000 r--s 00011000 ca:01 141331                     /usr/local/maven/apache-maven-3.5.0/lib/plexus-interpolation-1.24.jar
+-7f26bf66c000-7f26bf672000 r--s 0002d000 ca:01 141338                     /usr/local/maven/apache-maven-3.5.0/lib/org.eclipse.sisu.plexus-0.3.3.jar
+-7f26bf672000-7f26bf675000 r--s 00008000 ca:01 141339                     /usr/local/maven/apache-maven-3.5.0/lib/cdi-api-1.0.jar
+-7f26bf675000-7f26bf67d000 r--s 0006e000 ca:01 141328                     /usr/local/maven/apache-maven-3.5.0/lib/commons-lang3-3.5.jar
+-7f26bf67d000-7f26bf67e000 r--s 00003000 ca:01 141330                     /usr/local/maven/apache-maven-3.5.0/lib/maven-builder-support-3.5.0.jar
+-7f26bf67e000-7f26bf680000 r--s 00007000 ca:01 141347                     /usr/local/maven/apache-maven-3.5.0/lib/maven-resolver-spi-1.0.3.jar
+-7f26bf680000-7f26bf685000 r--s 00027000 ca:01 141343                     /usr/local/maven/apache-maven-3.5.0/lib/maven-model-builder-3.5.0.jar
+-7f26bf685000-7f26bf6b4000 r--s 00226000 ca:01 141344                     /usr/local/maven/apache-maven-3.5.0/lib/guava-20.0.jar
+-7f26bf6b4000-7f26bf6bb000 r--s 00056000 ca:01 141342                     /usr/local/maven/apache-maven-3.5.0/lib/org.eclipse.sisu.inject-0.3.3.jar
+-7f26bf6bb000-7f26bf6bc000 r--s 0000a000 ca:01 141324                     /usr/local/maven/apache-maven-3.5.0/lib/maven-settings-3.5.0.jar
+-7f26bf6bc000-7f26bf6be000 r--s 00006000 ca:01 141362                     /usr/local/maven/apache-maven-3.5.0/lib/maven-resolver-transport-wagon-1.0.3.jar
+-7f26bf6be000-7f26bf6c2000 r--s 00039000 ca:01 141325                     /usr/local/maven/apache-maven-3.5.0/lib/plexus-utils-3.0.24.jar
+-7f26bf6c2000-7f26bf6c3000 r--s 00000000 ca:01 141341                     /usr/local/maven/apache-maven-3.5.0/lib/javax.inject-1.jar
+-7f26bf6c3000-7f26bf6c4000 r--s 00004000 ca:01 141363                     /usr/local/maven/apache-maven-3.5.0/lib/maven-slf4j-provider-3.5.0.jar
+-7f26bf6c4000-7f26bf6c6000 r--s 0000a000 ca:01 141337                     /usr/local/maven/apache-maven-3.5.0/lib/maven-plugin-api-3.5.0.jar
+-7f26bf6c6000-7f26bf6c9000 r--s 00015000 ca:01 141323                     /usr/local/maven/apache-maven-3.5.0/lib/maven-embedder-3.5.0.jar
+-7f26bf6c9000-7f26bf6ca000 r--s 00006000 ca:01 141333                     /usr/local/maven/apache-maven-3.5.0/lib/plexus-sec-dispatcher-1.4.jar
+-7f26bf6ca000-7f26bf6cc000 r--s 00009000 ca:01 141361                     /usr/local/maven/apache-maven-3.5.0/lib/maven-resolver-connector-basic-1.0.3.jar
+-7f26bf6cc000-7f26bf6ce000 r--s 0000c000 ca:01 141355                     /usr/local/maven/apache-maven-3.5.0/lib/wagon-provider-api-2.12.jar
+-7f26bf6ce000-7f26bf6d1000 r--s 00023000 ca:01 141364                     /usr/local/maven/apache-maven-3.5.0/lib/jansi-1.13.jar
+-7f26bf6d1000-7f26bf6d3000 r--s 00003000 ca:01 141359                     /usr/local/maven/apache-maven-3.5.0/lib/jcl-over-slf4j-1.7.22.jar
+-7f26bf6d3000-7f26bf6d5000 r--s 00002000 ca:01 141334                     /usr/local/maven/apache-maven-3.5.0/lib/plexus-cipher-1.7.jar
+-7f26bf6d5000-7f26bf6d8000 r--s 00026000 ca:01 141327                     /usr/local/maven/apache-maven-3.5.0/lib/maven-model-3.5.0.jar
+-7f26bf6d8000-7f26bf6e1000 r--s 0005f000 ca:01 141352                     /usr/local/maven/apache-maven-3.5.0/lib/guice-4.0-no_aop.jar
+-7f26bf6e1000-7f26bf6e5000 r--s 00023000 ca:01 141348                     /usr/local/maven/apache-maven-3.5.0/lib/maven-resolver-util-1.0.3.jar
+-7f26bf6e5000-7f26bf711000 r--s 001e6000 ca:01 141358                     /usr/local/maven/apache-maven-3.5.0/lib/wagon-http-2.12-shaded.jar
+-7f26bf711000-7f26bf713000 r--s 00000000 ca:01 141332                     /usr/local/maven/apache-maven-3.5.0/lib/plexus-component-annotations-1.7.1.jar
+-7f26bf713000-7f26bf715000 r--s 0000c000 ca:01 141336                     /usr/local/maven/apache-maven-3.5.0/lib/maven-artifact-3.5.0.jar
+-7f26bf715000-7f26bf719000 r--s 0002f000 ca:01 141351                     /usr/local/maven/apache-maven-3.5.0/lib/commons-io-2.5.jar
+-7f26bf719000-7f26bf71a000 ---p 00000000 00:00 0 
+-7f26bf71a000-7f26bf81a000 rw-p 00000000 00:00 0 
+-7f26bf81a000-7f26bf81d000 ---p 00000000 00:00 0 
+-7f26bf81d000-7f26bf91b000 rw-p 00000000 00:00 0 
+-7f26bf91b000-7f26bf91e000 ---p 00000000 00:00 0 
+-7f26bf91e000-7f26bfa1c000 rw-p 00000000 00:00 0 
+-7f26bfa1c000-7f26bfa1f000 ---p 00000000 00:00 0 
+-7f26bfa1f000-7f26bfb1d000 rw-p 00000000 00:00 0 
+-7f26bfb1d000-7f26bfb20000 ---p 00000000 00:00 0 
+-7f26bfb20000-7f26bfc1e000 rw-p 00000000 00:00 0 
+-7f26bfc1e000-7f26bfc21000 ---p 00000000 00:00 0 
+-7f26bfc21000-7f26bfd1f000 rw-p 00000000 00:00 0 
+-7f26bfd1f000-7f26bfd22000 ---p 00000000 00:00 0 
+-7f26bfd22000-7f26bfe20000 rw-p 00000000 00:00 0 
+-7f26bfe20000-7f26bfe21000 ---p 00000000 00:00 0 
+-7f26bfe21000-7f26bff6f000 rw-p 00000000 00:00 0 
+-7f26bff6f000-7f26c013e000 r--s 043f2000 ca:01 11917                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/rt.jar
+-7f26c013e000-7f26c0a37000 rw-p 00000000 00:00 0 
+-7f26c0a37000-7f26c0a77000 rw-p 00000000 00:00 0 
+-7f26c0a77000-7f26c0df7000 ---p 00000000 00:00 0 
+-7f26c0df7000-7f26c1df7000 rwxp 00000000 00:00 0 
+-7f26c1e07000-7f26cfdf7000 ---p 00000000 00:00 0 
+-7f26cfdf7000-7f26cfdff000 r-xp 00000000 ca:01 11861                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libzip.so
+-7f26cfdff000-7f26cffff000 ---p 00008000 ca:01 11861                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libzip.so
+-7f26cffff000-7f26d0000000 rw-p 00008000 ca:01 11861                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libzip.so
+-7f26d0000000-7f26d12b0000 rw-p 00000000 00:00 0 
+-7f26d12b0000-7f26d4000000 ---p 00000000 00:00 0 
+-7f26d4000000-7f26d400c000 r-xp 00000000 ca:01 3326                       /lib64/libnss_files-2.17.so
+-7f26d400c000-7f26d420b000 ---p 0000c000 ca:01 3326                       /lib64/libnss_files-2.17.so
+-7f26d420b000-7f26d420c000 r--p 0000b000 ca:01 3326                       /lib64/libnss_files-2.17.so
+-7f26d420c000-7f26d420d000 rw-p 0000c000 ca:01 3326                       /lib64/libnss_files-2.17.so
+-7f26d420d000-7f26d4213000 rw-p 00000000 00:00 0 
+-7f26d4213000-7f26d4240000 r-xp 00000000 ca:01 11843                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libjava.so
+-7f26d4240000-7f26d4440000 ---p 0002d000 ca:01 11843                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libjava.so
+-7f26d4440000-7f26d4442000 rw-p 0002d000 ca:01 11843                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libjava.so
+-7f26d4442000-7f26d444f000 r-xp 00000000 ca:01 11860                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libverify.so
+-7f26d444f000-7f26d464e000 ---p 0000d000 ca:01 11860                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libverify.so
+-7f26d464e000-7f26d4650000 rw-p 0000c000 ca:01 11860                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libverify.so
+-7f26d4650000-7f26d4657000 r-xp 00000000 ca:01 3338                       /lib64/librt-2.17.so
+-7f26d4657000-7f26d4856000 ---p 00007000 ca:01 3338                       /lib64/librt-2.17.so
+-7f26d4856000-7f26d4857000 r--p 00006000 ca:01 3338                       /lib64/librt-2.17.so
+-7f26d4857000-7f26d4858000 rw-p 00007000 ca:01 3338                       /lib64/librt-2.17.so
+-7f26d4858000-7f26d486d000 r-xp 00000000 ca:01 3300                       /lib64/libgcc_s-4.8.3-20140911.so.1
+-7f26d486d000-7f26d4a6d000 ---p 00015000 ca:01 3300                       /lib64/libgcc_s-4.8.3-20140911.so.1
+-7f26d4a6d000-7f26d4a6e000 rw-p 00015000 ca:01 3300                       /lib64/libgcc_s-4.8.3-20140911.so.1
+-7f26d4a6e000-7f26d4b6f000 r-xp 00000000 ca:01 3316                       /lib64/libm-2.17.so
+-7f26d4b6f000-7f26d4d6e000 ---p 00101000 ca:01 3316                       /lib64/libm-2.17.so
+-7f26d4d6e000-7f26d4d6f000 r--p 00100000 ca:01 3316                       /lib64/libm-2.17.so
+-7f26d4d6f000-7f26d4d70000 rw-p 00101000 ca:01 3316                       /lib64/libm-2.17.so
+-7f26d4d70000-7f26d4e56000 r-xp 00000000 ca:01 3474                       /usr/lib64/libstdc++.so.6.0.19
+-7f26d4e56000-7f26d5055000 ---p 000e6000 ca:01 3474                       /usr/lib64/libstdc++.so.6.0.19
+-7f26d5055000-7f26d505e000 r--p 000e5000 ca:01 3474                       /usr/lib64/libstdc++.so.6.0.19
+-7f26d505e000-7f26d5060000 rw-p 000ee000 ca:01 3474                       /usr/lib64/libstdc++.so.6.0.19
+-7f26d5060000-7f26d5075000 rw-p 00000000 00:00 0 
+-7f26d5075000-7f26d5c8f000 r-xp 00000000 ca:01 11865                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/server/libjvm.so
+-7f26d5c8f000-7f26d5e8f000 ---p 00c1a000 ca:01 11865                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/server/libjvm.so
+-7f26d5e8f000-7f26d5f56000 rw-p 00c1a000 ca:01 11865                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/server/libjvm.so
+-7f26d5f56000-7f26d5f89000 rw-p 00000000 00:00 0 
+-7f26d5f89000-7f26d6141000 r-xp 00000000 ca:01 3308                       /lib64/libc-2.17.so
+-7f26d6141000-7f26d6340000 ---p 001b8000 ca:01 3308                       /lib64/libc-2.17.so
+-7f26d6340000-7f26d6344000 r--p 001b7000 ca:01 3308                       /lib64/libc-2.17.so
+-7f26d6344000-7f26d6346000 rw-p 001bb000 ca:01 3308                       /lib64/libc-2.17.so
+-7f26d6346000-7f26d634b000 rw-p 00000000 00:00 0 
+-7f26d634b000-7f26d634d000 r-xp 00000000 ca:01 3314                       /lib64/libdl-2.17.so
+-7f26d634d000-7f26d654d000 ---p 00002000 ca:01 3314                       /lib64/libdl-2.17.so
+-7f26d654d000-7f26d654e000 r--p 00002000 ca:01 3314                       /lib64/libdl-2.17.so
+-7f26d654e000-7f26d654f000 rw-p 00003000 ca:01 3314                       /lib64/libdl-2.17.so
+-7f26d654f000-7f26d655d000 r-xp 00000000 ca:01 141423                     /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/lib/amd64/jli/libjli.so
+-7f26d655d000-7f26d675c000 ---p 0000e000 ca:01 141423                     /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/lib/amd64/jli/libjli.so
+-7f26d675c000-7f26d675d000 rw-p 0000d000 ca:01 141423                     /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/lib/amd64/jli/libjli.so
+-7f26d675d000-7f26d6772000 r-xp 00000000 ca:01 3374                       /lib64/libz.so.1.2.8
+-7f26d6772000-7f26d6971000 ---p 00015000 ca:01 3374                       /lib64/libz.so.1.2.8
+-7f26d6971000-7f26d6972000 r--p 00014000 ca:01 3374                       /lib64/libz.so.1.2.8
+-7f26d6972000-7f26d6973000 rw-p 00015000 ca:01 3374                       /lib64/libz.so.1.2.8
+-7f26d6973000-7f26d698a000 r-xp 00000000 ca:01 3334                       /lib64/libpthread-2.17.so
+-7f26d698a000-7f26d6b89000 ---p 00017000 ca:01 3334                       /lib64/libpthread-2.17.so
+-7f26d6b89000-7f26d6b8a000 r--p 00016000 ca:01 3334                       /lib64/libpthread-2.17.so
+-7f26d6b8a000-7f26d6b8b000 rw-p 00017000 ca:01 3334                       /lib64/libpthread-2.17.so
+-7f26d6b8b000-7f26d6b8f000 rw-p 00000000 00:00 0 
+-7f26d6b8f000-7f26d6baf000 r-xp 00000000 ca:01 3301                       /lib64/ld-2.17.so
+-7f26d6baf000-7f26d6bb1000 r--s 00000000 ca:01 141353                     /usr/local/maven/apache-maven-3.5.0/lib/aopalliance-1.0.jar
+-7f26d6bb1000-7f26d6bb5000 r--s 0002a000 ca:01 141349                     /usr/local/maven/apache-maven-3.5.0/lib/maven-resolver-impl-1.0.3.jar
+-7f26d6bb5000-7f26d6bb7000 r--s 00009000 ca:01 141356                     /usr/local/maven/apache-maven-3.5.0/lib/slf4j-api-1.7.22.jar
+-7f26d6bb7000-7f26d6bbe000 r--s 00041000 ca:01 141354                     /usr/local/maven/apache-maven-3.5.0/lib/maven-compat-3.5.0.jar
+-7f26d6bbe000-7f26d6bbf000 r--s 00001000 ca:01 141340                     /usr/local/maven/apache-maven-3.5.0/lib/jsr250-api-1.0.jar
+-7f26d6bbf000-7f26d6bc1000 r--s 00009000 ca:01 141329                     /usr/local/maven/apache-maven-3.5.0/lib/maven-settings-builder-3.5.0.jar
+-7f26d6bc1000-7f26d6bc3000 r--s 0000c000 ca:01 141357                     /usr/local/maven/apache-maven-3.5.0/lib/commons-cli-1.4.jar
+-7f26d6bc3000-7f26d6bc6000 r--s 00025000 ca:01 141350                     /usr/local/maven/apache-maven-3.5.0/lib/maven-shared-utils-3.1.0.jar
+-7f26d6bc6000-7f26d6bc8000 r--s 0000f000 ca:01 141345                     /usr/local/maven/apache-maven-3.5.0/lib/maven-resolver-provider-3.5.0.jar
+-7f26d6bc8000-7f26d6bc9000 r--s 00002000 ca:01 141360                     /usr/local/maven/apache-maven-3.5.0/lib/wagon-file-2.12.jar
+-7f26d6bc9000-7f26d6bdd000 rw-p 00000000 00:00 0 
+-7f26d6bdd000-7f26d6c1d000 ---p 00000000 00:00 0 
+-7f26d6c1d000-7f26d6c27000 rw-p 00000000 00:00 0 
+-7f26d6c27000-7f26d6c46000 ---p 00000000 00:00 0 
+-7f26d6c46000-7f26d6c5b000 rw-p 00000000 00:00 0 
+-7f26d6c5b000-7f26d6c9a000 ---p 00000000 00:00 0 
+-7f26d6c9a000-7f26d6c9b000 rw-p 00000000 00:00 0 
+-7f26d6c9b000-7f26d6ca3000 rw-s 00000000 ca:01 268907                     /tmp/hsperfdata_kalrav/4491
+-7f26d6ca3000-7f26d6ca6000 ---p 00000000 00:00 0 
+-7f26d6ca6000-7f26d6da9000 rw-p 00000000 00:00 0 
+-7f26d6da9000-7f26d6daa000 r--s 00006000 ca:01 141335                     /usr/local/maven/apache-maven-3.5.0/lib/maven-repository-metadata-3.5.0.jar
+-7f26d6daa000-7f26d6dac000 r--s 0000b000 ca:01 141322                     /usr/local/maven/apache-maven-3.5.0/boot/plexus-classworlds-2.5.2.jar
+-7f26d6dac000-7f26d6dad000 rw-p 00000000 00:00 0 
+-7f26d6dad000-7f26d6dae000 r--p 00000000 00:00 0 
+-7f26d6dae000-7f26d6daf000 rw-p 00000000 00:00 0 
+-7f26d6daf000-7f26d6db0000 r--p 00020000 ca:01 3301                       /lib64/ld-2.17.so
+-7f26d6db0000-7f26d6db1000 rw-p 00021000 ca:01 3301                       /lib64/ld-2.17.so
+-7f26d6db1000-7f26d6db2000 rw-p 00000000 00:00 0 
+-7ffffcb38000-7ffffcb59000 rw-p 00000000 00:00 0                          [stack]
+-7ffffcba5000-7ffffcba7000 r--p 00000000 00:00 0                          [vvar]
+-7ffffcba7000-7ffffcba9000 r-xp 00000000 00:00 0                          [vdso]
+-ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+-
+-VM Arguments:
+-jvm_args: -Dclassworlds.conf=/usr/local/maven/current/bin/m2.conf -Dmaven.home=/usr/local/maven/current -Dmaven.multiModuleProjectDirectory=/home/kalrav/kalravwebservice 
+-java_command: org.codehaus.plexus.classworlds.launcher.Launcher clean install
+-java_class_path (initial): /usr/local/maven/current/boot/plexus-classworlds-2.5.2.jar
+-Launcher Type: SUN_STANDARD
+-
+-Environment Variables:
+-JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+-JRE_HOME=/usr/lib/jvm/java-1.8.0-openjdk/jre
+-PATH=/usr/local/maven/current/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/java/jdk/1.8.0_141/bin:/usr/local/apache-ant/bin:/home/kalrav/.local/bin:/home/kalrav/bin
+-SHELL=/bin/bash
+-
+-Signal Handlers:
+-SIGSEGV: [libjvm.so+0xa1d300], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGBUS: [libjvm.so+0xa1d300], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGFPE: [libjvm.so+0x876f40], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGPIPE: [libjvm.so+0x876f40], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGXFSZ: [libjvm.so+0x876f40], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGILL: [libjvm.so+0x876f40], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGUSR1: SIG_DFL, sa_mask[0]=00000000000000000000000000000000, sa_flags=none
+-SIGUSR2: [libjvm.so+0x876df0], sa_mask[0]=00000000000000000000000000000000, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGHUP: [libjvm.so+0x877000], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGINT: [libjvm.so+0x877000], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGTERM: [libjvm.so+0x877000], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-SIGQUIT: [libjvm.so+0x877000], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+-
+-
+----------------  S Y S T E M  ---------------
+-
+-OS:Amazon Linux AMI release 2017.03
+-
+-uname:Linux 4.9.38-16.35.amzn1.x86_64 #1 SMP Sat Aug 5 01:39:35 UTC 2017 x86_64
+-libc:glibc 2.17 NPTL 2.17 
+-rlimit: STACK 8192k, CORE 0k, NPROC 3904, NOFILE 4096, AS infinity
+-load average:0.39 0.11 0.03
+-
+-/proc/meminfo:
+-MemTotal:        1017372 kB
+-MemFree:           61832 kB
+-MemAvailable:          0 kB
+-Buffers:             576 kB
+-Cached:             6240 kB
+-SwapCached:            0 kB
+-Active:           913540 kB
+-Inactive:           3292 kB
+-Active(anon):     910040 kB
+-Inactive(anon):       56 kB
+-Active(file):       3500 kB
+-Inactive(file):     3236 kB
+-Unevictable:           0 kB
+-Mlocked:               0 kB
+-SwapTotal:             0 kB
+-SwapFree:              0 kB
+-Dirty:              1000 kB
+-Writeback:             0 kB
+-AnonPages:        910032 kB
+-Mapped:             4400 kB
+-Shmem:                64 kB
+-Slab:              21220 kB
+-SReclaimable:      10452 kB
+-SUnreclaim:        10768 kB
+-KernelStack:        2976 kB
+-PageTables:         5640 kB
+-NFS_Unstable:          0 kB
+-Bounce:                0 kB
+-WritebackTmp:          0 kB
+-CommitLimit:      508684 kB
+-Committed_AS:    1124812 kB
+-VmallocTotal:   34359738367 kB
+-VmallocUsed:           0 kB
+-VmallocChunk:          0 kB
+-AnonHugePages:         0 kB
+-ShmemHugePages:        0 kB
+-ShmemPmdMapped:        0 kB
+-HugePages_Total:       0
+-HugePages_Free:        0
+-HugePages_Rsvd:        0
+-HugePages_Surp:        0
+-Hugepagesize:       2048 kB
+-DirectMap4k:       12288 kB
+-DirectMap2M:     1036288 kB
+-
+-
+-CPU:total 1 (initial active 1) (1 cores per cpu, 1 threads per core) family 6 model 63 stepping 2, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, lzcnt, tsc, bmi1, bmi2
+-
+-/proc/cpuinfo:
+-processor	: 0
+-vendor_id	: GenuineIntel
+-cpu family	: 6
+-model		: 63
+-model name	: Intel(R) Xeon(R) CPU E5-2676 v3 @ 2.40GHz
+-stepping	: 2
+-microcode	: 0x3a
+-cpu MHz		: 2400.097
+-cache size	: 30720 KB
+-physical id	: 0
+-siblings	: 1
+-core id		: 0
+-cpu cores	: 1
+-apicid		: 0
+-initial apicid	: 0
+-fpu		: yes
+-fpu_exception	: yes
+-cpuid level	: 13
+-wp		: yes
+-flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology eagerfpu pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm fsgsbase bmi1 avx2 smep bmi2 erms invpcid xsaveopt
+-bugs		:
+-bogomips	: 4800.17
+-clflush size	: 64
+-cache_alignment	: 64
+-address sizes	: 46 bits physical, 48 bits virtual
+-power management:
+-
+-
+-
+-Memory: 4k page, physical 1017372k(61832k free), swap 0k(0k free)
+-
+-vm_info: OpenJDK 64-Bit Server VM (25.141-b16) for linux-amd64 JRE (1.8.0_141-b16), built on Jul 25 2017 17:29:02 by "mockbuild" with gcc 4.8.3 20140911 (Red Hat 4.8.3-9)
+-
+-time: Tue Oct 10 09:48:26 2017
+-elapsed time: 10 seconds (0d 0h 0m 10s)
+-
+diff --git a/replay_pid4491.log b/replay_pid4491.log
+deleted file mode 100644
+index d36120a..0000000
+--- a/replay_pid4491.log
++++ /dev/null
+@@ -1,2933 +0,0 @@
+-JvmtiExport can_access_local_variables 0
+-JvmtiExport can_hotswap_or_post_breakpoint 0
+-JvmtiExport can_post_on_exceptions 0
+-# 145 ciObject found
+-instanceKlass com/sun/tools/javac/comp/Resolve$4$1
+-instanceKlass com/sun/tools/javac/comp/Infer$1
+-instanceKlass com/sun/tools/javac/comp/MemberEnter$2
+-instanceKlass com/sun/tools/javac/comp/MemberEnter$1
+-instanceKlass com/sun/tools/javac/comp/MemberEnter$4
+-instanceKlass com/sun/tools/javac/comp/MemberEnter$3
+-instanceKlass org/apache/maven/shared/utils/io/IOUtil
+-instanceKlass org/apache/maven/shared/utils/io/DirectoryScanResult
+-instanceKlass com/sun/tools/javac/util/JCDiagnostic$SourcePosition
+-instanceKlass com/sun/tools/javac/api/ClientCodeWrapper$WrappedFileObject
+-instanceKlass com/sun/tools/javac/util/JCDiagnostic$1
+-instanceKlass java/util/WeakHashMap$HashIterator
+-instanceKlass com/sun/tools/javac/api/ClientCodeWrapper$DiagnosticSourceUnwrapper
+-instanceKlass com/sun/tools/javac/util/Log$2
+-instanceKlass com/sun/tools/javac/tree/TreeInfo$1
+-instanceKlass com/sun/tools/javac/jvm/Pool$MethodHandle$2
+-instanceKlass com/sun/tools/javac/jvm/Pool$MethodHandle$1
+-instanceKlass com/sun/tools/javac/jvm/Pool$MethodHandle
+-instanceKlass com/sun/tools/javac/comp/LambdaToMethod$KlassInfo
+-instanceKlass com/sun/tools/javac/comp/LambdaToMethod$1
+-instanceKlass com/sun/tools/javac/comp/LambdaToMethod$LambdaAnalyzerPreprocessor$Frame
+-instanceKlass com/sun/tools/javac/comp/LambdaToMethod$LambdaAnalyzerPreprocessor$SyntheticMethodNameCounter
+-instanceKlass com/sun/tools/javac/comp/LambdaToMethod$LambdaAnalyzerPreprocessor$TranslationContext
+-instanceKlass com/sun/tools/javac/comp/Check$4
+-instanceKlass com/sun/tools/javac/comp/Infer$InferenceContext$5
+-instanceKlass com/sun/tools/javac/comp/Attr$9
+-instanceKlass com/sun/tools/javac/comp/Attr$1
+-instanceKlass com/sun/tools/javac/comp/Attr$10
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredAttrNode
+-instanceKlass com/sun/tools/javac/code/Types$DescriptorCache$Entry
+-instanceKlass com/sun/tools/javac/comp/Check$9
+-instanceKlass com/sun/tools/javac/comp/Check$7
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredType$SpeculativeCache$Entry
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredType$SpeculativeCache
+-instanceKlass com/sun/tools/javac/comp/Lower$EnumMapping
+-instanceKlass com/sun/tools/javac/code/Types$MembersClosureCache$MembersScope$1
+-instanceKlass com/sun/tools/javac/code/Kinds$1
+-instanceKlass com/sun/tools/javac/code/Kinds
+-instanceKlass com/sun/tools/javac/code/Types$MethodFilter
+-instanceKlass com/sun/tools/javac/code/Types$DescriptorFilter
+-instanceKlass com/sun/tools/javac/jvm/ClassFile$NameAndType
+-instanceKlass com/sun/tools/javac/jvm/ClassWriter$1
+-instanceKlass javax/tools/StandardLocation$2
+-instanceKlass com/sun/tools/javac/jvm/ClassWriter$StackMapTableFrame
+-instanceKlass com/sun/tools/javac/jvm/Code$StackMapFrame
+-instanceKlass com/sun/tools/javac/jvm/Code$Chain
+-instanceKlass com/sun/tools/javac/code/Types$UniqueType
+-instanceKlass com/sun/tools/javac/model/FilteredMemberList$1
+-instanceKlass com/sun/tools/javac/jvm/Code$LocalVar$Range
+-instanceKlass com/sun/tools/javac/jvm/Items
+-instanceKlass com/sun/tools/javac/jvm/Code$LocalVar
+-instanceKlass com/sun/tools/javac/jvm/Code$State
+-instanceKlass com/sun/tools/javac/jvm/Code$1
+-instanceKlass com/sun/tools/javac/jvm/Code
+-instanceKlass com/sun/tools/javac/jvm/Gen$GenContext
+-instanceKlass com/sun/tools/javac/jvm/Gen$3
+-instanceKlass com/sun/tools/javac/comp/Lower$7
+-instanceKlass com/sun/tools/javac/comp/Flow$2
+-instanceKlass com/sun/tools/javac/util/Bits$1
+-instanceKlass com/sun/tools/javac/util/Bits
+-instanceKlass com/sun/tools/javac/comp/Flow$BaseAnalyzer$PendingExit
+-instanceKlass com/sun/tools/javac/comp/Resolve$MostSpecificCheck
+-instanceKlass com/sun/tools/javac/comp/Infer$InferenceContext$4
+-instanceKlass java/util/EnumMap$EntryIterator$Entry
+-instanceKlass java/util/EnumMap$EnumMapIterator
+-instanceKlass com/sun/tools/javac/code/Type$UndetVar$2
+-instanceKlass com/sun/tools/javac/util/GraphUtils$Tarjan
+-instanceKlass com/sun/tools/javac/util/GraphUtils
+-instanceKlass com/sun/tools/javac/util/GraphUtils$DependencyKind
+-instanceKlass com/sun/tools/javac/util/GraphUtils$Node
+-instanceKlass com/sun/tools/javac/comp/Infer$InferenceContext$2
+-instanceKlass com/sun/tools/javac/comp/Infer$GraphSolver$InferenceGraph
+-instanceKlass com/sun/tools/javac/comp/Infer$IncorporationBinaryOp
+-instanceKlass com/sun/tools/javac/comp/Infer$BoundFilter
+-instanceKlass com/sun/tools/javac/comp/Infer$MultiUndetVarListener
+-instanceKlass com/sun/tools/javac/comp/Infer$GraphSolver
+-instanceKlass com/sun/tools/javac/comp/Infer$LeafSolver
+-instanceKlass com/sun/tools/javac/comp/Check$2
+-instanceKlass com/sun/tools/javac/code/Type$UndetVar$UndetVarListener
+-instanceKlass com/sun/tools/javac/comp/Resolve$MethodCheckContext
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$5
+-instanceKlass com/sun/tools/javac/tree/TreeCopier
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$6
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredChecker$3
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredChecker$1
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$FilterScanner$1
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$MethodAnalyzer
+-instanceKlass com/sun/tools/javac/code/Scope$CompoundScope$2
+-instanceKlass com/sun/tools/javac/comp/Check$ClashFilter
+-instanceKlass com/sun/tools/javac/code/Scope$3$1
+-instanceKlass com/sun/tools/javac/code/Scope$3
+-instanceKlass com/sun/tools/javac/code/Scope$CompoundScope$CompoundScopeIterator
+-instanceKlass com/sun/tools/javac/code/Scope$CompoundScope$1
+-instanceKlass com/sun/tools/javac/comp/Check$DefaultMethodClashFilter
+-instanceKlass com/sun/tools/javac/main/JavaCompiler$2
+-instanceKlass com/sun/tools/javac/tree/Pretty$1
+-instanceKlass com/sun/tools/javac/code/TypeAnnotationPosition$TypePathEntry
+-instanceKlass com/sun/tools/javac/code/TypeAnnotations$3
+-instanceKlass com/sun/tools/javac/code/TypeAnnotationPosition
+-instanceKlass com/sun/tools/javac/comp/ConstFold$1
+-instanceKlass com/sun/tools/javac/code/Types$TypePair
+-instanceKlass com/sun/tools/javac/code/Flags
+-instanceKlass com/sun/tools/javac/code/Types$ImplementationCache$Entry
+-instanceKlass com/sun/tools/javac/comp/Resolve$MethodResolutionContext$Candidate
+-instanceKlass com/sun/tools/javac/code/Scope$4$1
+-instanceKlass com/sun/tools/javac/code/Scope$4
+-instanceKlass com/sun/tools/javac/comp/Resolve$LookupFilter
+-instanceKlass com/sun/tools/javac/comp/Resolve$5$1
+-instanceKlass com/sun/tools/javac/comp/Resolve$5
+-instanceKlass com/sun/tools/javac/comp/Resolve$MethodResolutionContext
+-instanceKlass com/sun/tools/javac/comp/Annotate$AnnotateRepeatedContext
+-instanceKlass com/sun/tools/javac/tree/TreeMaker$1
+-instanceKlass com/sun/tools/javac/code/Types$27
+-instanceKlass com/sun/tools/javac/code/Symbol$VarSymbol$2
+-instanceKlass com/sun/tools/javac/code/TypeAnnotations$2
+-instanceKlass com/sun/tools/javac/code/TypeAnnotations$1
+-instanceKlass com/sun/tools/javac/comp/MemberEnter$6
+-instanceKlass com/sun/tools/javac/comp/MemberEnter$5
+-instanceKlass com/sun/tools/javac/code/SymbolMetadata
+-instanceKlass com/sun/tools/javac/code/Scope$1
+-instanceKlass com/sun/tools/javac/jvm/ClassReader$AnnotationDeproxy
+-instanceKlass com/sun/tools/javac/jvm/ClassReader$ProxyVisitor
+-instanceKlass com/sun/tools/javac/util/Pair
+-instanceKlass com/sun/tools/javac/comp/Attr$15
+-instanceKlass com/sun/tools/javac/comp/AttrContext
+-instanceKlass com/sun/tools/javac/jvm/ClassReader$25
+-instanceKlass com/sun/tools/javac/file/JavacFileManager$MissingArchive
+-instanceKlass java/io/RandomAccessFile$1
+-instanceKlass java/util/ComparableTimSort
+-instanceKlass com/sun/tools/javac/file/ZipFileIndex$Entry
+-instanceKlass com/sun/tools/javac/file/ZipFileIndex$DirectoryEntry
+-instanceKlass com/sun/tools/javac/file/ZipFileIndex$ZipDirectory
+-instanceKlass java/io/RandomAccessFile
+-instanceKlass com/sun/tools/javac/file/ZipFileIndex
+-instanceKlass com/sun/tools/javac/file/ZipFileIndexArchive
+-instanceKlass sun/misc/FloatingDecimal$ASCIIToBinaryBuffer
+-instanceKlass com/sun/tools/javac/tree/JCTree$1
+-instanceKlass com/sun/tools/javac/util/Position$LineMapImpl
+-instanceKlass com/sun/tools/javac/util/Position$LineMap
+-instanceKlass com/sun/tools/javac/util/Position
+-instanceKlass com/sun/tools/javac/tree/TreeInfo$2
+-instanceKlass com/sun/tools/javac/parser/JavacParser$2
+-instanceKlass com/sun/tools/javac/parser/JavaTokenizer$BasicComment
+-instanceKlass com/sun/tools/javac/util/IntHashTable
+-instanceKlass com/sun/tools/javac/parser/JavaTokenizer$1
+-instanceKlass com/sun/tools/javac/parser/JavacParser$1
+-instanceKlass com/sun/tools/javac/tree/DocCommentTable
+-instanceKlass com/sun/tools/javac/parser/JavacParser$AbstractEndPosTable
+-instanceKlass com/sun/tools/javac/parser/JavacParser$ErrorRecoveryAction
+-instanceKlass com/sun/tools/javac/tree/EndPosTable
+-instanceKlass com/sun/tools/javac/parser/JavacParser
+-instanceKlass com/sun/tools/javac/parser/UnicodeReader
+-instanceKlass sun/misc/FloatingDecimal$HexFloatPattern
+-instanceKlass com/sun/tools/javac/parser/Tokens$Comment
+-instanceKlass com/sun/tools/javac/parser/Scanner
+-instanceKlass com/sun/source/tree/LineMap
+-instanceKlass com/sun/tools/javac/util/BaseFileManager$ContentCacheEntry
+-instanceKlass com/sun/tools/javac/util/DiagnosticSource
+-instanceKlass com/sun/tools/javac/processing/JavacProcessingEnvironment$DiscoveredProcessors$ProcessorStateIterator
+-instanceKlass com/sun/tools/javac/processing/JavacProcessingEnvironment$DiscoveredProcessors
+-instanceKlass com/sun/tools/javac/util/ServiceLoader$1
+-instanceKlass com/sun/tools/javac/util/ServiceLoader$LazyIterator
+-instanceKlass com/sun/tools/javac/util/ServiceLoader
+-instanceKlass javax/annotation/processing/Processor
+-instanceKlass com/sun/tools/javac/processing/JavacProcessingEnvironment$ServiceIterator
+-instanceKlass com/sun/tools/javac/util/StringUtils
+-instanceKlass com/sun/tools/javac/util/ListBuffer$1
+-instanceKlass com/sun/tools/javac/model/JavacTypes
+-instanceKlass com/sun/tools/javac/model/JavacElements
+-instanceKlass com/sun/tools/javac/processing/JavacMessager
+-instanceKlass com/sun/tools/javac/processing/JavacFiler
+-instanceKlass java/util/regex/Pattern$CharPropertyNames$CharPropertyFactory
+-instanceKlass java/util/regex/Pattern$CharPropertyNames
+-instanceKlass javax/annotation/processing/RoundEnvironment
+-instanceKlass javax/annotation/processing/Filer
+-instanceKlass javax/annotation/processing/Messager
+-instanceKlass com/sun/tools/javac/processing/JavacProcessingEnvironment
+-instanceKlass com/sun/tools/javac/util/ForwardingDiagnosticFormatter$ForwardingConfiguration
+-instanceKlass com/sun/tools/javac/code/Types$DefaultSymbolVisitor
+-instanceKlass com/sun/tools/javac/util/ForwardingDiagnosticFormatter
+-instanceKlass com/sun/tools/javac/api/MultiTaskListener
+-instanceKlass com/sun/tools/javac/comp/TransTypes$1
+-instanceKlass com/sun/tools/javac/jvm/Pool
+-instanceKlass com/sun/tools/javac/comp/Lower$TreeBuilder
+-instanceKlass com/sun/tools/javac/jvm/Items$Item
+-instanceKlass com/sun/tools/javac/jvm/Gen$GenFinalizer
+-instanceKlass com/sun/tools/javac/parser/JavaTokenizer
+-instanceKlass com/sun/tools/javac/parser/ScannerFactory
+-instanceKlass com/sun/tools/javac/parser/Tokens$Token
+-instanceKlass com/sun/tools/javac/parser/Tokens
+-instanceKlass com/sun/tools/javac/tree/DocTreeMaker
+-instanceKlass com/sun/tools/javac/parser/Lexer
+-instanceKlass com/sun/tools/javac/parser/ParserFactory
+-instanceKlass com/sun/tools/javac/jvm/JNIWriter
+-instanceKlass com/sun/tools/javac/code/Types$SignatureGenerator
+-instanceKlass com/sun/tools/javac/jvm/ClassWriter$AttributeWriter
+-instanceKlass com/sun/tools/javac/util/ByteBuffer
+-instanceKlass com/sun/tools/javac/jvm/ClassFile
+-instanceKlass com/sun/tools/javac/jvm/ClassReader$AttributeReader
+-instanceKlass com/sun/tools/javac/util/MandatoryWarningHandler
+-instanceKlass com/sun/tools/javac/tree/TreeInfo
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$4
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$3
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$2
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredAttrContext
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredStuckPolicy
+-instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredTypeCompleter
+-instanceKlass com/sun/tools/javac/comp/Infer$GraphStrategy
+-instanceKlass com/sun/tools/javac/comp/Infer$InferenceContext
+-instanceKlass javax/lang/model/element/TypeParameterElement
+-instanceKlass com/sun/tools/javac/comp/Infer
+-instanceKlass com/sun/tools/javac/code/DeferredLintHandler$1
+-instanceKlass com/sun/tools/javac/code/DeferredLintHandler
+-instanceKlass com/sun/tools/javac/code/TypeAnnotations
+-instanceKlass com/sun/tools/javac/comp/TypeEnvs
+-instanceKlass com/sun/tools/javac/comp/ConstFold
+-instanceKlass javax/lang/model/element/AnnotationMirror
+-instanceKlass com/sun/tools/javac/comp/Annotate
+-instanceKlass com/sun/tools/javac/tree/TreeMaker$AnnotationBuilder
+-instanceKlass com/sun/tools/javac/tree/TreeMaker
+-instanceKlass com/sun/tools/javac/tree/JCTree$Factory
+-instanceKlass com/sun/tools/javac/comp/Env
+-instanceKlass com/sun/tools/javac/comp/Flow
+-instanceKlass com/sun/source/util/SimpleTreeVisitor
+-instanceKlass com/sun/tools/javac/comp/Attr$14
+-instanceKlass javax/lang/model/type/UnionType
+-instanceKlass com/sun/tools/javac/comp/Check$NestedCheckContext
+-instanceKlass com/sun/source/tree/LabeledStatementTree
+-instanceKlass com/sun/source/tree/EnhancedForLoopTree
+-instanceKlass com/sun/source/tree/EmptyStatementTree
+-instanceKlass com/sun/source/tree/VariableTree
+-instanceKlass com/sun/source/tree/UnionTypeTree
+-instanceKlass com/sun/source/tree/ParameterizedTypeTree
+-instanceKlass com/sun/source/tree/ArrayTypeTree
+-instanceKlass com/sun/source/tree/PrimitiveTypeTree
+-instanceKlass com/sun/source/tree/MemberReferenceTree
+-instanceKlass com/sun/source/tree/ArrayAccessTree
+-instanceKlass com/sun/source/tree/InstanceOfTree
+-instanceKlass com/sun/source/tree/CompoundAssignmentTree
+-instanceKlass com/sun/source/tree/AssignmentTree
+-instanceKlass com/sun/source/tree/ParenthesizedTree
+-instanceKlass com/sun/source/tree/LambdaExpressionTree
+-instanceKlass com/sun/source/tree/MethodInvocationTree
+-instanceKlass com/sun/source/tree/ExpressionStatementTree
+-instanceKlass com/sun/source/tree/ConditionalExpressionTree
+-instanceKlass com/sun/source/tree/DoWhileLoopTree
+-instanceKlass com/sun/source/tree/IntersectionTypeTree
+-instanceKlass com/sun/source/tree/ErroneousTree
+-instanceKlass com/sun/source/tree/ModifiersTree
+-instanceKlass com/sun/source/tree/TypeParameterTree
+-instanceKlass com/sun/source/tree/LiteralTree
+-instanceKlass com/sun/source/tree/TypeCastTree
+-instanceKlass com/sun/source/tree/BinaryTree
+-instanceKlass com/sun/source/tree/UnaryTree
+-instanceKlass com/sun/source/tree/NewArrayTree
+-instanceKlass com/sun/source/tree/AssertTree
+-instanceKlass com/sun/source/tree/ThrowTree
+-instanceKlass com/sun/source/tree/ReturnTree
+-instanceKlass com/sun/source/tree/ContinueTree
+-instanceKlass com/sun/source/tree/BreakTree
+-instanceKlass com/sun/source/tree/IfTree
+-instanceKlass com/sun/source/tree/CatchTree
+-instanceKlass com/sun/source/tree/TryTree
+-instanceKlass com/sun/source/tree/SynchronizedTree
+-instanceKlass com/sun/source/tree/CaseTree
+-instanceKlass com/sun/source/tree/SwitchTree
+-instanceKlass com/sun/source/tree/ForLoopTree
+-instanceKlass com/sun/source/tree/WhileLoopTree
+-instanceKlass com/sun/source/tree/BlockTree
+-instanceKlass com/sun/source/tree/ImportTree
+-instanceKlass com/sun/source/tree/AnnotatedTypeTree
+-instanceKlass com/sun/source/tree/WildcardTree
+-instanceKlass com/sun/tools/javac/api/Formattable$LocalizedString
+-instanceKlass com/sun/tools/javac/api/Formattable
+-instanceKlass com/sun/tools/javac/comp/Resolve$7
+-instanceKlass com/sun/tools/javac/comp/Resolve$6
+-instanceKlass com/sun/tools/javac/comp/Attr$ResultInfo
+-instanceKlass com/sun/tools/javac/comp/Resolve$AbstractMethodCheck
+-instanceKlass com/sun/tools/javac/comp/Resolve$2
+-instanceKlass com/sun/tools/javac/comp/Resolve$LookupHelper
+-instanceKlass com/sun/tools/javac/comp/Resolve$LogResolveHelper
+-instanceKlass com/sun/tools/javac/comp/Resolve$MethodCheck
+-instanceKlass com/sun/tools/javac/comp/Resolve
+-instanceKlass com/sun/tools/javac/comp/Check$6
+-instanceKlass com/sun/tools/javac/comp/Check$1
+-instanceKlass com/sun/tools/javac/util/Warner
+-instanceKlass com/sun/source/tree/AnnotationTree
+-instanceKlass com/sun/source/tree/MethodTree
+-instanceKlass com/sun/tools/javac/tree/JCTree$Visitor
+-instanceKlass com/sun/source/tree/NewClassTree
+-instanceKlass com/sun/tools/javac/code/DeferredLintHandler$LintLogger
+-instanceKlass com/sun/tools/javac/comp/Infer$FreeTypeListener
+-instanceKlass com/sun/tools/javac/comp/Check$CheckContext
+-instanceKlass com/sun/tools/javac/comp/Check
+-instanceKlass com/sun/tools/javac/code/Types$ImplementationCache
+-instanceKlass com/sun/tools/javac/code/Types$3
+-instanceKlass com/sun/tools/javac/code/Types$DescriptorCache$FunctionDescriptor
+-instanceKlass com/sun/tools/javac/util/JCDiagnostic
+-instanceKlass com/sun/tools/javac/code/Types$DescriptorCache
+-instanceKlass com/sun/tools/javac/code/Scope$ScopeListener
+-instanceKlass javax/lang/model/type/IntersectionType
+-instanceKlass com/sun/tools/javac/code/Type$Mapping
+-instanceKlass com/sun/tools/javac/code/Types$DefaultTypeVisitor
+-instanceKlass com/sun/tools/javac/code/Types
+-instanceKlass com/sun/tools/javac/code/Symtab$2
+-instanceKlass com/sun/tools/javac/code/Symtab$1
+-instanceKlass com/sun/tools/javac/code/Symbol$MethodSymbol$2
+-instanceKlass com/sun/tools/javac/code/Scope$2
+-instanceKlass com/sun/tools/javac/code/Scope$Entry
+-instanceKlass com/sun/tools/javac/util/Filter
+-instanceKlass com/sun/tools/javac/util/Assert
+-instanceKlass java/lang/annotation/Repeatable
+-instanceKlass javax/lang/model/type/NullType
+-instanceKlass com/sun/tools/javac/code/Symtab
+-instanceKlass com/sun/tools/javac/jvm/ClassReader$1
+-instanceKlass com/sun/tools/javac/code/Attribute
+-instanceKlass javax/lang/model/element/AnnotationValue
+-instanceKlass com/sun/tools/javac/comp/Annotate$Worker
+-instanceKlass javax/lang/model/type/ExecutableType
+-instanceKlass javax/lang/model/type/NoType
+-instanceKlass com/sun/tools/javac/code/Symbol$Completer
+-instanceKlass com/sun/tools/javac/code/Scope
+-instanceKlass com/sun/tools/javac/jvm/ClassReader
+-instanceKlass com/sun/tools/javac/util/Convert
+-instanceKlass com/sun/tools/javac/util/ArrayUtils
+-instanceKlass com/sun/tools/javac/util/Name
+-instanceKlass javax/lang/model/element/Name
+-instanceKlass com/sun/tools/javac/util/Name$Table
+-instanceKlass com/sun/tools/javac/util/Names
+-instanceKlass com/sun/tools/javac/main/JavaCompiler$1
+-instanceKlass com/sun/source/tree/ClassTree
+-instanceKlass com/sun/source/tree/StatementTree
+-instanceKlass com/sun/source/tree/MemberSelectTree
+-instanceKlass com/sun/source/tree/IdentifierTree
+-instanceKlass com/sun/tools/javac/jvm/ClassReader$SourceCompleter
+-instanceKlass javax/lang/model/element/PackageElement
+-instanceKlass com/sun/source/tree/CompilationUnitTree
+-instanceKlass javax/lang/model/element/TypeElement
+-instanceKlass javax/lang/model/element/QualifiedNameable
+-instanceKlass com/sun/tools/javac/main/JavaCompiler
+-instanceKlass com/sun/tools/javac/file/CacheFSInfo$1
+-instanceKlass com/sun/tools/javac/main/CommandLine
+-instanceKlass java/util/concurrent/atomic/AtomicBoolean
+-instanceKlass com/sun/tools/javac/parser/Parser
+-instanceKlass com/sun/tools/javac/api/JavacTaskImpl$Filter
+-instanceKlass javax/lang/model/util/Types
+-instanceKlass javax/lang/model/util/Elements
+-instanceKlass javax/annotation/processing/ProcessingEnvironment
+-instanceKlass com/sun/tools/javac/main/Main
+-instanceKlass com/sun/source/util/TreeScanner
+-instanceKlass com/sun/source/tree/TreeVisitor
+-instanceKlass com/sun/tools/doclint/DocLint
+-instanceKlass com/sun/source/util/Plugin
+-instanceKlass com/sun/tools/javac/api/ClientCodeWrapper$WrappedDiagnosticListener
+-instanceKlass com/sun/tools/javac/api/ClientCodeWrapper$Trusted
+-instanceKlass com/sun/source/util/TaskListener
+-instanceKlass com/sun/tools/javac/api/ClientCodeWrapper
+-instanceKlass com/sun/tools/javac/file/BaseFileObject
+-instanceKlass com/sun/tools/javac/file/ZipFileIndexCache
+-instanceKlass com/sun/tools/javac/file/FSInfo
+-instanceKlass com/sun/tools/javac/code/Lint$AugmentVisitor
+-instanceKlass com/sun/tools/javac/code/Attribute$Visitor
+-instanceKlass java/util/concurrent/ConcurrentHashMap$MapEntry
+-instanceKlass com/sun/tools/javac/util/Log$1
+-instanceKlass com/sun/tools/javac/util/JCDiagnostic$Factory$1
+-instanceKlass com/sun/tools/javac/util/Options
+-instanceKlass javax/lang/model/element/VariableElement
+-instanceKlass javax/lang/model/element/ExecutableElement
+-instanceKlass javax/lang/model/element/Parameterizable
+-instanceKlass javax/lang/model/type/PrimitiveType
+-instanceKlass javax/lang/model/type/TypeVariable
+-instanceKlass javax/lang/model/type/ErrorType
+-instanceKlass javax/lang/model/type/DeclaredType
+-instanceKlass javax/lang/model/type/ArrayType
+-instanceKlass javax/lang/model/type/ReferenceType
+-instanceKlass javax/lang/model/type/WildcardType
+-instanceKlass javax/lang/model/type/TypeMirror
+-instanceKlass com/sun/tools/javac/code/AnnoConstruct
+-instanceKlass javax/lang/model/element/Element
+-instanceKlass javax/lang/model/AnnotatedConstruct
+-instanceKlass com/sun/tools/javac/util/AbstractDiagnosticFormatter$SimpleConfiguration
+-instanceKlass com/sun/source/tree/ExpressionTree
+-instanceKlass com/sun/tools/javac/tree/JCTree
+-instanceKlass com/sun/source/tree/Tree
+-instanceKlass com/sun/tools/javac/api/DiagnosticFormatter$Configuration
+-instanceKlass com/sun/tools/javac/code/Printer
+-instanceKlass com/sun/tools/javac/code/Symbol$Visitor
+-instanceKlass com/sun/tools/javac/code/Type$Visitor
+-instanceKlass com/sun/tools/javac/util/AbstractDiagnosticFormatter
+-instanceKlass java/util/ResourceBundle$Control$1
+-instanceKlass com/sun/tools/javac/util/List$3
+-instanceKlass com/sun/tools/javac/util/List$2
+-instanceKlass com/sun/tools/javac/util/JavacMessages
+-instanceKlass com/sun/tools/javac/api/Messages
+-instanceKlass com/sun/tools/javac/util/JCDiagnostic$Factory
+-instanceKlass java/util/RegularEnumSet$EnumSetIterator
+-instanceKlass java/util/EnumMap$1
+-instanceKlass com/sun/tools/javac/file/Locations$LocationHandler
+-instanceKlass com/sun/tools/javac/file/Locations
+-instanceKlass com/sun/tools/javac/util/BaseFileManager$ByteBufferCache
+-instanceKlass com/sun/tools/javac/code/Lint
+-instanceKlass com/sun/tools/javac/file/JavacFileManager$Archive
+-instanceKlass javax/tools/JavaFileManager$Location
+-instanceKlass com/sun/tools/javac/file/RelativePath
+-instanceKlass javax/tools/JavaFileObject
+-instanceKlass javax/tools/FileObject
+-instanceKlass com/sun/tools/javac/util/BaseFileManager
+-instanceKlass javax/tools/Diagnostic
+-instanceKlass com/sun/tools/javac/api/DiagnosticFormatter
+-instanceKlass com/sun/tools/javac/util/Log$DiagnosticHandler
+-instanceKlass com/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition
+-instanceKlass com/sun/tools/javac/util/AbstractLog
+-instanceKlass com/sun/tools/javac/util/Context$Factory
+-instanceKlass com/sun/tools/javac/util/Context$Key
+-instanceKlass com/sun/tools/javac/util/Context
+-instanceKlass javax/tools/DiagnosticCollector
+-instanceKlass org/codehaus/plexus/compiler/javac/JavaxToolsCompiler$1
+-instanceKlass com/sun/tools/javac/main/OptionHelper
+-instanceKlass javax/tools/StandardJavaFileManager
+-instanceKlass com/sun/source/util/JavacTask
+-instanceKlass javax/tools/JavaCompiler$CompilationTask
+-instanceKlass com/sun/tools/javac/api/JavacTool
+-instanceKlass java/net/URLClassLoader$6
+-instanceKlass javax/tools/JavaCompiler
+-instanceKlass javax/tools/Tool
+-instanceKlass javax/tools/JavaFileManager
+-instanceKlass javax/tools/OptionChecker
+-instanceKlass javax/tools/DiagnosticListener
+-instanceKlass org/codehaus/plexus/compiler/javac/JavaxToolsCompiler
+-instanceKlass org/codehaus/plexus/util/StringUtils
+-instanceKlass javax/tools/ToolProvider
+-instanceKlass org/apache/maven/shared/utils/io/SelectorUtils
+-instanceKlass org/apache/maven/shared/utils/io/MatchPattern
+-instanceKlass org/apache/maven/shared/utils/io/MatchPatterns
+-instanceKlass org/apache/maven/shared/utils/io/DirectoryScanner
+-instanceKlass org/apache/maven/shared/utils/ReaderFactory
+-instanceKlass org/apache/maven/shared/utils/io/FileUtils
+-instanceKlass org/apache/maven/monitor/event/EventDispatcher
+-instanceKlass org/apache/maven/artifact/repository/RepositoryCache
+-instanceKlass org/apache/maven/shared/incremental/IncrementalBuildHelperRequest
+-instanceKlass org/codehaus/plexus/util/SelectorUtils
+-instanceKlass org/codehaus/plexus/util/DirectoryScanner
+-instanceKlass org/codehaus/plexus/compiler/util/scan/AbstractSourceInclusionScanner
+-instanceKlass org/apache/maven/shared/incremental/IncrementalBuildHelper
+-instanceKlass org/apache/maven/shared/utils/StringUtils
+-instanceKlass org/codehaus/plexus/compiler/CompilerMessage
+-instanceKlass org/codehaus/plexus/util/cli/StreamConsumer
+-instanceKlass org/codehaus/plexus/compiler/CompilerOutputStyle
+-instanceKlass org/codehaus/plexus/compiler/util/scan/SourceInclusionScanner
+-instanceKlass org/codehaus/plexus/compiler/CompilerConfiguration
+-instanceKlass org/codehaus/plexus/compiler/CompilerResult
+-instanceKlass org/codehaus/plexus/compiler/util/scan/mapping/SingleTargetSourceMapping
+-instanceKlass org/codehaus/plexus/compiler/util/scan/mapping/SuffixMapping
+-instanceKlass org/codehaus/plexus/compiler/util/scan/mapping/SourceMapping
+-instanceKlass org/w3c/dom/Element
+-instanceKlass org/w3c/dom/Document
+-instanceKlass org/w3c/dom/Node
+-instanceKlass org/codehaus/plexus/compiler/Compiler
+-instanceKlass org/codehaus/plexus/compiler/manager/CompilerManager
+-instanceKlass org/eclipse/aether/collection/DependencyManagement
+-instanceKlass org/apache/maven/artifact/resolver/filter/AbstractScopeArtifactFilter
+-instanceKlass org/sonatype/plexus/build/incremental/EmptyScanner
+-instanceKlass java/io/FileOutputStream$1
+-instanceKlass org/codehaus/plexus/util/IOUtil
+-instanceKlass org/codehaus/plexus/util/io/FileInputStreamFacade
+-instanceKlass org/codehaus/plexus/util/io/InputStreamFacade
+-instanceKlass org/codehaus/plexus/util/FileUtils
+-instanceKlass org/codehaus/plexus/util/SelectorUtils
+-instanceKlass org/codehaus/plexus/util/AbstractScanner
+-instanceKlass org/codehaus/plexus/util/ReaderFactory
+-instanceKlass org/codehaus/plexus/interpolation/Interpolator
+-instanceKlass org/codehaus/plexus/interpolation/InterpolationPostProcessor
+-instanceKlass org/codehaus/plexus/interpolation/SimpleRecursionInterceptor
+-instanceKlass org/codehaus/plexus/interpolation/PrefixAwareRecursionInterceptor
+-instanceKlass org/codehaus/plexus/interpolation/RecursionInterceptor
+-instanceKlass org/codehaus/plexus/interpolation/AbstractValueSource
+-instanceKlass org/codehaus/plexus/util/FileUtils$FilterWrapper
+-instanceKlass org/codehaus/plexus/util/StringUtils
+-instanceKlass org/codehaus/plexus/components/interactivity/DefaultOutputHandler
+-instanceKlass org/codehaus/plexus/interpolation/ValueSource
+-instanceKlass org/sonatype/plexus/build/incremental/DefaultBuildContext
+-instanceKlass org/codehaus/plexus/util/Scanner
+-instanceKlass org/codehaus/plexus/components/interactivity/DefaultPrompter
+-instanceKlass org/apache/maven/shared/filtering/AbstractMavenFilteringRequest
+-instanceKlass org/sonatype/plexus/build/incremental/BuildContext
+-instanceKlass org/apache/maven/shared/filtering/MavenResourcesFiltering
+-instanceKlass org/apache/maven/shared/filtering/MavenFileFilter
+-instanceKlass org/codehaus/plexus/components/interactivity/Prompter
+-instanceKlass org/codehaus/plexus/components/interactivity/OutputHandler
+-instanceKlass org/codehaus/plexus/components/interactivity/InputHandler
+-instanceKlass org/eclipse/sisu/plexus/ComponentDescriptorBeanModule$ComponentMetadata
+-instanceKlass org/apache/maven/plugin/clean/Cleaner$Result
+-instanceKlass org/apache/maven/plugin/clean/Cleaner$3
+-instanceKlass org/apache/maven/plugin/clean/Cleaner$2
+-instanceKlass org/codehaus/plexus/util/Os
+-instanceKlass org/apache/maven/plugin/clean/Cleaner$Logger
+-instanceKlass org/apache/maven/plugin/clean/Cleaner
+-instanceKlass org/eclipse/sisu/plexus/CompositeBeanHelper$1
+-instanceKlass org/codehaus/plexus/util/introspection/MethodMap
+-instanceKlass org/codehaus/plexus/util/introspection/ClassMap$CacheMiss
+-instanceKlass org/codehaus/plexus/util/introspection/ClassMap$MethodInfo
+-instanceKlass org/codehaus/plexus/util/introspection/ClassMap
+-instanceKlass org/codehaus/plexus/util/introspection/ReflectionValueExtractor$Tokenizer
+-instanceKlass org/codehaus/plexus/util/introspection/ReflectionValueExtractor
+-instanceKlass org/eclipse/sisu/plexus/CompositeBeanHelper
+-instanceKlass org/apache/maven/plugin/internal/ValidatingConfigurationListener
+-instanceKlass org/apache/maven/plugin/DebugConfigurationListener
+-instanceKlass org/codehaus/plexus/component/configurator/converters/ParameterizedConfigurationConverter
+-instanceKlass org/codehaus/plexus/component/configurator/converters/AbstractConfigurationConverter
+-instanceKlass org/codehaus/plexus/component/configurator/converters/ConfigurationConverter
+-instanceKlass org/codehaus/plexus/component/configurator/converters/lookup/DefaultConverterLookup
+-instanceKlass org/codehaus/plexus/component/configurator/expression/DefaultExpressionEvaluator
+-instanceKlass org/apache/maven/plugin/PluginParameterExpressionEvaluator
+-instanceKlass org/codehaus/plexus/component/configurator/expression/TypeAwareExpressionEvaluator
+-instanceKlass org/apache/maven/monitor/logging/DefaultLog
+-instanceKlass com/google/common/collect/Ordering
+-instanceKlass java/util/Formattable
+-instanceKlass java/util/Formatter$Conversion
+-instanceKlass java/util/Formatter$Flags
+-instanceKlass java/util/Formatter$FormatSpecifier
+-instanceKlass java/util/Formatter$FixedString
+-instanceKlass java/util/Formatter$FormatString
+-instanceKlass java/util/Formatter
+-instanceKlass org/apache/maven/plugin/clean/Fileset
+-instanceKlass org/apache/maven/plugin/clean/Selector
+-instanceKlass org/eclipse/sisu/space/FileEntryIterator
+-instanceKlass org/eclipse/sisu/space/ResourceEnumeration
+-instanceKlass org/eclipse/sisu/plexus/ComponentDescriptorBeanModule$PlexusDescriptorBeanSource
+-instanceKlass org/apache/maven/plugin/AbstractMojo
+-instanceKlass org/apache/maven/plugin/ContextEnabled
+-instanceKlass org/apache/maven/plugin/Mojo
+-instanceKlass org/eclipse/sisu/plexus/ComponentDescriptorBeanModule
+-instanceKlass org/apache/maven/classrealm/ArtifactClassRealmConstituent
+-instanceKlass org/apache/maven/plugin/internal/WagonExcluder
+-instanceKlass org/apache/maven/plugin/internal/PlexusUtilsInjector
+-instanceKlass org/apache/maven/plugin/DefaultPluginRealmCache$CacheKey
+-instanceKlass java/lang/Character$CharacterCache
+-instanceKlass org/eclipse/aether/util/graph/visitor/TreeDependencyVisitor
+-instanceKlass org/eclipse/aether/util/graph/visitor/FilteringDependencyVisitor
+-instanceKlass org/eclipse/aether/internal/impl/ArtifactRequestBuilder
+-instanceKlass org/eclipse/aether/util/graph/transformer/NearestVersionSelector$ConflictGroup
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver$ConflictItem
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver$NodeInfo
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver$ScopeContext
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver$ConflictContext
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver$State
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictIdSorter$RootQueue
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictIdSorter$ConflictId
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictMarker$ConflictGroup
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictMarker$Key
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictMarker
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictIdSorter
+-instanceKlass org/eclipse/aether/util/graph/transformer/TransformationContextKeys
+-instanceKlass org/eclipse/aether/internal/impl/DefaultDependencyGraphTransformationContext
+-instanceKlass java/util/ArrayList$1
+-instanceKlass java/util/stream/IntStream
+-instanceKlass java/util/stream/BaseStream
+-instanceKlass org/eclipse/aether/util/graph/selector/ExclusionDependencySelector$ExclusionComparator
+-instanceKlass org/eclipse/aether/graph/Dependency$Exclusions$1
+-instanceKlass org/eclipse/aether/internal/impl/DataPool$GraphKey
+-instanceKlass org/eclipse/aether/internal/impl/DataPool$Descriptor
+-instanceKlass org/eclipse/aether/internal/impl/DataPool$Constraint$VersionRepo
+-instanceKlass org/eclipse/aether/internal/impl/DataPool$Constraint
+-instanceKlass org/eclipse/aether/internal/impl/DataPool$ConstraintKey
+-instanceKlass org/eclipse/aether/util/graph/manager/ClassicDependencyManager$Key
+-instanceKlass org/eclipse/aether/graph/DependencyCycle
+-instanceKlass org/eclipse/aether/internal/impl/DefaultDependencyCollectionContext
+-instanceKlass org/eclipse/aether/internal/impl/NodeStack
+-instanceKlass org/eclipse/aether/internal/impl/ObjectPool
+-instanceKlass org/eclipse/aether/internal/impl/CachingArtifactTypeRegistry
+-instanceKlass org/eclipse/aether/util/artifact/ArtifactIdUtils
+-instanceKlass org/apache/maven/project/DefaultDependencyResolutionRequest
+-instanceKlass org/apache/maven/lifecycle/internal/LifecycleDependencyResolver$ReactorDependencyFilter
+-instanceKlass org/eclipse/aether/util/filter/AndDependencyFilter
+-instanceKlass org/eclipse/aether/util/filter/ScopeDependencyFilter
+-instanceKlass org/apache/maven/artifact/resolver/filter/IncludesArtifactFilter
+-instanceKlass org/apache/maven/lifecycle/internal/ExecutionPlanItem
+-instanceKlass org/codehaus/plexus/component/repository/ComponentRequirement
+-instanceKlass org/apache/maven/plugin/MavenPluginValidator
+-instanceKlass org/codehaus/plexus/component/repository/ComponentDependency
+-instanceKlass org/apache/maven/plugin/descriptor/Parameter
+-instanceKlass org/codehaus/plexus/configuration/DefaultPlexusConfiguration
+-instanceKlass org/apache/maven/repository/internal/ArtifactDescriptorReaderDelegate
+-instanceKlass org/apache/maven/repository/internal/DefaultModelResolver$1
+-instanceKlass org/apache/maven/model/Notifier
+-instanceKlass org/apache/maven/model/ActivationFile
+-instanceKlass org/apache/maven/model/Site
+-instanceKlass org/eclipse/aether/util/version/GenericVersion$Item
+-instanceKlass org/eclipse/aether/util/version/GenericVersion$Tokenizer
+-instanceKlass org/eclipse/aether/util/version/GenericVersion
+-instanceKlass org/eclipse/aether/util/version/GenericVersionConstraint
+-instanceKlass org/eclipse/aether/version/VersionConstraint
+-instanceKlass org/eclipse/aether/version/VersionRange
+-instanceKlass org/eclipse/aether/util/version/GenericVersionScheme
+-instanceKlass org/apache/maven/repository/internal/DefaultModelCache$Key
+-instanceKlass org/apache/maven/model/building/ModelCacheTag$2
+-instanceKlass org/apache/maven/model/building/ModelCacheTag$1
+-instanceKlass org/apache/maven/repository/internal/DefaultModelResolver
+-instanceKlass org/apache/maven/repository/internal/DefaultModelCache
+-instanceKlass java/nio/channels/spi/AbstractInterruptibleChannel$1
+-instanceKlass sun/nio/ch/Interruptible
+-instanceKlass sun/nio/ch/FileKey
+-instanceKlass sun/nio/ch/FileLockTable
+-instanceKlass sun/nio/ch/NativeThread
+-instanceKlass java/nio/channels/FileLock
+-instanceKlass sun/nio/ch/NativeDispatcher
+-instanceKlass sun/nio/ch/NativeThreadSet
+-instanceKlass sun/nio/ch/IOUtil$1
+-instanceKlass sun/nio/ch/IOUtil
+-instanceKlass java/nio/file/attribute/FileAttribute
+-instanceKlass java/nio/channels/spi/AbstractInterruptibleChannel
+-instanceKlass java/nio/channels/InterruptibleChannel
+-instanceKlass java/nio/channels/ScatteringByteChannel
+-instanceKlass java/nio/channels/GatheringByteChannel
+-instanceKlass java/nio/channels/SeekableByteChannel
+-instanceKlass java/nio/channels/ByteChannel
+-instanceKlass org/eclipse/aether/repository/LocalArtifactRequest
+-instanceKlass org/eclipse/aether/internal/impl/DefaultRepositoryEventDispatcher$1
+-instanceKlass org/eclipse/aether/RepositoryEvent$Builder
+-instanceKlass org/eclipse/aether/internal/impl/DefaultSyncContextFactory$DefaultSyncContext
+-instanceKlass org/eclipse/aether/internal/impl/CacheUtils
+-instanceKlass org/apache/maven/repository/internal/DefaultVersionResolver$Key
+-instanceKlass org/eclipse/aether/artifact/AbstractArtifact
+-instanceKlass org/apache/maven/plugin/CacheUtils
+-instanceKlass org/apache/maven/plugin/DefaultPluginDescriptorCache$CacheKey
+-instanceKlass org/apache/maven/lifecycle/internal/GoalTask
+-instanceKlass org/apache/maven/execution/ProjectExecutionEvent
+-instanceKlass org/apache/maven/lifecycle/internal/CompoundProjectExecutionListener
+-instanceKlass org/apache/maven/lifecycle/internal/LifecycleTask
+-instanceKlass org/eclipse/aether/util/repository/ChainedWorkspaceReader
+-instanceKlass org/apache/maven/model/building/Result$4
+-instanceKlass java/util/LinkedList$ListItr
+-instanceKlass org/codehaus/plexus/util/dag/TopologicalSorter
+-instanceKlass org/codehaus/plexus/util/dag/Vertex
+-instanceKlass org/codehaus/plexus/util/dag/DAG
+-instanceKlass org/apache/maven/project/ProjectSorter
+-instanceKlass org/apache/maven/graph/DefaultProjectDependencyGraph
+-instanceKlass org/apache/maven/artifact/ArtifactUtils
+-instanceKlass org/apache/maven/project/DefaultProjectBuildingResult
+-instanceKlass org/apache/maven/artifact/versioning/ComparableVersion$StringItem
+-instanceKlass org/apache/maven/artifact/versioning/Restriction
+-instanceKlass org/apache/maven/artifact/DefaultArtifact
+-instanceKlass java/math/MutableBigInteger
+-instanceKlass org/apache/maven/artifact/versioning/ComparableVersion$IntegerItem
+-instanceKlass org/apache/maven/artifact/versioning/ComparableVersion$Item
+-instanceKlass org/apache/maven/artifact/versioning/ComparableVersion
+-instanceKlass org/apache/maven/artifact/versioning/DefaultArtifactVersion
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultLifecyclePluginAnalyzer$1
+-instanceKlass org/apache/maven/lifecycle/mapping/LifecycleMojo
+-instanceKlass org/apache/maven/lifecycle/mapping/Lifecycle
+-instanceKlass org/apache/maven/model/building/DefaultModelBuildingEvent
+-instanceKlass org/apache/maven/model/building/ModelBuildingEventCatapult$1
+-instanceKlass org/apache/maven/project/ReactorModelPool$CacheKey
+-instanceKlass org/apache/maven/project/DefaultProjectBuilder$InterimResult
+-instanceKlass java/util/Collections$1
+-instanceKlass org/apache/maven/repository/internal/ArtifactDescriptorUtils
+-instanceKlass org/apache/maven/model/Extension
+-instanceKlass org/codehaus/plexus/interpolation/util/StringUtils
+-instanceKlass org/apache/maven/model/License
+-instanceKlass org/apache/maven/model/MailingList
+-instanceKlass org/codehaus/plexus/interpolation/reflection/MethodMap
+-instanceKlass org/codehaus/plexus/interpolation/reflection/ClassMap$CacheMiss
+-instanceKlass org/codehaus/plexus/interpolation/reflection/ClassMap$MethodInfo
+-instanceKlass org/codehaus/plexus/interpolation/reflection/ClassMap
+-instanceKlass org/codehaus/plexus/interpolation/reflection/ReflectionValueExtractor
+-instanceKlass org/codehaus/plexus/interpolation/util/ValueSourceUtils
+-instanceKlass org/apache/maven/model/DependencyManagement
+-instanceKlass org/apache/maven/model/DistributionManagement
+-instanceKlass org/apache/maven/model/interpolation/StringSearchModelInterpolator$InterpolateObjectAction$CacheField
+-instanceKlass org/apache/maven/model/CiManagement
+-instanceKlass org/apache/maven/model/IssueManagement
+-instanceKlass org/apache/maven/model/Scm
+-instanceKlass org/apache/maven/model/Prerequisites
+-instanceKlass org/apache/maven/model/Organization
+-instanceKlass org/apache/maven/model/Parent
+-instanceKlass org/apache/maven/model/interpolation/StringSearchModelInterpolator$InterpolateObjectAction$CacheItem
+-instanceKlass org/apache/maven/model/interpolation/StringSearchModelInterpolator$InterpolateObjectAction
+-instanceKlass org/apache/maven/model/interpolation/UrlNormalizingPostProcessor
+-instanceKlass org/apache/maven/model/interpolation/PathTranslatingPostProcessor
+-instanceKlass org/apache/maven/model/interpolation/MavenBuildTimestamp
+-instanceKlass org/apache/maven/model/interpolation/ProblemDetectingValueSource
+-instanceKlass org/codehaus/plexus/interpolation/PrefixedValueSourceWrapper
+-instanceKlass org/codehaus/plexus/interpolation/FeedbackEnabledValueSource
+-instanceKlass org/codehaus/plexus/interpolation/AbstractDelegatingValueSource
+-instanceKlass org/codehaus/plexus/interpolation/QueryEnabledValueSource
+-instanceKlass org/apache/maven/model/building/DefaultModelProblem
+-instanceKlass org/apache/maven/model/building/ModelProblemCollectorRequest
+-instanceKlass java/util/Collections$EmptyEnumeration
+-instanceKlass org/apache/maven/model/ActivationProperty
+-instanceKlass org/apache/maven/model/io/xpp3/MavenXpp3Reader$1
+-instanceKlass org/apache/maven/model/io/xpp3/MavenXpp3Reader$ContentTransformer
+-instanceKlass org/apache/maven/model/io/xpp3/MavenXpp3Reader
+-instanceKlass org/apache/maven/model/building/ModelProblemUtils
+-instanceKlass org/apache/maven/model/Exclusion
+-instanceKlass org/apache/maven/model/io/xpp3/MavenXpp3ReaderEx$1
+-instanceKlass org/apache/maven/model/io/xpp3/MavenXpp3ReaderEx$ContentTransformer
+-instanceKlass org/apache/maven/model/io/xpp3/MavenXpp3ReaderEx
+-instanceKlass org/apache/maven/model/building/ModelSource2
+-instanceKlass org/apache/maven/model/building/DefaultModelBuildingResult
+-instanceKlass org/apache/maven/model/building/AbstractModelBuildingListener
+-instanceKlass org/apache/maven/project/ProjectModelResolver
+-instanceKlass org/apache/maven/model/building/DefaultModelBuildingRequest
+-instanceKlass org/apache/maven/artifact/repository/LegacyLocalRepositoryManager
+-instanceKlass org/apache/maven/project/ReactorModelCache
+-instanceKlass org/apache/maven/project/DefaultProjectBuildingRequest
+-instanceKlass org/apache/maven/shared/utils/logging/AnsiMessageBuilder
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultExecutionEventCatapult$1
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultExecutionEvent
+-instanceKlass org/apache/maven/AbstractMavenLifecycleParticipant
+-instanceKlass org/apache/maven/settings/RuntimeInfo
+-instanceKlass org/eclipse/aether/repository/RemoteRepository$Builder
+-instanceKlass org/eclipse/aether/AbstractRepositoryListener
+-instanceKlass org/eclipse/aether/util/repository/DefaultAuthenticationSelector
+-instanceKlass org/eclipse/aether/util/repository/DefaultProxySelector
+-instanceKlass org/eclipse/aether/util/repository/DefaultMirrorSelector
+-instanceKlass org/apache/maven/settings/crypto/DefaultSettingsDecryptionResult
+-instanceKlass org/apache/maven/settings/crypto/DefaultSettingsDecryptionRequest
+-instanceKlass org/eclipse/aether/internal/impl/TrackingFileManager
+-instanceKlass org/eclipse/aether/internal/impl/PrioritizedComponent
+-instanceKlass org/eclipse/sisu/wire/EntrySetAdapter$ValueIterator
+-instanceKlass org/eclipse/aether/util/ConfigUtils
+-instanceKlass org/eclipse/aether/internal/impl/PrioritizedComponents
+-instanceKlass org/apache/maven/RepositoryUtils$MavenArtifactTypeRegistry
+-instanceKlass org/apache/maven/RepositoryUtils
+-instanceKlass org/eclipse/aether/util/repository/SimpleResolutionErrorPolicy
+-instanceKlass org/eclipse/aether/util/repository/SimpleArtifactDescriptorPolicy
+-instanceKlass org/eclipse/aether/artifact/DefaultArtifactType
+-instanceKlass org/eclipse/aether/util/artifact/SimpleArtifactTypeRegistry
+-instanceKlass org/eclipse/aether/util/graph/transformer/JavaDependencyContextRefiner
+-instanceKlass org/eclipse/aether/util/graph/transformer/ChainedDependencyGraphTransformer
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver
+-instanceKlass org/eclipse/aether/graph/Exclusion
+-instanceKlass org/eclipse/aether/util/graph/selector/ExclusionDependencySelector
+-instanceKlass org/eclipse/aether/util/graph/selector/OptionalDependencySelector
+-instanceKlass org/eclipse/aether/util/graph/selector/ScopeDependencySelector
+-instanceKlass org/eclipse/aether/util/graph/selector/AndDependencySelector
+-instanceKlass org/eclipse/aether/util/graph/manager/ClassicDependencyManager
+-instanceKlass org/eclipse/aether/util/graph/traverser/FatArtifactTraverser
+-instanceKlass org/eclipse/aether/DefaultSessionData
+-instanceKlass org/eclipse/aether/DefaultRepositorySystemSession$NullArtifactTypeRegistry
+-instanceKlass org/eclipse/aether/DefaultRepositorySystemSession$NullAuthenticationSelector
+-instanceKlass org/eclipse/aether/DefaultRepositorySystemSession$NullProxySelector
+-instanceKlass org/eclipse/aether/DefaultRepositorySystemSession$NullMirrorSelector
+-instanceKlass org/eclipse/aether/SessionData
+-instanceKlass org/eclipse/aether/artifact/ArtifactTypeRegistry
+-instanceKlass org/eclipse/aether/artifact/ArtifactType
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver$VersionSelector
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver$ScopeSelector
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver$OptionalitySelector
+-instanceKlass org/eclipse/aether/util/graph/transformer/ConflictResolver$ScopeDeriver
+-instanceKlass org/apache/maven/repository/internal/MavenRepositorySystemUtils
+-instanceKlass org/apache/maven/execution/DefaultMavenExecutionResult
+-instanceKlass org/apache/maven/artifact/repository/MavenArtifactRepository
+-instanceKlass org/apache/maven/artifact/repository/layout/ArtifactRepositoryLayout2
+-instanceKlass org/apache/maven/execution/AbstractExecutionListener
+-instanceKlass java/util/Collections$SynchronizedMap
+-instanceKlass org/eclipse/aether/transfer/AbstractTransferListener
+-instanceKlass org/apache/maven/toolchain/building/DefaultToolchainsBuildingResult
+-instanceKlass org/apache/maven/toolchain/model/io/xpp3/MavenToolchainsXpp3Reader$1
+-instanceKlass org/apache/maven/toolchain/model/io/xpp3/MavenToolchainsXpp3Reader$ContentTransformer
+-instanceKlass org/apache/maven/toolchain/model/io/xpp3/MavenToolchainsXpp3Reader
+-instanceKlass org/apache/maven/building/DefaultProblemCollector
+-instanceKlass org/apache/maven/building/ProblemCollectorFactory
+-instanceKlass org/apache/maven/toolchain/building/DefaultToolchainsBuildingRequest
+-instanceKlass org/apache/maven/settings/building/DefaultSettingsBuildingResult
+-instanceKlass org/codehaus/plexus/interpolation/SimpleRecursionInterceptor
+-instanceKlass org/apache/maven/settings/building/DefaultSettingsBuilder$1
+-instanceKlass java/lang/ProcessEnvironment$StringKeySet$1
+-instanceKlass org/codehaus/plexus/interpolation/os/OperatingSystemUtils
+-instanceKlass org/codehaus/plexus/interpolation/AbstractValueSource
+-instanceKlass org/codehaus/plexus/interpolation/RegexBasedInterpolator
+-instanceKlass org/codehaus/plexus/util/xml/pull/MXSerializer
+-instanceKlass org/codehaus/plexus/util/xml/pull/XmlSerializer
+-instanceKlass org/apache/maven/settings/io/xpp3/SettingsXpp3Writer
+-instanceKlass org/codehaus/plexus/util/xml/pull/EntityReplacementMap
+-instanceKlass org/apache/maven/settings/io/xpp3/SettingsXpp3Reader$1
+-instanceKlass org/apache/maven/settings/io/xpp3/SettingsXpp3Reader$ContentTransformer
+-instanceKlass org/apache/maven/settings/io/xpp3/SettingsXpp3Reader
+-instanceKlass org/apache/maven/building/FileSource
+-instanceKlass org/apache/maven/settings/building/DefaultSettingsBuildingRequest
+-instanceKlass org/eclipse/sisu/plexus/PlexusLifecycleManager$1
+-instanceKlass org/eclipse/aether/internal/impl/SimpleLocalRepositoryManager
+-instanceKlass org/apache/maven/plugin/CompoundMojoExecutionListener
+-instanceKlass org/apache/maven/project/RepositorySessionDecorator
+-instanceKlass com/google/inject/internal/BytecodeGen
+-instanceKlass com/google/inject/internal/DelegatingInvocationHandler
+-instanceKlass sun/security/jca/GetInstance$Instance
+-instanceKlass java/security/Provider$UString
+-instanceKlass java/security/Provider$Service
+-instanceKlass sun/security/provider/NativePRNG$RandomIO
+-instanceKlass sun/security/provider/NativePRNG$2
+-instanceKlass sun/security/provider/NativePRNG$1
+-instanceKlass java/security/SecureRandomSpi
+-instanceKlass sun/security/provider/SunEntries$1
+-instanceKlass sun/security/provider/SunEntries
+-instanceKlass sun/security/jca/ProviderConfig$2
+-instanceKlass sun/security/jca/ProviderList$2
+-instanceKlass sun/misc/FDBigInteger
+-instanceKlass sun/misc/FloatingDecimal$PreparedASCIIToBinaryBuffer
+-instanceKlass sun/misc/FloatingDecimal$ASCIIToBinaryConverter
+-instanceKlass sun/misc/FloatingDecimal$BinaryToASCIIBuffer
+-instanceKlass sun/misc/FloatingDecimal$ExceptionalBinaryToASCIIBuffer
+-instanceKlass sun/misc/FloatingDecimal$BinaryToASCIIConverter
+-instanceKlass sun/misc/FloatingDecimal
+-instanceKlass java/security/Provider$EngineDescription
+-instanceKlass java/security/Provider$ServiceKey
+-instanceKlass sun/security/jca/ProviderConfig
+-instanceKlass sun/security/jca/ProviderList
+-instanceKlass sun/security/jca/Providers
+-instanceKlass sun/security/jca/GetInstance
+-instanceKlass java/security/MessageDigestSpi
+-instanceKlass java/security/spec/AlgorithmParameterSpec
+-instanceKlass java/security/Key
+-instanceKlass org/sonatype/plexus/components/sec/dispatcher/PasswordDecryptor
+-instanceKlass org/apache/commons/lang3/Validate
+-instanceKlass org/eclipse/aether/internal/impl/slf4j/Slf4jLoggerFactory$Slf4jLogger
+-instanceKlass org/slf4j/spi/LocationAwareLogger
+-instanceKlass org/eclipse/aether/spi/log/NullLogger
+-instanceKlass org/eclipse/aether/spi/log/NullLoggerFactory
+-instanceKlass org/apache/maven/artifact/resolver/DefaultArtifactResolver$DaemonThreadCreator
+-instanceKlass java/util/concurrent/ThreadPoolExecutor$AbortPolicy
+-instanceKlass java/util/concurrent/RejectedExecutionHandler
+-instanceKlass java/util/concurrent/AbstractExecutorService
+-instanceKlass java/util/concurrent/ExecutorService
+-instanceKlass org/codehaus/plexus/classworlds/realm/Entry
+-instanceKlass java/util/Random
+-instanceKlass java/util/TreeMap$Entry
+-instanceKlass org/eclipse/sisu/inject/Guice4$1
+-instanceKlass org/codehaus/plexus/interpolation/PrefixAwareRecursionInterceptor
+-instanceKlass org/codehaus/plexus/interpolation/StringSearchInterpolator
+-instanceKlass org/apache/maven/model/PatternSet
+-instanceKlass org/apache/maven/model/Contributor
+-instanceKlass org/eclipse/sisu/plexus/OptionalPropertyBinding
+-instanceKlass org/apache/maven/cli/event/DefaultEventSpyContext
+-instanceKlass org/eclipse/sisu/wire/EntryListAdapter$ValueIterator
+-instanceKlass org/apache/maven/cli/logging/Slf4jLogger
+-instanceKlass org/eclipse/sisu/inject/LazyBeanEntry$JsrNamed
+-instanceKlass org/eclipse/sisu/inject/LazyBeanEntry
+-instanceKlass org/eclipse/sisu/inject/Implementations
+-instanceKlass org/eclipse/sisu/plexus/LazyPlexusBean
+-instanceKlass org/eclipse/sisu/inject/RankedSequence$Itr
+-instanceKlass org/eclipse/sisu/inject/RankedBindings$Itr
+-instanceKlass org/eclipse/sisu/inject/LocatedBeans$Itr
+-instanceKlass org/eclipse/sisu/plexus/RealmFilteredBeans$FilteredItr
+-instanceKlass org/eclipse/sisu/plexus/DefaultPlexusBeans$Itr
+-instanceKlass org/eclipse/sisu/plexus/DefaultPlexusBeans
+-instanceKlass org/eclipse/sisu/plexus/RealmFilteredBeans
+-instanceKlass org/eclipse/sisu/inject/LocatedBeans
+-instanceKlass org/eclipse/sisu/inject/MildElements$Indexable
+-instanceKlass com/google/inject/internal/InternalInjectorCreator$1
+-instanceKlass com/google/common/collect/MultitransformedIterator
+-instanceKlass com/google/common/collect/Iterables$13
+-instanceKlass com/google/common/collect/FluentIterable
+-instanceKlass java/util/concurrent/ConcurrentHashMap$Traverser
+-instanceKlass org/eclipse/sisu/inject/MildValues$ValueItr
+-instanceKlass org/eclipse/sisu/inject/RankedSequence$Content
+-instanceKlass com/google/inject/internal/InjectorImpl$2$1
+-instanceKlass org/eclipse/sisu/inject/InjectorBindings
+-instanceKlass com/google/inject/internal/ConstructorInjector$1
+-instanceKlass com/google/inject/internal/CircularDependencyProxy
+-instanceKlass com/google/inject/internal/ProviderToInternalFactoryAdapter$1
+-instanceKlass com/google/common/collect/TransformedIterator
+-instanceKlass com/google/common/collect/AbstractMapBasedMultimap$AsMap$AsMapIterator
+-instanceKlass java/lang/Long$LongCache
+-instanceKlass com/google/inject/internal/ProviderInternalFactory$1
+-instanceKlass com/google/inject/spi/ProvisionListener$ProvisionInvocation
+-instanceKlass com/google/inject/internal/MembersInjectorImpl$1$1
+-instanceKlass com/google/inject/internal/InternalContext$DependencyStack
+-instanceKlass com/google/inject/internal/InternalContext
+-instanceKlass com/google/inject/internal/MembersInjectorImpl$1
+-instanceKlass com/google/inject/internal/InjectorImpl$1
+-instanceKlass com/google/inject/internal/SingleMethodInjector$1
+-instanceKlass com/google/inject/internal/InjectorImpl$MethodInvoker
+-instanceKlass com/google/inject/internal/SingleMethodInjector
+-instanceKlass java/util/IdentityHashMap$IdentityHashMapIterator
+-instanceKlass com/google/inject/internal/InjectorImpl$ProviderBindingImpl$1
+-instanceKlass com/google/inject/internal/InjectorImpl$2
+-instanceKlass com/google/inject/internal/SingleFieldInjector
+-instanceKlass com/google/inject/internal/SingleParameterInjector
+-instanceKlass org/eclipse/sisu/plexus/PlexusConfigurations$ConfigurationProvider
+-instanceKlass org/eclipse/sisu/bean/BeanPropertySetter
+-instanceKlass com/google/inject/internal/MembersInjectorImpl
+-instanceKlass org/eclipse/sisu/bean/BeanInjector
+-instanceKlass org/eclipse/sisu/plexus/PlexusLifecycleManager$2
+-instanceKlass org/eclipse/sisu/bean/PropertyBinder$1
+-instanceKlass org/eclipse/sisu/plexus/ProvidedPropertyBinding
+-instanceKlass org/eclipse/sisu/plexus/PlexusRequirements$AbstractRequirementProvider
+-instanceKlass org/eclipse/sisu/bean/BeanPropertyField
+-instanceKlass org/eclipse/sisu/bean/DeclaredMembers$MemberIterator
+-instanceKlass org/eclipse/sisu/bean/BeanPropertyIterator
+-instanceKlass org/eclipse/sisu/bean/DeclaredMembers
+-instanceKlass org/eclipse/sisu/bean/IgnoreSetters
+-instanceKlass org/eclipse/sisu/bean/BeanProperties
+-instanceKlass org/eclipse/sisu/plexus/PlexusRequirements
+-instanceKlass org/eclipse/sisu/plexus/PlexusConfigurations
+-instanceKlass org/eclipse/sisu/plexus/PlexusPropertyBinder
+-instanceKlass com/google/inject/internal/EncounterImpl
+-instanceKlass com/google/inject/internal/AbstractBindingProcessor$Processor$1
+-instanceKlass org/apache/maven/session/scope/internal/SessionScope$2
+-instanceKlass org/apache/maven/execution/scope/internal/MojoExecutionScope$2
+-instanceKlass com/google/inject/internal/ProviderInternalFactory
+-instanceKlass com/google/inject/internal/FactoryProxy
+-instanceKlass com/google/inject/internal/InternalFactoryToProviderAdapter
+-instanceKlass com/google/common/collect/ListMultimap
+-instanceKlass com/google/inject/internal/CycleDetectingLock$CycleDetectingLockFactory$ReentrantCycleDetectingLock
+-instanceKlass com/google/inject/internal/ConstructionContext
+-instanceKlass com/google/inject/internal/SingletonScope$1
+-instanceKlass com/google/inject/internal/ProviderToInternalFactoryAdapter
+-instanceKlass com/google/inject/internal/Initializer$InjectableReference
+-instanceKlass com/google/inject/internal/ProvisionListenerStackCallback
+-instanceKlass com/google/common/cache/LocalCache$AbstractReferenceEntry
+-instanceKlass com/google/inject/internal/ProvisionListenerCallbackStore$KeyBinding
+-instanceKlass com/google/inject/internal/util/Classes
+-instanceKlass com/google/inject/spi/ExposedBinding
+-instanceKlass com/google/inject/internal/CreationListener
+-instanceKlass com/google/inject/internal/InjectorShell$LoggerFactory
+-instanceKlass com/google/inject/internal/InjectorShell$InjectorFactory
+-instanceKlass com/google/inject/internal/Initializables$1
+-instanceKlass com/google/inject/internal/Initializables
+-instanceKlass com/google/inject/internal/ConstantFactory
+-instanceKlass com/google/inject/internal/InjectorShell
+-instanceKlass com/google/inject/internal/ProvisionListenerCallbackStore
+-instanceKlass com/google/inject/spi/TypeEncounter
+-instanceKlass com/google/inject/internal/SingleMemberInjector
+-instanceKlass com/google/inject/internal/MembersInjectorStore
+-instanceKlass com/google/inject/internal/TypeConverterBindingProcessor$4
+-instanceKlass com/google/inject/internal/TypeConverterBindingProcessor$2
+-instanceKlass com/google/inject/internal/TypeConverterBindingProcessor$1
+-instanceKlass com/google/inject/internal/TypeConverterBindingProcessor$5
+-instanceKlass com/google/inject/internal/FailableCache
+-instanceKlass com/google/inject/internal/ConstructorInjectorStore
+-instanceKlass com/google/inject/internal/DeferredLookups
+-instanceKlass com/google/inject/internal/InjectorImpl$BindingsMultimap
+-instanceKlass com/google/inject/spi/ConvertedConstantBinding
+-instanceKlass com/google/inject/spi/ProviderBinding
+-instanceKlass com/google/inject/internal/InjectorImpl
+-instanceKlass com/google/inject/internal/Lookups
+-instanceKlass com/google/inject/internal/InjectorImpl$InjectorOptions
+-instanceKlass com/google/inject/internal/ProvisionListenerStackCallback$ProvisionCallback
+-instanceKlass com/google/inject/internal/ConstructorInjector
+-instanceKlass com/google/inject/internal/DefaultConstructionProxyFactory$1
+-instanceKlass com/google/inject/internal/ConstructionProxy
+-instanceKlass com/google/inject/internal/DefaultConstructionProxyFactory
+-instanceKlass com/google/inject/internal/ConstructionProxyFactory
+-instanceKlass com/google/inject/internal/ConstructorBindingImpl$Factory
+-instanceKlass org/eclipse/sisu/inject/TypeArguments$Implicit
+-instanceKlass org/eclipse/sisu/wire/PlaceholderBeanProvider
+-instanceKlass org/eclipse/sisu/wire/BeanProviders$3
+-instanceKlass org/sonatype/inject/BeanEntry
+-instanceKlass org/eclipse/sisu/BeanEntry
+-instanceKlass org/eclipse/sisu/wire/BeanProviders$7
+-instanceKlass org/eclipse/sisu/wire/BeanProviders$4
+-instanceKlass org/eclipse/sisu/wire/BeanProviders$1
+-instanceKlass com/google/inject/spi/ProviderLookup$1
+-instanceKlass com/google/inject/spi/ProviderWithDependencies
+-instanceKlass com/google/inject/spi/ProviderLookup
+-instanceKlass org/eclipse/sisu/wire/BeanProviders
+-instanceKlass org/eclipse/sisu/inject/HiddenSource
+-instanceKlass org/eclipse/sisu/wire/LocatorWiring
+-instanceKlass com/google/inject/ProvidedBy
+-instanceKlass com/google/inject/ImplementedBy
+-instanceKlass org/apache/maven/ArtifactFilterManagerDelegate
+-instanceKlass org/eclipse/aether/repository/AuthenticationSelector
+-instanceKlass org/eclipse/aether/repository/ProxySelector
+-instanceKlass org/eclipse/aether/repository/MirrorSelector
+-instanceKlass org/eclipse/aether/resolution/ResolutionErrorPolicy
+-instanceKlass org/apache/maven/classrealm/ClassRealmManagerDelegate
+-instanceKlass org/apache/maven/classrealm/ClassRealmConstituent
+-instanceKlass org/apache/maven/classrealm/ClassRealmRequest
+-instanceKlass org/apache/maven/building/ProblemCollector
+-instanceKlass org/apache/maven/toolchain/merge/MavenToolchainMerger
+-instanceKlass org/apache/maven/toolchain/building/ToolchainsBuildingResult
+-instanceKlass org/eclipse/aether/repository/WorkspaceRepository
+-instanceKlass org/apache/maven/cli/internal/extension/model/CoreExtension
+-instanceKlass org/eclipse/aether/impl/UpdateCheck
+-instanceKlass org/eclipse/aether/spi/io/FileProcessor$ProgressListener
+-instanceKlass com/google/common/base/ExtraObjectsMethodsForWeb
+-instanceKlass org/eclipse/aether/RepositoryEvent
+-instanceKlass org/eclipse/aether/spi/connector/transport/Transporter
+-instanceKlass org/eclipse/aether/resolution/DependencyResult
+-instanceKlass org/eclipse/aether/resolution/DependencyRequest
+-instanceKlass org/eclipse/aether/installation/InstallResult
+-instanceKlass org/eclipse/aether/transfer/TransferResource
+-instanceKlass org/eclipse/aether/spi/connector/checksum/ChecksumPolicy
+-instanceKlass org/eclipse/sisu/Nullable
+-instanceKlass org/eclipse/aether/internal/impl/DefaultVersionFilterContext
+-instanceKlass org/eclipse/aether/version/Version
+-instanceKlass org/eclipse/aether/internal/impl/DefaultDependencyCollector$PremanagedDependency
+-instanceKlass org/eclipse/aether/internal/impl/DataPool
+-instanceKlass org/eclipse/aether/graph/DefaultDependencyNode
+-instanceKlass org/eclipse/aether/graph/Dependency
+-instanceKlass org/eclipse/aether/collection/CollectResult
+-instanceKlass org/eclipse/aether/collection/CollectRequest
+-instanceKlass org/eclipse/aether/collection/VersionFilter
+-instanceKlass org/eclipse/aether/collection/DependencyTraverser
+-instanceKlass org/eclipse/aether/collection/DependencyManager
+-instanceKlass org/eclipse/aether/internal/impl/DefaultDependencyCollector$Results
+-instanceKlass org/eclipse/aether/internal/impl/DefaultDependencyCollector$Args
+-instanceKlass org/eclipse/aether/collection/VersionFilter$VersionFilterContext
+-instanceKlass org/eclipse/aether/collection/DependencyGraphTransformationContext
+-instanceKlass org/eclipse/aether/collection/DependencyCollectionContext
+-instanceKlass org/eclipse/aether/spi/connector/layout/RepositoryLayout
+-instanceKlass org/eclipse/aether/internal/impl/DefaultArtifactResolver$ResolutionGroup
+-instanceKlass org/eclipse/aether/repository/LocalArtifactResult
+-instanceKlass org/eclipse/aether/resolution/ArtifactResult
+-instanceKlass org/eclipse/aether/resolution/ArtifactRequest
+-instanceKlass org/eclipse/aether/repository/LocalRepository
+-instanceKlass org/eclipse/aether/repository/LocalRepositoryManager
+-instanceKlass org/eclipse/aether/repository/RepositoryPolicy
+-instanceKlass org/eclipse/aether/internal/impl/DefaultDeployer$EventCatapult
+-instanceKlass org/eclipse/aether/spi/connector/RepositoryConnector
+-instanceKlass org/eclipse/aether/repository/RemoteRepository
+-instanceKlass org/eclipse/aether/SyncContext
+-instanceKlass org/eclipse/aether/deployment/DeployResult
+-instanceKlass org/apache/maven/repository/legacy/resolver/conflict/NewestConflictResolver
+-instanceKlass org/apache/maven/model/InputSource
+-instanceKlass org/apache/maven/model/io/DefaultModelReader
+-instanceKlass org/eclipse/aether/resolution/VersionRangeResult
+-instanceKlass org/eclipse/aether/resolution/VersionRangeRequest
+-instanceKlass org/apache/maven/repository/internal/DefaultVersionRangeResolver
+-instanceKlass org/apache/maven/model/profile/activation/FileProfileActivator
+-instanceKlass org/apache/maven/DefaultProjectDependenciesResolver
+-instanceKlass org/apache/maven/repository/internal/SnapshotMetadataGeneratorFactory
+-instanceKlass org/apache/maven/lifecycle/mapping/LifecyclePhase
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultLifecyclePluginAnalyzer$GoalSpec
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultLifecyclePluginAnalyzer
+-instanceKlass org/apache/maven/model/path/DefaultModelPathTranslator
+-instanceKlass org/apache/maven/model/locator/DefaultModelLocator
+-instanceKlass org/apache/maven/artifact/handler/manager/DefaultArtifactHandlerManager
+-instanceKlass org/apache/maven/configuration/BeanConfigurationRequest
+-instanceKlass org/apache/maven/configuration/internal/DefaultBeanConfigurator
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultMojoExecutionConfigurator
+-instanceKlass org/apache/maven/execution/ProjectDependencyGraph
+-instanceKlass org/apache/maven/graph/DefaultGraphBuilder
+-instanceKlass org/apache/maven/model/profile/DefaultProfileSelector
+-instanceKlass org/eclipse/aether/installation/InstallRequest
+-instanceKlass org/eclipse/aether/deployment/DeployRequest
+-instanceKlass org/eclipse/aether/impl/MetadataGenerator
+-instanceKlass org/apache/maven/repository/internal/VersionsMetadataGeneratorFactory
+-instanceKlass org/apache/maven/model/composition/DefaultDependencyManagementImporter
+-instanceKlass org/apache/maven/toolchain/DefaultToolchain
+-instanceKlass org/apache/maven/toolchain/ToolchainPrivate
+-instanceKlass org/apache/maven/toolchain/java/JavaToolchain
+-instanceKlass org/apache/maven/toolchain/java/JavaToolchainFactory
+-instanceKlass org/codehaus/classworlds/ClassRealm
+-instanceKlass org/codehaus/plexus/component/configurator/converters/lookup/ConverterLookup
+-instanceKlass org/codehaus/plexus/component/configurator/AbstractComponentConfigurator
+-instanceKlass org/apache/maven/plugin/PluginArtifactsCache$CacheRecord
+-instanceKlass org/apache/maven/plugin/PluginArtifactsCache$Key
+-instanceKlass org/apache/maven/plugin/DefaultPluginArtifactsCache
+-instanceKlass org/apache/maven/artifact/resolver/DefaultResolutionErrorHandler
+-instanceKlass org/apache/maven/model/superpom/DefaultSuperPomProvider
+-instanceKlass org/apache/maven/model/plugin/DefaultPluginConfigurationExpander
+-instanceKlass org/apache/maven/execution/ExecutionEvent
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultExecutionEventCatapult
+-instanceKlass org/apache/maven/repository/legacy/resolver/conflict/FarthestConflictResolver
+-instanceKlass org/apache/maven/artifact/factory/DefaultArtifactFactory
+-instanceKlass org/apache/maven/settings/io/DefaultSettingsReader
+-instanceKlass org/apache/maven/lifecycle/DefaultLifecycleExecutor
+-instanceKlass org/apache/maven/model/plugin/DefaultReportingConverter
+-instanceKlass org/apache/maven/toolchain/Toolchain
+-instanceKlass org/apache/maven/toolchain/DefaultToolchainManager
+-instanceKlass org/apache/maven/plugin/PluginRealmCache$CacheRecord
+-instanceKlass org/apache/maven/plugin/PluginRealmCache$Key
+-instanceKlass org/apache/maven/plugin/DefaultPluginRealmCache
+-instanceKlass org/apache/maven/model/management/DefaultDependencyManagementInjector
+-instanceKlass org/apache/maven/model/plugin/DefaultReportConfigurationExpander
+-instanceKlass org/apache/maven/model/plugin/DefaultLifecycleBindingsInjector
+-instanceKlass org/apache/maven/project/ReactorModelPool
+-instanceKlass org/apache/maven/project/DefaultProjectBuilder$InternalConfig
+-instanceKlass org/apache/maven/model/building/ModelBuildingListener
+-instanceKlass org/apache/maven/project/DefaultProjectBuilder
+-instanceKlass org/apache/maven/model/ActivationOS
+-instanceKlass org/apache/maven/model/profile/activation/OperatingSystemProfileActivator
+-instanceKlass org/apache/maven/model/io/DefaultModelWriter
+-instanceKlass org/apache/maven/artifact/repository/metadata/io/DefaultMetadataReader
+-instanceKlass org/apache/maven/execution/DefaultRuntimeInformation
+-instanceKlass org/apache/maven/repository/metadata/ClasspathContainer
+-instanceKlass org/apache/maven/repository/metadata/DefaultClasspathTransformation
+-instanceKlass org/apache/maven/profiles/ProfilesRoot
+-instanceKlass org/apache/maven/execution/ProjectExecutionListener
+-instanceKlass org/apache/maven/model/profile/activation/JdkVersionProfileActivator$RangeValue
+-instanceKlass org/apache/maven/model/profile/activation/JdkVersionProfileActivator
+-instanceKlass org/apache/maven/rtinfo/internal/DefaultRuntimeInformation
+-instanceKlass org/apache/maven/model/path/DefaultPathTranslator
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultLifecycleMappingDelegate
+-instanceKlass org/apache/maven/artifact/repository/layout/DefaultRepositoryLayout
+-instanceKlass org/apache/maven/cli/configuration/SettingsXmlConfigurationProcessor
+-instanceKlass org/apache/maven/model/path/DefaultModelUrlNormalizer
+-instanceKlass org/apache/maven/model/Relocation
+-instanceKlass org/eclipse/aether/resolution/ArtifactDescriptorResult
+-instanceKlass org/eclipse/aether/resolution/ArtifactDescriptorRequest
+-instanceKlass org/apache/maven/repository/internal/DefaultArtifactDescriptorReader
+-instanceKlass org/eclipse/aether/spi/locator/ServiceLocator
+-instanceKlass org/eclipse/aether/resolution/VersionRequest
+-instanceKlass org/eclipse/aether/resolution/VersionResult
+-instanceKlass org/eclipse/aether/spi/log/Logger
+-instanceKlass org/apache/maven/repository/internal/DefaultVersionResolver
+-instanceKlass org/apache/maven/settings/io/DefaultSettingsWriter
+-instanceKlass org/apache/maven/settings/building/DefaultSettingsProblemCollector
+-instanceKlass org/apache/maven/settings/merge/MavenSettingsMerger
+-instanceKlass org/codehaus/plexus/interpolation/InterpolationPostProcessor
+-instanceKlass org/apache/maven/settings/building/SettingsBuildingResult
+-instanceKlass org/apache/maven/settings/building/DefaultSettingsBuilder
+-instanceKlass org/apache/maven/repository/ArtifactTransferListener
+-instanceKlass org/apache/maven/repository/legacy/LegacyRepositorySystem
+-instanceKlass org/apache/maven/lifecycle/internal/ProjectSegment
+-instanceKlass org/apache/maven/lifecycle/internal/builder/multithreaded/ThreadOutputMuxer
+-instanceKlass org/apache/maven/lifecycle/internal/builder/multithreaded/ConcurrencyDependencyGraph
+-instanceKlass java/util/concurrent/CompletionService
+-instanceKlass org/apache/maven/lifecycle/internal/builder/multithreaded/MultiThreadedBuilder
+-instanceKlass org/eclipse/aether/DefaultRepositorySystemSession
+-instanceKlass org/apache/maven/execution/MavenExecutionResult
+-instanceKlass org/apache/maven/DefaultMaven
+-instanceKlass org/apache/maven/plugin/PluginDescriptorCache$Key
+-instanceKlass org/apache/maven/plugin/DefaultPluginDescriptorCache
+-instanceKlass org/eclipse/aether/internal/transport/wagon/PlexusWagonConfigurator
+-instanceKlass org/apache/maven/model/inheritance/DefaultInheritanceAssembler
+-instanceKlass org/apache/maven/plugin/internal/DefaultPluginManager
+-instanceKlass org/apache/maven/artifact/repository/layout/FlatRepositoryLayout
+-instanceKlass org/apache/maven/repository/legacy/resolver/DefaultLegacyArtifactCollector
+-instanceKlass java/nio/channels/WritableByteChannel
+-instanceKlass java/nio/channels/ReadableByteChannel
+-instanceKlass java/nio/channels/Channel
+-instanceKlass org/apache/maven/repository/legacy/resolver/transform/DefaultArtifactTransformationManager
+-instanceKlass org/codehaus/plexus/interpolation/Interpolator
+-instanceKlass org/codehaus/plexus/interpolation/BasicInterpolator
+-instanceKlass org/codehaus/plexus/interpolation/RecursionInterceptor
+-instanceKlass org/apache/maven/model/interpolation/AbstractStringBasedModelInterpolator
+-instanceKlass org/apache/maven/model/profile/activation/PropertyProfileActivator
+-instanceKlass org/apache/maven/artifact/versioning/VersionRange
+-instanceKlass org/apache/maven/model/RepositoryPolicy
+-instanceKlass org/apache/maven/settings/RepositoryPolicy
+-instanceKlass org/apache/maven/artifact/repository/Authentication
+-instanceKlass org/apache/maven/settings/RepositoryBase
+-instanceKlass org/apache/maven/repository/Proxy
+-instanceKlass org/apache/maven/project/artifact/MavenMetadataSource$ProjectRelocation
+-instanceKlass org/apache/maven/project/artifact/MavenMetadataSource
+-instanceKlass org/apache/maven/artifact/handler/DefaultArtifactHandler
+-instanceKlass org/apache/maven/artifact/repository/metadata/Metadata
+-instanceKlass org/apache/maven/plugin/version/internal/DefaultPluginVersionResolver$Versions
+-instanceKlass org/apache/maven/plugin/version/internal/DefaultPluginVersionResult
+-instanceKlass org/apache/maven/plugin/version/PluginVersionResult
+-instanceKlass org/eclipse/aether/version/VersionScheme
+-instanceKlass org/apache/maven/plugin/version/internal/DefaultPluginVersionResolver
+-instanceKlass org/apache/maven/project/ProjectRealmCache$Key
+-instanceKlass org/apache/maven/project/DefaultProjectRealmCache
+-instanceKlass org/apache/maven/project/path/DefaultPathTranslator
+-instanceKlass org/apache/maven/artifact/repository/metadata/Versioning
+-instanceKlass org/apache/maven/artifact/repository/metadata/RepositoryMetadata
+-instanceKlass org/apache/maven/model/Reporting
+-instanceKlass org/apache/maven/project/inheritance/DefaultModelInheritanceAssembler
+-instanceKlass org/apache/maven/model/building/DefaultModelProcessor
+-instanceKlass org/apache/maven/project/artifact/DefaultMavenMetadataCache$CacheKey
+-instanceKlass org/apache/maven/repository/legacy/metadata/ResolutionGroup
+-instanceKlass org/apache/maven/project/artifact/DefaultMavenMetadataCache
+-instanceKlass org/apache/maven/repository/metadata/DefaultGraphConflictResolutionPolicy
+-instanceKlass org/apache/maven/model/PluginContainer
+-instanceKlass org/apache/maven/model/profile/DefaultProfileInjector
+-instanceKlass org/eclipse/aether/collection/DependencySelector
+-instanceKlass org/eclipse/aether/collection/DependencyGraphTransformer
+-instanceKlass org/eclipse/aether/resolution/ArtifactDescriptorPolicy
+-instanceKlass org/apache/maven/plugin/internal/DefaultPluginDependenciesResolver
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultLifecycleTaskSegmentCalculator
+-instanceKlass org/apache/maven/project/validation/ModelValidationResult
+-instanceKlass org/apache/maven/project/validation/DefaultModelValidator
+-instanceKlass org/eclipse/aether/artifact/Artifact
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultLifecycleExecutionPlanCalculator
+-instanceKlass org/apache/maven/lifecycle/internal/ReactorBuildStatus
+-instanceKlass org/apache/maven/lifecycle/internal/builder/singlethreaded/SingleThreadedBuilder
+-instanceKlass org/apache/maven/repository/legacy/resolver/conflict/OldestConflictResolver
+-instanceKlass org/apache/maven/profiles/ProfileManager
+-instanceKlass org/apache/maven/project/ProjectBuilderConfiguration
+-instanceKlass org/apache/maven/project/DefaultMavenProjectBuilder
+-instanceKlass org/apache/maven/settings/crypto/SettingsDecryptionResult
+-instanceKlass org/apache/maven/settings/crypto/DefaultSettingsDecrypter
+-instanceKlass org/apache/maven/repository/legacy/resolver/conflict/DefaultConflictResolverFactory
+-instanceKlass org/apache/maven/repository/metadata/MetadataGraphEdge
+-instanceKlass org/apache/maven/repository/metadata/MetadataGraph
+-instanceKlass org/apache/maven/repository/metadata/MetadataGraphVertex
+-instanceKlass org/apache/maven/repository/metadata/DefaultGraphConflictResolver
+-instanceKlass org/apache/maven/settings/building/SettingsProblemCollector
+-instanceKlass org/apache/maven/settings/validation/DefaultSettingsValidator
+-instanceKlass org/apache/maven/eventspy/EventSpy
+-instanceKlass org/eclipse/aether/RepositoryListener
+-instanceKlass org/apache/maven/plugin/DefaultBuildPluginManager
+-instanceKlass org/apache/maven/model/management/DefaultPluginManagementInjector
+-instanceKlass org/apache/maven/settings/building/SettingsBuildingRequest
+-instanceKlass org/eclipse/aether/internal/transport/wagon/PlexusWagonProvider
+-instanceKlass org/apache/maven/model/path/DefaultUrlNormalizer
+-instanceKlass org/apache/maven/repository/legacy/repository/DefaultArtifactRepositoryFactory
+-instanceKlass org/apache/maven/toolchain/model/TrackableBase
+-instanceKlass org/apache/maven/toolchain/DefaultToolchainsBuilder
+-instanceKlass org/apache/maven/artifact/resolver/ResolutionNode
+-instanceKlass org/apache/maven/repository/legacy/resolver/conflict/NearestConflictResolver
+-instanceKlass org/eclipse/aether/RequestTrace
+-instanceKlass org/apache/maven/plugin/prefix/PluginPrefixRequest
+-instanceKlass org/eclipse/aether/metadata/Metadata
+-instanceKlass org/apache/maven/plugin/prefix/PluginPrefixResult
+-instanceKlass org/eclipse/aether/repository/ArtifactRepository
+-instanceKlass org/apache/maven/plugin/prefix/internal/DefaultPluginPrefixResolver
+-instanceKlass org/eclipse/aether/util/graph/visitor/AbstractDepthFirstNodeListGenerator
+-instanceKlass org/eclipse/aether/graph/DependencyNode
+-instanceKlass org/codehaus/plexus/component/repository/ComponentSetDescriptor
+-instanceKlass org/apache/maven/plugin/descriptor/PluginDescriptorBuilder
+-instanceKlass org/codehaus/plexus/component/configurator/ConfigurationListener
+-instanceKlass org/codehaus/plexus/component/configurator/expression/ExpressionEvaluator
+-instanceKlass org/codehaus/plexus/configuration/PlexusConfiguration
+-instanceKlass org/apache/maven/plugin/logging/Log
+-instanceKlass org/apache/maven/plugin/version/PluginVersionRequest
+-instanceKlass org/apache/maven/plugin/internal/DefaultMavenPluginManager
+-instanceKlass org/apache/maven/settings/crypto/SettingsDecryptionRequest
+-instanceKlass org/apache/maven/wagon/observers/ChecksumObserver
+-instanceKlass org/apache/maven/repository/legacy/DefaultWagonManager
+-instanceKlass org/apache/maven/model/merge/ModelMerger
+-instanceKlass org/apache/maven/model/normalization/DefaultModelNormalizer
+-instanceKlass org/sonatype/plexus/components/cipher/PBECipher
+-instanceKlass org/apache/maven/plugin/ExtensionRealmCache$CacheRecord
+-instanceKlass org/apache/maven/plugin/ExtensionRealmCache$Key
+-instanceKlass org/apache/maven/plugin/DefaultExtensionRealmCache
+-instanceKlass org/apache/maven/model/building/ModelBuildingEventCatapult
+-instanceKlass org/apache/maven/model/building/ModelData
+-instanceKlass org/apache/maven/model/resolution/ModelResolver
+-instanceKlass org/apache/maven/model/profile/DefaultProfileActivationContext
+-instanceKlass org/apache/maven/model/building/DefaultModelProblemCollector
+-instanceKlass org/apache/maven/model/building/Result
+-instanceKlass org/apache/maven/model/building/ModelCacheTag
+-instanceKlass org/apache/maven/model/building/ModelCache
+-instanceKlass org/apache/maven/model/building/ModelBuildingEvent
+-instanceKlass org/apache/maven/artifact/versioning/ArtifactVersion
+-instanceKlass org/apache/maven/model/building/ModelSource
+-instanceKlass org/codehaus/plexus/interpolation/ValueSource
+-instanceKlass org/apache/maven/model/building/ModelProblemCollectorExt
+-instanceKlass org/apache/maven/model/profile/ProfileActivationContext
+-instanceKlass org/apache/maven/model/building/ModelBuildingResult
+-instanceKlass org/apache/maven/model/building/DefaultModelBuilder
+-instanceKlass org/apache/maven/project/ProjectRealmCache$CacheRecord
+-instanceKlass org/eclipse/aether/graph/DependencyFilter
+-instanceKlass org/apache/maven/project/DefaultProjectBuildingHelper
+-instanceKlass org/apache/maven/lifecycle/internal/ReactorContext
+-instanceKlass org/apache/maven/lifecycle/MavenExecutionPlan
+-instanceKlass org/apache/maven/lifecycle/internal/TaskSegment
+-instanceKlass org/apache/maven/execution/BuildSummary
+-instanceKlass org/apache/maven/project/DependencyResolutionRequest
+-instanceKlass org/apache/maven/project/DefaultDependencyResolutionResult
+-instanceKlass org/eclipse/aether/graph/DependencyVisitor
+-instanceKlass org/apache/maven/project/DependencyResolutionResult
+-instanceKlass org/apache/maven/project/DefaultProjectDependenciesResolver
+-instanceKlass org/apache/maven/lifecycle/mapping/DefaultLifecycleMapping
+-instanceKlass org/apache/maven/project/ProjectBuildingResult
+-instanceKlass org/apache/maven/exception/ExceptionSummary
+-instanceKlass org/apache/maven/model/building/ModelProblem
+-instanceKlass org/apache/maven/exception/DefaultExceptionHandler
+-instanceKlass org/apache/maven/artifact/repository/ArtifactRepositoryPolicy
+-instanceKlass org/apache/maven/artifact/repository/DefaultArtifactRepositoryFactory
+-instanceKlass org/apache/maven/settings/TrackableBase
+-instanceKlass org/apache/maven/repository/DefaultMirrorSelector
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/impl/conn/PoolingHttpClientConnectionManager
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/pool/ConnPoolControl
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/client/methods/CloseableHttpResponse
+-instanceKlass org/apache/maven/wagon/providers/http/BasicAuthScope
+-instanceKlass org/apache/maven/wagon/providers/http/HttpConfiguration
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/impl/client/CloseableHttpClient
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/client/HttpClient
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/Header
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/auth/Credentials
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/client/AuthCache
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/client/CredentialsProvider
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/conn/ssl/TrustStrategy
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/ssl/TrustStrategy
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/protocol/HttpContext
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/HttpEntity
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/HttpResponse
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/client/methods/HttpUriRequest
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/HttpRequest
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/HttpMessage
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/auth/AuthScheme
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/conn/HttpClientConnectionManager
+-instanceKlass org/apache/maven/wagon/OutputData
+-instanceKlass org/apache/maven/wagon/InputData
+-instanceKlass java/lang/Deprecated
+-instanceKlass java/util/EventObject
+-instanceKlass org/apache/maven/wagon/events/SessionListener
+-instanceKlass org/apache/maven/wagon/resource/Resource
+-instanceKlass org/apache/maven/wagon/repository/RepositoryPermissions
+-instanceKlass org/apache/maven/wagon/proxy/ProxyInfo
+-instanceKlass org/apache/maven/wagon/authentication/AuthenticationInfo
+-instanceKlass org/apache/maven/wagon/events/TransferEventSupport
+-instanceKlass org/apache/maven/wagon/events/SessionEventSupport
+-instanceKlass org/apache/maven/wagon/repository/Repository
+-instanceKlass org/apache/maven/wagon/proxy/ProxyInfoProvider
+-instanceKlass org/apache/maven/wagon/AbstractWagon
+-instanceKlass org/apache/maven/wagon/StreamingWagon
+-instanceKlass org/eclipse/sisu/space/asm/Item
+-instanceKlass org/eclipse/sisu/space/asm/ByteVector
+-instanceKlass org/eclipse/sisu/space/asm/MethodVisitor
+-instanceKlass org/eclipse/sisu/space/asm/FieldVisitor
+-instanceKlass org/apache/maven/lifecycle/internal/ProjectBuildList
+-instanceKlass org/apache/maven/model/Dependency
+-instanceKlass org/apache/maven/model/ConfigurationContainer
+-instanceKlass org/apache/maven/model/Activation
+-instanceKlass org/apache/maven/model/building/ModelProblemCollector
+-instanceKlass org/apache/maven/model/building/ModelBuildingRequest
+-instanceKlass org/apache/maven/model/ModelBase
+-instanceKlass org/apache/maven/model/InputLocation
+-instanceKlass org/apache/maven/model/RepositoryBase
+-instanceKlass org/apache/maven/model/InputLocationTracker
+-instanceKlass org/apache/maven/model/validation/DefaultModelValidator
+-instanceKlass org/apache/maven/artifact/resolver/ArtifactResolutionResult
+-instanceKlass org/apache/maven/artifact/resolver/ArtifactResolutionRequest
+-instanceKlass org/apache/maven/wagon/events/TransferListener
+-instanceKlass org/apache/maven/artifact/repository/ArtifactRepository
+-instanceKlass org/apache/maven/artifact/Artifact
+-instanceKlass org/apache/maven/repository/legacy/metadata/MetadataResolutionRequest
+-instanceKlass org/apache/maven/artifact/repository/RepositoryRequest
+-instanceKlass org/apache/maven/artifact/metadata/ArtifactMetadata
+-instanceKlass org/apache/maven/repository/legacy/metadata/ArtifactMetadata
+-instanceKlass java/util/concurrent/ThreadFactory
+-instanceKlass java/util/concurrent/Executor
+-instanceKlass org/apache/maven/artifact/resolver/DefaultArtifactResolver
+-instanceKlass org/sonatype/plexus/components/sec/dispatcher/model/SettingsSecurity
+-instanceKlass org/codehaus/plexus/logging/AbstractLogEnabled
+-instanceKlass org/apache/maven/lifecycle/internal/PhaseRecorder
+-instanceKlass org/apache/maven/lifecycle/internal/DependencyContext
+-instanceKlass org/apache/maven/lifecycle/internal/ProjectIndex
+-instanceKlass org/apache/maven/artifact/resolver/filter/ArtifactFilter
+-instanceKlass org/eclipse/aether/RepositorySystemSession
+-instanceKlass org/apache/maven/plugin/internal/DefaultLegacySupport
+-instanceKlass org/eclipse/sisu/inject/Guice4
+-instanceKlass com/google/inject/spi/ProviderWithExtensionVisitor
+-instanceKlass org/eclipse/sisu/plexus/PlexusBean
+-instanceKlass org/codehaus/plexus/component/repository/ComponentDescriptor
+-instanceKlass org/sonatype/inject/Parameters
+-instanceKlass org/eclipse/sisu/plexus/PlexusXmlBeanConverter
+-instanceKlass org/eclipse/sisu/plexus/PlexusBeanConverter
+-instanceKlass com/google/inject/util/Types
+-instanceKlass sun/reflect/generics/tree/BooleanSignature
+-instanceKlass com/google/inject/spi/TypeConverterBinding
+-instanceKlass com/google/inject/spi/ProvisionListenerBinding
+-instanceKlass com/google/inject/spi/TypeListenerBinding
+-instanceKlass org/eclipse/sisu/bean/BeanListener
+-instanceKlass com/google/inject/matcher/Matchers
+-instanceKlass org/eclipse/sisu/bean/PropertyBinder
+-instanceKlass org/eclipse/sisu/plexus/PlexusBeanBinder
+-instanceKlass com/google/inject/spi/InjectionListener
+-instanceKlass org/apache/maven/toolchain/io/DefaultToolchainsReader
+-instanceKlass org/apache/maven/toolchain/io/ToolchainsReader
+-instanceKlass org/apache/maven/execution/MavenSession
+-instanceKlass org/apache/maven/session/scope/internal/SessionScope$ScopeState
+-instanceKlass org/apache/maven/session/scope/internal/SessionScope$Memento
+-instanceKlass org/apache/maven/session/scope/internal/SessionScope$1
+-instanceKlass org/apache/maven/session/scope/internal/SessionScope
+-instanceKlass org/apache/maven/plugin/MojoExecution
+-instanceKlass org/apache/maven/project/MavenProject
+-instanceKlass org/apache/maven/execution/scope/internal/MojoExecutionScope$ScopeState
+-instanceKlass org/apache/maven/execution/MojoExecutionEvent
+-instanceKlass org/apache/maven/execution/scope/MojoExecutionScoped
+-instanceKlass org/apache/maven/execution/scope/internal/MojoExecutionScope$1
+-instanceKlass org/apache/maven/execution/scope/internal/MojoExecutionScope
+-instanceKlass org/apache/maven/execution/MojoExecutionListener
+-instanceKlass org/eclipse/sisu/space/QualifiedTypeBinder$1
+-instanceKlass org/apache/maven/DefaultArtifactFilterManager
+-instanceKlass org/apache/maven/ArtifactFilterManager
+-instanceKlass org/apache/maven/extension/internal/CoreExportsProvider
+-instanceKlass org/apache/maven/lifecycle/internal/LifecycleDependencyResolver
+-instanceKlass org/apache/maven/execution/DefaultMavenExecutionRequestPopulator
+-instanceKlass org/apache/maven/execution/MavenExecutionRequestPopulator
+-instanceKlass org/apache/maven/internal/aether/DefaultRepositorySystemSessionFactory
+-instanceKlass org/apache/maven/classrealm/DefaultClassRealmManager
+-instanceKlass org/apache/maven/classrealm/ClassRealmManager
+-instanceKlass org/apache/maven/lifecycle/internal/DefaultProjectArtifactFactory
+-instanceKlass org/apache/maven/lifecycle/internal/ProjectArtifactFactory
+-instanceKlass org/apache/maven/toolchain/building/DefaultToolchainsBuilder
+-instanceKlass org/apache/maven/toolchain/building/ToolchainsBuilder
+-instanceKlass org/apache/maven/SessionScoped
+-instanceKlass org/apache/maven/ReactorReader
+-instanceKlass org/apache/maven/repository/internal/MavenWorkspaceReader
+-instanceKlass org/eclipse/aether/repository/WorkspaceReader
+-instanceKlass org/eclipse/aether/transport/wagon/WagonTransporterFactory
+-instanceKlass org/eclipse/aether/spi/connector/transport/TransporterFactory
+-instanceKlass org/apache/maven/cli/internal/BootstrapCoreExtensionManager
+-instanceKlass org/eclipse/aether/connector/basic/BasicRepositoryConnectorFactory
+-instanceKlass org/eclipse/aether/spi/connector/RepositoryConnectorFactory
+-instanceKlass org/sonatype/plexus/components/cipher/DefaultPlexusCipher
+-instanceKlass org/eclipse/aether/internal/impl/DefaultRepositoryConnectorProvider
+-instanceKlass org/eclipse/aether/impl/RepositoryConnectorProvider
+-instanceKlass org/eclipse/aether/internal/impl/DefaultRemoteRepositoryManager
+-instanceKlass org/eclipse/aether/impl/RemoteRepositoryManager
+-instanceKlass org/eclipse/aether/internal/impl/DefaultLocalRepositoryProvider
+-instanceKlass org/eclipse/aether/impl/LocalRepositoryProvider
+-instanceKlass org/eclipse/aether/internal/impl/DefaultUpdatePolicyAnalyzer
+-instanceKlass org/eclipse/aether/impl/UpdatePolicyAnalyzer
+-instanceKlass org/eclipse/aether/internal/impl/DefaultUpdateCheckManager
+-instanceKlass org/eclipse/aether/impl/UpdateCheckManager
+-instanceKlass org/eclipse/aether/internal/impl/DefaultFileProcessor
+-instanceKlass org/eclipse/aether/spi/io/FileProcessor
+-instanceKlass org/eclipse/aether/internal/impl/DefaultInstaller
+-instanceKlass org/eclipse/aether/impl/Installer
+-instanceKlass sun/reflect/ClassDefiner$1
+-instanceKlass sun/reflect/ClassDefiner
+-instanceKlass sun/reflect/MethodAccessorGenerator$1
+-instanceKlass sun/reflect/Label$PatchInfo
+-instanceKlass sun/reflect/Label
+-instanceKlass sun/reflect/UTF8
+-instanceKlass sun/reflect/ClassFileAssembler
+-instanceKlass sun/reflect/ByteVectorImpl
+-instanceKlass sun/reflect/ByteVector
+-instanceKlass sun/reflect/ByteVectorFactory
+-instanceKlass sun/reflect/AccessorGenerator
+-instanceKlass sun/reflect/ClassFileConstants
+-instanceKlass org/eclipse/aether/internal/impl/DefaultRepositoryEventDispatcher
+-instanceKlass org/eclipse/aether/impl/RepositoryEventDispatcher
+-instanceKlass org/eclipse/aether/internal/impl/DefaultTransporterProvider
+-instanceKlass org/eclipse/aether/spi/connector/transport/TransporterProvider
+-instanceKlass org/eclipse/aether/internal/impl/DefaultMetadataResolver
+-instanceKlass org/eclipse/aether/impl/MetadataResolver
+-instanceKlass org/eclipse/aether/internal/impl/LoggerFactoryProvider
+-instanceKlass org/eclipse/aether/internal/impl/DefaultRepositorySystem
+-instanceKlass org/eclipse/aether/RepositorySystem
+-instanceKlass org/eclipse/aether/internal/impl/DefaultChecksumPolicyProvider
+-instanceKlass org/eclipse/aether/spi/connector/checksum/ChecksumPolicyProvider
+-instanceKlass org/eclipse/aether/internal/impl/DefaultSyncContextFactory
+-instanceKlass org/eclipse/aether/impl/SyncContextFactory
+-instanceKlass org/eclipse/aether/internal/impl/DefaultRepositoryLayoutProvider
+-instanceKlass org/eclipse/aether/spi/connector/layout/RepositoryLayoutProvider
+-instanceKlass org/eclipse/aether/internal/impl/slf4j/Slf4jLoggerFactory
+-instanceKlass org/eclipse/aether/spi/log/LoggerFactory
+-instanceKlass org/eclipse/aether/internal/impl/DefaultDependencyCollector
+-instanceKlass org/eclipse/aether/impl/DependencyCollector
+-instanceKlass org/eclipse/aether/internal/impl/EnhancedLocalRepositoryManagerFactory
+-instanceKlass org/eclipse/aether/internal/impl/Maven2RepositoryLayoutFactory
+-instanceKlass org/eclipse/aether/spi/connector/layout/RepositoryLayoutFactory
+-instanceKlass org/eclipse/aether/internal/impl/DefaultArtifactResolver
+-instanceKlass org/eclipse/aether/impl/ArtifactResolver
+-instanceKlass org/eclipse/aether/internal/impl/SimpleLocalRepositoryManagerFactory
+-instanceKlass org/eclipse/aether/spi/localrepo/LocalRepositoryManagerFactory
+-instanceKlass org/eclipse/aether/internal/impl/DefaultOfflineController
+-instanceKlass org/eclipse/aether/impl/OfflineController
+-instanceKlass org/eclipse/sisu/space/WildcardKey$QualifiedImpl
+-instanceKlass org/eclipse/sisu/space/WildcardKey$Qualified
+-instanceKlass org/eclipse/sisu/space/WildcardKey
+-instanceKlass org/eclipse/sisu/Typed
+-instanceKlass org/sonatype/inject/EagerSingleton
+-instanceKlass org/eclipse/sisu/EagerSingleton
+-instanceKlass org/sonatype/inject/Mediator
+-instanceKlass org/eclipse/sisu/inject/TypeArguments
+-instanceKlass org/eclipse/aether/internal/impl/DefaultDeployer
+-instanceKlass org/eclipse/aether/spi/locator/Service
+-instanceKlass org/eclipse/aether/impl/Deployer
+-instanceKlass org/eclipse/sisu/space/asm/Context
+-instanceKlass org/eclipse/sisu/space/asm/Attribute
+-instanceKlass org/eclipse/sisu/space/asm/AnnotationVisitor
+-instanceKlass org/eclipse/sisu/space/asm/ClassReader
+-instanceKlass org/eclipse/sisu/space/IndexedClassFinder$1
+-instanceKlass org/eclipse/sisu/inject/Logs$SLF4JSink
+-instanceKlass org/eclipse/sisu/inject/Logs$Sink
+-instanceKlass org/eclipse/sisu/inject/Logs
+-instanceKlass org/eclipse/sisu/space/QualifierCache
+-instanceKlass org/eclipse/sisu/space/QualifiedTypeVisitor
+-instanceKlass org/eclipse/sisu/plexus/PlexusTypeVisitor$ComponentAnnotationVisitor
+-instanceKlass org/eclipse/sisu/space/AnnotationVisitor
+-instanceKlass org/eclipse/sisu/plexus/PlexusTypeVisitor
+-instanceKlass org/eclipse/sisu/space/ClassVisitor
+-instanceKlass org/eclipse/sisu/plexus/PlexusXmlBeanModule$PlexusXmlBeanSource
+-instanceKlass org/eclipse/sisu/inject/DescriptionSource
+-instanceKlass org/eclipse/sisu/inject/AnnotatedSource
+-instanceKlass org/eclipse/sisu/Priority
+-instanceKlass org/eclipse/sisu/Hidden
+-instanceKlass org/eclipse/sisu/Description
+-instanceKlass org/eclipse/sisu/inject/Sources
+-instanceKlass com/google/inject/Key$AnnotationInstanceStrategy
+-instanceKlass com/google/inject/name/NamedImpl
+-instanceKlass com/google/inject/name/Named
+-instanceKlass com/google/inject/name/Names
+-instanceKlass org/apache/maven/toolchain/ToolchainFactory
+-instanceKlass org/apache/maven/toolchain/ToolchainsBuilder
+-instanceKlass org/apache/maven/toolchain/ToolchainManagerPrivate
+-instanceKlass org/apache/maven/toolchain/ToolchainManager
+-instanceKlass org/apache/maven/settings/MavenSettingsBuilder
+-instanceKlass org/apache/maven/rtinfo/RuntimeInformation
+-instanceKlass org/apache/maven/project/ProjectRealmCache
+-instanceKlass org/apache/maven/project/ProjectDependenciesResolver
+-instanceKlass org/apache/maven/project/ProjectBuildingHelper
+-instanceKlass org/apache/maven/project/ProjectBuilder
+-instanceKlass org/apache/maven/project/MavenProjectHelper
+-instanceKlass org/apache/maven/artifact/metadata/ArtifactMetadataSource
+-instanceKlass org/apache/maven/repository/legacy/metadata/ArtifactMetadataSource
+-instanceKlass org/apache/maven/project/artifact/MavenMetadataCache
+-instanceKlass org/apache/maven/plugin/version/PluginVersionResolver
+-instanceKlass org/apache/maven/plugin/prefix/PluginPrefixResolver
+-instanceKlass org/apache/maven/plugin/PluginManager
+-instanceKlass org/apache/maven/plugin/internal/PluginDependenciesResolver
+-instanceKlass org/apache/maven/plugin/MavenPluginManager
+-instanceKlass org/apache/maven/plugin/LegacySupport
+-instanceKlass org/apache/maven/plugin/PluginRealmCache
+-instanceKlass org/apache/maven/plugin/PluginDescriptorCache
+-instanceKlass org/apache/maven/plugin/PluginArtifactsCache
+-instanceKlass org/apache/maven/plugin/ExtensionRealmCache
+-instanceKlass org/apache/maven/plugin/BuildPluginManager
+-instanceKlass org/apache/maven/model/plugin/LifecycleBindingsInjector
+-instanceKlass org/apache/maven/lifecycle/internal/MojoExecutor
+-instanceKlass org/apache/maven/lifecycle/internal/MojoDescriptorCreator
+-instanceKlass org/apache/maven/lifecycle/internal/LifecycleStarter
+-instanceKlass org/apache/maven/lifecycle/internal/LifecyclePluginResolver
+-instanceKlass org/apache/maven/lifecycle/internal/LifecycleModuleBuilder
+-instanceKlass org/apache/maven/lifecycle/internal/LifecycleDebugLogger
+-instanceKlass org/apache/maven/lifecycle/MojoExecutionConfigurator
+-instanceKlass org/apache/maven/lifecycle/internal/LifecycleTaskSegmentCalculator
+-instanceKlass org/apache/maven/lifecycle/LifeCyclePluginAnalyzer
+-instanceKlass org/apache/maven/lifecycle/LifecycleMappingDelegate
+-instanceKlass org/apache/maven/lifecycle/internal/LifecycleExecutionPlanCalculator
+-instanceKlass org/apache/maven/lifecycle/internal/ExecutionEventCatapult
+-instanceKlass org/apache/maven/lifecycle/internal/BuildListCalculator
+-instanceKlass org/apache/maven/lifecycle/internal/builder/Builder
+-instanceKlass org/apache/maven/lifecycle/internal/builder/BuilderCommon
+-instanceKlass org/apache/maven/lifecycle/DefaultLifecycles
+-instanceKlass org/apache/maven/lifecycle/LifecycleExecutor
+-instanceKlass org/apache/maven/graph/GraphBuilder
+-instanceKlass org/apache/maven/eventspy/internal/EventSpyDispatcher
+-instanceKlass org/apache/maven/ProjectDependenciesResolver
+-instanceKlass org/apache/maven/Maven
+-instanceKlass org/apache/maven/configuration/BeanConfigurator
+-instanceKlass org/apache/maven/bridge/MavenRepositorySystem
+-instanceKlass org/apache/maven/artifact/resolver/ResolutionErrorHandler
+-instanceKlass org/apache/maven/artifact/repository/metadata/io/MetadataReader
+-instanceKlass org/apache/maven/artifact/handler/manager/ArtifactHandlerManager
+-instanceKlass org/apache/maven/artifact/factory/ArtifactFactory
+-instanceKlass org/apache/maven/artifact/handler/ArtifactHandler
+-instanceKlass org/apache/maven/lifecycle/Lifecycle
+-instanceKlass org/apache/maven/lifecycle/mapping/LifecycleMapping
+-instanceKlass org/codehaus/plexus/component/configurator/ComponentConfigurator
+-instanceKlass org/apache/maven/model/validation/ModelValidator
+-instanceKlass org/apache/maven/model/superpom/SuperPomProvider
+-instanceKlass org/apache/maven/model/profile/ProfileSelector
+-instanceKlass org/apache/maven/model/profile/ProfileInjector
+-instanceKlass org/apache/maven/model/profile/activation/ProfileActivator
+-instanceKlass org/apache/maven/model/plugin/ReportingConverter
+-instanceKlass org/apache/maven/model/plugin/ReportConfigurationExpander
+-instanceKlass org/apache/maven/model/plugin/PluginConfigurationExpander
+-instanceKlass org/apache/maven/model/path/UrlNormalizer
+-instanceKlass org/apache/maven/model/path/PathTranslator
+-instanceKlass org/apache/maven/model/path/ModelUrlNormalizer
+-instanceKlass org/apache/maven/model/path/ModelPathTranslator
+-instanceKlass org/apache/maven/model/normalization/ModelNormalizer
+-instanceKlass org/apache/maven/model/management/PluginManagementInjector
+-instanceKlass org/apache/maven/model/management/DependencyManagementInjector
+-instanceKlass org/apache/maven/model/io/ModelWriter
+-instanceKlass org/apache/maven/model/interpolation/ModelInterpolator
+-instanceKlass org/apache/maven/model/inheritance/InheritanceAssembler
+-instanceKlass org/apache/maven/model/composition/DependencyManagementImporter
+-instanceKlass org/apache/maven/model/building/ModelProcessor
+-instanceKlass org/apache/maven/model/io/ModelReader
+-instanceKlass org/apache/maven/model/locator/ModelLocator
+-instanceKlass org/apache/maven/model/building/ModelBuilder
+-instanceKlass org/eclipse/aether/transport/wagon/WagonProvider
+-instanceKlass org/eclipse/aether/transport/wagon/WagonConfigurator
+-instanceKlass org/apache/maven/cli/configuration/ConfigurationProcessor
+-instanceKlass org/sonatype/plexus/components/sec/dispatcher/SecDispatcher
+-instanceKlass org/sonatype/plexus/components/cipher/PlexusCipher
+-instanceKlass org/eclipse/sisu/space/CloningClassSpace$1
+-instanceKlass org/apache/maven/repository/metadata/GraphConflictResolver
+-instanceKlass org/apache/maven/repository/metadata/GraphConflictResolutionPolicy
+-instanceKlass org/eclipse/sisu/plexus/ConfigurationImpl
+-instanceKlass org/apache/maven/repository/metadata/ClasspathTransformation
+-instanceKlass org/apache/maven/repository/legacy/resolver/transform/ArtifactTransformation
+-instanceKlass org/apache/maven/repository/legacy/resolver/transform/ArtifactTransformationManager
+-instanceKlass org/apache/maven/repository/legacy/resolver/conflict/ConflictResolverFactory
+-instanceKlass org/apache/maven/repository/legacy/resolver/conflict/ConflictResolver
+-instanceKlass org/apache/maven/repository/legacy/repository/ArtifactRepositoryFactory
+-instanceKlass org/apache/maven/repository/RepositorySystem
+-instanceKlass org/apache/maven/repository/legacy/UpdateCheckManager
+-instanceKlass org/apache/maven/repository/MirrorSelector
+-instanceKlass org/apache/maven/project/validation/ModelValidator
+-instanceKlass org/apache/maven/project/path/PathTranslator
+-instanceKlass org/apache/maven/project/interpolation/ModelInterpolator
+-instanceKlass org/apache/maven/project/inheritance/ModelInheritanceAssembler
+-instanceKlass org/apache/maven/project/MavenProjectBuilder
+-instanceKlass org/apache/maven/profiles/MavenProfilesBuilder
+-instanceKlass org/apache/maven/execution/RuntimeInformation
+-instanceKlass org/apache/maven/artifact/resolver/ArtifactResolver
+-instanceKlass org/apache/maven/artifact/resolver/ArtifactCollector
+-instanceKlass org/apache/maven/repository/legacy/resolver/LegacyArtifactCollector
+-instanceKlass org/apache/maven/artifact/repository/metadata/RepositoryMetadataManager
+-instanceKlass org/apache/maven/artifact/repository/layout/ArtifactRepositoryLayout
+-instanceKlass org/apache/maven/artifact/repository/ArtifactRepositoryFactory
+-instanceKlass org/apache/maven/artifact/manager/WagonManager
+-instanceKlass org/apache/maven/repository/legacy/WagonManager
+-instanceKlass org/apache/maven/artifact/installer/ArtifactInstaller
+-instanceKlass org/apache/maven/artifact/deployer/ArtifactDeployer
+-instanceKlass org/apache/maven/settings/validation/SettingsValidator
+-instanceKlass org/apache/maven/settings/io/SettingsWriter
+-instanceKlass org/apache/maven/settings/io/SettingsReader
+-instanceKlass org/apache/maven/settings/crypto/SettingsDecrypter
+-instanceKlass org/apache/maven/settings/building/SettingsBuilder
+-instanceKlass org/eclipse/aether/impl/MetadataGeneratorFactory
+-instanceKlass org/eclipse/aether/impl/VersionResolver
+-instanceKlass org/eclipse/aether/impl/VersionRangeResolver
+-instanceKlass org/eclipse/sisu/plexus/PlexusXmlMetadata
+-instanceKlass org/eclipse/aether/impl/ArtifactDescriptorReader
+-instanceKlass org/eclipse/sisu/plexus/RequirementImpl
+-instanceKlass org/codehaus/plexus/component/annotations/Requirement
+-instanceKlass org/eclipse/sisu/space/AbstractDeferredClass
+-instanceKlass org/eclipse/sisu/plexus/Roles
+-instanceKlass org/eclipse/sisu/plexus/Hints
+-instanceKlass org/apache/maven/wagon/Wagon
+-instanceKlass org/eclipse/sisu/space/Streams
+-instanceKlass org/eclipse/sisu/plexus/ComponentImpl
+-instanceKlass org/codehaus/plexus/component/annotations/Component
+-instanceKlass org/eclipse/sisu/plexus/PlexusTypeRegistry
+-instanceKlass org/eclipse/sisu/plexus/PlexusXmlScanner
+-instanceKlass javax/enterprise/inject/Typed
+-instanceKlass org/eclipse/sisu/space/QualifiedTypeBinder
+-instanceKlass org/eclipse/sisu/plexus/PlexusTypeBinder
+-instanceKlass sun/reflect/generics/reflectiveObjects/GenericArrayTypeImpl
+-instanceKlass sun/reflect/generics/tree/ArrayTypeSignature
+-instanceKlass com/google/inject/internal/MoreTypes$WildcardTypeImpl
+-instanceKlass sun/reflect/generics/tree/VoidDescriptor
+-instanceKlass sun/reflect/generics/tree/Wildcard
+-instanceKlass sun/reflect/generics/tree/BottomSignature
+-instanceKlass com/google/inject/internal/MoreTypes$ParameterizedTypeImpl
+-instanceKlass sun/reflect/generics/reflectiveObjects/ParameterizedTypeImpl
+-instanceKlass sun/reflect/generics/reflectiveObjects/LazyReflectiveObjectGenerator
+-instanceKlass sun/reflect/generics/tree/MethodTypeSignature
+-instanceKlass com/google/inject/spi/InjectionRequest
+-instanceKlass org/eclipse/sisu/bean/BeanProperty
+-instanceKlass com/google/common/collect/SortedIterable
+-instanceKlass com/google/inject/internal/Nullability
+-instanceKlass com/google/inject/spi/InjectionPoint$OverrideIndex
+-instanceKlass org/eclipse/sisu/Mediator
+-instanceKlass org/eclipse/sisu/inject/RankedBindings
+-instanceKlass java/util/function/BiConsumer
+-instanceKlass sun/reflect/generics/tree/TypeVariableSignature
+-instanceKlass com/google/inject/Inject
+-instanceKlass javax/inject/Inject
+-instanceKlass sun/reflect/generics/tree/ClassSignature
+-instanceKlass sun/reflect/generics/tree/Signature
+-instanceKlass sun/reflect/generics/tree/FormalTypeParameter
+-instanceKlass com/google/inject/spi/InjectionPoint$InjectableMembers
+-instanceKlass com/google/inject/spi/InjectionPoint$InjectableMember
+-instanceKlass com/google/inject/spi/InjectionPoint
+-instanceKlass com/google/inject/internal/MoreTypes$GenericArrayTypeImpl
+-instanceKlass com/google/inject/internal/MoreTypes$CompositeType
+-instanceKlass com/google/inject/Key$AnnotationTypeStrategy
+-instanceKlass com/google/common/util/concurrent/AbstractFuture$Failure
+-instanceKlass com/google/common/util/concurrent/AbstractFuture$Cancellation
+-instanceKlass com/google/common/util/concurrent/AbstractFuture$SetFuture
+-instanceKlass com/google/common/util/concurrent/Uninterruptibles
+-instanceKlass com/google/common/base/CommonPattern
+-instanceKlass com/google/common/base/Platform$JdkPatternCompiler
+-instanceKlass com/google/common/base/PatternCompiler
+-instanceKlass com/google/common/base/Platform
+-instanceKlass com/google/common/base/Stopwatch
+-instanceKlass java/util/concurrent/locks/LockSupport
+-instanceKlass com/google/common/util/concurrent/AbstractFuture$Waiter
+-instanceKlass com/google/common/util/concurrent/AbstractFuture$Listener
+-instanceKlass com/google/common/util/concurrent/AbstractFuture$UnsafeAtomicHelper$1
+-instanceKlass com/google/common/util/concurrent/AbstractFuture$AtomicHelper
+-instanceKlass com/google/common/util/concurrent/AbstractFuture
+-instanceKlass com/google/common/util/concurrent/ListenableFuture
+-instanceKlass com/google/common/cache/LocalCache$LoadingValueReference
+-instanceKlass java/lang/reflect/WeakCache$Value
+-instanceKlass sun/misc/ProxyGenerator$ExceptionTableEntry
+-instanceKlass sun/misc/ProxyGenerator$PrimitiveTypeInfo
+-instanceKlass sun/misc/ProxyGenerator$FieldInfo
+-instanceKlass java/io/DataOutput
+-instanceKlass sun/misc/ProxyGenerator$ConstantPool$Entry
+-instanceKlass sun/misc/ProxyGenerator$MethodInfo
+-instanceKlass sun/misc/ProxyGenerator$ProxyMethod
+-instanceKlass sun/misc/ProxyGenerator$ConstantPool
+-instanceKlass sun/misc/ProxyGenerator
+-instanceKlass java/lang/reflect/WeakCache$Factory
+-instanceKlass java/util/function/Supplier
+-instanceKlass java/lang/reflect/Proxy$ProxyClassFactory
+-instanceKlass java/lang/reflect/Proxy$KeyFactory
+-instanceKlass java/util/function/BiFunction
+-instanceKlass java/lang/reflect/WeakCache
+-instanceKlass java/lang/reflect/Proxy
+-instanceKlass sun/reflect/annotation/AnnotationInvocationHandler
+-instanceKlass sun/reflect/annotation/AnnotationParser$1
+-instanceKlass sun/reflect/annotation/ExceptionProxy
+-instanceKlass java/lang/Class$4
+-instanceKlass java/lang/annotation/Documented
+-instanceKlass java/lang/annotation/Inherited
+-instanceKlass sun/reflect/annotation/AnnotationType$1
+-instanceKlass java/lang/annotation/Target
+-instanceKlass sun/reflect/generics/visitor/Reifier
+-instanceKlass sun/reflect/generics/visitor/TypeTreeVisitor
+-instanceKlass sun/reflect/generics/factory/CoreReflectionFactory
+-instanceKlass sun/reflect/generics/factory/GenericsFactory
+-instanceKlass sun/reflect/generics/scope/AbstractScope
+-instanceKlass sun/reflect/generics/scope/Scope
+-instanceKlass sun/reflect/generics/tree/ClassTypeSignature
+-instanceKlass sun/reflect/generics/tree/SimpleClassTypeSignature
+-instanceKlass sun/reflect/generics/tree/FieldTypeSignature
+-instanceKlass sun/reflect/generics/tree/BaseType
+-instanceKlass sun/reflect/generics/tree/TypeSignature
+-instanceKlass sun/reflect/generics/tree/ReturnType
+-instanceKlass sun/reflect/generics/tree/TypeArgument
+-instanceKlass sun/reflect/generics/tree/TypeTree
+-instanceKlass sun/reflect/generics/tree/Tree
+-instanceKlass sun/reflect/generics/parser/SignatureParser
+-instanceKlass java/lang/annotation/Retention
+-instanceKlass javax/inject/Named
+-instanceKlass javax/inject/Qualifier
+-instanceKlass com/google/inject/BindingAnnotation
+-instanceKlass javax/inject/Scope
+-instanceKlass com/google/inject/ScopeAnnotation
+-instanceKlass com/google/inject/internal/Annotations$AnnotationChecker
+-instanceKlass com/google/inject/internal/Annotations$3
+-instanceKlass java/lang/reflect/InvocationHandler
+-instanceKlass com/google/inject/internal/Annotations
+-instanceKlass org/eclipse/sisu/Parameters
+-instanceKlass org/eclipse/sisu/wire/ParameterKeys
+-instanceKlass org/eclipse/sisu/wire/TypeConverterCache
+-instanceKlass org/eclipse/sisu/inject/DefaultRankingFunction
+-instanceKlass com/google/inject/internal/Scoping
+-instanceKlass com/google/inject/internal/InternalFactory
+-instanceKlass com/google/inject/spi/ConstructorBinding
+-instanceKlass com/google/inject/spi/ProviderInstanceBinding
+-instanceKlass com/google/inject/internal/DelayedInitialize
+-instanceKlass com/google/inject/spi/ProviderKeyBinding
+-instanceKlass com/google/inject/spi/InstanceBinding
+-instanceKlass com/google/inject/spi/HasDependencies
+-instanceKlass com/google/inject/spi/LinkedKeyBinding
+-instanceKlass com/google/inject/spi/UntargettedBinding
+-instanceKlass com/google/inject/internal/BindingImpl
+-instanceKlass com/google/common/base/Suppliers$MemoizingSupplier
+-instanceKlass com/google/inject/Key$1
+-instanceKlass com/google/inject/Key$AnnotationStrategy
+-instanceKlass org/eclipse/sisu/wire/ElementAnalyzer$1
+-instanceKlass com/google/inject/util/Modules$EmptyModule
+-instanceKlass com/google/inject/util/Modules$OverriddenModuleBuilder
+-instanceKlass com/google/inject/util/Modules
+-instanceKlass com/google/common/base/Optional
+-instanceKlass sun/reflect/annotation/AnnotationParser
+-instanceKlass com/google/inject/Provides
+-instanceKlass java/lang/reflect/WildcardType
+-instanceKlass java/lang/reflect/ParameterizedType
+-instanceKlass java/lang/reflect/GenericArrayType
+-instanceKlass java/lang/reflect/TypeVariable
+-instanceKlass com/google/inject/internal/ProviderMethodsModule$Signature
+-instanceKlass com/google/common/collect/ImmutableMap$Builder
+-instanceKlass com/google/inject/internal/MoreTypes
+-instanceKlass javax/inject/Singleton
+-instanceKlass com/google/inject/spi/ElementSource
+-instanceKlass com/google/inject/spi/ScopeBinding
+-instanceKlass com/google/inject/Scopes$2
+-instanceKlass com/google/inject/Scopes$1
+-instanceKlass com/google/common/collect/LinkedHashMultimap$ValueSetLink
+-instanceKlass com/google/common/collect/AbstractMultimap
+-instanceKlass com/google/common/collect/SetMultimap
+-instanceKlass com/google/inject/internal/CycleDetectingLock
+-instanceKlass com/google/common/collect/Multimap
+-instanceKlass com/google/inject/internal/CycleDetectingLock$CycleDetectingLockFactory
+-instanceKlass com/google/inject/internal/SingletonScope
+-instanceKlass com/google/inject/Scopes
+-instanceKlass com/google/inject/Singleton
+-instanceKlass com/google/inject/spi/Elements$ModuleInfo
+-instanceKlass com/google/inject/PrivateModule
+-instanceKlass com/google/common/collect/MapMaker
+-instanceKlass com/google/inject/internal/util/StackTraceElements$InMemoryStackTraceElement
+-instanceKlass com/google/inject/internal/util/StackTraceElements
+-instanceKlass com/google/inject/spi/ModuleSource
+-instanceKlass com/google/inject/internal/InternalFlags$1
+-instanceKlass com/google/inject/internal/InternalFlags
+-instanceKlass com/google/inject/internal/ProviderMethodsModule
+-instanceKlass com/google/common/collect/Platform
+-instanceKlass com/google/inject/internal/AbstractBindingBuilder
+-instanceKlass com/google/inject/binder/ConstantBindingBuilder
+-instanceKlass com/google/inject/binder/AnnotatedElementBuilder
+-instanceKlass com/google/inject/spi/Elements$RecordingBinder
+-instanceKlass com/google/inject/Binding
+-instanceKlass com/google/inject/spi/DefaultBindingTargetVisitor
+-instanceKlass com/google/inject/spi/BindingTargetVisitor
+-instanceKlass com/google/inject/spi/Elements
+-instanceKlass com/google/inject/internal/InjectorShell$RootModule
+-instanceKlass java/util/concurrent/atomic/AtomicReferenceArray
+-instanceKlass java/util/concurrent/Future
+-instanceKlass java/util/concurrent/ConcurrentLinkedQueue$Node
+-instanceKlass com/google/common/cache/Weigher
+-instanceKlass com/google/common/base/Predicate
+-instanceKlass com/google/common/base/Equivalence
+-instanceKlass com/google/common/base/MoreObjects
+-instanceKlass com/google/common/cache/LocalCache$1
+-instanceKlass com/google/common/cache/LocalCache$ReferenceEntry
+-instanceKlass com/google/common/cache/CacheLoader
+-instanceKlass com/google/common/cache/LocalCache$LocalManualCache
+-instanceKlass com/google/inject/internal/WeakKeySet$1
+-instanceKlass com/google/common/cache/LocalCache$StrongValueReference
+-instanceKlass com/google/common/cache/LocalCache$ValueReference
+-instanceKlass com/google/common/cache/CacheBuilder$2
+-instanceKlass com/google/common/cache/CacheStats
+-instanceKlass com/google/common/base/Suppliers$SupplierOfInstance
+-instanceKlass com/google/common/base/Suppliers
+-instanceKlass com/google/common/cache/CacheBuilder$1
+-instanceKlass com/google/common/cache/AbstractCache$StatsCounter
+-instanceKlass com/google/common/cache/LoadingCache
+-instanceKlass com/google/common/cache/Cache
+-instanceKlass com/google/common/base/Ticker
+-instanceKlass com/google/common/base/Supplier
+-instanceKlass com/google/common/cache/CacheBuilder
+-instanceKlass com/google/common/cache/RemovalListener
+-instanceKlass com/google/inject/internal/WeakKeySet
+-instanceKlass com/google/inject/internal/State$1
+-instanceKlass com/google/inject/internal/InheritingState
+-instanceKlass com/google/inject/internal/ProcessedBindingData
+-instanceKlass com/google/inject/spi/DefaultElementVisitor
+-instanceKlass com/google/common/collect/Lists
+-instanceKlass com/google/inject/internal/State
+-instanceKlass com/google/inject/internal/InjectorShell$Builder
+-instanceKlass com/google/common/base/Joiner$MapJoiner
+-instanceKlass com/google/common/base/Joiner
+-instanceKlass com/google/common/collect/Multiset
+-instanceKlass com/google/common/collect/Collections2
+-instanceKlass com/google/common/collect/Maps$EntryTransformer
+-instanceKlass com/google/common/base/Converter
+-instanceKlass com/google/common/collect/SortedMapDifference
+-instanceKlass com/google/common/collect/MapDifference
+-instanceKlass com/google/common/collect/Maps
+-instanceKlass java/util/concurrent/CountDownLatch
+-instanceKlass com/google/inject/internal/Initializable
+-instanceKlass com/google/inject/internal/Initializer
+-instanceKlass com/google/common/collect/ImmutableCollection$Builder
+-instanceKlass com/google/inject/internal/util/SourceProvider
+-instanceKlass com/google/inject/internal/Errors$Converter
+-instanceKlass com/google/common/collect/Sets
+-instanceKlass com/google/inject/internal/Errors
+-instanceKlass java/util/logging/LogManager$5
+-instanceKlass sun/reflect/UnsafeFieldAccessorFactory
+-instanceKlass java/util/logging/LoggingProxyImpl
+-instanceKlass sun/util/logging/LoggingProxy
+-instanceKlass sun/util/logging/LoggingSupport$1
+-instanceKlass sun/util/logging/LoggingSupport
+-instanceKlass sun/util/logging/PlatformLogger$LoggerProxy
+-instanceKlass sun/util/logging/PlatformLogger$1
+-instanceKlass sun/util/logging/PlatformLogger
+-instanceKlass java/util/logging/LogManager$LoggerContext$1
+-instanceKlass java/util/logging/LogManager$3
+-instanceKlass java/util/logging/LogManager$2
+-instanceKlass java/lang/Shutdown$Lock
+-instanceKlass java/lang/Shutdown
+-instanceKlass java/lang/ApplicationShutdownHooks$1
+-instanceKlass java/lang/ApplicationShutdownHooks
+-instanceKlass java/util/logging/LogManager$LogNode
+-instanceKlass java/util/logging/LogManager$LoggerContext
+-instanceKlass java/util/logging/LogManager$1
+-instanceKlass java/util/logging/LogManager
+-instanceKlass java/util/concurrent/CopyOnWriteArrayList
+-instanceKlass java/util/logging/Logger$LoggerBundle
+-instanceKlass java/util/logging/Level$KnownLevel
+-instanceKlass java/util/logging/Level
+-instanceKlass java/util/logging/Handler
+-instanceKlass java/util/logging/Logger
+-instanceKlass com/google/inject/internal/util/Stopwatch
+-instanceKlass com/google/inject/internal/ContextualCallable
+-instanceKlass com/google/inject/Injector
+-instanceKlass com/google/inject/internal/InternalInjectorCreator
+-instanceKlass com/google/inject/Guice
+-instanceKlass org/eclipse/sisu/wire/Wiring
+-instanceKlass org/eclipse/sisu/wire/WireModule$Strategy$1
+-instanceKlass org/eclipse/sisu/wire/WireModule$Strategy
+-instanceKlass org/eclipse/sisu/wire/AbstractTypeConverter
+-instanceKlass com/google/inject/spi/ElementVisitor
+-instanceKlass org/eclipse/sisu/wire/WireModule
+-instanceKlass org/eclipse/sisu/bean/BeanBinder
+-instanceKlass org/eclipse/sisu/plexus/PlexusBindingModule
+-instanceKlass org/codehaus/plexus/DefaultPlexusContainer$BootModule
+-instanceKlass org/codehaus/plexus/component/annotations/Configuration
+-instanceKlass org/eclipse/sisu/plexus/PlexusAnnotatedMetadata
+-instanceKlass org/eclipse/sisu/plexus/PlexusBeanMetadata
+-instanceKlass org/eclipse/sisu/plexus/PlexusAnnotatedBeanModule$PlexusAnnotatedBeanSource
+-instanceKlass org/eclipse/sisu/space/SpaceModule$Strategy$1
+-instanceKlass org/eclipse/sisu/space/DefaultClassFinder
+-instanceKlass org/eclipse/sisu/space/asm/ClassVisitor
+-instanceKlass org/eclipse/sisu/space/SpaceScanner
+-instanceKlass org/eclipse/sisu/space/IndexedClassFinder
+-instanceKlass org/eclipse/sisu/space/ClassFinder
+-instanceKlass org/eclipse/sisu/space/SpaceModule
+-instanceKlass org/eclipse/sisu/space/SpaceVisitor
+-instanceKlass org/eclipse/sisu/plexus/PlexusTypeListener
+-instanceKlass org/eclipse/sisu/space/QualifiedTypeListener
+-instanceKlass org/eclipse/sisu/plexus/PlexusAnnotatedBeanModule$1
+-instanceKlass org/eclipse/sisu/space/SpaceModule$Strategy
+-instanceKlass org/eclipse/sisu/plexus/PlexusAnnotatedBeanModule
+-instanceKlass org/eclipse/sisu/plexus/PlexusBeanSource
+-instanceKlass org/eclipse/sisu/plexus/PlexusXmlBeanModule
+-instanceKlass org/eclipse/sisu/plexus/PlexusBeanModule
+-instanceKlass org/eclipse/sisu/space/URLClassSpace
+-instanceKlass org/codehaus/plexus/DefaultPlexusContainer$SLF4JLoggerFactoryProvider
+-instanceKlass com/google/inject/util/Providers$ConstantProvider
+-instanceKlass com/google/inject/util/Providers
+-instanceKlass org/codehaus/plexus/personality/plexus/lifecycle/phase/Disposable
+-instanceKlass org/codehaus/plexus/personality/plexus/lifecycle/phase/Startable
+-instanceKlass org/codehaus/plexus/personality/plexus/lifecycle/phase/Initializable
+-instanceKlass org/codehaus/plexus/personality/plexus/lifecycle/phase/Contextualizable
+-instanceKlass org/codehaus/plexus/logging/LogEnabled
+-instanceKlass org/eclipse/sisu/bean/BeanScheduler$1
+-instanceKlass com/google/inject/spi/DefaultBindingScopingVisitor
+-instanceKlass com/google/inject/spi/BindingScopingVisitor
+-instanceKlass org/eclipse/sisu/bean/BeanScheduler$CycleActivator
+-instanceKlass com/google/inject/spi/ModuleAnnotatedMethodScanner
+-instanceKlass com/google/inject/PrivateBinder
+-instanceKlass com/google/inject/spi/TypeListener
+-instanceKlass com/google/inject/MembersInjector
+-instanceKlass com/google/inject/spi/Message
+-instanceKlass com/google/inject/spi/Element
+-instanceKlass com/google/inject/binder/AnnotatedConstantBindingBuilder
+-instanceKlass com/google/inject/Scope
+-instanceKlass com/google/inject/TypeLiteral
+-instanceKlass com/google/inject/binder/AnnotatedBindingBuilder
+-instanceKlass com/google/inject/binder/LinkedBindingBuilder
+-instanceKlass com/google/inject/binder/ScopedBindingBuilder
+-instanceKlass com/google/inject/spi/Dependency
+-instanceKlass com/google/inject/Key
+-instanceKlass com/google/inject/spi/ProvisionListener
+-instanceKlass com/google/inject/Binder
+-instanceKlass org/eclipse/sisu/bean/PropertyBinding
+-instanceKlass org/eclipse/sisu/bean/BeanScheduler
+-instanceKlass org/eclipse/sisu/plexus/DefaultPlexusBeanLocator
+-instanceKlass org/eclipse/sisu/inject/MildKeys
+-instanceKlass org/eclipse/sisu/plexus/ClassRealmManager
+-instanceKlass org/codehaus/plexus/context/ContextMapAdapter
+-instanceKlass org/codehaus/plexus/context/DefaultContext
+-instanceKlass org/codehaus/plexus/logging/AbstractLogger
+-instanceKlass org/codehaus/plexus/logging/AbstractLoggerManager
+-instanceKlass com/google/inject/matcher/AbstractMatcher
+-instanceKlass com/google/inject/matcher/Matcher
+-instanceKlass com/google/inject/spi/TypeConverter
+-instanceKlass org/codehaus/plexus/DefaultPlexusContainer$LoggerProvider
+-instanceKlass org/codehaus/plexus/DefaultPlexusContainer$DefaultsModule
+-instanceKlass org/codehaus/plexus/DefaultPlexusContainer$ContainerModule
+-instanceKlass org/eclipse/sisu/inject/ImplicitBindings
+-instanceKlass org/eclipse/sisu/inject/MildValues$InverseMapping
+-instanceKlass org/eclipse/sisu/inject/MildValues
+-instanceKlass org/eclipse/sisu/inject/Weak
+-instanceKlass java/util/concurrent/atomic/AtomicReference
+-instanceKlass org/eclipse/sisu/inject/BindingPublisher
+-instanceKlass org/eclipse/sisu/inject/RankingFunction
+-instanceKlass org/eclipse/sisu/inject/BindingSubscriber
+-instanceKlass org/eclipse/sisu/inject/DefaultBeanLocator
+-instanceKlass org/eclipse/sisu/inject/DeferredClass
+-instanceKlass org/codehaus/plexus/DefaultPlexusContainer$LoggerManagerProvider
+-instanceKlass org/eclipse/sisu/inject/DeferredProvider
+-instanceKlass com/google/inject/Provider
+-instanceKlass com/google/inject/AbstractModule
+-instanceKlass org/codehaus/plexus/context/Context
+-instanceKlass org/eclipse/sisu/space/ClassSpace
+-instanceKlass javax/inject/Provider
+-instanceKlass org/eclipse/sisu/bean/BeanManager
+-instanceKlass org/eclipse/sisu/plexus/PlexusBeanLocator
+-instanceKlass org/codehaus/plexus/classworlds/ClassWorldListener
+-instanceKlass com/google/inject/Module
+-instanceKlass org/eclipse/sisu/inject/MutableBeanLocator
+-instanceKlass org/eclipse/sisu/inject/BeanLocator
+-instanceKlass org/codehaus/plexus/DefaultPlexusContainer
+-instanceKlass org/codehaus/plexus/MutablePlexusContainer
+-instanceKlass com/google/common/collect/CollectPreconditions
+-instanceKlass com/google/common/collect/AbstractMapEntry
+-instanceKlass com/google/common/base/Function
+-instanceKlass com/google/common/collect/Iterables
+-instanceKlass com/google/common/collect/BiMap
+-instanceKlass com/google/common/collect/ImmutableMap
+-instanceKlass org/apache/maven/extension/internal/CoreExports
+-instanceKlass com/google/common/base/Preconditions
+-instanceKlass com/google/common/collect/Iterators$2
+-instanceKlass com/google/common/collect/PeekingIterator
+-instanceKlass com/google/common/collect/Iterators
+-instanceKlass com/google/common/collect/UnmodifiableIterator
+-instanceKlass org/codehaus/plexus/DefaultContainerConfiguration
+-instanceKlass org/codehaus/plexus/ContainerConfiguration
+-instanceKlass com/google/common/collect/Hashing
+-instanceKlass com/google/common/collect/ObjectArrays
+-instanceKlass org/codehaus/plexus/util/xml/XMLWriter
+-instanceKlass org/codehaus/plexus/util/xml/pull/MXParser
+-instanceKlass org/codehaus/plexus/util/xml/Xpp3Dom
+-instanceKlass org/codehaus/plexus/util/xml/pull/XmlPullParser
+-instanceKlass org/codehaus/plexus/util/xml/Xpp3DomBuilder
+-instanceKlass org/codehaus/plexus/util/ReaderFactory
+-instanceKlass org/apache/maven/project/ExtensionDescriptor
+-instanceKlass org/apache/maven/project/ExtensionDescriptorBuilder
+-instanceKlass org/apache/maven/extension/internal/CoreExtensionEntry
+-instanceKlass org/codehaus/plexus/util/StringUtils
+-instanceKlass java/text/DontCareFieldPosition$1
+-instanceKlass java/text/Format$FieldDelegate
+-instanceKlass java/util/Date
+-instanceKlass java/text/DigitList
+-instanceKlass java/text/FieldPosition
+-instanceKlass java/util/Currency$CurrencyNameGetter
+-instanceKlass java/util/Currency$1
+-instanceKlass java/util/Currency
+-instanceKlass java/text/DecimalFormatSymbols
+-instanceKlass java/util/concurrent/atomic/AtomicMarkableReference$Pair
+-instanceKlass java/util/concurrent/atomic/AtomicMarkableReference
+-instanceKlass java/text/DateFormatSymbols
+-instanceKlass sun/util/calendar/CalendarUtils
+-instanceKlass sun/util/calendar/CalendarDate
+-instanceKlass java/util/Collections$EmptyIterator
+-instanceKlass sun/util/locale/LanguageTag
+-instanceKlass java/util/ResourceBundle$CacheKeyReference
+-instanceKlass java/util/ResourceBundle$CacheKey
+-instanceKlass java/util/ResourceBundle$RBClassLoader$1
+-instanceKlass java/util/spi/ResourceBundleControlProvider
+-instanceKlass java/util/ResourceBundle
+-instanceKlass java/util/ResourceBundle$Control
+-instanceKlass sun/util/resources/LocaleData$1
+-instanceKlass sun/util/resources/LocaleData
+-instanceKlass sun/util/locale/provider/LocaleResources
+-instanceKlass sun/util/locale/provider/CalendarDataUtility$CalendarWeekParameterGetter
+-instanceKlass sun/util/locale/provider/LocaleServiceProviderPool$LocalizedObjectGetter
+-instanceKlass java/util/ServiceLoader$1
+-instanceKlass java/util/ServiceLoader$LazyIterator
+-instanceKlass java/util/ServiceLoader
+-instanceKlass sun/util/locale/provider/SPILocaleProviderAdapter$1
+-instanceKlass sun/util/locale/provider/LocaleServiceProviderPool
+-instanceKlass sun/util/locale/provider/CalendarDataUtility
+-instanceKlass java/util/Calendar$Builder
+-instanceKlass sun/util/locale/provider/JRELocaleProviderAdapter$1
+-instanceKlass sun/util/locale/provider/LocaleDataMetaInfo
+-instanceKlass sun/util/locale/provider/AvailableLanguageTags
+-instanceKlass sun/util/locale/provider/LocaleProviderAdapter$1
+-instanceKlass java/util/Collections$UnmodifiableCollection$1
+-instanceKlass sun/util/locale/provider/ResourceBundleBasedAdapter
+-instanceKlass sun/util/locale/provider/LocaleProviderAdapter
+-instanceKlass java/util/spi/LocaleServiceProvider
+-instanceKlass java/util/Calendar
+-instanceKlass java/util/TimeZone$1
+-instanceKlass sun/util/calendar/ZoneInfoFile$ZoneOffsetTransitionRule
+-instanceKlass java/io/DataInput
+-instanceKlass sun/util/calendar/ZoneInfoFile$1
+-instanceKlass sun/util/calendar/ZoneInfoFile
+-instanceKlass sun/util/calendar/CalendarSystem
+-instanceKlass java/util/TimeZone
+-instanceKlass java/util/Locale$1
+-instanceKlass java/text/AttributedCharacterIterator$Attribute
+-instanceKlass org/apache/commons/lang3/StringUtils
+-instanceKlass org/apache/maven/cli/CLIReportingUtils
+-instanceKlass org/apache/maven/properties/internal/SystemProperties
+-instanceKlass java/lang/ProcessEnvironment$StringEntry
+-instanceKlass java/util/Collections$UnmodifiableMap$UnmodifiableEntrySet$UnmodifiableEntry
+-instanceKlass java/lang/ProcessEnvironment$StringEntrySet$1
+-instanceKlass java/util/Collections$UnmodifiableMap$UnmodifiableEntrySet$1
+-instanceKlass org/codehaus/plexus/util/Os
+-instanceKlass org/apache/maven/properties/internal/EnvironmentUtils
+-instanceKlass org/codehaus/plexus/logging/Logger
+-instanceKlass org/apache/maven/cli/logging/Slf4jLoggerManager
+-instanceKlass org/slf4j/impl/MavenSlf4jSimpleFriend
+-instanceKlass org/slf4j/MavenSlf4jFriend
+-instanceKlass org/apache/maven/cli/logging/BaseSlf4jConfiguration
+-instanceKlass org/codehaus/plexus/util/IOUtil
+-instanceKlass org/codehaus/plexus/util/PropertyUtils
+-instanceKlass sun/net/www/protocol/jar/JarFileFactory
+-instanceKlass sun/net/www/protocol/jar/URLJarFile$URLJarFileCloseController
+-instanceKlass org/apache/maven/cli/logging/Slf4jConfiguration
+-instanceKlass org/apache/maven/cli/logging/Slf4jConfigurationFactory
+-instanceKlass sun/net/DefaultProgressMeteringPolicy
+-instanceKlass sun/net/ProgressMeteringPolicy
+-instanceKlass sun/net/ProgressMonitor
+-instanceKlass java/net/URLClassLoader$2
+-instanceKlass org/slf4j/impl/SimpleLogger$1
+-instanceKlass java/text/Format
+-instanceKlass org/slf4j/helpers/NamedLoggerBase
+-instanceKlass org/slf4j/impl/SimpleLoggerFactory
+-instanceKlass org/slf4j/impl/StaticLoggerBinder
+-instanceKlass org/slf4j/spi/LoggerFactoryBinder
+-instanceKlass java/util/Collections$3
+-instanceKlass java/net/URLClassLoader$3$1
+-instanceKlass sun/misc/CompoundEnumeration
+-instanceKlass java/net/URLClassLoader$3
+-instanceKlass sun/misc/URLClassPath$1
+-instanceKlass java/lang/ClassLoader$2
+-instanceKlass sun/misc/URLClassPath$2
+-instanceKlass sun/misc/Launcher$BootClassPathHolder$1
+-instanceKlass sun/misc/Launcher$BootClassPathHolder
+-instanceKlass org/slf4j/helpers/Util
+-instanceKlass org/slf4j/helpers/NOPLoggerFactory
+-instanceKlass java/util/concurrent/LinkedBlockingQueue$Node
+-instanceKlass java/util/concurrent/locks/AbstractQueuedSynchronizer$ConditionObject
+-instanceKlass java/util/concurrent/locks/Condition
+-instanceKlass java/util/concurrent/locks/AbstractQueuedSynchronizer$Node
+-instanceKlass java/util/concurrent/locks/AbstractOwnableSynchronizer
+-instanceKlass java/util/concurrent/BlockingQueue
+-instanceKlass org/slf4j/helpers/SubstituteLoggerFactory
+-instanceKlass org/slf4j/ILoggerFactory
+-instanceKlass org/slf4j/event/LoggingEvent
+-instanceKlass org/slf4j/LoggerFactory
+-instanceKlass org/apache/commons/cli/Util
+-instanceKlass java/util/LinkedList$Node
+-instanceKlass java/util/AbstractList$Itr
+-instanceKlass org/apache/commons/cli/CommandLine
+-instanceKlass java/util/LinkedHashMap$LinkedHashIterator
+-instanceKlass org/apache/commons/cli/Parser
+-instanceKlass org/apache/maven/cli/CleanArgument
+-instanceKlass org/apache/commons/cli/OptionValidator
+-instanceKlass org/apache/commons/cli/Option
+-instanceKlass org/apache/commons/cli/OptionBuilder
+-instanceKlass org/apache/commons/cli/Options
+-instanceKlass org/apache/commons/cli/CommandLineParser
+-instanceKlass org/apache/maven/cli/CLIManager
+-instanceKlass org/apache/maven/cli/logging/Slf4jStdoutLogger
+-instanceKlass org/eclipse/aether/DefaultRepositoryCache
+-instanceKlass org/apache/maven/project/ProjectBuildingRequest
+-instanceKlass org/eclipse/aether/RepositoryCache
+-instanceKlass org/apache/maven/execution/DefaultMavenExecutionRequest
+-instanceKlass org/apache/maven/execution/MavenExecutionRequest
+-instanceKlass java/util/Collections$UnmodifiableMap
+-instanceKlass java/lang/ProcessEnvironment$ExternalData
+-instanceKlass java/lang/ProcessEnvironment
+-instanceKlass org/fusesource/hawtjni/runtime/Library
+-instanceKlass org/fusesource/jansi/internal/CLibrary
+-instanceKlass org/fusesource/jansi/AnsiConsole
+-instanceKlass org/fusesource/jansi/Ansi$1
+-instanceKlass java/util/concurrent/Callable
+-instanceKlass org/fusesource/jansi/Ansi
+-instanceKlass org/apache/maven/shared/utils/logging/MessageBuilder
+-instanceKlass org/apache/maven/shared/utils/logging/MessageUtils
+-instanceKlass org/apache/maven/cli/CliRequest
+-instanceKlass org/apache/maven/execution/ExecutionListener
+-instanceKlass org/eclipse/aether/transfer/TransferListener
+-instanceKlass org/apache/maven/toolchain/building/ToolchainsBuildingRequest
+-instanceKlass org/apache/maven/building/Source
+-instanceKlass org/apache/maven/eventspy/EventSpy$Context
+-instanceKlass org/codehaus/plexus/PlexusContainer
+-instanceKlass org/codehaus/plexus/logging/LoggerManager
+-instanceKlass org/slf4j/Logger
+-instanceKlass org/apache/maven/exception/ExceptionHandler
+-instanceKlass org/apache/maven/cli/MavenCli
+-instanceKlass java/util/TreeMap$PrivateEntryIterator
+-instanceKlass java/util/TimSort
+-instanceKlass sun/security/action/GetBooleanAction
+-instanceKlass java/util/Arrays$LegacyMergeSort
+-instanceKlass org/codehaus/plexus/classworlds/launcher/Configurator$1
+-instanceKlass java/util/HashMap$HashIterator
+-instanceKlass org/codehaus/plexus/classworlds/launcher/ConfigurationParser$1
+-instanceKlass java/net/URI$Parser
+-instanceKlass java/net/URI
+-instanceKlass java/util/ArrayList$Itr
+-instanceKlass org/codehaus/plexus/classworlds/strategy/AbstractStrategy
+-instanceKlass org/codehaus/plexus/classworlds/strategy/Strategy
+-instanceKlass org/codehaus/plexus/classworlds/strategy/StrategyFactory
+-instanceKlass java/util/NavigableMap
+-instanceKlass java/util/SortedMap
+-instanceKlass java/util/NavigableSet
+-instanceKlass java/util/SortedSet
+-instanceKlass java/io/FilenameFilter
+-instanceKlass org/codehaus/plexus/classworlds/launcher/ConfigurationParser
+-instanceKlass org/codehaus/plexus/classworlds/launcher/Configurator
+-instanceKlass org/codehaus/plexus/classworlds/launcher/ConfigurationHandler
+-instanceKlass java/lang/Void
+-instanceKlass org/codehaus/plexus/classworlds/ClassWorld
+-instanceKlass java/lang/Class$MethodArray
+-instanceKlass sun/launcher/LauncherHelper$FXHelper
+-instanceKlass org/codehaus/plexus/classworlds/launcher/Launcher
+-instanceKlass java/io/FilePermission$1
+-instanceKlass sun/net/www/MessageHeader
+-instanceKlass java/net/URLConnection
+-instanceKlass java/security/PermissionCollection
+-instanceKlass sun/nio/ByteBuffered
+-instanceKlass sun/security/util/DisabledAlgorithmConstraints$1
+-instanceKlass sun/security/util/DisabledAlgorithmConstraints$Constraint
+-instanceKlass java/util/regex/Matcher
+-instanceKlass java/util/regex/MatchResult
+-instanceKlass sun/security/util/DisabledAlgorithmConstraints$Constraints
+-instanceKlass java/util/ArrayList$SubList$1
+-instanceKlass java/util/ListIterator
+-instanceKlass java/util/Properties$LineReader
+-instanceKlass java/security/Security$1
+-instanceKlass java/security/Security
+-instanceKlass sun/security/util/AbstractAlgorithmConstraints$1
+-instanceKlass java/util/regex/ASCII
+-instanceKlass java/util/regex/Pattern$TreeInfo
+-instanceKlass java/util/regex/Pattern$Node
+-instanceKlass java/util/regex/Pattern
+-instanceKlass sun/security/util/AlgorithmDecomposer
+-instanceKlass sun/security/util/AbstractAlgorithmConstraints
+-instanceKlass java/security/AlgorithmConstraints
+-instanceKlass sun/security/util/SignatureFileVerifier
+-instanceKlass sun/security/util/ManifestEntryVerifier
+-instanceKlass java/lang/Package
+-instanceKlass java/util/jar/JarVerifier$3
+-instanceKlass java/security/CodeSigner
+-instanceKlass java/util/jar/JarVerifier
+-instanceKlass sun/misc/ASCIICaseInsensitiveComparator
+-instanceKlass java/util/jar/Attributes$Name
+-instanceKlass java/util/jar/Attributes
+-instanceKlass sun/misc/Resource
+-instanceKlass sun/misc/IOUtils
+-instanceKlass java/util/zip/ZStreamRef
+-instanceKlass java/util/zip/Inflater
+-instanceKlass java/util/zip/ZipEntry
+-instanceKlass sun/misc/ExtensionDependency
+-instanceKlass sun/misc/JarIndex
+-instanceKlass sun/nio/ch/DirectBuffer
+-instanceKlass sun/misc/PerfCounter$CoreCounters
+-instanceKlass sun/misc/Perf
+-instanceKlass sun/misc/Perf$GetPerfAction
+-instanceKlass sun/misc/PerfCounter
+-instanceKlass java/util/zip/ZipCoder
+-instanceKlass java/util/Deque
+-instanceKlass java/util/Queue
+-instanceKlass java/nio/charset/StandardCharsets
+-instanceKlass java/util/jar/JavaUtilJarAccessImpl
+-instanceKlass sun/misc/JavaUtilJarAccess
+-instanceKlass sun/misc/FileURLMapper
+-instanceKlass sun/misc/URLClassPath$JarLoader$1
+-instanceKlass java/util/zip/ZipFile$1
+-instanceKlass sun/misc/JavaUtilZipFileAccess
+-instanceKlass java/util/zip/ZipFile
+-instanceKlass java/util/zip/ZipConstants
+-instanceKlass sun/misc/URLClassPath$Loader
+-instanceKlass sun/misc/URLClassPath$3
+-instanceKlass sun/net/util/URLUtil
+-instanceKlass java/net/URLClassLoader$1
+-instanceKlass java/lang/invoke/MethodHandleStatics$1
+-instanceKlass java/lang/invoke/MethodHandleStatics
+-instanceKlass java/lang/invoke/MemberName$Factory
+-instanceKlass java/lang/ClassValue$Version
+-instanceKlass java/lang/ClassValue$Identity
+-instanceKlass java/lang/ClassValue
+-instanceKlass java/lang/invoke/MethodHandleImpl$3
+-instanceKlass java/lang/invoke/MethodHandleImpl$2
+-instanceKlass java/util/function/Function
+-instanceKlass java/lang/invoke/MethodHandleImpl$1
+-instanceKlass java/lang/invoke/MethodHandleImpl
+-instanceKlass java/lang/SystemClassLoaderAction
+-instanceKlass sun/misc/Launcher$AppClassLoader$1
+-instanceKlass sun/misc/URLClassPath
+-instanceKlass java/security/Principal
+-instanceKlass java/security/ProtectionDomain$Key
+-instanceKlass java/security/ProtectionDomain$2
+-instanceKlass sun/misc/JavaSecurityProtectionDomainAccess
+-instanceKlass java/security/ProtectionDomain$JavaSecurityAccessImpl
+-instanceKlass sun/misc/JavaSecurityAccess
+-instanceKlass java/net/URLStreamHandler
+-instanceKlass java/net/Parts
+-instanceKlass java/lang/CharacterData
+-instanceKlass sun/util/locale/LocaleUtils
+-instanceKlass java/util/Locale$LocaleKey
+-instanceKlass sun/util/locale/BaseLocale$Key
+-instanceKlass sun/util/locale/BaseLocale
+-instanceKlass java/util/concurrent/ConcurrentHashMap$CollectionView
+-instanceKlass java/util/concurrent/ConcurrentHashMap$CounterCell
+-instanceKlass java/util/concurrent/ConcurrentHashMap$Node
+-instanceKlass java/util/concurrent/locks/ReentrantLock
+-instanceKlass java/util/concurrent/locks/Lock
+-instanceKlass java/util/concurrent/ConcurrentMap
+-instanceKlass sun/util/locale/LocaleObjectCache
+-instanceKlass java/util/Locale
+-instanceKlass java/util/BitSet
+-instanceKlass sun/net/www/ParseUtil
+-instanceKlass java/io/FileInputStream$1
+-instanceKlass java/lang/reflect/Array
+-instanceKlass java/nio/charset/CoderResult$Cache
+-instanceKlass java/nio/charset/CoderResult
+-instanceKlass java/io/Reader
+-instanceKlass java/lang/Readable
+-instanceKlass sun/misc/MetaIndex
+-instanceKlass sun/misc/Launcher$ExtClassLoader$1
+-instanceKlass java/util/StringTokenizer
+-instanceKlass java/net/URLClassLoader$7
+-instanceKlass sun/misc/JavaNetAccess
+-instanceKlass java/lang/ClassLoader$ParallelLoaders
+-instanceKlass sun/security/util/Debug
+-instanceKlass sun/misc/Launcher$Factory
+-instanceKlass java/net/URLStreamHandlerFactory
+-instanceKlass java/lang/Compiler$1
+-instanceKlass java/lang/Compiler
+-instanceKlass java/lang/System$2
+-instanceKlass sun/misc/JavaLangAccess
+-instanceKlass sun/misc/OSEnvironment
+-instanceKlass java/lang/Integer$IntegerCache
+-instanceKlass sun/misc/NativeSignalHandler
+-instanceKlass sun/misc/Signal
+-instanceKlass java/lang/Terminator$1
+-instanceKlass sun/misc/SignalHandler
+-instanceKlass java/lang/Terminator
+-instanceKlass java/lang/ClassLoader$NativeLibrary
+-instanceKlass java/io/ExpiringCache$Entry
+-instanceKlass java/lang/ClassLoader$3
+-instanceKlass java/lang/StringCoding$StringEncoder
+-instanceKlass java/nio/file/Path
+-instanceKlass java/nio/file/Watchable
+-instanceKlass java/lang/Enum
+-instanceKlass java/io/ExpiringCache
+-instanceKlass java/io/FileSystem
+-instanceKlass java/io/DefaultFileSystem
+-instanceKlass java/nio/Bits$1
+-instanceKlass sun/misc/JavaNioAccess
+-instanceKlass java/nio/ByteOrder
+-instanceKlass java/nio/Bits
+-instanceKlass java/nio/charset/CharsetEncoder
+-instanceKlass sun/nio/cs/ArrayEncoder
+-instanceKlass sun/security/action/GetPropertyAction
+-instanceKlass java/io/Writer
+-instanceKlass sun/reflect/misc/ReflectUtil
+-instanceKlass java/util/concurrent/atomic/AtomicReferenceFieldUpdater$AtomicReferenceFieldUpdaterImpl$1
+-instanceKlass java/security/PrivilegedExceptionAction
+-instanceKlass java/util/concurrent/atomic/AtomicReferenceFieldUpdater
+-instanceKlass java/io/OutputStream
+-instanceKlass java/io/Flushable
+-instanceKlass java/io/FileDescriptor$1
+-instanceKlass sun/misc/JavaIOFileDescriptorAccess
+-instanceKlass java/io/FileDescriptor
+-instanceKlass sun/misc/Version
+-instanceKlass java/lang/Runtime
+-instanceKlass java/util/Hashtable$Enumerator
+-instanceKlass java/util/Iterator
+-instanceKlass java/util/Enumeration
+-instanceKlass java/util/Objects
+-instanceKlass java/util/Collections$SynchronizedCollection
+-instanceKlass java/nio/charset/CodingErrorAction
+-instanceKlass java/nio/charset/CharsetDecoder
+-instanceKlass sun/nio/cs/ArrayDecoder
+-instanceKlass java/lang/StringCoding$StringDecoder
+-instanceKlass java/lang/ThreadLocal$ThreadLocalMap
+-instanceKlass java/lang/StringCoding
+-instanceKlass sun/reflect/ReflectionFactory$1
+-instanceKlass java/lang/Class$1
+-instanceKlass sun/nio/cs/HistoricallyNamedCharset
+-instanceKlass java/util/Arrays
+-instanceKlass java/lang/reflect/ReflectAccess
+-instanceKlass sun/reflect/LangReflectAccess
+-instanceKlass java/lang/reflect/Modifier
+-instanceKlass sun/reflect/annotation/AnnotationType
+-instanceKlass java/lang/Class$AnnotationData
+-instanceKlass sun/reflect/generics/repository/AbstractRepository
+-instanceKlass java/lang/Class$Atomic
+-instanceKlass java/lang/Class$ReflectionData
+-instanceKlass java/lang/Class$3
+-instanceKlass java/lang/ThreadLocal
+-instanceKlass java/nio/charset/spi/CharsetProvider
+-instanceKlass java/nio/charset/Charset
+-instanceKlass java/lang/Math
+-instanceKlass java/util/Hashtable$Entry
+-instanceKlass sun/misc/VM
+-instanceKlass java/util/HashMap$Node
+-instanceKlass java/util/Map$Entry
+-instanceKlass sun/reflect/Reflection
+-instanceKlass sun/misc/SharedSecrets
+-instanceKlass java/lang/ref/Reference$1
+-instanceKlass sun/misc/JavaLangRefAccess
+-instanceKlass java/lang/ref/ReferenceQueue$Lock
+-instanceKlass java/lang/ref/ReferenceQueue
+-instanceKlass java/util/Collections$UnmodifiableCollection
+-instanceKlass java/util/AbstractMap
+-instanceKlass java/util/Set
+-instanceKlass java/util/Collections
+-instanceKlass java/lang/ref/Reference$Lock
+-instanceKlass sun/reflect/ReflectionFactory
+-instanceKlass java/util/AbstractCollection
+-instanceKlass java/util/RandomAccess
+-instanceKlass java/util/List
+-instanceKlass java/util/Collection
+-instanceKlass java/lang/Iterable
+-instanceKlass java/security/cert/Certificate
+-instanceKlass sun/reflect/ReflectionFactory$GetReflectionFactoryAction
+-instanceKlass java/security/PrivilegedAction
+-instanceKlass java/security/AccessController
+-instanceKlass java/security/Permission
+-instanceKlass java/security/Guard
+-instanceKlass java/lang/String$CaseInsensitiveComparator
+-instanceKlass java/util/Comparator
+-instanceKlass java/io/ObjectStreamField
+-instanceKlass java/lang/Number
+-instanceKlass java/lang/Character
+-instanceKlass java/lang/Boolean
+-instanceKlass java/nio/Buffer
+-instanceKlass java/lang/StackTraceElement
+-instanceKlass java/security/CodeSource
+-instanceKlass sun/misc/Launcher
+-instanceKlass java/util/jar/Manifest
+-instanceKlass java/net/URL
+-instanceKlass java/io/File
+-instanceKlass java/io/InputStream
+-instanceKlass java/io/Closeable
+-instanceKlass java/lang/AutoCloseable
+-instanceKlass sun/misc/Unsafe
+-instanceKlass java/lang/AbstractStringBuilder
+-instanceKlass java/lang/Appendable
+-instanceKlass java/lang/invoke/CallSite
+-instanceKlass java/lang/invoke/MethodType
+-instanceKlass java/lang/invoke/LambdaForm
+-instanceKlass java/lang/invoke/MethodHandleNatives
+-instanceKlass java/lang/invoke/MemberName
+-instanceKlass java/lang/invoke/MethodHandle
+-instanceKlass sun/reflect/CallerSensitive
+-instanceKlass java/lang/annotation/Annotation
+-instanceKlass sun/reflect/FieldAccessor
+-instanceKlass sun/reflect/ConstantPool
+-instanceKlass sun/reflect/ConstructorAccessor
+-instanceKlass sun/reflect/MethodAccessor
+-instanceKlass sun/reflect/MagicAccessorImpl
+-instanceKlass java/lang/reflect/Parameter
+-instanceKlass java/lang/reflect/Member
+-instanceKlass java/lang/reflect/AccessibleObject
+-instanceKlass java/util/Dictionary
+-instanceKlass java/util/Map
+-instanceKlass java/lang/ThreadGroup
+-instanceKlass java/lang/Thread$UncaughtExceptionHandler
+-instanceKlass java/lang/Thread
+-instanceKlass java/lang/Runnable
+-instanceKlass java/lang/ref/Reference
+-instanceKlass java/security/AccessControlContext
+-instanceKlass java/security/ProtectionDomain
+-instanceKlass java/lang/SecurityManager
+-instanceKlass java/lang/Throwable
+-instanceKlass java/lang/System
+-instanceKlass java/lang/ClassLoader
+-instanceKlass java/lang/Cloneable
+-instanceKlass java/lang/Class
+-instanceKlass java/lang/reflect/Type
+-instanceKlass java/lang/reflect/GenericDeclaration
+-instanceKlass java/lang/reflect/AnnotatedElement
+-instanceKlass java/lang/String
+-instanceKlass java/lang/CharSequence
+-instanceKlass java/lang/Comparable
+-instanceKlass java/io/Serializable
+-ciInstanceKlass java/lang/Object 1 1 86 7 10 10 10 10 8 10 10 10 100 8 10 3 8 10 10 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 7 1 1 1 1 1 1 100 1 1 1 1 12 12 7 12 12 1 12 7 12 12 1 1 12 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/io/Serializable 1 0 7 100 100 1 1 1 1
+-ciInstanceKlass java/lang/String 1 1 680 10 8 9 9 10 100 10 10 10 10 100 10 10 10 10 10 100 8 10 10 8 10 10 10 10 10 10 10 10 10 10 10 100 10 10 10 10 10 10 10 10 10 7 10 10 10 100 100 10 10 11 11 10 10 9 11 10 10 10 10 7 3 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 11 10 10 10 10 10 7 10 10 8 10 10 3 3 7 10 10 10 10 10 11 7 10 10 100 10 10 10 11 11 11 7 3 10 10 10 10 8 8 8 10 10 10 10 10 10 10 10 10 10 10 7 10 10 10 10 8 10 10 8 8 10 10 10 10 7 9 7 10 7 100 100 100 1 1 1 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 7 1 1 1 100 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 100 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 1 12 12 7 12 1 12 12 12 12 1 7 12 12 12 12 12 1 7 12 12 12 12 12 12 12 12 100 12 12 1 12 12 7 12 100 12 12 12 12 1 12 1 1 12 12 12 12 7 12 12 100 12 12 12 12 12 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 7 12 12 1 12 12 1 12 1 12 12 12 12 7 12 12 12 1 12 12 100 12 100 12 12 1 12 12 12 7 12 1 1 1 100 12 12 12 12 12 12 12 12 12 12 12 1 12 12 1 12 1 1 100 12 100 12 7 12 12 1 12 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/String serialPersistentFields [Ljava/io/ObjectStreamField; 0 [Ljava/io/ObjectStreamField;
+-staticfield java/lang/String CASE_INSENSITIVE_ORDER Ljava/util/Comparator; java/lang/String$CaseInsensitiveComparator
+-ciInstanceKlass java/lang/Class 1 1 1350 9 9 10 10 10 10 9 9 9 9 7 10 10 8 10 8 8 10 10 10 10 10 10 10 10 10 8 10 8 8 10 11 10 10 10 10 10 9 10 100 10 9 7 100 8 10 10 7 10 10 7 100 10 10 10 10 9 10 7 10 100 10 10 10 9 10 10 10 10 10 7 100 10 10 10 10 10 9 10 7 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 100 8 10 10 100 10 100 11 10 10 10 10 10 10 10 8 10 10 10 8 10 10 10 8 10 8 10 10 10 10 8 10 100 10 10 10 10 100 10 100 10 10 10 10 10 10 10 10 100 10 10 10 10 10 10 10 10 10 10 10 10 10 9 10 9 100 10 9 10 100 10 9 10 10 10 10 10 10 10 8 10 10 9 10 7 9 10 10 7 10 10 10 10 9 10 9 10 10 10 10 9 9 10 9 100 10 100 10 10 11 11 11 7 11 11 9 9 7 7 10 9 9 10 10 9 7 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 8 7 10 8 8 8 8 10 10 9 9 10 7 9 7 10 7 7 10 10 10 8 10 7 10 7 10 100 8 10 7 10 10 11 10 100 10 10 8 8 10 10 9 11 7 11 9 10 10 10 9 9 10 10 10 10 10 11 11 11 11 7 11 10 10 7 11 10 10 10 11 11 7 10 10 9 9 10 10 10 10 7 9 100 7 100 100 1 1 1 1 7 1 1 1 1 1 3 1 3 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 12 12 12 12 1 12 1 12 1 1 12 12 12 12 7 12 12 12 12 1 12 1 1 12 12 7 12 7 12 12 7 12 100 12 100 12 100 12 1 12 12 1 1 1 12 12 1 12 7 12 1 1 12 12 12 12 12 1 100 12 12 12 12 12 12 12 12 7 1 12 12 7 12 12 12 12 7 12 12 12 12 12 12 12 100 12 12 12 12 12 12 7 12 12 12 1 1 12 1 12 1 12 100 12 12 12 100 12 12 1 12 12 12 1 12 12 12 1 12 1 12 12 12 12 1 12 1 12 12 12 1 12 1 12 12 12 12 12 12 12 12 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 12 12 1 12 12 100 12 12 12 100 12 12 12 12 1 12 12 12 12 1 12 12 12 1 12 12 7 12 7 12 12 12 12 12 12 12 12 12 12 12 12 1 1 12 7 12 12 100 12 1 12 100 12 12 1 12 12 12 12 12 12 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 1 7 1 1 1 1 12 12 12 12 12 1 12 1 1 1 1 12 100 12 1 12 1 12 1 1 1 12 7 12 12 1 12 1 1 7 12 12 12 12 1 12 12 100 12 7 12 12 12 12 12 12 12 12 12 12 7 12 12 1 12 7 12 12 1 7 12 12 12 12 1 12 12 12 100 12 12 100 12 12 12 1 12 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Class serialPersistentFields [Ljava/io/ObjectStreamField; 0 [Ljava/io/ObjectStreamField;
+-ciInstanceKlass java/lang/Cloneable 1 0 7 100 100 1 1 1 1
+-instanceKlass com/google/inject/internal/BytecodeGen$BridgeClassLoader
+-instanceKlass org/eclipse/sisu/space/CloningClassSpace$CloningClassLoader
+-instanceKlass java/util/ResourceBundle$RBClassLoader
+-instanceKlass sun/reflect/DelegatingClassLoader
+-instanceKlass java/security/SecureClassLoader
+-ciInstanceKlass java/lang/ClassLoader 1 1 972 9 9 9 10 10 10 10 7 10 7 7 7 10 10 9 7 10 9 9 9 9 9 9 10 10 7 10 9 9 7 10 10 9 7 9 7 10 10 10 10 10 10 10 10 10 7 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 100 10 100 10 10 11 10 10 10 100 7 10 8 10 10 10 8 10 100 8 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 8 11 9 11 10 8 8 10 10 10 10 10 10 10 10 7 7 10 10 10 7 10 10 10 7 10 10 10 10 10 10 7 10 10 10 100 10 10 10 9 9 100 8 10 10 10 7 10 10 100 10 100 10 100 10 10 10 10 10 9 10 10 100 10 7 10 10 10 10 10 10 10 10 11 11 11 100 10 9 10 10 7 8 10 9 8 10 9 8 7 10 10 7 8 10 10 10 8 8 10 10 10 8 8 10 10 7 10 10 10 9 10 10 7 9 10 10 8 8 10 10 10 8 10 10 10 10 9 10 10 10 100 10 10 10 10 9 9 9 9 9 10 7 7 10 1 1 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 100 1 1 1 1 1 1 1 1 1 12 12 12 12 7 12 100 12 12 1 1 1 12 12 12 1 12 12 12 12 12 12 12 12 1 12 12 1 7 12 12 1 12 1 12 12 12 12 12 12 12 12 1 12 7 12 12 12 12 12 12 12 12 12 100 12 7 12 12 12 12 1 12 1 12 7 12 7 12 12 12 12 1 1 1 12 12 1 12 1 1 12 12 12 12 7 12 12 12 12 12 12 100 12 12 12 12 12 12 12 12 12 12 7 12 12 1 7 12 12 12 12 1 1 12 12 12 12 12 12 12 12 1 12 12 12 1 12 12 7 12 1 12 12 12 7 12 100 12 1 12 7 12 1 12 12 12 12 12 1 1 12 12 1 12 12 1 12 1 100 1 12 12 12 12 12 100 12 12 12 1 1 12 12 12 12 12 12 12 100 12 12 12 12 12 1 1 12 1 12 12 1 1 12 1 1 12 12 1 1 12 12 100 12 1 1 12 1 12 12 12 12 12 1 12 12 1 1 12 1 12 12 12 12 12 12 12 12 1 12 12 12 12 100 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/ClassLoader nocerts [Ljava/security/cert/Certificate; 0 [Ljava/security/cert/Certificate;
+-ciInstanceKlass java/lang/System 1 1 398 10 10 10 10 10 9 7 10 11 10 10 10 100 8 10 10 8 10 100 10 8 10 10 100 10 10 9 10 9 9 7 10 10 10 10 10 10 100 100 8 10 10 7 10 100 8 10 8 10 100 8 10 100 10 8 10 10 10 8 10 10 10 10 10 10 10 10 10 7 7 10 10 100 10 10 8 10 7 9 10 7 9 10 9 7 10 8 10 8 8 10 10 10 10 10 10 10 10 7 10 10 10 9 9 9 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 100 1 1 100 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 1 7 12 100 12 100 12 12 12 1 1 12 100 12 1 12 1 12 12 100 12 1 12 100 12 12 12 12 12 1 12 12 12 12 12 1 1 1 12 12 1 12 1 1 1 12 1 1 1 1 12 12 7 12 1 12 7 12 12 12 12 12 7 12 12 12 1 1 12 12 1 12 7 12 1 7 12 1 7 12 12 1 12 12 1 12 1 12 1 1 12 7 12 12 7 12 12 7 12 12 12 1 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/System in Ljava/io/InputStream; java/io/BufferedInputStream
+-staticfield java/lang/System out Ljava/io/PrintStream; java/io/PrintStream
+-staticfield java/lang/System err Ljava/io/PrintStream; java/io/PrintStream
+-instanceKlass org/apache/maven/artifact/repository/metadata/RepositoryMetadataDeploymentException
+-instanceKlass org/apache/maven/artifact/repository/metadata/RepositoryMetadataInstallationException
+-instanceKlass java/lang/Exception
+-instanceKlass java/lang/Error
+-ciInstanceKlass java/lang/Throwable 1 1 373 10 9 9 9 9 9 10 9 10 10 100 100 10 8 10 8 10 10 10 100 8 10 10 10 10 8 9 10 100 10 10 100 10 10 11 10 10 10 8 10 10 7 8 8 10 10 8 8 9 10 100 10 11 8 8 10 8 10 8 100 10 9 10 10 7 10 7 10 10 100 8 10 10 11 7 10 11 11 11 8 8 10 11 10 9 8 10 9 10 9 11 100 10 10 7 100 100 1 1 1 100 1 100 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 100 100 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 12 12 12 12 1 1 1 12 1 100 12 12 1 1 12 7 12 12 1 100 12 12 1 12 12 1 7 12 100 12 12 12 12 1 12 12 1 1 1 12 12 1 1 12 100 12 1 12 1 1 12 1 12 1 1 12 12 12 7 12 12 1 12 7 1 1 12 100 12 100 12 1 12 12 100 12 12 1 1 100 12 1 100 12 100 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Throwable UNASSIGNED_STACK [Ljava/lang/StackTraceElement; 0 [Ljava/lang/StackTraceElement;
+-staticfield java/lang/Throwable SUPPRESSED_SENTINEL Ljava/util/List; java/util/Collections$UnmodifiableRandomAccessList
+-staticfield java/lang/Throwable EMPTY_THROWABLE_ARRAY [Ljava/lang/Throwable; 0 [Ljava/lang/Throwable;
+-staticfield java/lang/Throwable $assertionsDisabled Z 1
+-instanceKlass com/sun/tools/javac/tree/Pretty$UncheckedIOException
+-instanceKlass com/sun/tools/javac/processing/ServiceProxy$ServiceConfigurationError
+-instanceKlass com/sun/tools/javac/tree/TreeInfo$1Result
+-instanceKlass com/sun/tools/javac/util/Abort
+-instanceKlass com/sun/tools/javac/processing/AnnotationProcessingError
+-instanceKlass com/sun/tools/javac/util/FatalError
+-instanceKlass com/sun/tools/javac/file/BaseFileObject$CannotCreateUriError
+-instanceKlass java/util/ServiceConfigurationError
+-instanceKlass com/google/common/util/concurrent/ExecutionError
+-instanceKlass java/lang/AssertionError
+-instanceKlass org/apache/maven/BuildAbort
+-instanceKlass java/lang/VirtualMachineError
+-instanceKlass java/lang/LinkageError
+-instanceKlass java/lang/ThreadDeath
+-ciInstanceKlass java/lang/Error 1 1 40 10 10 10 10 10 100 7 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 1 1
+-ciInstanceKlass java/lang/ThreadDeath 0 0 21 10 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 12 1 1
+-instanceKlass java/util/zip/DataFormatException
+-instanceKlass com/sun/tools/javac/jvm/JNIWriter$TypeSignature$SignatureException
+-instanceKlass com/sun/tools/javac/jvm/ClassWriter$StringOverflow
+-instanceKlass com/sun/tools/javac/jvm/ClassWriter$PoolOverflow
+-instanceKlass com/sun/tools/doclint/DocLint$BadArgs
+-instanceKlass org/codehaus/plexus/util/cli/CommandLineException
+-instanceKlass org/codehaus/plexus/compiler/manager/NoSuchCompilerException
+-instanceKlass org/codehaus/plexus/compiler/CompilerException
+-instanceKlass org/codehaus/plexus/compiler/util/scan/InclusionScanException
+-instanceKlass javax/xml/parsers/ParserConfigurationException
+-instanceKlass org/xml/sax/SAXException
+-instanceKlass org/codehaus/plexus/components/interactivity/PrompterException
+-instanceKlass org/apache/maven/shared/filtering/MavenFilteringException
+-instanceKlass org/apache/maven/artifact/DependencyResolutionRequiredException
+-instanceKlass org/codehaus/plexus/util/introspection/MethodMap$AmbiguousException
+-instanceKlass java/net/URISyntaxException
+-instanceKlass org/codehaus/plexus/interpolation/reflection/MethodMap$AmbiguousException
+-instanceKlass org/apache/maven/toolchain/building/ToolchainsBuildingException
+-instanceKlass org/apache/maven/lifecycle/internal/builder/BuilderNotFoundException
+-instanceKlass org/apache/maven/lifecycle/NoGoalSpecifiedException
+-instanceKlass org/apache/maven/configuration/BeanConfigurationException
+-instanceKlass org/apache/maven/BuildFailureException
+-instanceKlass org/apache/maven/project/DuplicateProjectException
+-instanceKlass org/codehaus/plexus/util/dag/CycleDetectedException
+-instanceKlass org/apache/maven/repository/metadata/MetadataGraphTransformationException
+-instanceKlass org/codehaus/plexus/personality/plexus/lifecycle/phase/InitializationException
+-instanceKlass org/apache/maven/project/interpolation/ModelInterpolationException
+-instanceKlass org/apache/maven/execution/MavenExecutionRequestPopulationException
+-instanceKlass org/apache/maven/repository/ArtifactDoesNotExistException
+-instanceKlass org/apache/maven/repository/ArtifactTransferFailedException
+-instanceKlass org/apache/maven/MavenExecutionException
+-instanceKlass org/apache/maven/plugin/version/PluginVersionNotFoundException
+-instanceKlass org/apache/maven/plugin/InvalidPluginException
+-instanceKlass org/codehaus/plexus/interpolation/InterpolationException
+-instanceKlass org/apache/maven/artifact/repository/metadata/RepositoryMetadataReadException
+-instanceKlass org/apache/maven/artifact/repository/metadata/RepositoryMetadataStoreException
+-instanceKlass org/apache/maven/artifact/installer/ArtifactInstallationException
+-instanceKlass org/apache/maven/artifact/repository/metadata/RepositoryMetadataResolutionException
+-instanceKlass org/apache/maven/artifact/deployer/ArtifactDeploymentException
+-instanceKlass org/apache/maven/project/ProjectBuildingException
+-instanceKlass org/apache/maven/repository/legacy/resolver/conflict/ConflictResolverNotFoundException
+-instanceKlass org/apache/maven/repository/metadata/GraphConflictResolutionException
+-instanceKlass org/apache/maven/repository/metadata/MetadataResolutionException
+-instanceKlass org/apache/maven/settings/building/SettingsBuildingException
+-instanceKlass org/apache/maven/toolchain/MisconfiguredToolchainException
+-instanceKlass org/codehaus/plexus/component/configurator/expression/ExpressionEvaluationException
+-instanceKlass org/codehaus/plexus/component/configurator/ComponentConfigurationException
+-instanceKlass org/codehaus/plexus/component/composition/CycleDetectedInComponentGraphException
+-instanceKlass org/codehaus/plexus/configuration/PlexusConfigurationException
+-instanceKlass org/codehaus/plexus/component/repository/exception/ComponentLifecycleException
+-instanceKlass java/security/GeneralSecurityException
+-instanceKlass org/apache/maven/artifact/versioning/InvalidVersionSpecificationException
+-instanceKlass org/apache/maven/model/resolution/UnresolvableModelException
+-instanceKlass org/apache/maven/model/resolution/InvalidRepositoryException
+-instanceKlass org/apache/maven/model/building/ModelBuildingException
+-instanceKlass org/apache/maven/plugin/version/PluginVersionResolutionException
+-instanceKlass org/apache/maven/lifecycle/LifecycleNotFoundException
+-instanceKlass org/apache/maven/plugin/prefix/NoPluginFoundForPrefixException
+-instanceKlass org/apache/maven/plugin/InvalidPluginDescriptorException
+-instanceKlass org/apache/maven/plugin/MojoNotFoundException
+-instanceKlass org/apache/maven/plugin/PluginDescriptorParsingException
+-instanceKlass org/apache/maven/lifecycle/LifecyclePhaseNotFoundException
+-instanceKlass org/apache/maven/plugin/PluginResolutionException
+-instanceKlass org/apache/maven/project/DependencyResolutionException
+-instanceKlass org/apache/maven/artifact/InvalidRepositoryException
+-instanceKlass org/apache/maven/wagon/providers/http/httpclient/HttpException
+-instanceKlass org/apache/maven/wagon/WagonException
+-instanceKlass org/apache/maven/repository/legacy/metadata/ArtifactMetadataRetrievalException
+-instanceKlass org/apache/maven/artifact/resolver/AbstractArtifactResolutionException
+-instanceKlass org/eclipse/aether/RepositoryException
+-instanceKlass org/sonatype/plexus/components/cipher/PlexusCipherException
+-instanceKlass org/sonatype/plexus/components/sec/dispatcher/SecDispatcherException
+-instanceKlass org/apache/maven/lifecycle/MissingProjectException
+-instanceKlass org/apache/maven/lifecycle/LifecycleExecutionException
+-instanceKlass org/apache/maven/plugin/PluginConfigurationException
+-instanceKlass org/apache/maven/plugin/PluginManagerException
+-instanceKlass org/apache/maven/plugin/AbstractMojoExecutionException
+-instanceKlass java/util/concurrent/TimeoutException
+-instanceKlass java/util/concurrent/ExecutionException
+-instanceKlass com/google/inject/internal/ErrorsException
+-instanceKlass org/codehaus/plexus/context/ContextException
+-instanceKlass java/text/ParseException
+-instanceKlass org/codehaus/plexus/PlexusContainerException
+-instanceKlass org/codehaus/plexus/component/repository/exception/ComponentLookupException
+-instanceKlass org/codehaus/plexus/util/xml/pull/XmlPullParserException
+-instanceKlass java/security/PrivilegedActionException
+-instanceKlass java/lang/CloneNotSupportedException
+-instanceKlass org/apache/commons/cli/ParseException
+-instanceKlass org/apache/maven/cli/MavenCli$ExitException
+-instanceKlass org/codehaus/plexus/classworlds/ClassWorldException
+-instanceKlass org/codehaus/plexus/classworlds/launcher/ConfigurationException
+-instanceKlass java/io/IOException
+-instanceKlass java/lang/InterruptedException
+-instanceKlass java/lang/ReflectiveOperationException
+-instanceKlass java/lang/RuntimeException
+-ciInstanceKlass java/lang/Exception 1 1 40 10 10 10 10 10 100 7 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 1 1
+-instanceKlass com/sun/tools/javac/jvm/Gen$CodeSizeOverflow
+-instanceKlass com/sun/tools/javac/comp/Infer$GraphStrategy$NodeNotFoundException
+-instanceKlass com/sun/tools/javac/comp/Attr$BreakAttr
+-instanceKlass com/sun/tools/javac/comp/Resolve$InapplicableMethodException
+-instanceKlass com/sun/tools/javac/code/Types$AdaptFailure
+-instanceKlass com/sun/tools/javac/code/Types$FunctionDescriptorLookupError
+-instanceKlass com/sun/tools/javac/code/Symbol$CompletionFailure
+-instanceKlass com/sun/tools/javac/util/PropagatedException
+-instanceKlass java/util/MissingResourceException
+-instanceKlass com/sun/tools/javac/util/ClientCodeException
+-instanceKlass org/apache/maven/project/DuplicateArtifactAttachmentException
+-instanceKlass org/apache/maven/artifact/InvalidArtifactRTException
+-instanceKlass java/util/ConcurrentModificationException
+-instanceKlass com/google/inject/OutOfScopeException
+-instanceKlass java/lang/annotation/IncompleteAnnotationException
+-instanceKlass java/lang/reflect/UndeclaredThrowableException
+-instanceKlass com/google/common/util/concurrent/UncheckedExecutionException
+-instanceKlass com/google/common/cache/CacheLoader$InvalidCacheLoadException
+-instanceKlass com/google/inject/ConfigurationException
+-instanceKlass com/google/inject/CreationException
+-instanceKlass com/google/inject/ProvisionException
+-instanceKlass java/lang/TypeNotPresentException
+-instanceKlass java/util/NoSuchElementException
+-instanceKlass java/lang/IndexOutOfBoundsException
+-instanceKlass java/lang/SecurityException
+-instanceKlass java/lang/UnsupportedOperationException
+-instanceKlass java/lang/IllegalStateException
+-instanceKlass java/lang/IllegalArgumentException
+-instanceKlass java/lang/ArithmeticException
+-instanceKlass java/lang/NullPointerException
+-instanceKlass java/lang/IllegalMonitorStateException
+-instanceKlass java/lang/ArrayStoreException
+-instanceKlass java/lang/ClassCastException
+-ciInstanceKlass java/lang/RuntimeException 1 1 40 10 10 10 10 10 100 7 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 1 1
+-ciInstanceKlass java/lang/SecurityManager 0 0 436 9 10 100 9 10 9 100 10 100 8 10 10 10 10 10 10 10 10 10 100 10 10 9 10 10 10 100 8 10 9 9 8 9 100 10 8 10 10 10 100 10 10 100 100 8 10 8 8 8 8 8 8 10 8 8 8 8 8 10 10 8 100 8 10 8 8 8 8 8 10 8 100 8 8 10 8 9 8 9 9 8 10 100 8 10 10 100 10 10 10 8 9 9 100 10 10 10 9 8 8 9 9 100 10 9 8 8 8 10 10 9 100 10 10 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 100 100 1 1 1 1 1 1 100 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 12 12 1 12 12 12 1 100 12 1 1 12 12 12 12 12 12 12 100 12 1 12 100 12 12 100 12 1 1 12 12 1 12 1 1 12 12 12 1 12 1 1 1 12 1 1 1 1 1 1 12 1 1 1 1 1 12 12 1 1 1 1 1 1 1 1 100 12 1 1 1 1 1 100 12 1 12 12 1 12 1 1 12 1 12 12 12 1 12 12 1 12 12 12 12 1 1 12 12 1 12 1 1 1 12 100 12 12 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/security/ProtectionDomain 1 1 328 9 10 9 7 10 9 9 9 10 7 9 9 7 9 10 100 10 10 10 10 9 10 8 100 8 10 10 10 10 10 8 11 8 10 8 8 10 10 10 10 8 10 8 8 10 9 10 9 10 100 100 10 10 7 10 100 10 10 11 11 11 100 10 10 11 11 10 10 11 10 7 10 10 8 10 7 10 10 7 7 100 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 100 100 1 1 1 1 1 1 1 12 12 12 1 12 12 12 12 1 12 12 1 12 100 12 100 100 12 12 12 100 12 1 1 1 12 12 100 12 12 1 1 12 1 1 12 12 12 12 1 12 1 1 100 12 12 12 12 100 12 1 1 12 100 12 1 1 12 12 100 12 12 100 12 1 12 12 12 12 100 12 12 12 1 12 7 12 1 7 12 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/security/ProtectionDomain debug Lsun/security/util/Debug; null
+-ciInstanceKlass java/security/AccessControlContext 1 1 365 9 9 10 8 10 10 9 9 9 10 100 100 10 11 11 11 11 7 11 10 10 9 10 11 10 100 100 8 10 10 100 9 9 9 9 9 9 9 10 9 10 10 8 10 10 10 100 10 10 10 10 8 10 8 10 8 8 10 8 10 8 10 10 10 8 8 100 10 10 100 10 8 10 10 10 8 10 10 10 7 10 10 10 10 10 10 10 10 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 100 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 100 12 1 100 12 12 12 12 12 100 12 1 12 100 12 12 12 12 1 12 12 7 12 100 12 100 12 100 12 1 1 1 12 12 1 12 12 12 12 12 12 12 7 12 12 12 12 1 12 12 100 12 1 12 100 12 1 100 12 1 100 12 1 1 12 1 12 1 12 12 12 1 1 1 12 12 1 12 1 12 1 12 12 12 1 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-instanceKlass java/net/URLClassLoader
+-ciInstanceKlass java/security/SecureClassLoader 1 1 156 10 7 10 9 10 10 9 10 10 10 10 10 7 10 10 7 10 10 10 9 100 10 8 10 10 10 10 8 100 8 10 8 10 10 7 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 12 1 12 12 7 12 100 12 12 12 12 12 12 12 1 12 1 12 12 12 12 1 1 12 12 12 7 12 1 1 1 12 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/security/SecureClassLoader debug Lsun/security/util/Debug; null
+-instanceKlass java/lang/NoSuchFieldException
+-instanceKlass java/lang/InstantiationException
+-instanceKlass java/lang/IllegalAccessException
+-instanceKlass java/lang/reflect/InvocationTargetException
+-instanceKlass java/lang/NoSuchMethodException
+-instanceKlass java/lang/ClassNotFoundException
+-ciInstanceKlass java/lang/ReflectiveOperationException 1 1 34 10 10 10 10 100 7 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 1 1
+-ciInstanceKlass java/lang/ClassNotFoundException 1 1 37 100 10 10 9 100 7 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 1 1 1
+-instanceKlass java/lang/UnsatisfiedLinkError
+-instanceKlass java/lang/IncompatibleClassChangeError
+-instanceKlass java/lang/BootstrapMethodError
+-instanceKlass java/lang/NoClassDefFoundError
+-ciInstanceKlass java/lang/LinkageError 1 1 31 10 10 10 100 7 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 1 1
+-ciInstanceKlass java/lang/NoClassDefFoundError 1 1 26 10 10 100 7 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1
+-ciInstanceKlass java/lang/ClassCastException 1 1 26 10 10 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1
+-ciInstanceKlass java/lang/ArrayStoreException 1 1 26 10 10 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1
+-instanceKlass java/lang/InternalError
+-instanceKlass java/lang/StackOverflowError
+-instanceKlass java/lang/OutOfMemoryError
+-ciInstanceKlass java/lang/VirtualMachineError 1 1 34 10 10 10 10 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 1 1
+-ciInstanceKlass java/lang/OutOfMemoryError 1 1 26 10 10 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1
+-ciInstanceKlass java/lang/StackOverflowError 1 1 26 10 10 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1
+-ciInstanceKlass java/lang/IllegalMonitorStateException 1 1 26 10 10 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1
+-instanceKlass java/lang/ref/PhantomReference
+-instanceKlass java/lang/ref/FinalReference
+-instanceKlass java/lang/ref/WeakReference
+-instanceKlass java/lang/ref/SoftReference
+-ciInstanceKlass java/lang/ref/Reference 1 1 159 9 9 7 9 10 100 10 100 10 9 9 10 9 9 10 10 7 10 10 10 10 7 8 10 7 10 10 10 7 10 10 7 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 12 12 1 12 12 1 12 1 12 12 7 12 12 12 12 12 12 1 12 12 12 7 12 1 1 12 1 12 12 12 1 7 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-instanceKlass org/eclipse/sisu/inject/MildElements$Soft
+-instanceKlass com/google/common/cache/LocalCache$SoftValueReference
+-instanceKlass org/eclipse/sisu/inject/MildKeys$Soft
+-instanceKlass sun/util/locale/provider/LocaleResources$ResourceReference
+-instanceKlass java/util/ResourceBundle$BundleReference
+-instanceKlass sun/util/locale/LocaleObjectCache$CacheEntry
+-ciInstanceKlass java/lang/ref/SoftReference 1 1 47 10 9 9 10 10 7 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 12 12 12 12 12 1 1 1
+-instanceKlass sun/nio/ch/SharedFileLockTable$FileLockReference
+-instanceKlass java/lang/reflect/Proxy$Key2
+-instanceKlass org/eclipse/sisu/inject/MildElements$Weak
+-instanceKlass com/google/common/cache/LocalCache$WeakEntry
+-instanceKlass java/lang/reflect/WeakCache$CacheValue
+-instanceKlass java/lang/reflect/Proxy$Key1
+-instanceKlass java/lang/reflect/WeakCache$CacheKey
+-instanceKlass com/google/common/cache/LocalCache$WeakValueReference
+-instanceKlass java/util/logging/LogManager$LoggerWeakRef
+-instanceKlass org/eclipse/sisu/inject/MildKeys$Weak
+-instanceKlass java/util/ResourceBundle$LoaderReference
+-instanceKlass java/lang/ClassValue$Entry
+-instanceKlass java/util/WeakHashMap$Entry
+-instanceKlass java/lang/ThreadLocal$ThreadLocalMap$Entry
+-ciInstanceKlass java/lang/ref/WeakReference 1 1 31 10 10 100 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1
+-instanceKlass java/lang/ref/Finalizer
+-ciInstanceKlass java/lang/ref/FinalReference 1 1 27 10 100 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 1 1
+-instanceKlass sun/misc/Cleaner
+-ciInstanceKlass java/lang/ref/PhantomReference 1 1 30 10 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 1 1
+-ciInstanceKlass sun/misc/Cleaner 1 1 83 9 9 9 9 10 9 7 10 10 10 11 100 100 10 10 7 10 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 12 12 12 12 12 12 1 12 12 12 100 12 1 1 12 100 12 1 12 1 1 1 1 1 1 1 1
+-staticfield sun/misc/Cleaner dummyQueue Ljava/lang/ref/ReferenceQueue; java/lang/ref/ReferenceQueue
+-ciInstanceKlass java/lang/ref/Finalizer 1 1 165 9 9 9 10 9 9 10 10 7 10 10 10 10 7 11 100 10 100 10 10 10 100 10 10 100 10 7 10 7 10 10 10 10 7 10 7 10 10 10 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 12 12 12 12 12 12 12 12 1 12 12 12 12 1 7 12 1 12 1 12 100 12 100 12 1 12 12 1 1 1 12 12 7 12 1 12 1 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/ref/Finalizer lock Ljava/lang/Object; java/lang/Object
+-instanceKlass java/util/logging/LogManager$Cleaner
+-instanceKlass java/lang/ref/Finalizer$FinalizerThread
+-instanceKlass java/lang/ref/Reference$ReferenceHandler
+-ciInstanceKlass java/lang/Thread 1 1 597 9 9 9 9 100 8 10 3 8 3 10 10 100 8 10 9 10 10 10 10 10 10 10 9 10 10 9 10 9 10 9 10 9 10 9 9 10 9 10 9 10 9 100 10 10 9 9 9 7 7 10 8 10 10 10 10 10 100 10 10 10 10 100 11 10 9 10 9 10 100 10 10 100 10 10 11 10 100 10 10 10 7 10 10 10 10 10 10 10 10 10 10 100 8 10 10 10 8 10 8 10 8 8 10 10 7 8 10 9 9 10 10 10 9 10 100 10 11 9 9 10 100 10 11 100 10 10 11 10 100 10 10 10 8 9 10 11 10 11 10 7 8 100 1 1 100 1 100 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 3 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 1 1 12 1 12 12 1 1 12 12 7 12 100 12 7 12 12 12 12 12 12 12 12 12 12 12 12 12 7 12 12 12 12 12 100 12 12 12 12 1 12 12 12 12 1 1 1 12 12 12 12 12 1 12 12 12 1 12 12 12 100 12 12 1 12 1 12 100 12 12 1 12 12 1 12 12 12 12 12 12 12 12 12 1 1 12 12 1 12 1 1 1 100 12 100 12 1 12 12 12 12 12 12 1 12 100 12 12 12 12 1 12 100 12 1 12 12 12 12 1 12 12 100 12 12 12 12 100 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Thread EMPTY_STACK_TRACE [Ljava/lang/StackTraceElement; 0 [Ljava/lang/StackTraceElement;
+-staticfield java/lang/Thread SUBCLASS_IMPLEMENTATION_PERMISSION Ljava/lang/RuntimePermission; java/lang/RuntimePermission
+-ciInstanceKlass java/lang/ThreadGroup 1 1 302 10 9 8 9 7 9 9 10 10 10 10 10 9 9 10 10 9 10 9 9 10 100 10 10 10 9 10 10 9 10 10 10 10 10 10 10 10 10 10 10 100 10 10 10 7 10 100 10 9 10 8 10 10 10 10 11 100 9 100 10 8 10 10 8 10 10 10 10 10 8 10 8 10 8 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 12 12 1 12 1 12 12 12 12 12 12 12 12 12 12 12 12 100 12 12 12 100 12 12 7 12 100 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 12 12 1 12 12 12 12 1 100 12 12 12 12 1 12 1 1 12 12 1 12 100 12 100 12 12 100 1 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-instanceKlass java/util/Hashtable
+-ciInstanceKlass java/util/Dictionary 1 1 36 10 100 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 1 1
+-instanceKlass java/util/Properties
+-ciInstanceKlass java/util/Hashtable 1 1 484 100 9 9 9 10 10 100 100 10 8 10 10 10 10 10 8 10 9 7 7 4 10 9 4 10 11 10 10 10 100 10 9 10 9 10 10 3 9 9 3 10 10 10 11 11 11 11 7 11 11 10 10 10 9 9 9 100 100 10 10 8 10 10 8 10 8 10 7 10 10 100 10 10 7 10 100 10 10 7 11 11 100 10 10 10 11 100 10 100 11 11 10 10 10 10 10 100 10 10 8 10 10 10 10 7 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 3 1 3 1 3 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 1 1 1 12 12 12 12 7 12 1 12 12 1 1 7 12 12 12 12 12 12 12 1 12 7 12 12 12 12 12 12 12 12 12 12 7 12 7 12 12 1 12 12 12 12 12 12 12 1 1 12 1 12 1 1 7 12 1 12 12 1 12 12 1 1 12 1 12 12 1 100 12 100 12 1 100 12 100 12 12 100 12 12 12 100 12 1 12 1 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-instanceKlass java/security/Provider
+-ciInstanceKlass java/util/Properties 1 1 342 10 10 9 10 7 10 10 10 10 9 10 100 3 100 8 10 7 10 10 100 10 10 10 10 10 8 10 10 10 10 10 100 100 10 10 100 8 10 10 100 10 10 100 10 10 10 10 11 11 10 10 8 10 10 100 10 10 8 10 100 10 10 10 7 10 10 10 10 8 10 8 10 10 9 7 100 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 100 1 1 1 100 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 100 100 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 1 12 12 12 12 12 12 1 1 1 12 1 12 12 1 12 12 12 12 12 1 12 12 12 12 12 1 1 12 12 1 1 12 12 1 12 1 12 7 12 12 12 12 1 12 100 12 1 12 12 1 12 1 12 12 1 12 12 12 1 100 12 1 100 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/util/Properties hexDigit [C 16
+-instanceKlass java/lang/reflect/Executable
+-instanceKlass java/lang/reflect/Field
+-ciInstanceKlass java/lang/reflect/AccessibleObject 1 1 174 10 9 10 10 7 10 7 100 8 10 9 10 100 8 10 11 10 10 10 9 10 10 100 10 10 7 8 10 7 10 10 7 9 7 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 7 12 12 100 12 12 1 12 1 1 1 12 12 12 1 1 12 12 12 12 12 12 100 12 12 12 100 12 1 1 1 1 1 7 12 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/reflect/AccessibleObject ACCESS_PERMISSION Ljava/security/Permission; java/lang/reflect/ReflectPermission
+-staticfield java/lang/reflect/AccessibleObject reflectionFactory Lsun/reflect/ReflectionFactory; sun/reflect/ReflectionFactory
+-ciInstanceKlass java/lang/reflect/Field 1 1 401 9 10 10 10 9 10 10 10 10 9 9 9 9 9 9 9 100 8 10 7 10 9 9 10 7 10 10 10 10 10 10 10 100 10 8 10 10 8 10 10 8 10 11 9 10 10 10 10 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 10 10 9 10 10 10 10 11 10 7 10 10 9 10 11 10 10 9 10 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 100 100 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 7 12 7 12 12 12 12 7 12 12 12 12 12 12 12 12 12 1 1 12 1 12 12 12 12 1 12 12 12 12 12 7 7 12 1 1 12 12 1 12 12 1 100 12 100 12 12 12 12 7 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 7 12 12 7 12 12 7 12 1 100 12 7 12 12 7 12 7 12 12 12 100 12 100 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/reflect/Parameter 0 0 231 10 9 9 9 9 9 9 100 10 10 10 100 10 10 11 10 10 10 10 10 8 8 10 10 10 8 10 8 10 10 10 10 10 10 10 10 10 10 11 10 100 10 10 10 10 10 9 100 10 11 11 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 12 12 12 12 12 12 12 1 12 12 100 12 1 12 100 12 12 100 12 12 12 12 1 1 100 12 12 12 1 1 12 12 12 12 12 12 12 100 12 12 100 12 100 12 1 100 12 12 12 12 12 12 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-instanceKlass java/lang/reflect/Constructor
+-instanceKlass java/lang/reflect/Method
+-ciInstanceKlass java/lang/reflect/Executable 1 1 441 10 10 10 11 10 10 10 8 10 10 10 7 8 100 10 10 10 10 8 10 100 8 10 8 10 10 8 10 10 11 10 8 8 10 10 7 10 100 10 10 10 10 10 10 100 10 10 10 10 10 100 10 100 8 10 10 3 100 8 10 10 10 10 10 8 8 8 9 10 100 8 9 10 10 10 10 10 10 7 10 10 10 10 11 10 7 10 10 9 10 10 10 9 10 10 9 10 9 10 9 7 7 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 7 12 12 7 12 7 12 12 12 1 12 12 12 1 1 1 12 12 12 1 12 1 1 12 1 12 100 1 12 12 12 1 1 100 12 12 1 12 1 12 12 7 12 12 12 1 12 12 12 12 100 12 12 1 1 12 12 1 1 12 12 12 12 1 1 1 12 12 1 1 12 12 12 12 12 12 12 12 12 7 12 12 7 12 12 1 100 12 12 12 12 12 12 100 12 100 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/reflect/Method 1 1 378 9 10 10 9 10 10 10 10 9 9 9 9 9 9 9 9 9 9 9 100 8 10 7 10 9 10 10 7 7 10 10 10 7 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 11 9 10 10 10 10 11 10 100 10 10 10 10 9 10 10 10 10 10 11 10 7 100 100 10 8 10 10 10 10 10 10 10 8 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 7 12 7 12 12 12 12 7 12 12 12 12 12 12 12 12 12 12 12 12 12 1 1 12 1 12 12 12 12 1 1 12 12 7 12 12 7 12 12 12 100 12 12 7 7 12 12 12 12 12 12 12 12 12 100 12 7 12 12 12 12 7 12 12 1 12 12 12 12 12 7 12 12 7 12 7 12 7 12 7 12 7 12 1 1 1 1 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/reflect/Constructor 1 1 359 10 10 9 10 10 10 9 10 9 9 9 9 9 9 9 9 100 8 10 7 10 9 10 10 10 10 100 100 10 7 10 10 10 10 10 10 10 10 10 10 10 9 10 10 10 10 100 8 10 11 10 10 10 9 10 10 10 10 10 10 10 10 10 100 8 10 10 10 10 10 10 11 9 10 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 7 12 7 12 12 12 12 7 12 12 12 12 12 12 12 12 12 12 12 1 1 12 1 12 12 12 7 12 12 12 1 1 7 12 12 7 12 12 7 12 12 12 12 100 12 12 12 12 7 12 12 12 12 1 1 12 7 12 12 12 12 12 7 12 12 12 12 12 12 12 12 12 1 1 12 12 12 12 100 12 100 12 100 12 100 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1
+-instanceKlass sun/reflect/FieldAccessorImpl
+-instanceKlass sun/reflect/ConstructorAccessorImpl
+-instanceKlass sun/reflect/MethodAccessorImpl
+-ciInstanceKlass sun/reflect/MagicAccessorImpl 1 1 16 10 100 7 1 1 1 1 1 1 1 1 1 12 1 1
+-instanceKlass sun/reflect/GeneratedMethodAccessor11
+-instanceKlass sun/reflect/GeneratedMethodAccessor10
+-instanceKlass sun/reflect/GeneratedMethodAccessor9
+-instanceKlass sun/reflect/GeneratedMethodAccessor8
+-instanceKlass sun/reflect/GeneratedMethodAccessor7
+-instanceKlass sun/reflect/GeneratedMethodAccessor6
+-instanceKlass sun/reflect/GeneratedMethodAccessor5
+-instanceKlass sun/reflect/GeneratedMethodAccessor4
+-instanceKlass sun/reflect/GeneratedMethodAccessor3
+-instanceKlass sun/reflect/GeneratedMethodAccessor2
+-instanceKlass sun/reflect/GeneratedMethodAccessor1
+-instanceKlass sun/reflect/DelegatingMethodAccessorImpl
+-instanceKlass sun/reflect/NativeMethodAccessorImpl
+-ciInstanceKlass sun/reflect/MethodAccessorImpl 1 1 25 10 100 7 100 1 1 1 1 1 1 1 1 1 1 100 100 1 1 12 1 1 1 1 1
+-instanceKlass sun/reflect/GeneratedConstructorAccessor15
+-instanceKlass sun/reflect/GeneratedConstructorAccessor14
+-instanceKlass sun/reflect/GeneratedConstructorAccessor13
+-instanceKlass sun/reflect/GeneratedConstructorAccessor12
+-instanceKlass sun/reflect/GeneratedConstructorAccessor11
+-instanceKlass sun/reflect/GeneratedConstructorAccessor10
+-instanceKlass sun/reflect/GeneratedConstructorAccessor9
+-instanceKlass sun/reflect/GeneratedConstructorAccessor8
+-instanceKlass sun/reflect/GeneratedConstructorAccessor7
+-instanceKlass sun/reflect/GeneratedConstructorAccessor6
+-instanceKlass sun/reflect/GeneratedConstructorAccessor5
+-instanceKlass sun/reflect/GeneratedConstructorAccessor4
+-instanceKlass sun/reflect/GeneratedConstructorAccessor3
+-instanceKlass sun/reflect/GeneratedConstructorAccessor2
+-instanceKlass sun/reflect/BootstrapConstructorAccessorImpl
+-instanceKlass sun/reflect/GeneratedConstructorAccessor1
+-instanceKlass sun/reflect/DelegatingConstructorAccessorImpl
+-instanceKlass sun/reflect/NativeConstructorAccessorImpl
+-ciInstanceKlass sun/reflect/ConstructorAccessorImpl 1 1 27 10 100 7 100 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 12 1 1 1 1 1 1
+-ciInstanceKlass sun/reflect/DelegatingClassLoader 1 1 18 10 100 7 1 1 1 1 1 1 1 1 1 1 1 12 1 1
+-ciInstanceKlass sun/reflect/ConstantPool 1 1 111 10 9 10 10 10 10 10 10 10 10 10 10 10 10 10 10 7 7 8 10 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 1 7 12 1 1 1 1
+-instanceKlass sun/reflect/UnsafeFieldAccessorImpl
+-ciInstanceKlass sun/reflect/FieldAccessorImpl 1 1 59 10 100 7 100 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 1 1 1 1 1
+-instanceKlass sun/reflect/UnsafeIntegerFieldAccessorImpl
+-instanceKlass sun/reflect/UnsafeBooleanFieldAccessorImpl
+-instanceKlass sun/reflect/UnsafeQualifiedFieldAccessorImpl
+-instanceKlass sun/reflect/UnsafeObjectFieldAccessorImpl
+-instanceKlass sun/reflect/UnsafeStaticFieldAccessorImpl
+-ciInstanceKlass sun/reflect/UnsafeFieldAccessorImpl 1 1 257 10 9 10 10 9 10 9 10 10 9 10 10 10 10 100 10 10 10 8 10 10 100 8 10 8 10 8 10 100 10 10 8 10 8 10 8 10 8 10 8 10 8 10 8 10 8 10 8 10 10 8 8 8 8 8 8 10 8 8 8 10 10 7 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 7 12 7 12 12 7 12 12 12 12 12 12 7 12 7 12 12 1 12 12 1 12 1 1 12 1 12 1 12 1 12 1 12 1 100 12 1 100 12 1 100 12 1 100 12 1 100 12 1 100 12 1 100 12 1 100 12 12 1 1 1 1 1 1 100 12 1 1 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield sun/reflect/UnsafeFieldAccessorImpl unsafe Lsun/misc/Unsafe; sun/misc/Unsafe
+-instanceKlass sun/reflect/UnsafeQualifiedStaticFieldAccessorImpl
+-ciInstanceKlass sun/reflect/UnsafeStaticFieldAccessorImpl 1 1 43 10 9 10 9 7 7 8 10 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 7 12 12 1 1 7 12 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass sun/reflect/CallerSensitive 0 0 17 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1
+-instanceKlass java/lang/invoke/DirectMethodHandle
+-ciInstanceKlass java/lang/invoke/MethodHandle 1 1 490 9 10 10 10 9 10 10 10 10 10 10 11 10 10 10 9 10 100 100 10 8 10 10 8 10 10 10 10 10 10 10 10 10 7 10 10 10 8 10 10 10 10 10 8 10 8 10 8 10 9 100 10 9 9 8 10 10 10 10 10 10 10 10 8 10 10 10 10 10 10 9 8 10 10 8 10 10 10 10 10 10 8 10 10 100 9 10 100 10 10 9 10 10 8 9 9 9 10 10 10 10 7 10 10 8 10 10 100 10 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 12 12 12 100 12 12 12 100 12 12 100 12 12 12 100 12 12 12 12 12 12 1 1 1 12 12 1 12 12 7 12 12 12 12 12 100 12 100 12 1 12 12 12 1 7 12 12 12 12 12 1 12 1 12 1 100 12 12 1 100 12 100 1 12 12 12 12 12 12 12 12 1 12 12 12 12 12 12 12 1 12 12 1 12 12 100 12 12 12 1 12 12 1 12 1 100 12 12 12 12 12 1 12 12 12 7 12 12 12 12 1 12 12 12 12 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/invoke/MethodHandle FORM_OFFSET J 20
+-staticfield java/lang/invoke/MethodHandle $assertionsDisabled Z 1
+-ciInstanceKlass java/lang/invoke/DirectMethodHandle 0 0 788 100 100 100 10 10 10 100 10 10 10 10 10 100 100 10 10 10 10 10 10 10 9 100 10 9 10 10 10 10 10 10 100 10 10 10 10 100 10 100 10 10 10 100 10 10 100 10 10 10 10 10 10 10 10 8 10 10 10 10 10 9 100 10 10 10 100 10 8 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 8 8 8 8 8 8 8 8 8 8 8 10 10 100 9 100 10 100 10 10 10 10 100 9 10 9 9 9 10 100 10 10 10 8 10 10 10 10 9 9 10 10 100 100 100 9 10 10 10 10 9 10 100 10 100 10 10 9 9 10 9 10 10 10 10 10 9 10 10 10 10 9 9 10 10 9 9 9 9 10 9 9 10 10 9 10 9 10 10 100 10 10 10 10 10 8 8 8 9 10 100 10 10 9 9 9 9 9 9 8 8 8 8 10 10 9 9 100 1 100 1 1 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 12 12 12 1 12 12 12 12 12 1 1 12 12 12 12 12 12 12 12 1 12 12 12 12 12 12 12 1 100 12 12 12 12 1 12 1 12 12 12 1 12 12 1 12 12 12 12 100 12 100 12 12 12 12 12 12 100 12 1 12 100 12 12 1 1 12 12 12 12 12 12 12 12 12 12 12 12 100 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 12 12 1 12 1 12 1 100 12 12 12 12 1 12 12 12 12 12 12 12 100 12 12 1 12 12 12 12 12 12 100 12 12 1 1 1 12 12 12 12 12 12 12 1 12 1 12 12 12 12 12 12 12 12 12 12 12 12 12 100 12 12 100 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 12 12 100 12 12 12 1 1 1 100 12 1 12 12 12 12 12 12 12 12 1 1 1 1 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/invoke/MemberName 1 1 709 100 7 100 10 10 10 9 9 10 9 10 10 10 10 10 10 10 9 10 100 100 10 8 10 10 10 10 9 8 10 100 100 10 10 100 100 7 10 9 100 8 10 10 10 10 10 10 10 10 10 8 8 8 10 10 9 3 10 10 10 10 10 10 10 10 10 100 8 10 10 8 9 8 9 10 8 10 10 10 10 10 100 10 10 8 10 10 8 10 10 100 10 10 8 8 10 10 10 10 10 10 10 10 10 3 10 3 10 3 3 3 3 3 3 10 100 10 3 10 3 10 10 10 10 10 10 10 10 10 10 10 10 100 10 10 10 100 10 10 10 10 100 10 10 8 10 10 10 10 10 10 10 10 10 10 10 100 10 100 8 10 10 10 10 10 10 10 8 8 8 8 10 10 10 8 8 10 8 10 10 10 8 8 10 10 8 8 100 10 8 8 8 8 10 100 100 100 10 100 10 100 10 9 10 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 3 1 3 1 3 1 3 1 3 1 1 1 1 1 1 1 1 3 1 1 1 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 100 12 12 1 1 12 1 12 12 12 12 12 1 100 12 1 1 12 1 12 12 1 1 12 12 12 12 12 12 12 12 12 1 1 1 100 12 12 12 12 12 12 12 12 12 12 12 1 12 12 100 100 12 1 12 12 12 12 12 1 12 12 1 12 12 1 12 12 1 12 12 1 1 12 12 12 12 12 12 12 12 12 12 12 100 1 1 100 12 12 12 12 12 100 12 12 12 12 12 12 1 12 1 12 12 1 12 100 12 100 12 12 12 12 12 12 12 1 12 1 1 100 12 12 100 12 12 12 1 1 1 1 12 12 12 1 1 12 1 12 12 1 1 12 1 1 1 1 1 1 1 12 1 1 1 1 1 100 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/invoke/MemberName $assertionsDisabled Z 1
+-ciInstanceKlass java/lang/invoke/MethodHandleNatives 1 1 499 100 10 9 10 100 10 10 10 10 8 8 8 8 8 8 8 8 8 8 100 10 100 10 10 100 10 10 8 10 8 10 8 10 9 8 10 100 10 100 100 8 100 7 10 10 100 9 10 10 10 100 10 10 10 10 100 10 9 8 10 8 10 8 8 8 100 8 10 10 10 10 10 100 10 10 8 8 10 10 10 8 10 8 8 9 10 10 10 100 100 10 10 10 100 100 10 10 100 10 10 100 100 10 10 10 10 100 10 10 10 10 10 10 10 8 8 100 10 100 10 10 10 10 7 10 10 10 9 10 10 10 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 100 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 1 12 12 12 1 1 1 1 1 1 1 1 1 1 1 12 1 12 100 12 1 12 1 12 1 12 1 12 100 12 1 100 12 1 12 1 1 1 1 1 12 1 100 12 12 12 100 12 1 12 100 12 12 12 100 12 12 1 12 1 12 1 1 1 1 1 12 12 12 12 12 1 12 12 1 1 12 12 1 100 12 1 1 12 12 12 12 1 1 12 1 1 1 1 1 100 12 12 1 12 100 12 12 12 12 12 1 1 1 12 1 12 12 12 12 1 12 12 12 12 7 12 12 12 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/invoke/MethodHandleNatives COUNT_GWT Z 1
+-staticfield java/lang/invoke/MethodHandleNatives $assertionsDisabled Z 1
+-ciInstanceKlass java/lang/invoke/LambdaForm 0 0 1101 100 100 9 10 10 9 9 10 100 10 9 10 9 10 100 9 10 9 9 9 10 100 10 10 10 10 10 10 10 9 10 8 10 10 10 10 100 10 10 8 10 10 10 100 8 10 10 10 10 10 100 10 100 10 10 9 9 10 10 100 10 10 10 10 10 10 10 10 10 10 8 10 10 8 8 9 9 9 10 10 10 9 10 10 10 10 10 10 10 10 8 8 8 8 8 8 8 8 10 9 10 10 10 10 10 10 10 100 10 10 9 10 10 10 10 10 10 8 10 100 100 10 10 10 10 11 11 11 100 10 10 10 10 100 10 8 10 10 8 10 10 10 100 10 8 10 9 10 10 8 8 10 10 8 8 8 10 10 9 10 8 8 9 10 10 8 8 8 100 8 100 8 100 8 10 8 10 9 10 10 9 10 10 10 10 10 10 10 10 10 10 8 100 10 10 9 10 8 8 100 8 8 9 8 8 8 10 8 8 8 10 10 8 8 8 10 8 10 8 8 8 8 8 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 9 8 10 11 11 9 9 9 9 9 10 10 8 10 8 9 100 10 100 10 100 10 9 10 10 10 10 9 10 10 9 10 9 10 9 100 9 9 10 100 10 10 10 10 9 100 1 100 1 100 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 3 1 3 1 1 1 3 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 12 12 12 12 12 12 1 12 12 12 100 12 12 12 12 12 12 12 1 12 12 100 12 100 12 12 12 12 12 12 1 12 12 12 100 12 1 12 1 12 12 12 1 1 12 12 12 12 12 1 12 1 12 12 12 12 12 12 1 12 12 12 12 12 12 100 12 12 1 12 12 1 1 12 12 12 12 100 12 12 12 100 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 12 12 12 12 12 12 12 12 12 1 12 12 12 12 12 12 12 100 12 12 1 1 100 12 12 12 100 12 100 12 12 1 12 12 12 12 1 12 1 12 12 1 12 12 1 12 1 12 12 12 12 1 1 12 12 1 1 1 12 12 100 12 12 1 1 12 12 12 1 1 1 1 1 1 1 1 1 12 1 12 100 12 12 12 12 12 12 12 12 12 12 12 12 1 12 12 12 12 1 1 1 1 1 12 1 1 1 100 12 1 1 1 12 12 1 1 1 12 1 12 1 1 1 1 1 12 12 12 100 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 12 12 12 12 12 12 12 12 12 12 1 12 1 12 1 12 1 12 1 12 12 12 12 12 12 12 100 12 12 12 12 12 12 12 12 1 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/invoke/MethodType 0 0 677 100 10 10 10 9 10 100 9 9 10 9 8 10 10 9 9 10 100 10 8 10 10 10 100 8 10 100 10 10 10 10 11 9 11 100 10 9 10 10 10 10 10 9 100 10 100 10 10 10 10 10 10 10 10 10 10 8 8 10 9 100 10 10 10 10 10 10 10 10 10 8 10 10 10 10 10 11 10 10 10 10 10 100 10 10 10 10 9 100 10 10 10 10 10 10 10 10 8 8 10 8 10 10 9 10 10 10 10 10 10 10 10 10 10 10 10 9 100 10 10 10 10 10 8 10 11 9 10 10 10 10 10 10 10 10 10 9 9 10 9 10 100 10 100 9 8 10 10 8 100 100 10 100 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 3 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 100 1 1 1 1 1 1 1 1 1 1 100 100 1 1 100 1 1 1 1 1 1 1 1 100 1 1 1 100 1 1 1 1 1 1 1 1 1 100 1 1 1 12 12 12 12 100 12 12 12 100 12 100 12 1 100 12 12 100 100 12 1 1 12 12 12 1 1 12 1 12 12 12 100 12 12 12 1 100 12 12 12 12 12 12 12 12 1 12 1 12 12 100 12 12 12 12 12 12 12 12 1 1 12 12 1 12 12 12 12 100 12 12 12 1 12 12 100 12 12 12 12 12 12 12 12 12 1 12 12 12 12 1 12 100 12 12 100 12 12 12 1 1 12 1 100 12 12 12 12 12 12 12 12 12 100 12 12 12 12 12 12 1 12 12 12 100 12 12 1 100 12 12 12 12 12 100 12 12 12 100 12 12 100 12 12 12 100 12 12 12 1 1 12 12 12 1 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/BootstrapMethodError 0 0 46 10 10 10 10 10 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 12 12 12 100 12 12 1 1 1 1 1 1 1 1
+-instanceKlass java/lang/invoke/VolatileCallSite
+-instanceKlass java/lang/invoke/MutableCallSite
+-instanceKlass java/lang/invoke/ConstantCallSite
+-ciInstanceKlass java/lang/invoke/CallSite 0 0 367 10 10 9 10 10 100 100 10 100 10 10 10 100 100 10 10 10 8 10 10 10 9 10 10 10 10 100 8 10 10 10 100 10 9 10 10 10 10 9 9 10 10 9 10 10 10 10 10 10 100 10 10 10 10 10 10 100 100 8 10 10 10 10 10 100 100 8 10 10 100 8 10 100 10 10 10 8 10 10 8 10 10 100 10 8 10 10 100 100 10 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 100 100 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 12 12 12 12 12 1 1 12 1 12 12 12 1 1 100 12 12 1 12 12 12 12 12 100 12 12 1 1 12 12 1 12 12 12 12 12 100 12 100 12 12 100 12 12 12 12 12 12 12 100 12 12 12 12 12 12 12 12 1 1 1 12 12 100 12 12 1 1 1 12 1 1 12 1 12 12 100 12 12 12 12 12 1 12 12 12 1 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/invoke/ConstantCallSite 0 0 49 10 9 10 100 10 9 100 10 10 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 12 12 12 1 12 12 1 12 1 1 1 1
+-ciInstanceKlass java/lang/invoke/MutableCallSite 0 0 67 10 10 9 10 10 10 9 10 10 100 10 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 12 12 100 12 1 12 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/invoke/VolatileCallSite 0 0 41 10 10 10 10 10 10 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 1 1 1 1 1 1 1
+-instanceKlass java/lang/StringBuilder
+-instanceKlass java/lang/StringBuffer
+-ciInstanceKlass java/lang/AbstractStringBuilder 1 1 371 7 10 9 9 10 10 10 7 3 10 3 100 10 100 10 10 10 10 100 10 10 10 8 10 10 10 10 10 10 10 10 10 10 10 7 10 11 10 8 100 10 8 10 10 8 8 10 10 11 3 8 10 10 7 5 0 8 10 10 10 10 10 10 10 10 100 10 8 8 10 10 10 8 8 8 10 10 8 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 7 100 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 12 12 12 12 12 7 12 1 12 1 1 12 12 100 12 12 1 12 12 1 12 7 12 12 12 12 12 12 100 1 12 12 1 1 1 12 12 1 1 12 12 1 12 12 1 1 12 12 100 12 12 12 12 12 1 1 1 12 12 12 1 1 1 12 12 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/StringBuffer 1 1 418 10 10 10 11 10 10 9 9 10 10 9 10 100 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 7 10 10 8 10 8 10 8 10 10 10 10 7 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 7 10 9 9 9 7 7 100 100 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 1 1 1 100 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 12 12 12 12 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 7 12 1 12 100 12 1 12 1 12 1 12 12 100 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 12 7 12 7 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/StringBuffer serialPersistentFields [Ljava/io/ObjectStreamField; 3 [Ljava/io/ObjectStreamField;
+-ciInstanceKlass java/lang/StringBuilder 1 1 359 10 10 10 11 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 7 9 9 10 10 10 10 10 10 10 100 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 7 7 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 12 12 12 100 12 12 12 100 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass sun/misc/Unsafe 1 1 420 10 10 10 10 7 8 10 9 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 100 10 10 7 7 8 10 10 7 10 9 7 9 7 9 7 9 7 9 7 9 7 9 7 9 7 9 10 9 9 9 9 9 9 9 9 9 10 9 7 1 1 1 1 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 7 12 7 12 7 12 1 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 100 12 100 12 12 12 12 12 12 12 12 12 12 12 1 12 1 1 12 1 12 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 12 12 12 12 12 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield sun/misc/Unsafe theUnsafe Lsun/misc/Unsafe; sun/misc/Unsafe
+-staticfield sun/misc/Unsafe ARRAY_BOOLEAN_BASE_OFFSET I 16
+-staticfield sun/misc/Unsafe ARRAY_BYTE_BASE_OFFSET I 16
+-staticfield sun/misc/Unsafe ARRAY_SHORT_BASE_OFFSET I 16
+-staticfield sun/misc/Unsafe ARRAY_CHAR_BASE_OFFSET I 16
+-staticfield sun/misc/Unsafe ARRAY_INT_BASE_OFFSET I 16
+-staticfield sun/misc/Unsafe ARRAY_LONG_BASE_OFFSET I 16
+-staticfield sun/misc/Unsafe ARRAY_FLOAT_BASE_OFFSET I 16
+-staticfield sun/misc/Unsafe ARRAY_DOUBLE_BASE_OFFSET I 16
+-staticfield sun/misc/Unsafe ARRAY_OBJECT_BASE_OFFSET I 16
+-staticfield sun/misc/Unsafe ARRAY_BOOLEAN_INDEX_SCALE I 1
+-staticfield sun/misc/Unsafe ARRAY_BYTE_INDEX_SCALE I 1
+-staticfield sun/misc/Unsafe ARRAY_SHORT_INDEX_SCALE I 2
+-staticfield sun/misc/Unsafe ARRAY_CHAR_INDEX_SCALE I 2
+-staticfield sun/misc/Unsafe ARRAY_INT_INDEX_SCALE I 4
+-staticfield sun/misc/Unsafe ARRAY_LONG_INDEX_SCALE I 8
+-staticfield sun/misc/Unsafe ARRAY_FLOAT_INDEX_SCALE I 4
+-staticfield sun/misc/Unsafe ARRAY_DOUBLE_INDEX_SCALE I 8
+-staticfield sun/misc/Unsafe ARRAY_OBJECT_INDEX_SCALE I 4
+-staticfield sun/misc/Unsafe ADDRESS_SIZE I 8
+-instanceKlass java/util/zip/ZipFile$ZipFileInputStream
+-instanceKlass java/io/FilterInputStream
+-instanceKlass java/io/FileInputStream
+-instanceKlass java/io/ByteArrayInputStream
+-ciInstanceKlass java/io/InputStream 1 1 78 10 10 100 10 100 10 10 100 7 5 0 10 8 10 7 100 1 1 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 12 12 1 1 12 1 1 100 12 1 12 1 1 1 1 1 1
+-ciInstanceKlass java/io/ByteArrayInputStream 1 1 75 10 9 9 9 9 10 100 10 100 10 10 7 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 12 12 12 12 12 7 12 1 1 7 12 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/io/File 1 1 654 9 9 10 9 9 9 10 9 100 10 8 10 9 10 100 10 10 10 10 10 100 8 10 10 8 10 8 10 8 10 8 10 8 10 8 10 8 10 9 10 10 10 10 10 10 7 10 10 10 10 10 100 8 10 10 10 8 10 7 10 10 10 10 100 10 100 10 10 10 10 10 8 7 10 100 100 10 10 10 7 10 10 10 10 10 10 10 10 10 10 10 7 10 11 11 11 7 11 100 10 10 10 10 7 11 10 10 10 10 10 10 10 8 10 10 10 10 10 10 10 10 100 8 10 10 10 8 8 10 10 100 8 10 10 10 10 10 10 10 10 8 10 10 9 9 10 9 10 9 10 10 10 10 10 10 9 10 9 9 10 10 10 8 100 7 100 100 100 1 1 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 100 100 1 1 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 100 1 1 1 100 100 100 1 1 1 1 100 1 1 1 1 12 12 12 12 12 12 12 12 1 1 12 12 12 1 12 12 12 12 1 1 12 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 12 12 12 12 12 12 12 1 12 12 12 12 12 1 1 12 12 1 12 1 12 12 12 1 1 12 12 12 12 1 1 12 1 1 12 7 12 100 12 1 12 12 12 12 12 12 12 12 100 12 12 12 1 7 12 100 12 12 1 12 12 100 12 12 12 12 12 12 12 12 1 12 12 12 12 12 12 12 12 1 1 12 12 1 1 12 12 1 1 12 12 12 12 100 12 12 100 12 12 12 12 12 7 12 12 12 12 100 12 100 12 7 12 7 12 12 12 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/io/File fs Ljava/io/FileSystem; java/io/UnixFileSystem
+-staticfield java/io/File separatorChar C 47
+-staticfield java/io/File separator Ljava/lang/String; "/"
+-staticfield java/io/File pathSeparatorChar C 58
+-staticfield java/io/File pathSeparator Ljava/lang/String; ":"
+-staticfield java/io/File PATH_OFFSET J 16
+-staticfield java/io/File PREFIX_LENGTH_OFFSET J 12
+-staticfield java/io/File UNSAFE Lsun/misc/Unsafe; sun/misc/Unsafe
+-staticfield java/io/File $assertionsDisabled Z 1
+-instanceKlass java/net/FactoryURLClassLoader
+-instanceKlass org/codehaus/plexus/classworlds/realm/ClassRealm
+-instanceKlass sun/misc/Launcher$ExtClassLoader
+-instanceKlass sun/misc/Launcher$AppClassLoader
+-ciInstanceKlass java/net/URLClassLoader 1 1 633 9 10 9 10 7 10 9 10 10 10 7 10 10 10 10 10 10 7 10 10 10 7 100 100 8 10 10 10 10 11 11 11 100 11 11 10 11 11 11 10 10 10 7 10 10 7 7 10 7 10 10 10 10 100 100 10 8 10 8 10 10 10 8 8 10 10 10 100 100 8 10 10 10 10 10 10 10 10 10 7 10 10 10 10 10 10 10 8 10 10 9 10 9 9 9 9 9 9 10 8 10 7 10 10 7 10 10 7 10 10 10 10 7 10 9 10 8 100 8 10 10 8 10 10 9 10 10 10 10 100 8 10 100 10 10 100 10 10 7 7 10 7 10 10 10 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 1 12 12 7 12 100 12 7 12 1 12 12 12 12 7 12 1 12 12 12 1 1 1 1 12 12 12 12 7 12 7 12 12 1 12 7 12 12 12 12 12 12 12 1 12 12 1 1 12 1 12 7 12 12 1 1 1 12 1 12 12 1 1 12 12 12 1 1 1 12 12 7 12 7 12 12 12 12 12 12 1 12 7 12 12 12 12 12 12 1 12 7 12 7 12 7 12 12 12 12 12 12 12 12 1 12 1 12 1 12 12 1 12 12 12 12 1 7 12 7 12 12 1 1 1 12 12 1 12 12 12 100 12 12 12 12 1 1 1 12 7 12 1 12 12 1 1 1 7 12 7 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/net/URL 1 1 629 10 10 10 9 9 10 10 10 9 10 8 10 7 10 10 8 10 9 100 8 10 10 8 9 7 10 10 9 10 9 8 9 10 9 10 8 9 10 10 10 10 8 10 10 10 10 8 9 8 10 10 100 10 10 10 10 9 10 9 10 10 10 7 10 10 10 10 10 7 10 10 10 100 8 10 9 10 10 9 10 100 10 10 10 10 10 10 10 10 10 10 10 9 9 100 8 10 10 9 10 10 7 11 7 8 8 10 10 7 8 8 7 10 10 10 10 8 8 10 100 10 10 10 10 10 10 8 10 100 10 8 8 10 8 8 8 8 100 10 9 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 100 8 10 10 10 7 10 7 7 10 9 9 100 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 100 1 1 1 100 100 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 7 12 12 12 12 12 1 12 1 12 1 12 12 1 1 12 12 1 12 1 12 12 12 12 1 12 12 12 12 1 12 12 12 12 12 1 12 12 12 12 1 12 1 12 12 1 12 12 7 12 12 100 12 100 12 12 12 12 12 1 12 12 12 12 12 1 12 1 1 100 12 100 12 12 100 12 12 1 12 12 12 12 12 100 12 12 12 7 12 12 12 12 12 1 1 12 12 12 12 1 100 12 1 1 1 12 7 12 1 1 1 1 12 12 12 1 1 7 12 1 100 12 12 12 12 100 12 100 12 12 1 12 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 1 12 1 1 1 12 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/net/URL serialPersistentFields [Ljava/io/ObjectStreamField; 7 [Ljava/io/ObjectStreamField;
+-ciInstanceKlass java/util/jar/Manifest 1 1 280 10 7 10 9 7 10 9 10 10 10 10 11 11 10 11 100 10 10 11 11 11 11 100 100 8 10 11 7 8 10 10 10 8 10 10 10 11 10 10 10 8 10 7 10 10 10 100 8 10 10 8 10 10 10 10 10 11 10 10 10 100 7 10 11 10 11 10 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 1 12 1 12 12 12 12 12 7 12 12 1 12 12 12 100 12 100 12 12 1 1 1 12 12 1 1 12 12 12 1 12 12 12 12 12 12 12 1 12 1 12 12 12 1 1 12 1 12 100 12 12 12 12 12 12 7 12 12 1 1 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass sun/misc/Launcher 1 1 250 9 10 10 9 9 10 10 100 100 8 10 10 9 8 10 10 8 10 8 10 8 100 10 10 10 100 100 100 100 10 100 10 8 10 10 10 9 7 10 9 10 7 10 10 8 10 10 10 10 10 100 10 7 10 7 10 8 7 100 1 1 7 1 7 1 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 12 12 1 1 1 12 12 12 1 7 12 12 1 7 12 1 7 12 1 1 100 12 100 12 1 1 1 1 12 1 1 12 12 12 12 1 12 12 12 1 12 1 12 12 12 12 7 12 1 12 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass sun/misc/Launcher$AppClassLoader 1 1 234 8 10 100 10 7 10 10 7 10 10 10 11 9 10 10 10 10 10 10 10 10 100 10 10 10 7 8 10 10 9 10 100 10 10 10 10 100 10 100 100 10 100 10 10 100 10 7 10 10 7 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 7 12 1 12 1 12 7 12 1 12 12 7 12 7 12 12 7 12 7 12 12 12 100 12 12 12 12 1 12 12 12 1 1 7 12 12 100 12 1 12 12 12 1 12 1 1 12 1 12 12 1 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield sun/misc/Launcher$AppClassLoader $assertionsDisabled Z 1
+-ciInstanceKlass sun/misc/Launcher$ExtClassLoader 1 1 261 10 7 10 10 7 100 10 100 10 10 10 10 10 11 10 8 10 7 9 10 10 7 10 10 7 10 10 8 10 10 10 10 10 7 10 10 10 10 100 10 10 10 8 10 10 10 100 10 100 100 10 100 10 10 100 10 10 7 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 12 1 12 7 12 7 1 1 12 1 12 12 12 12 7 12 7 12 7 12 1 7 12 1 12 12 12 1 12 12 1 12 12 1 7 12 12 12 12 12 1 12 12 12 12 1 12 12 1 100 12 12 12 1 1 1 12 1 12 12 1 12 7 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/security/CodeSource 1 1 409 10 9 9 9 9 10 100 10 100 10 7 10 10 10 100 10 10 10 10 10 100 10 10 10 10 10 10 10 10 10 10 10 10 10 8 10 10 10 10 8 10 10 100 10 10 8 10 10 10 8 8 9 100 8 10 10 8 10 8 8 8 10 10 10 10 10 10 100 100 10 10 10 10 10 100 10 10 10 10 10 100 10 100 100 8 8 10 10 100 8 10 100 10 10 11 10 10 11 10 10 8 100 10 10 100 10 11 11 7 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 100 100 100 100 1 1 1 1 1 1 1 1 1 12 12 12 12 12 100 12 100 7 12 1 12 12 100 1 12 100 12 12 12 1 12 100 100 12 100 12 12 100 12 12 12 12 1 12 12 12 12 1 12 1 12 1 12 12 12 1 1 12 1 1 12 12 1 12 1 1 1 100 12 12 12 12 12 12 1 1 12 12 12 100 12 12 1 12 12 12 12 1 12 1 1 1 1 12 1 1 12 1 12 12 100 12 12 12 100 1 1 12 12 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/StackTraceElement 1 1 108 10 8 10 100 9 8 9 9 9 7 10 10 10 8 10 8 8 8 10 8 10 8 7 10 10 10 10 100 100 1 1 1 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 12 1 100 12 1 12 1 12 12 12 1 12 12 1 12 1 1 1 12 1 12 1 1 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1
+-instanceKlass java/nio/LongBuffer
+-instanceKlass java/nio/CharBuffer
+-instanceKlass java/nio/ByteBuffer
+-ciInstanceKlass java/nio/Buffer 1 1 121 100 10 9 9 100 100 10 8 10 10 10 10 9 10 10 8 8 8 9 10 100 10 100 10 100 10 100 10 7 7 1 1 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 1 1 1 12 12 12 12 12 12 12 1 1 1 12 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass java/lang/Boolean 1 1 124 10 9 10 10 8 10 9 9 8 10 7 10 10 100 100 10 10 8 10 9 7 100 100 1 1 1 1 1 1 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 1 7 12 12 12 1 12 1 12 7 12 1 1 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Boolean TRUE Ljava/lang/Boolean; java/lang/Boolean
+-staticfield java/lang/Boolean FALSE Ljava/lang/Boolean; java/lang/Boolean
+-staticfield java/lang/Boolean TYPE Ljava/lang/Class; java/lang/Class
+-ciInstanceKlass java/lang/Character 1 1 502 7 100 10 9 9 10 10 10 10 10 3 3 3 3 3 10 10 3 11 11 10 10 100 10 10 3 10 10 10 100 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 5 0 10 10 10 10 10 10 10 10 10 10 9 100 10 10 10 3 10 10 100 10 10 10 10 8 10 9 10 10 10 10 8 10 9 7 100 100 7 1 1 100 1 100 1 100 1 1 1 1 3 1 3 1 1 3 1 3 1 1 1 1 1 1 1 3 1 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 1 1 3 1 1 3 1 1 1 1 1 3 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 12 12 12 12 12 12 7 12 12 12 12 7 12 12 12 12 1 12 12 12 12 1 12 12 12 12 12 12 7 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 12 12 100 12 12 1 12 12 12 1 100 12 100 12 12 12 7 12 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Character TYPE Ljava/lang/Class; java/lang/Class
+-staticfield java/lang/Character $assertionsDisabled Z 1
+-instanceKlass java/math/BigInteger
+-instanceKlass java/util/concurrent/atomic/AtomicLong
+-instanceKlass java/util/concurrent/atomic/AtomicInteger
+-instanceKlass java/lang/Long
+-instanceKlass java/lang/Integer
+-instanceKlass java/lang/Short
+-instanceKlass java/lang/Byte
+-instanceKlass java/lang/Double
+-instanceKlass java/lang/Float
+-ciInstanceKlass java/lang/Number 1 1 37 10 10 100 7 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1 1
+-ciInstanceKlass java/lang/Float 1 1 193 7 100 10 10 100 4 100 10 10 8 8 10 10 10 10 4 4 4 10 9 10 10 10 10 10 10 3 3 3 10 10 10 10 8 10 9 7 100 1 1 1 1 1 4 1 1 1 4 1 1 3 1 3 1 3 1 3 1 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 7 12 100 12 1 1 12 100 12 1 1 100 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Float TYPE Ljava/lang/Class; java/lang/Class
+-ciInstanceKlass java/lang/Double 1 1 253 7 100 10 10 10 100 10 10 6 0 8 10 8 10 8 100 6 0 10 5 0 5 0 8 8 10 10 8 10 8 8 8 10 10 10 10 10 10 10 10 6 0 6 0 6 0 10 9 10 10 10 10 5 0 5 0 10 10 10 10 8 10 9 7 100 1 1 1 1 1 6 0 1 1 1 6 0 1 1 3 1 3 1 3 1 3 1 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 7 12 12 12 1 12 100 12 1 12 1 12 1 1 12 1 1 100 12 100 12 1 12 1 1 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Double TYPE Ljava/lang/Class; java/lang/Class
+-ciInstanceKlass java/lang/Byte 1 1 168 7 10 9 10 7 100 10 8 10 8 10 10 10 10 10 10 10 10 8 8 10 9 10 10 10 10 5 0 10 8 10 9 100 100 100 1 1 1 1 1 3 1 3 1 1 1 1 1 1 1 3 1 3 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 12 12 12 1 1 12 1 12 1 12 12 12 12 12 12 12 12 1 1 12 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Byte TYPE Ljava/lang/Class; java/lang/Class
+-ciInstanceKlass java/lang/Short 1 1 176 7 100 10 10 7 100 10 8 10 8 10 10 10 10 10 10 9 10 10 10 8 8 10 9 10 10 10 10 3 3 5 0 10 8 10 9 7 100 100 1 1 1 1 1 3 1 3 1 1 1 1 1 1 1 3 1 3 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 12 12 1 1 12 1 12 1 12 12 12 12 12 12 12 12 12 12 1 1 12 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Short TYPE Ljava/lang/Class; java/lang/Class
+-ciInstanceKlass java/lang/Integer 1 1 359 7 100 7 10 9 7 10 10 10 10 10 10 10 10 3 8 10 10 10 3 9 9 3 9 7 8 10 100 10 8 10 10 8 10 8 10 3 10 10 10 10 8 100 10 10 5 0 8 10 10 7 9 9 10 10 9 10 10 10 10 100 100 10 8 8 10 8 8 8 8 8 8 10 10 10 5 0 3 3 3 3 3 10 10 8 10 9 3 3 3 3 3 3 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 3 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 12 12 100 12 12 12 7 12 12 12 1 12 12 12 12 12 12 1 1 12 1 12 1 12 12 1 12 1 12 12 12 12 12 1 1 12 12 1 12 12 1 12 12 12 12 12 12 12 7 12 1 1 12 1 1 12 1 1 1 1 1 1 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Integer TYPE Ljava/lang/Class; java/lang/Class
+-staticfield java/lang/Integer digits [C 36
+-staticfield java/lang/Integer DigitTens [C 100
+-staticfield java/lang/Integer DigitOnes [C 100
+-staticfield java/lang/Integer sizeTable [I 10
+-ciInstanceKlass java/lang/Long 1 1 415 7 100 7 10 9 7 10 10 10 10 10 5 0 5 0 100 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 5 0 8 10 10 10 7 5 0 5 0 9 9 3 3 7 8 10 8 10 8 8 10 5 0 10 10 10 10 8 100 10 10 8 10 8 10 10 5 0 5 0 9 10 8 8 10 8 8 8 8 8 8 10 10 10 10 9 10 10 10 100 100 10 10 10 10 10 5 0 5 0 5 0 5 0 5 0 10 10 10 8 10 9 7 100 7 1 1 1 1 1 1 5 0 1 1 1 1 1 1 1 3 1 3 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 12 12 12 12 12 1 12 12 12 12 12 12 100 12 12 12 12 12 12 100 12 12 12 1 12 12 12 1 12 12 1 1 12 1 12 1 1 12 12 12 12 12 1 1 12 12 1 12 1 12 12 12 12 1 1 12 1 1 1 1 1 1 12 12 12 12 12 12 100 12 1 1 12 12 12 12 12 12 12 1 7 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield java/lang/Long TYPE Ljava/lang/Class; java/lang/Class
+-ciInstanceKlass java/lang/NullPointerException 1 1 26 10 10 100 7 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1
+-ciInstanceKlass java/lang/ArithmeticException 1 1 26 10 10 100 100 1 1 1 5 0 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 1
+-instanceKlass com/sun/tools/javac/util/List
+-instanceKlass java/util/TreeMap$Values
+-instanceKlass org/eclipse/sisu/inject/MildElements
+-instanceKlass org/eclipse/sisu/inject/MildValues$1
+-instanceKlass com/google/common/collect/Maps$Values
+-instanceKlass com/google/common/collect/AbstractMultimap$Values
+-instanceKlass java/util/IdentityHashMap$Values
+-instanceKlass com/google/common/collect/AbstractMapBasedMultimap$WrappedCollection
+-instanceKlass com/google/common/collect/ImmutableCollection
+-instanceKlass java/util/HashMap$Values
+-instanceKlass java/util/AbstractQueue
+-instanceKlass java/util/LinkedHashMap$LinkedValues
+-instanceKlass java/util/ArrayDeque
+-instanceKlass java/util/AbstractSet
+-instanceKlass java/util/AbstractList
+-ciInstanceKlass java/util/AbstractCollection 1 1 177 100 10 10 10 11 11 10 7 10 10 10 10 10 7 10 7 3 10 100 8 10 3 100 10 11 11 10 10 10 11 8 100 10 10 8 10 10 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 12 12 12 7 12 12 12 1 100 12 12 12 7 12 7 12 100 12 1 12 1 1 12 1 12 12 12 100 12 1 1 12 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-instanceKlass com/sun/tools/javac/util/List$1
+-ciInstanceKlass com/sun/tools/javac/util/List 1 1 370 10 9 9 9 10 10 10 11 11 10 10 10 7 10 10 10 10 7 10 10 10 10 11 10 10 10 10 10 10 10 10 10 10 10 100 10 7 8 100 10 10 10 10 8 10 10 10 100 11 10 9 10 7 10 100 10 10 8 10 8 11 100 10 100 10 10 11 11 100 10 10 10 7 10 7 10 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 12 12 12 12 7 12 12 12 7 12 12 12 12 12 1 12 12 12 1 12 12 12 12 7 12 12 12 12 12 12 12 12 100 12 12 100 12 12 1 1 1 12 12 12 1 12 12 12 1 12 12 12 1 12 1 100 12 12 1 12 1 100 1 1 12 100 12 12 12 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield com/sun/tools/javac/util/List EMPTY_LIST Lcom/sun/tools/javac/util/List; com/sun/tools/javac/util/List$1
+-staticfield com/sun/tools/javac/util/List EMPTYITERATOR Ljava/util/Iterator; com/sun/tools/javac/util/List$2
+-ciInstanceKlass com/sun/tools/javac/util/List$1 1 1 35 10 100 10 100 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 1 12 1 1 1
+-instanceKlass com/sun/tools/javac/code/Type
+-instanceKlass com/sun/tools/javac/code/Symbol
+-ciInstanceKlass com/sun/tools/javac/code/AnnoConstruct 1 1 312 10 10 10 10 11 11 100 9 9 10 10 10 10 100 10 100 100 10 8 10 10 10 10 10 10 10 100 10 10 10 10 10 100 10 10 10 10 100 10 8 10 7 10 100 100 9 8 7 10 10 100 9 10 7 10 100 100 100 9 9 9 9 10 100 9 10 10 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 12 12 12 100 12 100 12 12 100 1 12 100 12 100 12 100 12 100 12 100 12 12 1 1 1 12 12 12 12 12 12 1 12 12 12 100 12 12 1 12 12 12 12 1 12 1 12 1 1 12 1 1 12 7 12 1 12 1 12 1 1 1 12 12 100 12 100 12 12 1 1 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield com/sun/tools/javac/code/AnnoConstruct REPEATABLE_CLASS Ljava/lang/Class; java/lang/Class
+-staticfield com/sun/tools/javac/code/AnnoConstruct VALUE_ELEMENT_METHOD Ljava/lang/reflect/Method; java/lang/reflect/Method
+-instanceKlass com/sun/tools/javac/code/Symbol$DelegatedSymbol
+-instanceKlass com/sun/tools/javac/comp/Resolve$ResolveError
+-instanceKlass com/sun/tools/javac/code/Symbol$VarSymbol
+-instanceKlass com/sun/tools/javac/code/Symbol$MethodSymbol
+-instanceKlass com/sun/tools/javac/code/Symbol$TypeSymbol
+-ciInstanceKlass com/sun/tools/javac/code/Symbol 1 1 561 100 100 9 9 10 10 10 10 10 11 11 7 9 9 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 7 10 10 10 9 9 9 9 9 9 100 10 11 10 10 10 5 0 10 9 10 10 10 10 9 9 9 10 10 7 10 10 10 10 10 5 0 5 0 5 0 9 5 0 5 0 5 0 10 10 5 0 7 7 100 10 8 10 10 10 10 10 10 10 10 8 10 10 10 9 9 10 10 9 10 10 7 10 9 10 10 5 0 11 9 10 100 10 10 10 9 10 100 10 10 10 10 10 10 7 7 100 100 1 1 100 1 7 1 100 1 100 1 100 1 100 1 1 1 1 7 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 7 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 12 12 7 12 12 12 12 12 7 12 12 100 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 12 12 12 12 12 12 12 12 1 12 7 12 12 12 7 12 12 7 12 12 12 12 7 12 7 12 12 12 1 1 12 12 12 12 12 12 12 12 1 1 1 1 12 12 12 12 12 12 12 1 7 12 12 7 12 12 12 12 12 12 12 1 12 12 12 12 12 100 12 12 1 12 12 12 12 1 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-instanceKlass com/sun/tools/javac/util/SharedNameTable$NameImpl
+-ciInstanceKlass com/sun/tools/javac/util/Name 1 1 131 10 9 10 11 10 10 10 10 10 10 10 10 10 10 10 10 7 7 100 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 100 100 12 12 12 12 12 12 12 12 12 12 7 12 7 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass com/sun/tools/javac/util/SharedNameTable$NameImpl 1 1 61 10 9 9 10 9 7 9 7 9 10 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 1 12 1 12 1 100 1 1 1 1 1 1
+-instanceKlass com/sun/tools/javac/code/Scope$ImportScope
+-instanceKlass com/sun/tools/javac/code/Scope$CompoundScope
+-instanceKlass com/sun/tools/javac/code/Scope$ErrorScope
+-ciInstanceKlass com/sun/tools/javac/code/Scope 1 1 323 10 10 9 10 9 9 9 10 9 9 9 7 7 10 10 9 10 7 9 9 9 10 10 10 9 9 10 10 10 10 10 9 7 11 9 10 10 7 10 10 9 10 11 10 9 10 10 9 11 10 10 11 11 7 10 10 7 10 100 10 8 10 8 8 10 8 10 7 10 7 100 1 1 100 1 100 1 100 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 1 1 1 1 1 1 1 1 1 1 1 100 100 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 12 12 12 7 12 12 12 12 7 12 12 12 12 1 1 12 12 12 7 12 12 12 7 12 12 12 12 12 12 12 12 12 12 12 12 1 12 12 12 12 1 12 12 12 12 12 12 12 12 12 12 7 12 12 12 100 12 100 12 1 12 12 1 12 1 1 12 1 1 12 1 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-staticfield com/sun/tools/javac/code/Scope sentinel Lcom/sun/tools/javac/code/Scope$Entry; com/sun/tools/javac/code/Scope$Entry
+-staticfield com/sun/tools/javac/code/Scope emptyScope Lcom/sun/tools/javac/code/Scope; com/sun/tools/javac/code/Scope
+-staticfield com/sun/tools/javac/code/Scope noFilter Lcom/sun/tools/javac/util/Filter; com/sun/tools/javac/code/Scope$2
+-ciInstanceKlass com/sun/tools/javac/util/Assert 1 1 68 10 10 10 10 10 100 10 10 10 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 100 12 12 12 12 1 12 12 1 1 1 1 1 1 1
+-ciInstanceKlass com/sun/tools/javac/util/Filter 1 0 12 100 100 1 1 1 1 1 1 1 1 1
+-instanceKlass com/sun/tools/javac/code/Scope$ImportScope$1
+-ciInstanceKlass com/sun/tools/javac/code/Scope$Entry 1 1 63 9 10 9 9 9 11 10 7 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 7 12 12 100 1 1 1 1 1 1 1
+-ciInstanceKlass com/sun/tools/javac/code/Scope$2 1 1 33 10 7 10 7 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 12 1 12 1 1 1 1
+-ciInstanceKlass com/sun/tools/javac/code/Scope$ScopeListener 1 0 14 100 100 1 1 1 1 1 100 1 1 1 1 1
+-instanceKlass com/sun/tools/javac/code/Scope$StarImportScope
+-ciInstanceKlass com/sun/tools/javac/code/Scope$ImportScope 1 1 39 10 7 10 100 7 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 12 1 12 1 1 1 1
+-ciInstanceKlass com/sun/tools/javac/code/Scope$StarImportScope 1 1 72 10 9 9 9 100 10 10 9 10 10 7 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 7 1 1 1 1 1 100 1 1 1 1 1 1 1 12 7 12 12 7 12 1 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+-ciInstanceKlass com/sun/tools/javac/code/Scope$1 1 1 45 9 9 10 7 10 7 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 12 12 12 12 1 12 1 1 1 1 1 1 1
+-ciInstanceKlass com/sun/tools/javac/comp/Resolve$LookupFilter 1 1 62 100 100 9 10 9 10 9 5 0 5 0 5 0 7 10 7 7 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 12 12 1 12 100 1 1 1 1 1 1 1 1
+-ciMethodData com/sun/tools/javac/util/List nonEmpty ()Z 2 921845 orig 264 16 86 242 213 38 127 0 0 72 13 159 190 38 127 0 0 88 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 9 155 105 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 3 0 2 0 0 0 56 0 0 0 255 255 255 255 7 0 4 0 0 0 0 0 data 7 0x40007 0x3dbc0 0x38 0x957a1 0x80003 0x957a1 0x18 oops 0
+-ciMethodData com/sun/tools/javac/code/Scope getIndex (Lcom/sun/tools/javac/util/Name;)I 2 120268 orig 264 16 86 242 213 38 127 0 0 104 97 94 190 38 127 0 0 104 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 201 1 0 0 185 234 10 0 97 254 6 0 0 0 0 0 0 0 0 0 2 0 0 0 1 0 16 0 2 0 0 0 24 1 0 0 255 255 255 255 5 0 1 0 0 0 0 0 data 35 0x10005 0x0 0x7f26a0676e10 0x15d57 0x0 0x0 0x280007 0x109a1 0x58 0x13382 0x2d0007 0x1322a 0x38 0x158 0x320003 0x158 0x18 0x3c0007 0x107d5 0x58 0x1cc 0x410007 0x3b 0x58 0x191 0x470003 0x191 0x38 0x530007 0xde00 0x20 0x29d5 0x620003 0xdfcc 0xffffffffffffff30 oops 1 2 com/sun/tools/javac/util/SharedNameTable$NameImpl
+-ciMethodData com/sun/tools/javac/code/Scope lookup (Lcom/sun/tools/javac/util/Name;Lcom/sun/tools/javac/util/Filter;)Lcom/sun/tools/javac/code/Scope$Entry; 2 90031 orig 264 16 86 242 213 38 127 0 0 248 95 94 190 38 127 0 0 128 2 0 0 80 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 201 58 5 0 217 23 0 0 136 27 0 0 30 1 0 0 2 0 0 0 1 0 17 0 2 0 0 0 40 1 0 0 255 255 255 255 5 0 6 0 0 0 0 0 data 37 0x60005 0x45d 0x7f26a03c0ba0 0x9ac7 0x7f269c0c6e70 0x835 0xc0007 0x5e35 0x40 0x4924 0x13e007 0x48b5 0x20 0x71 0x1e0007 0x16d 0xb8 0x4a43 0x290007 0x0 0x70 0x4a43 0x310005 0x11e4 0x7f269c0c6f20 0x270c 0x7f269c0c6fd0 0x1153 0x360007 0x4748 0x48 0x2fb 0x3a0002 0x2fb 0x3e0003 0x2fb 0xffffffffffffff60 oops 4 2 com/sun/tools/javac/code/Scope 4 com/sun/tools/javac/code/Scope$ImportScope 24 com/sun/tools/javac/code/Scope$2 26 com/sun/tools/javac/comp/Resolve$LookupFilter
+-ciMethod com/sun/tools/javac/code/Scope$1 <init> (Lcom/sun/tools/javac/code/Scope;Lcom/sun/tools/javac/code/Symbol;)V 1049 1 5195 0 0
+-ciMethod com/sun/tools/javac/code/Scope$1 accepts (Lcom/sun/tools/javac/code/Symbol;)Z 8969 1 1121 0 0
+-ciMethod com/sun/tools/javac/code/Scope$1 accepts (Ljava/lang/Object;)Z 18633 1 2329 0 0
+-ciMethodData com/sun/tools/javac/code/Scope remove (Lcom/sun/tools/javac/code/Symbol;)V 2 143199 orig 264 16 86 242 213 38 127 0 0 0 92 94 190 38 127 0 0 128 4 0 0 80 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 25 90 0 0 65 158 0 0 193 64 7 0 0 0 0 0 0 0 0 0 2 0 0 0 3 0 30 0 2 0 0 0 48 3 0 0 255 255 255 255 7 0 4 0 0 0 0 0 data 102 0x40007 0x0 0x38 0x13c8 0x80003 0x13c8 0x18 0xc0002 0x13c8 0x1a0002 0x13c8 0x1d0005 0x0 0x7f26a03c0ba0 0xfa5 0x7f26a03c1350 0x423 0x250007 0x4b8 0x20 0xf10 0x2e0005 0x0 0x7f26a03c0ba0 0x95 0x7f26a03c1350 0x423 0x3d0007 0x0 0x78 0x4b8 0x460002 0x4b8 0x490004 0x0 0x7f26a03c1400 0x4b8 0x0 0x0 0x4a0003 0x4b8 0xa8 0x4f0002 0x0 0x530007 0x0 0x58 0x0 0x590002 0x0 0x5c0002 0x0 0x600003 0x0 0x40 0x650002 0x0 0x6a0003 0x0 0xffffffffffffff88 0x760007 0x4b5 0x38 0x3 0x810003 0x3 0x68 0x8a0007 0xe3f3 0x38 0x4b7 0x960003 0x4b7 0x30 0xa00003 0xe3f5 0xffffffffffffffc8 0xab0005 0x0 0x7f26a03c14b0 0x4ba 0x7f26a03c1560 0x423 0xae0007 0x4ba 0x98 0x423 0xb60004 0x0 0x7f26a03c1350 0x423 0x0 0x0 0xbb0005 0x0 0x7f26a03c1350 0x423 0x0 0x0 0xc70003 0x423 0xffffffffffffff50 oops 9 13 com/sun/tools/javac/code/Scope 15 com/sun/tools/javac/code/Scope$StarImportScope 23 com/sun/tools/javac/code/Scope 25 com/sun/tools/javac/code/Scope$StarImportScope 35 com/sun/tools/javac/code/Scope$Entry 79 com/sun/tools/javac/util/List$1 81 com/sun/tools/javac/util/List 89 com/sun/tools/javac/code/Scope$StarImportScope 95 com/sun/tools/javac/code/Scope$StarImportScope
+-ciMethodData com/sun/tools/javac/code/Scope$1 <init> (Lcom/sun/tools/javac/code/Scope;Lcom/sun/tools/javac/code/Symbol;)V 2 5195 orig 264 16 86 242 213 38 127 0 0 56 221 77 190 38 127 0 0 64 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 131 0 0 0 65 158 0 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 16 0 0 0 255 255 255 255 2 0 11 0 0 0 0 0 data 2 0xb0002 0x13c8 oops 0
+-ciMethodData com/sun/tools/javac/code/Scope$StarImportScope symbolRemoved (Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/code/Scope;)V 1 1958 orig 264 16 86 242 213 38 127 0 0 88 120 105 190 38 127 0 0 136 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 131 3 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 3 0 2 0 0 0 48 0 0 0 255 255 255 255 5 0 2 0 0 0 0 0 data 6 0x20005 0x0 0x0 0x0 0x0 0x0 oops 0
+-ciMethodData com/sun/tools/javac/code/Scope$1 accepts (Ljava/lang/Object;)Z 1 2329 orig 264 16 86 242 213 38 127 0 0 176 222 77 190 38 127 0 0 176 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 97 4 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 3 0 2 0 0 0 96 0 0 0 255 255 255 255 4 0 2 0 0 0 0 0 data 12 0x20004 0x0 0x0 0x0 0x0 0x0 0x50005 0x0 0x0 0x0 0x0 0x0 oops 0
+-ciMethodData com/sun/tools/javac/code/Scope$1 accepts (Lcom/sun/tools/javac/code/Symbol;)Z 1 1121 orig 264 16 86 242 213 38 127 0 0 240 221 77 190 38 127 0 0 136 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 97 4 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 3 0 2 0 0 0 56 0 0 0 255 255 255 255 7 0 5 0 0 0 0 0 data 7 0x50007 0x0 0x38 0x0 0x90003 0x0 0x18 oops 0
+-ciMethod com/sun/tools/javac/util/SharedNameTable$NameImpl hashCode ()I 1025 1 128 0 0
+-ciMethod com/sun/tools/javac/code/Scope remove (Lcom/sun/tools/javac/code/Symbol;)V 8969 670265 6185 0 0
+-ciMethod com/sun/tools/javac/code/Scope lookup (Lcom/sun/tools/javac/util/Name;Lcom/sun/tools/javac/util/Filter;)Lcom/sun/tools/javac/code/Scope$Entry; 377521 3257 90031 0 608
+-ciMethod com/sun/tools/javac/code/Scope getIndex (Lcom/sun/tools/javac/util/Name;)I 246697 149897 120268 0 320
+-ciMethod com/sun/tools/javac/util/Assert check (Z)V 2049 1 136922 0 64
+-ciMethod com/sun/tools/javac/util/Assert error ()V 0 0 1 0 -1
+-ciMethod com/sun/tools/javac/util/Filter accepts (Ljava/lang/Object;)Z 0 0 1 0 -1
+-ciMethod com/sun/tools/javac/code/Scope$Entry access$000 (Lcom/sun/tools/javac/code/Scope$Entry;)Lcom/sun/tools/javac/code/Scope$Entry; 2033 1 254 0 0
+-ciMethod com/sun/tools/javac/code/Scope$Entry access$002 (Lcom/sun/tools/javac/code/Scope$Entry;Lcom/sun/tools/javac/code/Scope$Entry;)Lcom/sun/tools/javac/code/Scope$Entry; 0 0 1 0 -1
+-ciMethodData com/sun/tools/javac/util/Assert check (Z)V 2 136922 orig 264 16 86 242 213 38 127 0 0 104 31 96 190 38 127 0 0 120 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 209 174 16 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 5 0 2 0 0 0 48 0 0 0 255 255 255 255 7 0 1 0 0 0 0 0 data 6 0x10007 0x215da 0x30 0x0 0x40002 0x0 oops 0
+-ciMethod com/sun/tools/javac/code/Scope$ScopeListener symbolRemoved (Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/code/Scope;)V 0 0 1 0 -1
+-ciMethod com/sun/tools/javac/code/Scope$StarImportScope symbolRemoved (Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/code/Scope;)V 15665 1 1958 0 0
+-ciMethod com/sun/tools/javac/util/List nonEmpty ()Z 453793 1 921845 0 64
+-ciMethod java/lang/Object <init> ()V 4097 1 1614656 0 0
+-ciMethod java/lang/Object hashCode ()I 2049 1 256 0 -1
+-ciMethodData java/lang/Object <init> ()V 2 1614656 orig 264 16 86 242 213 38 127 0 0 216 116 35 192 38 127 0 0 32 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 1 10 197 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 3 0 1 0 0 0 0 0 0 0 255 255 255 255 0 0 0 0 0 0 0 0 data 0 oops 0
+-compile com/sun/tools/javac/code/Scope remove (Lcom/sun/tools/javac/code/Symbol;)V -1 4 inline 15 0 -1 com/sun/tools/javac/code/Scope remove (Lcom/sun/tools/javac/code/Symbol;)V 1 12 com/sun/tools/javac/util/Assert check (Z)V 1 26 com/sun/tools/javac/code/Scope$1 <init> (Lcom/sun/tools/javac/code/Scope;Lcom/sun/tools/javac/code/Symbol;)V 2 11 java/lang/Object <init> ()V 1 29 com/sun/tools/javac/code/Scope lookup (Lcom/sun/tools/javac/util/Name;Lcom/sun/tools/javac/util/Filter;)Lcom/sun/tools/javac/code/Scope$Entry; 2 6 com/sun/tools/javac/code/Scope getIndex (Lcom/sun/tools/javac/util/Name;)I 3 1 com/sun/tools/javac/util/SharedNameTable$NameImpl hashCode ()I 2 49 com/sun/tools/javac/code/Scope$1 accepts (Ljava/lang/Object;)Z 3 5 com/sun/tools/javac/code/Scope$1 accepts (Lcom/sun/tools/javac/code/Symbol;)Z 2 58 com/sun/tools/javac/code/Scope$Entry access$000 (Lcom/sun/tools/javac/code/Scope$Entry;)Lcom/sun/tools/javac/code/Scope$Entry; 1 46 com/sun/tools/javac/code/Scope getIndex (Lcom/sun/tools/javac/util/Name;)I 2 1 com/sun/tools/javac/util/SharedNameTable$NameImpl hashCode ()I 1 70 com/sun/tools/javac/code/Scope$Entry access$000 (Lcom/sun/tools/javac/code/Scope$Entry;)Lcom/sun/tools/javac/code/Scope$Entry; 1 171 com/sun/tools/javac/util/List nonEmpty ()Z 1 187 com/sun/tools/javac/code/Scope$StarImportScope symbolRemoved (Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/code/Scope;)V
+diff --git a/src/main/java/com/lognsys/rest/RestBookingController.java b/src/main/java/com/lognsys/rest/RestBookingController.java
+index 1018737..123a466 100644
+--- a/src/main/java/com/lognsys/rest/RestBookingController.java
++++ b/src/main/java/com/lognsys/rest/RestBookingController.java
+@@ -77,19 +77,15 @@ public class RestBookingController {
+ 					
+ 				 return new ResponseEntity<JSONObject>(jsonObject,HttpStatus.CREATED);
+ 			} catch (IOException e) {
+-				 System.out.println("bookedseats ParseException 1 :  "+e);
+-					String str = applicationProperties.getProperty(Constants.REST_MSGS.check_no_seats_booked.name());
+-					return new ResponseEntity<String>(str, HttpStatus.OK);	
+-				
++				// TODO Auto-generated catch block
++				e.printStackTrace();
+ 			} catch (ParseException e) {
+ 				// TODO Auto-generated catch block
+ 				e.printStackTrace();
+ 			} catch (org.json.simple.parser.ParseException e) {
+-				 System.out.println("bookingconfirm ParseException 1 :  "+e);
+-					String str = applicationProperties.getProperty(Constants.REST_MSGS.fail_booked_seats.name());
+-					return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
+-				   
++				// TODO Auto-generated catch block
++				e.printStackTrace();
+ 			}
+-			return null;
+-			  }
++			  return new ResponseEntity<String>("Fail  to  add booking ",HttpStatus.NOT_FOUND);
++		}
+ }
+diff --git a/src/main/java/com/lognsys/service/BookingService.java b/src/main/java/com/lognsys/service/BookingService.java
+index 043a428..14e7a1a 100644
+--- a/src/main/java/com/lognsys/service/BookingService.java
++++ b/src/main/java/com/lognsys/service/BookingService.java
+@@ -105,6 +105,9 @@ public class BookingService {
+         booking.setConfirmation_no(uniqueCode);
+         int bookingId = jdbcBookingRepository.addBooking(ObjectMapper.mapToBookingDTO(booking));
+         booking.setId(bookingId);
++        System.out.println("===================================================\n ");
++        System.out.println("addBooking bookingId ==== "+bookingId);
++    	
+         addBookedSeatsDetails(bookingId,jsonArraySeatnumber,booking.getAuditoriums_id());
+ 
+        	 JSONObject obj=new JSONObject();
+@@ -232,29 +235,23 @@ public class BookingService {
+         System.out.println("getBookedSeats list "+list);
+         System.out.println("getBookedSeats list size  "+list.size());
+         JSONArray jsonArray=new JSONArray();
+-        if(list!=null && list.size()>0){
+-        	 for(int i=0;i<list.size();i++){
+-             	JSONObject jsonObject=new JSONObject();
+-             	jsonObject.put("i", list.get(i).getRow_num());
+-             	jsonObject.put("j", list.get(i).getSeat_number());
+-             	
+-
+-                 System.out.println("getBookedSeats jsonObject "+jsonObject);
+-             	jsonArray.add(jsonObject);
+-             }
+-             System.out.println("getBookedSeats jsonArray "+jsonArray);
+-             System.out.println("getBookedSeats jsonArray size "+jsonArray.size());
+-           
+-
+-           	
+-        }
+-        else{
++        
++        for(int i=0;i<list.size();i++){
++        	JSONObject jsonObject=new JSONObject();
++        	jsonObject.put("i", list.get(i).getRow_num());
++        	jsonObject.put("j", list.get(i).getSeat_number());
+         	
+-        }
+ 
+-     	JSONObject jsonObjectfinal=new JSONObject();
++            System.out.println("getBookedSeats jsonObject "+jsonObject);
++        	jsonArray.add(jsonObject);
++        }
++        System.out.println("getBookedSeats jsonArray "+jsonArray);
++        System.out.println("getBookedSeats jsonArray size "+jsonArray.size());
++    	JSONObject jsonObjectfinal=new JSONObject();
++        
+         jsonObjectfinal.put("seatnumberdetails", jsonArray);
+-         System.out.println("getBookedSeats jsonObjectfinal "+jsonObjectfinal);
++
++        System.out.println("getBookedSeats jsonObjectfinal "+jsonObjectfinal);
+ 		return jsonObjectfinal;
+ 	}
+ 	
+diff --git a/src/main/java/com/lognsys/service/UserService.java b/src/main/java/com/lognsys/service/UserService.java
+index 0849c69..1cbadea 100644
+--- a/src/main/java/com/lognsys/service/UserService.java
++++ b/src/main/java/com/lognsys/service/UserService.java
+@@ -272,7 +272,7 @@ public class UserService {
+         System.out.println("getUserWithRoleAndGroup username "+username);
+         
+         String device=(String) obj2.get("device");
+-//        System.out.println("getUserWithRoleAndGroup device "+device);
++        System.out.println("getUserWithRoleAndGroup device "+device);
+         
+ 		
+ 		// Throw exception on invalid paramter or empty paramter
+@@ -320,11 +320,7 @@ public class UserService {
+ //			update user
+ 			DeviceDTO deviceDTO= new DeviceDTO();
+ 			deviceDTO.setUsers_id(users.getId());
+-			if(device!=null)
+ 			deviceDTO.setDeviceToken(device);
+-			else
+-			deviceDTO.setDeviceToken(users.getDevice());
+-
+ 			boolean isUpdateDeviceDTO =jdbcDeviceRepository.updateDevice(deviceDTO);
+ 			System.out.println("getUserWithRoleAndGroup isUpdateDeviceDTO "+isUpdateDeviceDTO);
+ 			   
+diff --git a/src/main/java/com/lognsys/util/Constants.java b/src/main/java/com/lognsys/util/Constants.java
+index dbf2349..085bea2 100644
+--- a/src/main/java/com/lognsys/util/Constants.java
++++ b/src/main/java/com/lognsys/util/Constants.java
+@@ -124,7 +124,7 @@ public class Constants {
+ 		response_userempty, response_userinvalid, response_userexists,
+ 		response_dramaexists,response_dramaempty,
+ 		response_auditoriumempty,
+-		response_ratingsuccess,response_bookingmempty,check_no_seats_booked	,fail_booked_seats
++		response_ratingsuccess,response_bookingmempty	
+ 	}
+ 
+ 	/**
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+index a4d0e22..d0b4352 100644
+--- a/src/main/resources/application.properties
++++ b/src/main/resources/application.properties
+@@ -26,12 +26,6 @@ response_ratingsuccess={"msg":"Thank You for Rating....", "statusCode" : 201}
+ #REST JSON Response Messages Booking
+ response_bookingmempty={"msg":"Booking failed ", "statusCode" : 404}
+ 
+-#REST JSON Response Messages Booking
+-check_no_seats_booked={"msg":"Please wait for a while", "statusCode" : 200}
+-
+-
+-#REST JSON Response Messages Booking
+-fail_booked_seats={"msg":"fail to find Booked seats ", "statusCode" : 404}
+ 
+ #Exception Messages
+ exception_userinvalid=Username Invalid
+diff --git a/src/main/resources/sql.properties b/src/main/resources/sql.properties
+index b87dfba..177afcc 100644
+--- a/src/main/resources/sql.properties
++++ b/src/main/resources/sql.properties
+@@ -58,7 +58,7 @@ select_dramabyauditorium=select dramas.id as dramasId, title,imageurl, drama_len
+ select_dramasauditoriums_all=select dramas.id as dramasId,title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating, auditoriums.id as auditoriumsId, auditorium_name  from dramas join dramas_auditoriums on dramas.id = dramas_auditoriums.dramas_id join auditoriums on dramas_auditoriums.auditoriums_id = auditoriums.id 
+ select_auditorium_id_byname=select id from auditoriums where auditorium_name =:auditorium_name
+ select_new_name_id_auditorium_by_dramaId=select auditorium_name, auditoriums.id,dramas_auditoriums.date,dramas_auditoriums.time from auditoriums join dramas_auditoriums on auditoriums.id= dramas_auditoriums.auditoriums_id where dramas_auditoriums.dramas_id=:dramas_id and dramas_auditoriums.date> now()
+-select_new_audi_price_time=select distinct auditoriums_price.auditoriums_id, auditoriums_price.price, auditoriums_price.istart, auditoriums_price.iend from auditoriums_price join dramas_auditoriums on auditoriums_price.auditoriums_id=dramas_auditoriums.auditoriums_id where auditoriums_price.auditoriums_id=:id and auditoriums_price.dramas_id=:dramas_id and dramas_auditoriums.date=:date order by price asc;
++select_new_audi_price_time=select distinct auditoriums_price.auditoriums_id, auditoriums_price.price, auditoriums_price.istart, auditoriums_price.iend from auditoriums_price join dramas_auditoriums on auditoriums_price.auditoriums_id=dramas_auditoriums.auditoriums_id where auditoriums_price.auditoriums_id=:id and auditoriums_price.dramas_id=:dramas_id and dramas_auditoriums.date=:date;
+ 
+  
+ #DRAMA_GROUP_QUERIES 
+@@ -104,4 +104,4 @@ select_booking_by_users_id=SELECT * FROM booking join users on booking.users_id=
+ #BOOKEDSEATS_QUERIES QUERIES
+ insert_bookedseats=insert into booked_seats(id, booking_id, row_seats_id, seat_status) values (:id, :booking_id, :row_seats_id, :seat_status)
+ delete_bookedseats_by_Id=DELETE FROM booked_seats WHERE id= :id
+-select_booked_seats=select row_seat.row_num,row_seat.seat_num,booking.status from booking join booked_seats on booking.id=booked_seats.booking_id join row_seat on booked_seats.row_seats_id=row_seat.id where booking.auditoriums_id= :auditoriums_id  and booking.dramas_id= :dramas_id  and booking.booking_date < now();
++select_booked_seats=select row_seat.row_num,row_seat.seat_num,booking.status from booking join booked_seats on booking.id=booked_seats.booking_id join row_seat on booked_seats.row_seats_id=row_seat.id where booking.auditoriums_id= :auditoriums_id and booking.dramas_id= :dramas_id  and booking.booking_date < now();
+diff --git a/src/main/webapp/resources/js/kalrav.js b/src/main/webapp/resources/js/kalrav.js
+index 5166d2e..4bacaf5 100644
+--- a/src/main/webapp/resources/js/kalrav.js
++++ b/src/main/webapp/resources/js/kalrav.js
+@@ -125,7 +125,11 @@ $(document)
+                             type: "POST",
+                             data: params,
+                             success: function(data) {
+-                                window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/userlist"
++<<<<<<< HEAD
++                                window.location.href = "http://localhost:8080/userlist"
++=======
++                                window.location.href = "http://kalravapi.lognsys.com:8080/userlist"
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                             }
+                         });
+ 
+@@ -136,7 +140,11 @@ $(document)
+             // Userlist add function will call /register page
+             $('#useradd').click(
+                 function(event) {
+-                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/register";
++<<<<<<< HEAD
++                    window.location.href = "http://localhost:8080/register";
++=======
++                    window.location.href = "http://kalravapi.lognsys.com:8080/register";
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                     event.preventDefault();
+                 });
+ 
+@@ -289,7 +297,11 @@ $(document)
+             // Userlist delete function
+             $('#usercancel').click(
+                 function(event) {
+-                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dashboard";
++<<<<<<< HEAD
++                    window.location.href = "http://localhost:8080/dashboard";
++=======
++                    window.location.href = "http://kalravapi.lognsys.com:8080/dashboard";
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                     event.preventDefault();
+                 });
+             
+@@ -363,7 +375,11 @@ $(document)
+             $('#dramaadd').click(
+                 function(event) {
+                     console.log("Event === " + event);
+-                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dramadetail";
++<<<<<<< HEAD
++                    window.location.href = "http://localhost:8080/dramadetail";
++=======
++                    window.location.href = "http://kalravapi.lognsys.com:8080/dramadetail";
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                     event.preventDefault();
+                 });
+ 
+@@ -384,7 +400,11 @@ $(document)
+                             type: "POST",
+                             data: params,
+                             success: function(data) {
+-                                window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dramalist"
++<<<<<<< HEAD
++                                window.location.href = "http://localhost:8080/dramalist"
++=======
++                                window.location.href = "http://kalravapi.lognsys.com:8080/dramalist"
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                             }
+                         });
+ 
+@@ -528,7 +548,11 @@ $(document)
+             // Userlist delete function
+             $('#dramacancel').click(
+                 function(event) {
+-                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dashboard";
++<<<<<<< HEAD
++                    window.location.href = "http://localhost:8080/dashboard";
++=======
++                    window.location.href = "http://kalravapi.lognsys.com:8080/dashboard";
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                     event.preventDefault();
+                 });
+ 
+@@ -699,8 +723,12 @@ $(document)
+                                 url: '/groupdetails',
+                                 type: "POST",
+                                 data: params,
+-                                success: function(data) {window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/groupdetails"
+-
++                                success: function(data) {
++<<<<<<< HEAD
++                                    window.location.href = "http://localhost:8080/groupdetails"
++=======
++                                    window.location.href = "http://kalravapi.lognsys.com:8080/groupdetails"
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                                 }
+                             });
+ 
+@@ -805,7 +833,11 @@ $(document)
+                             type: "POST",
+                             data: params,
+                             success: function(data) {
+-                                window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/notificationlist"
++<<<<<<< HEAD
++                                window.location.href = "http://localhost:8080/notificationlist"
++=======
++                                window.location.href = "http://kalravapi.lognsys.com:8080/notificationlist"
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                             }
+                         });
+ 
+@@ -816,8 +848,11 @@ $(document)
+             // notificationlist add function
+             $('#notificationadd').click(
+                 function(event) {
+-                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/sendnotification";
+-
++<<<<<<< HEAD
++                    window.location.href = "http://localhost:8080/sendnotification";
++=======
++                    window.location.href = "http://kalravapi.lognsys.com:8080/sendnotification";
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                     event.preventDefault();
+                 });
+ 
+@@ -951,7 +986,11 @@ $(document)
+             // Userlist delete function
+             $('#notificationcancel').click(
+                 function(event) {
+-                    window.location.href = "http://kalravapi.lognsys.com:8080/kalravweb/dashboard";
++<<<<<<< HEAD
++                    window.location.href = "http://localhost:8080/dashboard";
++=======
++                    window.location.href = "http://kalravapi.lognsys.com:8080/dashboard";
++>>>>>>> 9ef47d273895c419fa0fa91db91c6a3bb4061ceb
+                     event.preventDefault();
+                 });
+             //=====================================================NOTIFICATION LIST===========================================================================
+diff --git a/src/test/java/resources/sql.properties b/src/test/java/resources/sql.properties
+index 8ff3bf5..f6ef046 100644
+--- a/src/test/java/resources/sql.properties
++++ b/src/test/java/resources/sql.properties
+@@ -1,35 +1,26 @@
+-
+ ######SQL QUERIES########
+ 
+ #USER_QUERIES
+-insert_users=insert into users (auth_id, username, realname, phone, state, city, device, zipcode, address, provenance, birthdate) values (:auth_id, :username, :realname, :phone, :state, :city, :device, :zipcode, :address, :provenance, :birthdate)
++insert_users=insert into users (id, auth_id, username, realname, phone, state, city, device, zipcode, address, provenance, birthdate) values (:id, :auth_id, :username, :realname, :phone, :state, :city, :device, :zipcode, :address, :provenance, :birthdate)
+ select_users=SELECT * FROM users
+ delete_users=DELETE FROM USERS WHERE id= :id
+ delete_users_email=DELETE FROM USERS WHERE username= :emailID
+ select_users_exists=SELECT count(username) FROM users WHERE username= :username
+ select_users_id=SELECT * FROM users WHERE id= :id
+ select_users_username=SELECT * FROM users WHERE username= :username
+-update_users=update users set realname= :realname, phone= :phone, state= :state, city= :city, device= :device, zipcode= :zipcode, address= :address, notification= :notification, enabled= :enabled where username= :username
+-update_users_device=update users set device= :device where username= :username
++update_users=update users set realname= :realname, phone= :phone, state= :state, city= :city,  zipcode= :zipcode, address= :address, notification= :notification, enabled= :enabled where username= :username
+ 
+ #GROUP_QUERIES 
+ select_groups_all=select * from groups
+-select_groupname_byuserid=select group_name from groups join users_groups on groups.id = users_groups.groups_id where users_groups.users_id= :users_id
+-select_usersbygroups=select users.id as usersId, realname, username, auth_id, phone, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, groups.id as groupsId, group_name from users join users_groups on users.id = users_groups.users_id join groups on users_groups.groups_id = groups.id where groups.group_name= :group_name
+-select_usersgroups_all=select users.id as usersId, realname, username, auth_id, phone, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, groups.id as groupsId, group_name, is_subgroup,  parent_id from users join users_groups on users.id = users_groups.users_id join groups on users_groups.groups_id = groups.id
+-insert_groups=insert into groups (id, group_name, is_subgroup, parent_id) values (:id, :group_name, is_subgroup, parent_id)
++insert_groups=insert into groups (id, group_name) values (:id, :group_name)
+ insert_user_groups=insert into users_groups(users_id, groups_id) values (:users_id, (select id from groups where group_name= :group_name))
+-insert_dramas_groups=insert into dramas_groups(dramas_id, groups_id) values (:dramas_id, (select id from groups where group_name= :group_name))
+-
+-##only group queries
++select_groupname_byuserid=select group_name from groups join users_groups on groups.id = users_groups.groups_id where users_groups.users_id= :users_id
+ select_id_bygroupname=select id from groups where group_name= :group_name
+-select_groups_all=select * from groups
+-#select_groups_exists=SELECT count(group_name) FROM groups WHERE group_name= :group_name
+-insert_groups=insert into groups (id, group_name, is_subgroup, parent_id) values (:id, :group_name, is_subgroup, parent_id)
++select_usersbygroups=select users.id as usersId, realname, username, auth_id, phone, provenance, birthdate, enabled, notification, device, address, city, state, zipcode,  groups.id as groupsId, group_name  from users join users_groups on users.id = users_groups.users_id join groups on users_groups.groups_id = groups.id where groups.group_name= :group_name
++select_usersgroups_all=select users.id as usersId, realname, username, auth_id, phone, provenance, birthdate, enabled, notification, device, address, city, state, zipcode, groups.id as groupsId, group_name  from users join users_groups on users.id = users_groups.users_id join groups on users_groups.groups_id = groups.id
++select_groups_exists=SELECT count(group_name) FROM groups WHERE group_name= :group_name
++insert_dramas_groups=insert into dramas_groups(dramas_id, groups_id) values (:dramas_id, (select id from groups where group_name= :group_name))
+ update_group_byuser=update users inner join users_groups on users_groups.users_id = users.id set users_groups.groups_id = (select id from groups where group_name= :group_name) where users.username= :username
+-select_count_groups=select count(*) from groups where parent_id=0
+-delete_groups=delete from groups where group_name= :group_name
+-select_has_subgroup=select count(*) from groups where parent_id IN (select id from groups where group_name= :group_name)
+ 
+ 
+ #ROLE_QUERIES 
+@@ -40,7 +31,7 @@ select_role_byuserid=select role from roles join users_roles on roles.id = users
+ update_roles_byuser=update users inner join users_roles on users_roles.users_id = users.id  set users_roles.roles_id = (select id from roles where role= :role) where users.username= :username
+ 
+ #DRAMA_QUERIES
+-insert_dramas=insert into dramas (title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating,drama_language) values (:title,:imageurl, :drama_length, :date, :genre, :star_cast, :description, :director, :writer, :music, :avg_rating, :drama_language)
++insert_dramas=insert into dramas (id,title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating,drama_language) values (:id,:title,:imageurl, :drama_length, :date, :genre, :star_cast, :description, :director, :writer, :music, :avg_rating, :drama_language)
+ select_dramas=CALL drama_data() 
+ delete_dramas=DELETE FROM DRAMAS WHERE id= :id
+ delete_dramas_title=DELETE FROM DRAMAS WHERE title= :title
+@@ -57,51 +48,51 @@ select_auditoriums=SELECT * FROM auditoriums
+ select_dramabyauditorium=select dramas.id as dramasId, title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating, auditoriums.id as auditoriumsId, auditorium_name from dramas join dramas_auditoriums on dramas.id = dramas_auditoriums.dramas_id join auditoriums on dramas_auditoriums.auditoriums_id = auditoriums.id where auditoriums.auditorium_name= :auditorium_name
+ select_dramasauditoriums_all=select dramas.id as dramasId,title,imageurl, drama_length, date, genre, star_cast, description, director, writer, music, avg_rating, auditoriums.id as auditoriumsId, auditorium_name  from dramas join dramas_auditoriums on dramas.id = dramas_auditoriums.dramas_id join auditoriums on dramas_auditoriums.auditoriums_id = auditoriums.id 
+ select_auditorium_id_byname=select id from auditoriums where auditorium_name =:auditorium_name
+-select_new_name_id_auditorium_by_dramaId=select auditorium_name, auditoriums.id,dramas_auditoriums.date,dramas_auditoriums.time from auditoriums join dramas_auditoriums on auditoriums.id= dramas_auditoriums.auditoriums_id where dramas_auditoriums.dramas_id=:dramas_id and dramas_auditoriums.date> now()
+-select_new_audi_price_time=select distinct auditoriums_price.auditoriums_id, auditoriums_price.price, auditoriums_price.istart, auditoriums_price.iend from auditoriums_price join dramas_auditoriums on auditoriums_price.auditoriums_id=dramas_auditoriums.auditoriums_id where auditoriums_price.auditoriums_id=:id and auditoriums_price.dramas_id=:dramas_id and dramas_auditoriums.date=:date;
+ 
+- 
++
++select_new_name_id_auditorium_by_dramaId=select auditorium_name, auditoriums.id,dramas_auditoriums.date,dramas_auditoriums.time  from auditoriums join dramas_auditoriums on auditoriums.id= dramas_auditoriums.auditoriums_id where dramas_auditoriums.dramas_id=:dramas_id
++select_new_audi_price_time=select distinct auditoriums_price.auditoriums_id, auditoriums_price.price, auditoriums_price.istart, auditoriums_price.iend from auditoriums_price join dramas_auditoriums on auditoriums_price.auditoriums_id=dramas_auditoriums.auditoriums_id where auditoriums_price.auditoriums_id=:id and auditoriums_price.dramas_id=:dramas_id;
++
++
++
+ #DRAMA_GROUP_QUERIES 
+ select_groupname_bydramaid=select group_name from groups join dramas_groups on groups.id = dramas_groups.id where dramas_groups.dramas_id= :drama_id
+-select_dramasbygroups=select dramas.id as dramasId,title,date,imageurl, groups.id as groupsId, group_name  from dramas join dramas_groups on dramas.id = dramas_groups.dramas_id join groups on dramas_groups.groups_id = groups.id where groups.group_name= :group_name
+-select_dramasgroups_all=select dramas.id as dramasId,title,date,imageurl, groups.id as groupsId, group_name  from dramas join dramas_groups on dramas.id = dramas_groups.dramas_id join groups on dramas_groups.groups_id = groups.id 
++select_dramasbygroups=select dramas.id as dramasId,title,imageurl, groups.id as groupsId, group_name  from dramas join dramas_groups on dramas.id = dramas_groups.dramas_id join groups on dramas_groups.groups_id = groups.id where groups.group_name= :group_name
++select_dramasgroups_all=select dramas.id as dramasId,title,imageurl, groups.id as groupsId, group_name  from dramas join dramas_groups on dramas.id = dramas_groups.dramas_id join groups on dramas_groups.groups_id = groups.id 
+ 
+ #RATING_QUERY
++
+ select_ratings_exists=SELECT count(id) FROM ratings WHERE users_id= :users_id and dramas_id= :dramas_id
+ insert_ratings=insert into ratings (id,rating,rating_date,users_id,dramas_id) values (:id,:rating,:rating_date,:users_id,:dramas_id)
+ select_users_id_and_dramas_id=select * from ratings where users_id=:users_id and dramas_id=:dramas_id
+-update_ratings=update ratings set rating= :rating, rating_date= :rating_date, users_id= :users_id , dramas_id= :dramas_id WHERE id= :id
+-select_all_ratings=select id,rating,rating_date,users_id,dramas_id from ratings
++update_ratings=update ratings set rating= :rating, rating_date= :rating_date, users_id= :users_id WHERE id= :id
++
++
+ 
+ #NOTIFICATION_QUERIES
++#insert_notification=insert into notifications(id,notify,message) values (:id, (select id from users where realname= :realname),(select id from dramas where title= :title),:notify,:message)
++
+ insert_notification=insert into notifications(id,notify,message,userId,dramaId,realname,dramaTitle) values (:id,:notify,:message,:userId,:dramaId,:realname,:dramaTitle)
+-select_notification=select id,notify,message,realname,dramaTitle from notifications order by id DESC
++select_notification=select id,notify,message,realname,dramaTitle from notifications
+ select_notification_message=select * from notifications where message=:message
+ delete_notification=DELETE FROM notifications WHERE message= :message
+-delete_notification_by_id=DELETE FROM notifications WHERE id= :id order by id ASC
+ 
+ #ROW_SEAT QUERIES
+ insert_rowseat=insert into row_seat(row_num, row_name, seat_num, auditoriums_id) values (:row_num, :row_name, :seat_num, :auditoriums_id)
+-select_rowseat_all=select * from row_seat
+-delete_by_id= delete from row_seat where id=:id
+-select_rowseat_by_auditoriums_id=select * from row_seat join auditoriums on row_seat.auditoriums_id=auditoriums.id  where auditoriums.id=:auditoriums_id
+-get_select_id=select id from row_seat where seat_num=:seat_num and row_name=:row_name and auditoriums_id=:auditoriums_id
+-
+-#DEVICE_QUERIES
+-insert_user_devices=insert into devices(users_id,deviceToken) values (:users_id,:deviceToken)
+-select_devices_exists=select  count(users_id) from devices join users on devices.users_id=users.id  where users.id =:users_id
+-select_all_devices=select * from devices
+-update_devices=update devices set deviceToken= :deviceToken  WHERE users_id= :users_id
+-select_device_by_id=select * from devices join users on devices.users_id=users.id  where users.id=:users_id
+-delete_device= delete from devices where users_id=:users_id
+-
+-#BOOKING_QUERIES QUERIES
+-insert_booking=insert into booking(id, booking_date, confirmation_no, users_id,dramas_id,auditoriums_id,price,status) values (:id, :booking_date, :confirmation_no, :users_id, :dramas_id, :auditoriums_id, :price, :status)
+-delete_booking_by_Id=DELETE FROM booking WHERE id= :id
+-select_booking_all=select booking_date, confirmation_no, users_id,dramas_id,auditoriums_id,auditoriums.auditorium_name, price,status ,dramas.title,dramas.date from booking join dramas on  booking.dramas_id=dramas.id join auditoriums on booking.auditoriums_id= auditoriums.id
+-select_booking_by_users_id=SELECT * FROM booking join users on booking.users_id=users.id  WHERE users.id = :users_id
+-
+-#BOOKEDSEATS_QUERIES QUERIES
+-insert_bookedseats=insert into booked_seats(id, booking_id, row_seats_id, seat_status) values (:id, :booking_id, :row_seats_id, :seat_status)
+-delete_bookedseats_by_Id=DELETE FROM booked_seats WHERE id= :id
+-select_booked_seats=select row_seat.row_num,row_seat.seat_num,booking.status from booking join booked_seats on booking.id=booked_seats.booking_id join row_seat on booked_seats.row_seats_id=row_seat.id where booking.auditoriums_id= :auditoriums_id  and booking.dramas_id= :dramas_id  and booking.booking_date < now();
+\ No newline at end of file
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++

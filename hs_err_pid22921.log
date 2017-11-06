@@ -1,0 +1,633 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (mmap) failed to map 131072 bytes for committing reserved memory.
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (os_linux.cpp:2651), pid=22921, tid=0x00007fee2261a700
+#
+# JRE version: OpenJDK Runtime Environment (8.0_141-b16) (build 1.8.0_141-b16)
+# Java VM: OpenJDK 64-Bit Server VM (25.141-b16 mixed mode linux-amd64 compressed oops)
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007fee1c009000):  JavaThread "main" [_thread_in_vm, id=22922, stack(0x00007fee2251a000,0x00007fee2261b000)]
+
+Stack: [0x00007fee2251a000,0x00007fee2261b000],  sp=0x00007fee22616be0,  free space=1010k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [libjvm.so+0xa1c7ed]
+V  [libjvm.so+0x4cb7fa]
+V  [libjvm.so+0x87b6b0]
+V  [libjvm.so+0x875d6e]
+V  [libjvm.so+0xa195e4]
+V  [libjvm.so+0x80a1a3]
+V  [libjvm.so+0x80a421]
+V  [libjvm.so+0x80b030]
+V  [libjvm.so+0x80b11b]
+V  [libjvm.so+0x80b53e]
+V  [libjvm.so+0x80ba07]
+V  [libjvm.so+0x604124]
+V  [libjvm.so+0x43bce0]
+V  [libjvm.so+0x4428d2]
+V  [libjvm.so+0x991a42]
+V  [libjvm.so+0x99247a]
+V  [libjvm.so+0x992908]
+V  [libjvm.so+0x4c26b3]
+V  [libjvm.so+0x63cb3c]
+j  java.net.URLClassLoader$3.next()Z+9
+j  java.net.URLClassLoader$3.hasMoreElements()Z+1
+j  sun.misc.CompoundEnumeration.next()Z+33
+j  sun.misc.CompoundEnumeration.hasMoreElements()Z+1
+j  sun.misc.CompoundEnumeration.next()Z+33
+j  sun.misc.CompoundEnumeration.hasMoreElements()Z+1
+j  org.apache.commons.logging.LogFactory.getConfigurationFile(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/util/Properties;+23
+j  org.apache.commons.logging.LogFactory.getFactory()Lorg/apache/commons/logging/LogFactory;+70
+j  org.apache.commons.logging.LogFactory.getLog(Ljava/lang/Class;)Lorg/apache/commons/logging/Log;+0
+j  org.springframework.test.context.junit4.SpringJUnit4ClassRunner.<clinit>()V+2
+v  ~StubRoutines::call_stub
+V  [libjvm.so+0x646cca]
+V  [libjvm.so+0x6071b8]
+V  [libjvm.so+0x607677]
+V  [libjvm.so+0x607c29]
+V  [libjvm.so+0x8f9bee]
+V  [libjvm.so+0x693890]  JVM_NewInstanceFromConstructor+0xb0
+j  sun.reflect.NativeConstructorAccessorImpl.newInstance0(Ljava/lang/reflect/Constructor;[Ljava/lang/Object;)Ljava/lang/Object;+0
+j  sun.reflect.NativeConstructorAccessorImpl.newInstance([Ljava/lang/Object;)Ljava/lang/Object;+85
+j  sun.reflect.DelegatingConstructorAccessorImpl.newInstance([Ljava/lang/Object;)Ljava/lang/Object;+5
+j  java.lang.reflect.Constructor.newInstance([Ljava/lang/Object;)Ljava/lang/Object;+79
+j  org.junit.internal.builders.AnnotatedBuilder.buildRunner(Ljava/lang/Class;Ljava/lang/Class;)Lorg/junit/runner/Runner;+22
+j  org.junit.internal.builders.AnnotatedBuilder.runnerForClass(Ljava/lang/Class;)Lorg/junit/runner/Runner;+29
+j  org.junit.runners.model.RunnerBuilder.safeRunnerForClass(Ljava/lang/Class;)Lorg/junit/runner/Runner;+2
+j  org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(Ljava/lang/Class;)Lorg/junit/runner/Runner;+73
+j  org.junit.runners.model.RunnerBuilder.safeRunnerForClass(Ljava/lang/Class;)Lorg/junit/runner/Runner;+2
+j  org.junit.internal.requests.ClassRequest.getRunner()Lorg/junit/runner/Runner;+37
+j  org.apache.maven.surefire.junit4.JUnit4Provider.execute(Ljava/lang/Class;Lorg/junit/runner/notification/RunNotifier;[Ljava/lang/String;)V+110
+j  org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(Ljava/lang/Class;Lorg/apache/maven/surefire/report/RunListener;Lorg/junit/runner/notification/RunNotifier;)V+70
+j  org.apache.maven.surefire.junit4.JUnit4Provider.invoke(Ljava/lang/Object;)Lorg/apache/maven/surefire/suite/RunResult;+133
+v  ~StubRoutines::call_stub
+V  [libjvm.so+0x646cca]
+V  [libjvm.so+0x8f8dc2]
+V  [libjvm.so+0x8f97c3]
+V  [libjvm.so+0x6935a3]  JVM_InvokeMethod+0x193
+j  sun.reflect.NativeMethodAccessorImpl.invoke0(Ljava/lang/reflect/Method;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+0
+j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+100
+j  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+6
+j  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+56
+j  org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;+3
+j  org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(Ljava/lang/Object;)Lorg/apache/maven/surefire/suite/RunResult;+38
+j  org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(Ljava/lang/Object;Ljava/lang/ClassLoader;Ljava/lang/ClassLoader;Ljava/lang/Object;Lorg/apache/maven/surefire/booter/ProviderConfiguration;ZLorg/apache/maven/surefire/booter/StartupConfiguration;Z)Lorg/apache/maven/surefire/suite/RunResult;+38
+j  org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(Ljava/lang/Object;Ljava/lang/ClassLoader;Lorg/apache/maven/surefire/booter/StartupConfiguration;Lorg/apache/maven/surefire/booter/ProviderConfiguration;Ljava/io/PrintStream;)Lorg/apache/maven/surefire/suite/RunResult;+45
+j  org.apache.maven.surefire.booter.ForkedBooter.main([Ljava/lang/String;)V+136
+v  ~StubRoutines::call_stub
+V  [libjvm.so+0x646cca]
+V  [libjvm.so+0x656f0a]
+V  [libjvm.so+0x66a616]
+C  [libjli.so+0x39a9]
+C  [libpthread.so.0+0x7dc5]  start_thread+0xc5
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  java.net.URLClassLoader$3.next()Z+9
+j  java.net.URLClassLoader$3.hasMoreElements()Z+1
+j  sun.misc.CompoundEnumeration.next()Z+33
+j  sun.misc.CompoundEnumeration.hasMoreElements()Z+1
+j  sun.misc.CompoundEnumeration.next()Z+33
+j  sun.misc.CompoundEnumeration.hasMoreElements()Z+1
+j  org.apache.commons.logging.LogFactory.getConfigurationFile(Ljava/lang/ClassLoader;Ljava/lang/String;)Ljava/util/Properties;+23
+j  org.apache.commons.logging.LogFactory.getFactory()Lorg/apache/commons/logging/LogFactory;+70
+j  org.apache.commons.logging.LogFactory.getLog(Ljava/lang/Class;)Lorg/apache/commons/logging/Log;+0
+j  org.springframework.test.context.junit4.SpringJUnit4ClassRunner.<clinit>()V+2
+v  ~StubRoutines::call_stub
+j  sun.reflect.NativeConstructorAccessorImpl.newInstance0(Ljava/lang/reflect/Constructor;[Ljava/lang/Object;)Ljava/lang/Object;+0
+j  sun.reflect.NativeConstructorAccessorImpl.newInstance([Ljava/lang/Object;)Ljava/lang/Object;+85
+j  sun.reflect.DelegatingConstructorAccessorImpl.newInstance([Ljava/lang/Object;)Ljava/lang/Object;+5
+j  java.lang.reflect.Constructor.newInstance([Ljava/lang/Object;)Ljava/lang/Object;+79
+j  org.junit.internal.builders.AnnotatedBuilder.buildRunner(Ljava/lang/Class;Ljava/lang/Class;)Lorg/junit/runner/Runner;+22
+j  org.junit.internal.builders.AnnotatedBuilder.runnerForClass(Ljava/lang/Class;)Lorg/junit/runner/Runner;+29
+j  org.junit.runners.model.RunnerBuilder.safeRunnerForClass(Ljava/lang/Class;)Lorg/junit/runner/Runner;+2
+j  org.junit.internal.builders.AllDefaultPossibilitiesBuilder.runnerForClass(Ljava/lang/Class;)Lorg/junit/runner/Runner;+73
+j  org.junit.runners.model.RunnerBuilder.safeRunnerForClass(Ljava/lang/Class;)Lorg/junit/runner/Runner;+2
+j  org.junit.internal.requests.ClassRequest.getRunner()Lorg/junit/runner/Runner;+37
+j  org.apache.maven.surefire.junit4.JUnit4Provider.execute(Ljava/lang/Class;Lorg/junit/runner/notification/RunNotifier;[Ljava/lang/String;)V+110
+j  org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(Ljava/lang/Class;Lorg/apache/maven/surefire/report/RunListener;Lorg/junit/runner/notification/RunNotifier;)V+70
+j  org.apache.maven.surefire.junit4.JUnit4Provider.invoke(Ljava/lang/Object;)Lorg/apache/maven/surefire/suite/RunResult;+133
+v  ~StubRoutines::call_stub
+j  sun.reflect.NativeMethodAccessorImpl.invoke0(Ljava/lang/reflect/Method;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+0
+j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+100
+j  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+6
+j  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+56
+j  org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;+3
+j  org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(Ljava/lang/Object;)Lorg/apache/maven/surefire/suite/RunResult;+38
+j  org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(Ljava/lang/Object;Ljava/lang/ClassLoader;Ljava/lang/ClassLoader;Ljava/lang/Object;Lorg/apache/maven/surefire/booter/ProviderConfiguration;ZLorg/apache/maven/surefire/booter/StartupConfiguration;Z)Lorg/apache/maven/surefire/suite/RunResult;+38
+j  org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(Ljava/lang/Object;Ljava/lang/ClassLoader;Lorg/apache/maven/surefire/booter/StartupConfiguration;Lorg/apache/maven/surefire/booter/ProviderConfiguration;Ljava/io/PrintStream;)Lorg/apache/maven/surefire/suite/RunResult;+45
+j  org.apache.maven.surefire.booter.ForkedBooter.main([Ljava/lang/String;)V+136
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x00007fee1c0ee000 JavaThread "Service Thread" daemon [_thread_blocked, id=22929, stack(0x00007fee0b093000,0x00007fee0b194000)]
+  0x00007fee1c0e9000 JavaThread "C1 CompilerThread1" daemon [_thread_blocked, id=22928, stack(0x00007fee0b194000,0x00007fee0b295000)]
+  0x00007fee1c0dc000 JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=22927, stack(0x00007fee0b295000,0x00007fee0b396000)]
+  0x00007fee1c0da000 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=22926, stack(0x00007fee0b396000,0x00007fee0b497000)]
+  0x00007fee1c0b0800 JavaThread "Finalizer" daemon [_thread_blocked, id=22925, stack(0x00007fee0b497000,0x00007fee0b598000)]
+  0x00007fee1c0ac000 JavaThread "Reference Handler" daemon [_thread_blocked, id=22924, stack(0x00007fee0b598000,0x00007fee0b699000)]
+=>0x00007fee1c009000 JavaThread "main" [_thread_in_vm, id=22922, stack(0x00007fee2251a000,0x00007fee2261b000)]
+
+Other Threads:
+  0x00007fee1c0a2000 VMThread [stack: 0x00007fee0b699000,0x00007fee0b79a000] [id=22923]
+  0x00007fee1c0f0800 WatcherThread [stack: 0x00007fee0af92000,0x00007fee0b093000] [id=22930]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ def new generation   total 4928K, used 2688K [0x00000000f0600000, 0x00000000f0b50000, 0x00000000f5950000)
+  eden space 4416K,  49% used [0x00000000f0600000, 0x00000000f0820198, 0x00000000f0a50000)
+  from space 512K, 100% used [0x00000000f0a50000, 0x00000000f0ad0000, 0x00000000f0ad0000)
+  to   space 512K,   0% used [0x00000000f0ad0000, 0x00000000f0ad0000, 0x00000000f0b50000)
+ tenured generation   total 10944K, used 1088K [0x00000000f5950000, 0x00000000f6400000, 0x0000000100000000)
+   the space 10944K,   9% used [0x00000000f5950000, 0x00000000f5a60020, 0x00000000f5a60200, 0x00000000f6400000)
+ Metaspace       used 4697K, capacity 5222K, committed 5376K, reserved 1056768K
+  class space    used 490K, capacity 503K, committed 512K, reserved 1048576K
+
+Card table byte_map: [0x00007fee22494000,0x00007fee22512000] byte_map_base: 0x00007fee21d11000
+
+Polling page: 0x00007fee22624000
+
+CodeCache: size=245760Kb used=1897Kb max_used=1915Kb free=243862Kb
+ bounds [0x00007fee0c59f000, 0x00007fee0c80f000, 0x00007fee1b59f000]
+ total_blobs=570 nmethods=329 adapters=156
+ compilation: enabled
+
+Compilation events (10 events):
+Event: 0.842 Thread 0x00007fee1c0e9000  327       3       sun.misc.ASCIICaseInsensitiveComparator::compare (126 bytes)
+Event: 0.842 Thread 0x00007fee1c0e9000 nmethod 327 0x00007fee0c773010 code [0x00007fee0c773220, 0x00007fee0c773e10]
+Event: 0.842 Thread 0x00007fee1c0e9000  326       3       java.lang.String::checkBounds (46 bytes)
+Event: 0.843 Thread 0x00007fee1c0e9000 nmethod 326 0x00007fee0c774450 code [0x00007fee0c774600, 0x00007fee0c774940]
+Event: 0.853 Thread 0x00007fee1c0e9000  328       3       java.util.HashSet::add (20 bytes)
+Event: 0.854 Thread 0x00007fee1c0e9000 nmethod 328 0x00007fee0c774e90 code [0x00007fee0c775020, 0x00007fee0c775510]
+Event: 0.856 Thread 0x00007fee1c0e9000  330       3       java.util.zip.ZipEntry::<init> (146 bytes)
+Event: 0.856 Thread 0x00007fee1c0e9000 nmethod 330 0x00007fee0c7756d0 code [0x00007fee0c775860, 0x00007fee0c775c60]
+Event: 0.866 Thread 0x00007fee1c0e9000  331       3       sun.misc.FileURLMapper::getPath (69 bytes)
+Event: 0.866 Thread 0x00007fee1c0e9000 nmethod 331 0x00007fee0c775e10 code [0x00007fee0c775fa0, 0x00007fee0c776520]
+
+GC Heap History (4 events):
+Event: 0.335 GC heap before
+{Heap before GC invocations=0 (full 0):
+ def new generation   total 4928K, used 4416K [0x00000000f0600000, 0x00000000f0b50000, 0x00000000f5950000)
+  eden space 4416K, 100% used [0x00000000f0600000, 0x00000000f0a50000, 0x00000000f0a50000)
+  from space 512K,   0% used [0x00000000f0a50000, 0x00000000f0a50000, 0x00000000f0ad0000)
+  to   space 512K,   0% used [0x00000000f0ad0000, 0x00000000f0ad0000, 0x00000000f0b50000)
+ tenured generation   total 10944K, used 0K [0x00000000f5950000, 0x00000000f6400000, 0x0000000100000000)
+   the space 10944K,   0% used [0x00000000f5950000, 0x00000000f5950000, 0x00000000f5950200, 0x00000000f6400000)
+ Metaspace       used 3427K, capacity 4664K, committed 4864K, reserved 1056768K
+  class space    used 335K, capacity 424K, committed 512K, reserved 1048576K
+Event: 0.343 GC heap after
+Heap after GC invocations=1 (full 0):
+ def new generation   total 4928K, used 512K [0x00000000f0600000, 0x00000000f0b50000, 0x00000000f5950000)
+  eden space 4416K,   0% used [0x00000000f0600000, 0x00000000f0600000, 0x00000000f0a50000)
+  from space 512K, 100% used [0x00000000f0ad0000, 0x00000000f0b50000, 0x00000000f0b50000)
+  to   space 512K,   0% used [0x00000000f0a50000, 0x00000000f0a50000, 0x00000000f0ad0000)
+ tenured generation   total 10944K, used 323K [0x00000000f5950000, 0x00000000f6400000, 0x0000000100000000)
+   the space 10944K,   2% used [0x00000000f5950000, 0x00000000f59a0c10, 0x00000000f59a0e00, 0x00000000f6400000)
+ Metaspace       used 3427K, capacity 4664K, committed 4864K, reserved 1056768K
+  class space    used 335K, capacity 424K, committed 512K, reserved 1048576K
+}
+Event: 0.732 GC heap before
+{Heap before GC invocations=1 (full 0):
+ def new generation   total 4928K, used 4928K [0x00000000f0600000, 0x00000000f0b50000, 0x00000000f5950000)
+  eden space 4416K, 100% used [0x00000000f0600000, 0x00000000f0a50000, 0x00000000f0a50000)
+  from space 512K, 100% used [0x00000000f0ad0000, 0x00000000f0b50000, 0x00000000f0b50000)
+  to   space 512K,   0% used [0x00000000f0a50000, 0x00000000f0a50000, 0x00000000f0ad0000)
+ tenured generation   total 10944K, used 323K [0x00000000f5950000, 0x00000000f6400000, 0x0000000100000000)
+   the space 10944K,   2% used [0x00000000f5950000, 0x00000000f59a0c10, 0x00000000f59a0e00, 0x00000000f6400000)
+ Metaspace       used 4504K, capacity 5056K, committed 5120K, reserved 1056768K
+  class space    used 455K, capacity 465K, committed 512K, reserved 1048576K
+Event: 0.743 GC heap after
+Heap after GC invocations=2 (full 0):
+ def new generation   total 4928K, used 512K [0x00000000f0600000, 0x00000000f0b50000, 0x00000000f5950000)
+  eden space 4416K,   0% used [0x00000000f0600000, 0x00000000f0600000, 0x00000000f0a50000)
+  from space 512K, 100% used [0x00000000f0a50000, 0x00000000f0ad0000, 0x00000000f0ad0000)
+  to   space 512K,   0% used [0x00000000f0ad0000, 0x00000000f0ad0000, 0x00000000f0b50000)
+ tenured generation   total 10944K, used 1088K [0x00000000f5950000, 0x00000000f6400000, 0x0000000100000000)
+   the space 10944K,   9% used [0x00000000f5950000, 0x00000000f5a60020, 0x00000000f5a60200, 0x00000000f6400000)
+ Metaspace       used 4504K, capacity 5056K, committed 5120K, reserved 1056768K
+  class space    used 455K, capacity 465K, committed 512K, reserved 1048576K
+}
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (8 events):
+Event: 0.071 Thread 0x00007fee1c009000 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.defineClass(Ljava/lang/String;[BII)Ljava/lang/Class; name or signature does not match> (0x00000000f0607ca8) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86
+Event: 0.071 Thread 0x00007fee1c009000 Exception <a 'java/lang/NoSuchMethodError': Method sun.misc.Unsafe.prefetchRead(Ljava/lang/Object;J)V name or signature does not match> (0x00000000f0607f90) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspo
+Event: 0.867 Thread 0x00007fee1c009000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000f0815168) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1400]
+Event: 0.867 Thread 0x00007fee1c009000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000f0815560) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1400]
+Event: 0.867 Thread 0x00007fee1c009000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000f0818300) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1400]
+Event: 0.867 Thread 0x00007fee1c009000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000f08186f8) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1400]
+Event: 0.867 Thread 0x00007fee1c009000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000f0819800) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1400]
+Event: 0.868 Thread 0x00007fee1c009000 Exception <a 'java/security/PrivilegedActionException'> (0x00000000f0819bf8) thrown at [/builddir/build/BUILD/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/openjdk/hotspot/src/share/vm/prims/jvm.cpp, line 1400]
+
+Events (10 events):
+Event: 0.864 loading class sun/misc/URLClassPath$1 done
+Event: 0.864 loading class java/net/URLClassLoader$3
+Event: 0.864 loading class java/net/URLClassLoader$3 done
+Event: 0.864 loading class sun/misc/CompoundEnumeration
+Event: 0.866 loading class sun/misc/CompoundEnumeration done
+Event: 0.866 loading class java/io/FileNotFoundException
+Event: 0.866 loading class java/io/FileNotFoundException done
+Event: 0.867 loading class java/security/PrivilegedActionException
+Event: 0.867 loading class java/security/PrivilegedActionException done
+Event: 0.868 loading class java/net/URLClassLoader$3$1
+
+
+Dynamic libraries:
+00400000-00401000 r-xp 00000000 ca:01 11816                              /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/bin/java
+00600000-00601000 rw-p 00000000 ca:01 11816                              /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/bin/java
+0138a000-013ab000 rw-p 00000000 00:00 0                                  [heap]
+f0600000-f0b50000 rw-p 00000000 00:00 0 
+f0b50000-f5950000 ---p 00000000 00:00 0 
+f5950000-f6400000 rw-p 00000000 00:00 0 
+f6400000-100000000 ---p 00000000 00:00 0 
+100000000-100080000 rw-p 00000000 00:00 0 
+1000a0000-140000000 ---p 00000000 00:00 0 
+7fede0000000-7fede0021000 rw-p 00000000 00:00 0 
+7fede0021000-7fede4000000 ---p 00000000 00:00 0 
+7fede8000000-7fede8204000 rw-p 00000000 00:00 0 
+7fede8204000-7fedec000000 ---p 00000000 00:00 0 
+7fedec000000-7fedec367000 rw-p 00000000 00:00 0 
+7fedec367000-7fedf0000000 ---p 00000000 00:00 0 
+7fedf0000000-7fedf0021000 rw-p 00000000 00:00 0 
+7fedf0021000-7fedf4000000 ---p 00000000 00:00 0 
+7fedf5ad7000-7fedfc000000 r--p 00000000 ca:01 3350                       /usr/lib/locale/locale-archive
+7fedfc000000-7fedfc021000 rw-p 00000000 00:00 0 
+7fedfc021000-7fee00000000 ---p 00000000 00:00 0 
+7fee00000000-7fee00021000 rw-p 00000000 00:00 0 
+7fee00021000-7fee04000000 ---p 00000000 00:00 0 
+7fee04000000-7fee04021000 rw-p 00000000 00:00 0 
+7fee04021000-7fee08000000 ---p 00000000 00:00 0 
+7fee0ac62000-7fee0ac65000 r--s 00007000 ca:01 397858                     /home/kalrav/.m2/repository/org/apache/maven/surefire/surefire-junit4/2.12.4/surefire-junit4-2.12.4.jar
+7fee0ac65000-7fee0ac66000 r--s 0000c000 ca:01 397327                     /home/kalrav/.m2/repository/org/hamcrest/hamcrest-library/1.3/hamcrest-library-1.3.jar
+7fee0ac66000-7fee0ac68000 r--s 00003000 ca:01 397326                     /home/kalrav/.m2/repository/com/jayway/jsonpath/json-path-assert/2.2.0/json-path-assert-2.2.0.jar
+7fee0ac68000-7fee0ac69000 r--s 0000a000 ca:01 397325                     /home/kalrav/.m2/repository/asm/asm/3.3.1/asm-3.3.1.jar
+7fee0ac69000-7fee0ac6b000 r--s 00010000 ca:01 397324                     /home/kalrav/.m2/repository/net/minidev/asm/1.0.2/asm-1.0.2.jar
+7fee0ac6b000-7fee0ac6e000 r--s 0001c000 ca:01 397318                     /home/kalrav/.m2/repository/net/minidev/json-smart/2.1.1/json-smart-2.1.1.jar
+7fee0ac6e000-7fee0ac72000 r--s 0001e000 ca:01 397317                     /home/kalrav/.m2/repository/com/jayway/jsonpath/json-path/2.0.0/json-path-2.0.0.jar
+7fee0ac72000-7fee0ac74000 r--s 00009000 ca:01 397316                     /home/kalrav/.m2/repository/org/objenesis/objenesis/2.1/objenesis-2.1.jar
+7fee0ac74000-7fee0ac90000 r--s 00103000 ca:01 397315                     /home/kalrav/.m2/repository/org/mockito/mockito-core/1.10.19/mockito-core-1.10.19.jar
+7fee0ac90000-7fee0ac96000 r--s 00045000 ca:01 397314                     /home/kalrav/.m2/repository/org/hamcrest/hamcrest-all/1.3/hamcrest-all-1.3.jar
+7fee0ac96000-7fee0ac98000 r--s 00002000 ca:01 397308                     /home/kalrav/.m2/repository/org/apache/maven/plugin-tools/maven-plugin-annotations/3.3/maven-plugin-annotations-3.3.jar
+7fee0ac98000-7fee0ac9a000 r--s 00008000 ca:01 397307                     /home/kalrav/.m2/repository/org/apache/maven/maven-toolchain/2.2.1/maven-toolchain-2.2.1.jar
+7fee0ac9a000-7fee0ac9c000 r--s 00002000 ca:01 397306                     /home/kalrav/.m2/repository/org/apache/maven/surefire/surefire-logger-api/2.20/surefire-logger-api-2.20.jar
+7fee0ac9c000-7fee0aca1000 r--s 00028000 ca:01 397304                     /home/kalrav/.m2/repository/org/apache/maven/surefire/surefire-api/2.20/surefire-api-2.20.jar
+7fee0aca1000-7fee0aca7000 r--s 00048000 ca:01 397303                     /home/kalrav/.m2/repository/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar
+7fee0aca7000-7fee0aca9000 r--s 00002000 ca:01 397299                     /home/kalrav/.m2/repository/org/sonatype/plexus/plexus-cipher/1.4/plexus-cipher-1.4.jar
+7fee0aca9000-7fee0acaa000 r--s 00006000 ca:01 397297                     /home/kalrav/.m2/repository/org/sonatype/plexus/plexus-sec-dispatcher/1.3/plexus-sec-dispatcher-1.3.jar
+7fee0acaa000-7fee0acac000 r--s 00008000 ca:01 397296                     /home/kalrav/.m2/repository/classworlds/classworlds/1.1/classworlds-1.1.jar
+7fee0acac000-7fee0acad000 r--s 00002000 ca:01 397295                     /home/kalrav/.m2/repository/org/apache/maven/maven-monitor/2.2.1/maven-monitor-2.2.1.jar
+7fee0acad000-7fee0acaf000 r--s 00002000 ca:01 397293                     /home/kalrav/.m2/repository/org/apache/maven/maven-error-diagnostics/2.2.1/maven-error-diagnostics-2.2.1.jar
+7fee0acaf000-7fee0acb1000 r--s 00005000 ca:01 397289                     /home/kalrav/.m2/repository/org/apache/maven/maven-repository-metadata/2.2.1/maven-repository-metadata-2.2.1.jar
+7fee0acb1000-7fee0acb3000 r--s 0000b000 ca:01 397287                     /home/kalrav/.m2/repository/org/apache/maven/wagon/wagon-provider-api/1.0-beta-6/wagon-provider-api-1.0-beta-6.jar
+7fee0acb3000-7fee0acb4000 r--s 00002000 ca:01 397286                     /home/kalrav/.m2/repository/org/apache/maven/doxia/doxia-logging-api/1.1/doxia-logging-api-1.1.jar
+7fee0acb4000-7fee0acb5000 r--s 00002000 ca:01 397285                     /home/kalrav/.m2/repository/org/apache/maven/reporting/maven-reporting-api/2.2.1/maven-reporting-api-2.2.1.jar
+7fee0acb5000-7fee0acb7000 r--s 00001000 ca:01 397283                     /home/kalrav/.m2/repository/org/slf4j/slf4j-jdk14/1.5.6/slf4j-jdk14-1.5.6.jar
+7fee0acb7000-7fee0acb8000 r--s 00001000 ca:01 397279                     /home/kalrav/.m2/repository/org/slf4j/slf4j-nop/1.5.3/slf4j-nop-1.5.3.jar
+7fee0acb8000-7fee0acbd000 r--s 0002d000 ca:01 397277                     /home/kalrav/.m2/repository/org/apache/jackrabbit/jackrabbit-jcr-commons/1.5.0/jackrabbit-jcr-commons-1.5.0.jar
+7fee0acbd000-7fee0acc3000 r--s 00044000 ca:01 397276                     /home/kalrav/.m2/repository/org/apache/jackrabbit/jackrabbit-webdav/1.5.0/jackrabbit-webdav-1.5.0.jar
+7fee0acc3000-7fee0acc5000 r--s 00003000 ca:01 397275                     /home/kalrav/.m2/repository/org/apache/maven/wagon/wagon-webdav-jackrabbit/1.0-beta-6/wagon-webdav-jackrabbit-1.0-beta-6.jar
+7fee0acc5000-7fee0acc8000 r--s 00019000 ca:01 397273                     /home/kalrav/.m2/repository/nekohtml/nekohtml/1.9.6.2/nekohtml-1.9.6.2.jar
+7fee0acc8000-7fee0acca000 r--s 00008000 ca:01 397269                     /home/kalrav/.m2/repository/nekohtml/xercesMinimal/1.9.6.2/xercesMinimal-1.9.6.2.jar
+7fee0acca000-7fee0accc000 r--s 00005000 ca:01 397267                     /home/kalrav/.m2/repository/org/apache/maven/wagon/wagon-http-shared/1.0-beta-6/wagon-http-shared-1.0-beta-6.jar
+7fee0accc000-7fee0accd000 r--s 00002000 ca:01 397266                     /home/kalrav/.m2/repository/org/apache/maven/wagon/wagon-http/1.0-beta-6/wagon-http-1.0-beta-6.jar
+7fee0accd000-7fee0accf000 r--s 00004000 ca:01 397265                     /home/kalrav/.m2/repository/org/apache/maven/maven-plugin-parameter-documenter/2.2.1/maven-plugin-parameter-documenter-2.2.1.jar
+7fee0accf000-7fee0acd3000 r--s 00028000 ca:01 397261                     /home/kalrav/.m2/repository/org/apache/maven/maven-core/2.2.1/maven-core-2.2.1.jar
+7fee0acd3000-7fee0acd5000 r--s 00014000 ca:01 397259                     /home/kalrav/.m2/repository/org/apache/maven/maven-model/2.2.1/maven-model-2.2.1.jar
+7fee0acd5000-7fee0acd7000 r--s 0000b000 ca:01 397258                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-interpolation/1.11/plexus-interpolation-1.11.jar
+7fee0acd7000-7fee0acd9000 r--s 00006000 ca:01 397256                     /home/kalrav/.m2/repository/org/apache/maven/maven-plugin-registry/2.2.1/maven-plugin-registry-2.2.1.jar
+7fee0acd9000-7fee0ace1000 r--s 00049000 ca:01 397255                     /home/kalrav/.m2/repository/backport-util-concurrent/backport-util-concurrent/3.1/backport-util-concurrent-3.1.jar
+7fee0ace1000-7fee0ace3000 r--s 0000f000 ca:01 397251                     /home/kalrav/.m2/repository/org/apache/maven/maven-artifact-manager/2.2.1/maven-artifact-manager-2.2.1.jar
+7fee0ace3000-7fee0ace5000 r--s 00007000 ca:01 397249                     /home/kalrav/.m2/repository/org/apache/maven/maven-profile/2.2.1/maven-profile-2.2.1.jar
+7fee0ace5000-7fee0ace6000 r--s 0000b000 ca:01 397248                     /home/kalrav/.m2/repository/org/apache/maven/maven-settings/2.2.1/maven-settings-2.2.1.jar
+7fee0ace6000-7fee0acea000 r--s 00023000 ca:01 397247                     /home/kalrav/.m2/repository/org/apache/maven/maven-project/2.2.1/maven-project-2.2.1.jar
+7fee0acea000-7fee0acf1000 r--s 00029000 ca:01 397245                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar
+7fee0acf1000-7fee0acf3000 r--s 00008000 ca:01 397240                     /home/kalrav/.m2/repository/org/apache/maven/maven-plugin-descriptor/2.2.1/maven-plugin-descriptor-2.2.1.jar
+7fee0acf3000-7fee0acf7000 r--s 00034000 ca:01 397239                     /home/kalrav/.m2/repository/org/codehaus/plexus/plexus-utils/1.5.15/plexus-utils-1.5.15.jar
+7fee0acf7000-7fee0acfa000 r--s 00011000 ca:01 397238                     /home/kalrav/.m2/repository/org/apache/maven/maven-artifact/2.2.1/maven-artifact-2.2.1.jar
+7fee0acfa000-7fee0acfc000 r--s 0000b000 ca:01 397237                     /home/kalrav/.m2/repository/org/apache/maven/surefire/surefire-booter/2.20/surefire-booter-2.20.jar
+7fee0acfc000-7fee0ad02000 r--s 0004b000 ca:01 397236                     /home/kalrav/.m2/repository/org/apache/maven/surefire/maven-surefire-common/2.20/maven-surefire-common-2.20.jar
+7fee0ad02000-7fee0ad04000 r--s 00002000 ca:01 397230                     /home/kalrav/.m2/repository/org/apache/maven/maven-plugin-api/2.2.1/maven-plugin-api-2.2.1.jar
+7fee0ad04000-7fee0ad05000 r--s 0000c000 ca:01 397229                     /home/kalrav/.m2/repository/org/apache/maven/plugins/maven-surefire-plugin/2.20/maven-surefire-plugin-2.20.jar
+7fee0ad05000-7fee0ad0c000 r--s 0007e000 ca:01 397211                     /home/kalrav/.m2/repository/jboss/javassist/3.7.ga/javassist-3.7.ga.jar
+7fee0ad0c000-7fee0ad0e000 r--s 0000d000 ca:01 397210                     /home/kalrav/.m2/repository/org/jboss/logging/jboss-logging/3.1.1.GA/jboss-logging-3.1.1.GA.jar
+7fee0ad0e000-7fee0ad10000 r--s 0000a000 ca:01 397208                     /home/kalrav/.m2/repository/org/jboss/resteasy/jaxrs-api/2.2.1.GA/jaxrs-api-2.2.1.GA.jar
+7fee0ad10000-7fee0ad11000 r--s 00000000 ca:01 397207                     /home/kalrav/.m2/repository/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar
+7fee0ad11000-7fee0ad16000 r--s 00026000 ca:01 397204                     /home/kalrav/.m2/repository/org/apache/httpcomponents/httpcore/4.0.1/httpcore-4.0.1.jar
+7fee0ad16000-7fee0ad1d000 r--s 00041000 ca:01 397201                     /home/kalrav/.m2/repository/org/apache/httpcomponents/httpclient/4.0.3/httpclient-4.0.3.jar
+7fee0ad1d000-7fee0ad23000 r--s 00045000 ca:01 397200                     /home/kalrav/.m2/repository/commons-httpclient/commons-httpclient/3.1/commons-httpclient-3.1.jar
+7fee0ad23000-7fee0ad25000 r--s 0000e000 ca:01 397198                     /home/kalrav/.m2/repository/javax/activation/activation/1.1/activation-1.1.jar
+7fee0ad25000-7fee0ad26000 r--s 00001000 ca:01 397195                     /home/kalrav/.m2/repository/javax/annotation/jsr250-api/1.0/jsr250-api-1.0.jar
+7fee0ad26000-7fee0ad2f000 r--s 00095000 ca:01 397193                     /home/kalrav/.m2/repository/javassist/javassist/3.12.1.GA/javassist-3.12.1.GA.jar
+7fee0ad2f000-7fee0ad30000 r--s 00004000 ca:01 397192                     /home/kalrav/.m2/repository/org/scannotation/scannotation/1.0.3/scannotation-1.0.3.jar
+7fee0ad30000-7fee0ad3c000 r--s 00081000 ca:01 397190                     /home/kalrav/.m2/repository/org/jboss/resteasy/resteasy-jaxrs/2.2.1.GA/resteasy-jaxrs-2.2.1.GA.jar
+7fee0ad3c000-7fee0ad3e000 r--s 0000f000 ca:01 397189                     /home/kalrav/.m2/repository/commons-fileupload/commons-fileupload/1.3.1/commons-fileupload-1.3.1.jar
+7fee0ad3e000-7fee0ad47000 r--s 00054000 ca:01 397185                     /home/kalrav/.m2/repository/org/springframework/spring-aop/4.3.7.RELEASE/spring-aop-4.3.7.RELEASE.jar
+7fee0ad47000-7fee0ad4b000 r--s 0002a000 ca:01 397183                     /home/kalrav/.m2/repository/commons-io/commons-io/2.4/commons-io-2.4.jar
+7fee0ad4b000-7fee0ad53000 r--s 00045000 ca:01 397171                     /home/kalrav/.m2/repository/junit/junit/4.12/junit-4.12.jar
+7fee0ad53000-7fee0ad62000 r--s 00084000 ca:01 397170                     /home/kalrav/.m2/repository/org/springframework/spring-test/4.3.7.RELEASE/spring-test-4.3.7.RELEASE.jar
+7fee0ad62000-7fee0ad79000 r--s 001d2000 ca:01 397168                     /home/kalrav/.m2/repository/mysql/mysql-connector-java/6.0.6/mysql-connector-java-6.0.6.jar
+7fee0ad79000-7fee0ad84000 r--s 0008b000 ca:01 397164                     /home/kalrav/.m2/repository/c3p0/c3p0/0.9.1.2/c3p0-0.9.1.2.jar
+7fee0ad84000-7fee0ad85000 r--s 00005000 ca:01 397162                     /home/kalrav/.m2/repository/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar
+7fee0ad85000-7fee0ad8a000 r--s 00034000 ca:01 397160                     /home/kalrav/.m2/repository/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar
+7fee0ad8a000-7fee0ad8e000 r--s 00035000 ca:01 397158                     /home/kalrav/.m2/repository/org/codehaus/jackson/jackson-core-asl/1.9.13/jackson-core-asl-1.9.13.jar
+7fee0ad8e000-7fee0ad9c000 r--s 000b1000 ca:01 397154                     /home/kalrav/.m2/repository/org/codehaus/jackson/jackson-mapper-asl/1.9.13/jackson-mapper-asl-1.9.13.jar
+7fee0ad9c000-7fee0ad9f000 r--s 0000a000 ca:01 397153                     /home/kalrav/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.7.0/jackson-annotations-2.7.0.jar
+7fee0ad9f000-7fee0adb1000 r--s 00115000 ca:01 397152                     /home/kalrav/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.7.5/jackson-databind-2.7.5.jar
+7fee0adb1000-7fee0adb4000 r--s 0003b000 ca:01 397151                     /home/kalrav/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.7.5/jackson-core-2.7.5.jar
+7fee0adb4000-7fee0adb8000 r--s 0001c000 ca:01 397182                     /home/kalrav/.m2/repository/org/springframework/spring-dao/2.0.8/spring-dao-2.0.8.jar
+7fee0adb8000-7fee0adc3000 r--s 0008b000 ca:01 397179                     /home/kalrav/.m2/repository/org/mongodb/mongo-java-driver/2.14.3/mongo-java-driver-2.14.3.jar
+7fee0adc3000-7fee0add4000 r--s 00099000 ca:01 397174                     /home/kalrav/.m2/repository/org/springframework/data/spring-data-commons/1.12.5.RELEASE/spring-data-commons-1.12.5.RELEASE.jar
+7fee0add4000-7fee0ade4000 r--s 0009d000 ca:01 397173                     /home/kalrav/.m2/repository/org/springframework/data/spring-data-mongodb/1.9.5.RELEASE/spring-data-mongodb-1.9.5.RELEASE.jar
+7fee0ade4000-7fee0ade9000 r--s 00016000 ca:01 397228                     /home/kalrav/.m2/repository/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar
+7fee0ade9000-7fee0adee000 r--s 00048000 ca:01 397225                     /home/kalrav/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar
+7fee0adee000-7fee0adf0000 r--s 00005000 ca:01 397222                     /home/kalrav/.m2/repository/stax/stax-api/1.0.1/stax-api-1.0.1.jar
+7fee0adf0000-7fee0ae2d000 r--s 0024f000 ca:01 397220                     /home/kalrav/.m2/repository/org/apache/xmlbeans/xmlbeans/2.3.0/xmlbeans-2.3.0.jar
+7fee0ae2d000-7fee0aec1000 r--s 00401000 ca:01 397219                     /home/kalrav/.m2/repository/org/apache/poi/poi-ooxml-schemas/3.9/poi-ooxml-schemas-3.9.jar
+7fee0aec1000-7fee0aecd000 r--s 000d9000 ca:01 397218                     /home/kalrav/.m2/repository/org/apache/poi/poi-ooxml/3.9/poi-ooxml-3.9.jar
+7fee0aecd000-7fee0aecf000 r--s 00010000 ca:01 397217                     /home/kalrav/.m2/repository/commons-codec/commons-codec/1.5/commons-codec-1.5.jar
+7fee0aecf000-7fee0aef1000 r--s 001bb000 ca:01 397214                     /home/kalrav/.m2/repository/org/apache/poi/poi/3.10-FINAL/poi-3.10-FINAL.jar
+7fee0aef1000-7fee0aefb000 r--s 0005f000 ca:01 397165                     /home/kalrav/.m2/repository/org/springframework/spring-jdbc/4.3.7.RELEASE/spring-jdbc-4.3.7.RELEASE.jar
+7fee0aefb000-7fee0af06000 r--s 00053000 ca:01 397150                     /home/kalrav/.m2/repository/org/springframework/security/spring-security-web/4.2.2.RELEASE/spring-security-web-4.2.2.RELEASE.jar
+7fee0af06000-7fee0af09000 r--s 00012000 ca:01 397144                     /home/kalrav/.m2/repository/org/springframework/security/spring-security-acl/4.2.2.RELEASE/spring-security-acl-4.2.2.RELEASE.jar
+7fee0af09000-7fee0af0a000 r--s 00004000 ca:01 397143                     /home/kalrav/.m2/repository/org/springframework/security/spring-security-taglibs/4.2.2.RELEASE/spring-security-taglibs-4.2.2.RELEASE.jar
+7fee0af0a000-7fee0af14000 r--s 00086000 ca:01 397142                     /home/kalrav/.m2/repository/org/springframework/security/spring-security-config/4.2.2.RELEASE/spring-security-config-4.2.2.RELEASE.jar
+7fee0af14000-7fee0af16000 r--s 00000000 ca:01 397141                     /home/kalrav/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar
+7fee0af16000-7fee0af22000 r--s 00055000 ca:01 397140                     /home/kalrav/.m2/repository/org/springframework/security/spring-security-core/4.2.2.RELEASE/spring-security-core-4.2.2.RELEASE.jar
+7fee0af22000-7fee0af23000 r--s 00005000 ca:01 397134                     /home/kalrav/.m2/repository/org/slf4j/slf4j-api/1.5.8/slf4j-api-1.5.8.jar
+7fee0af23000-7fee0af24000 r--s 00002000 ca:01 397133                     /home/kalrav/.m2/repository/org/slf4j/slf4j-log4j12/1.5.8/slf4j-log4j12-1.5.8.jar
+7fee0af24000-7fee0af2b000 r--s 00051000 ca:01 397132                     /home/kalrav/.m2/repository/log4j/log4j/1.2.12/log4j-1.2.12.jar
+7fee0af2b000-7fee0af2d000 r--s 00003000 ca:01 397131                     /home/kalrav/.m2/repository/org/apache/tiles/tiles-request-jsp/1.0.3/tiles-request-jsp-1.0.3.jar
+7fee0af2d000-7fee0af2f000 r--s 00007000 ca:01 397130                     /home/kalrav/.m2/repository/org/apache/tiles/tiles-jsp/3.0.3/tiles-jsp-3.0.3.jar
+7fee0af2f000-7fee0af30000 r--s 00004000 ca:01 397124                     /home/kalrav/.m2/repository/org/apache/tiles/tiles-request-servlet/1.0.3/tiles-request-servlet-1.0.3.jar
+7fee0af30000-7fee0af32000 r--s 00005000 ca:01 397123                     /home/kalrav/.m2/repository/org/apache/tiles/tiles-servlet/3.0.3/tiles-servlet-3.0.3.jar
+7fee0af32000-7fee0af34000 r--s 00003000 ca:01 397122                     /home/kalrav/.m2/repository/org/slf4j/jcl-over-slf4j/1.5.8/jcl-over-slf4j-1.5.8.jar
+7fee0af34000-7fee0af39000 r--s 00034000 ca:01 397121                     /home/kalrav/.m2/repository/commons-beanutils/commons-beanutils/1.8.0/commons-beanutils-1.8.0.jar
+7fee0af39000-7fee0af3d000 r--s 00021000 ca:01 397120                     /home/kalrav/.m2/repository/commons-digester/commons-digester/2.0/commons-digester-2.0.jar
+7fee0af3d000-7fee0af40000 r--s 00011000 ca:01 397114                     /home/kalrav/.m2/repository/org/apache/tiles/tiles-core/3.0.3/tiles-core-3.0.3.jar
+7fee0af40000-7fee0af41000 r--s 00002000 ca:01 397113                     /home/kalrav/.m2/repository/org/apache/tiles/tiles-autotag-core-runtime/1.1.0/tiles-autotag-core-runtime-1.1.0.jar
+7fee0af41000-7fee0af44000 r--s 0000f000 ca:01 397112                     /home/kalrav/.m2/repository/org/apache/tiles/tiles-request-api/1.0.3/tiles-request-api-1.0.3.jar
+7fee0af44000-7fee0af46000 r--s 00006000 ca:01 397111                     /home/kalrav/.m2/repository/org/apache/tiles/tiles-api/3.0.3/tiles-api-3.0.3.jar
+7fee0af46000-7fee0af47000 r--s 00007000 ca:01 397106                     /home/kalrav/.m2/repository/org/apache/tiles/tiles-template/3.0.3/tiles-template-3.0.3.jar
+7fee0af47000-7fee0af4e000 r--s 0009b000 ca:01 397104                     /home/kalrav/.m2/repository/org/webjars/bootstrap/3.3.6/bootstrap-3.3.6.jar
+7fee0af4e000-7fee0af58000 r--s 0005c000 ca:01 397103                     /home/kalrav/.m2/repository/javax/servlet/jstl/1.2/jstl-1.2.jar
+7fee0af58000-7fee0af5a000 r--s 0000b000 ca:01 397098                     /home/kalrav/.m2/repository/javax/servlet/jsp/javax.servlet.jsp-api/2.3.1/javax.servlet.jsp-api-2.3.1.jar
+7fee0af5a000-7fee0af5f000 r--s 0003c000 ca:01 397095                     /home/kalrav/.m2/repository/org/springframework/spring-expression/4.3.7.RELEASE/spring-expression-4.3.7.RELEASE.jar
+7fee0af5f000-7fee0af70000 r--s 000cf000 ca:01 397092                     /home/kalrav/.m2/repository/org/springframework/spring-webmvc/4.3.7.RELEASE/spring-webmvc-4.3.7.RELEASE.jar
+7fee0af70000-7fee0af78000 r--s 0003a000 ca:01 397180                     /home/kalrav/.m2/repository/org/springframework/spring-tx/4.3.7.RELEASE/spring-tx-4.3.7.RELEASE.jar
+7fee0af78000-7fee0af92000 r--s 000fd000 ca:01 397090                     /home/kalrav/.m2/repository/org/springframework/spring-context/4.3.7.RELEASE/spring-context-4.3.7.RELEASE.jar
+7fee0af92000-7fee0af93000 ---p 00000000 00:00 0 
+7fee0af93000-7fee0b093000 rw-p 00000000 00:00 0 
+7fee0b093000-7fee0b096000 ---p 00000000 00:00 0 
+7fee0b096000-7fee0b194000 rw-p 00000000 00:00 0 
+7fee0b194000-7fee0b197000 ---p 00000000 00:00 0 
+7fee0b197000-7fee0b295000 rw-p 00000000 00:00 0 
+7fee0b295000-7fee0b298000 ---p 00000000 00:00 0 
+7fee0b298000-7fee0b396000 rw-p 00000000 00:00 0 
+7fee0b396000-7fee0b399000 ---p 00000000 00:00 0 
+7fee0b399000-7fee0b497000 rw-p 00000000 00:00 0 
+7fee0b497000-7fee0b49a000 ---p 00000000 00:00 0 
+7fee0b49a000-7fee0b598000 rw-p 00000000 00:00 0 
+7fee0b598000-7fee0b59b000 ---p 00000000 00:00 0 
+7fee0b59b000-7fee0b699000 rw-p 00000000 00:00 0 
+7fee0b699000-7fee0b69a000 ---p 00000000 00:00 0 
+7fee0b69a000-7fee0b79a000 rw-p 00000000 00:00 0 
+7fee0b79a000-7fee0b969000 r--s 043f2000 ca:01 11917                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/rt.jar
+7fee0b969000-7fee0be9f000 rw-p 00000000 00:00 0 
+7fee0be9f000-7fee0c1df000 ---p 00000000 00:00 0 
+7fee0c1df000-7fee0c1e9000 rw-p 00000000 00:00 0 
+7fee0c1e9000-7fee0c59f000 ---p 00000000 00:00 0 
+7fee0c59f000-7fee0c80f000 rwxp 00000000 00:00 0 
+7fee0c80f000-7fee1b59f000 ---p 00000000 00:00 0 
+7fee1b59f000-7fee1b5a7000 r-xp 00000000 ca:01 11861                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libzip.so
+7fee1b5a7000-7fee1b7a7000 ---p 00008000 ca:01 11861                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libzip.so
+7fee1b7a7000-7fee1b7a8000 rw-p 00008000 ca:01 11861                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libzip.so
+7fee1b7a8000-7fee1b7b4000 r-xp 00000000 ca:01 3326                       /lib64/libnss_files-2.17.so
+7fee1b7b4000-7fee1b9b3000 ---p 0000c000 ca:01 3326                       /lib64/libnss_files-2.17.so
+7fee1b9b3000-7fee1b9b4000 r--p 0000b000 ca:01 3326                       /lib64/libnss_files-2.17.so
+7fee1b9b4000-7fee1b9b5000 rw-p 0000c000 ca:01 3326                       /lib64/libnss_files-2.17.so
+7fee1b9b5000-7fee1b9bb000 rw-p 00000000 00:00 0 
+7fee1b9bb000-7fee1b9e8000 r-xp 00000000 ca:01 11843                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libjava.so
+7fee1b9e8000-7fee1bbe8000 ---p 0002d000 ca:01 11843                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libjava.so
+7fee1bbe8000-7fee1bbea000 rw-p 0002d000 ca:01 11843                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libjava.so
+7fee1bbea000-7fee1bbf7000 r-xp 00000000 ca:01 11860                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libverify.so
+7fee1bbf7000-7fee1bdf6000 ---p 0000d000 ca:01 11860                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libverify.so
+7fee1bdf6000-7fee1bdf8000 rw-p 0000c000 ca:01 11860                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/libverify.so
+7fee1bdf8000-7fee1bdff000 r-xp 00000000 ca:01 3338                       /lib64/librt-2.17.so
+7fee1bdff000-7fee1bffe000 ---p 00007000 ca:01 3338                       /lib64/librt-2.17.so
+7fee1bffe000-7fee1bfff000 r--p 00006000 ca:01 3338                       /lib64/librt-2.17.so
+7fee1bfff000-7fee1c000000 rw-p 00007000 ca:01 3338                       /lib64/librt-2.17.so
+7fee1c000000-7fee1c728000 rw-p 00000000 00:00 0 
+7fee1c728000-7fee20000000 ---p 00000000 00:00 0 
+7fee20000000-7fee20001000 r--s 00027000 ca:01 397105                     /home/kalrav/.m2/repository/org/webjars/jquery/2.2.3/jquery-2.2.3.jar
+7fee20001000-7fee2000f000 r--s 000ad000 ca:01 397088                     /home/kalrav/.m2/repository/org/springframework/spring-beans/4.3.7.RELEASE/spring-beans-4.3.7.RELEASE.jar
+7fee2000f000-7fee20026000 r--s 000fb000 ca:01 397082                     /home/kalrav/.m2/repository/org/springframework/spring-core/4.3.7.RELEASE/spring-core-4.3.7.RELEASE.jar
+7fee20026000-7fee200cf000 rw-p 00000000 00:00 0 
+7fee200cf000-7fee200e4000 r-xp 00000000 ca:01 3300                       /lib64/libgcc_s-4.8.3-20140911.so.1
+7fee200e4000-7fee202e4000 ---p 00015000 ca:01 3300                       /lib64/libgcc_s-4.8.3-20140911.so.1
+7fee202e4000-7fee202e5000 rw-p 00015000 ca:01 3300                       /lib64/libgcc_s-4.8.3-20140911.so.1
+7fee202e5000-7fee203e6000 r-xp 00000000 ca:01 3316                       /lib64/libm-2.17.so
+7fee203e6000-7fee205e5000 ---p 00101000 ca:01 3316                       /lib64/libm-2.17.so
+7fee205e5000-7fee205e6000 r--p 00100000 ca:01 3316                       /lib64/libm-2.17.so
+7fee205e6000-7fee205e7000 rw-p 00101000 ca:01 3316                       /lib64/libm-2.17.so
+7fee205e7000-7fee206cd000 r-xp 00000000 ca:01 3474                       /usr/lib64/libstdc++.so.6.0.19
+7fee206cd000-7fee208cc000 ---p 000e6000 ca:01 3474                       /usr/lib64/libstdc++.so.6.0.19
+7fee208cc000-7fee208d5000 r--p 000e5000 ca:01 3474                       /usr/lib64/libstdc++.so.6.0.19
+7fee208d5000-7fee208d7000 rw-p 000ee000 ca:01 3474                       /usr/lib64/libstdc++.so.6.0.19
+7fee208d7000-7fee208ec000 rw-p 00000000 00:00 0 
+7fee208ec000-7fee21506000 r-xp 00000000 ca:01 11865                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/server/libjvm.so
+7fee21506000-7fee21706000 ---p 00c1a000 ca:01 11865                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/server/libjvm.so
+7fee21706000-7fee217cd000 rw-p 00c1a000 ca:01 11865                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/server/libjvm.so
+7fee217cd000-7fee21800000 rw-p 00000000 00:00 0 
+7fee21800000-7fee219b8000 r-xp 00000000 ca:01 3308                       /lib64/libc-2.17.so
+7fee219b8000-7fee21bb7000 ---p 001b8000 ca:01 3308                       /lib64/libc-2.17.so
+7fee21bb7000-7fee21bbb000 r--p 001b7000 ca:01 3308                       /lib64/libc-2.17.so
+7fee21bbb000-7fee21bbd000 rw-p 001bb000 ca:01 3308                       /lib64/libc-2.17.so
+7fee21bbd000-7fee21bc2000 rw-p 00000000 00:00 0 
+7fee21bc2000-7fee21bc4000 r-xp 00000000 ca:01 3314                       /lib64/libdl-2.17.so
+7fee21bc4000-7fee21dc4000 ---p 00002000 ca:01 3314                       /lib64/libdl-2.17.so
+7fee21dc4000-7fee21dc5000 r--p 00002000 ca:01 3314                       /lib64/libdl-2.17.so
+7fee21dc5000-7fee21dc6000 rw-p 00003000 ca:01 3314                       /lib64/libdl-2.17.so
+7fee21dc6000-7fee21dd4000 r-xp 00000000 ca:01 11830                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/jli/libjli.so
+7fee21dd4000-7fee21fd3000 ---p 0000e000 ca:01 11830                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/jli/libjli.so
+7fee21fd3000-7fee21fd4000 rw-p 0000d000 ca:01 11830                      /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.141-1.b16.32.amzn1.x86_64/jre/lib/amd64/jli/libjli.so
+7fee21fd4000-7fee21fe9000 r-xp 00000000 ca:01 3374                       /lib64/libz.so.1.2.8
+7fee21fe9000-7fee221e8000 ---p 00015000 ca:01 3374                       /lib64/libz.so.1.2.8
+7fee221e8000-7fee221e9000 r--p 00014000 ca:01 3374                       /lib64/libz.so.1.2.8
+7fee221e9000-7fee221ea000 rw-p 00015000 ca:01 3374                       /lib64/libz.so.1.2.8
+7fee221ea000-7fee22201000 r-xp 00000000 ca:01 3334                       /lib64/libpthread-2.17.so
+7fee22201000-7fee22400000 ---p 00017000 ca:01 3334                       /lib64/libpthread-2.17.so
+7fee22400000-7fee22401000 r--p 00016000 ca:01 3334                       /lib64/libpthread-2.17.so
+7fee22401000-7fee22402000 rw-p 00017000 ca:01 3334                       /lib64/libpthread-2.17.so
+7fee22402000-7fee22406000 rw-p 00000000 00:00 0 
+7fee22406000-7fee22426000 r-xp 00000000 ca:01 3301                       /lib64/ld-2.17.so
+7fee22426000-7fee22429000 r--s 00016000 ca:01 397096                     /home/kalrav/.m2/repository/javax/servlet/javax.servlet-api/4.0.0-b03/javax.servlet-api-4.0.0-b03.jar
+7fee22429000-7fee2243a000 r--s 000b7000 ca:01 397086                     /home/kalrav/.m2/repository/org/springframework/spring-web/4.3.7.RELEASE/spring-web-4.3.7.RELEASE.jar
+7fee2243a000-7fee2243c000 r--s 0000e000 ca:01 397085                     /home/kalrav/.m2/repository/commons-logging/commons-logging/1.2/commons-logging-1.2.jar
+7fee2243c000-7fee22440000 r--s 00019000 ca:01 397834                     /home/kalrav/.m2/repository/org/apache/maven/surefire/surefire-api/2.12.4/surefire-api-2.12.4.jar
+7fee22440000-7fee22446000 rw-p 00000000 00:00 0 
+7fee22446000-7fee22494000 ---p 00000000 00:00 0 
+7fee22494000-7fee22497000 rw-p 00000000 00:00 0 
+7fee22497000-7fee224bd000 ---p 00000000 00:00 0 
+7fee224bd000-7fee224c3000 rw-p 00000000 00:00 0 
+7fee224c3000-7fee22511000 ---p 00000000 00:00 0 
+7fee22511000-7fee22512000 rw-p 00000000 00:00 0 
+7fee22512000-7fee2251a000 rw-s 00000000 ca:01 268436                     /tmp/hsperfdata_kalrav/22921
+7fee2251a000-7fee2251d000 ---p 00000000 00:00 0 
+7fee2251d000-7fee22620000 rw-p 00000000 00:00 0 
+7fee22620000-7fee22622000 r--s 00007000 ca:01 397832                     /home/kalrav/.m2/repository/org/apache/maven/surefire/surefire-booter/2.12.4/surefire-booter-2.12.4.jar
+7fee22622000-7fee22623000 r--s 00003000 ca:01 268435                     /home/kalrav/kalravwebservice/target/surefire/surefirebooter4150439106928120564.jar
+7fee22623000-7fee22624000 rw-p 00000000 00:00 0 
+7fee22624000-7fee22625000 r--p 00000000 00:00 0 
+7fee22625000-7fee22626000 rw-p 00000000 00:00 0 
+7fee22626000-7fee22627000 r--p 00020000 ca:01 3301                       /lib64/ld-2.17.so
+7fee22627000-7fee22628000 rw-p 00021000 ca:01 3301                       /lib64/ld-2.17.so
+7fee22628000-7fee22629000 rw-p 00000000 00:00 0 
+7fffdcaa4000-7fffdcac5000 rw-p 00000000 00:00 0                          [stack]
+7fffdcb2b000-7fffdcb2d000 r--p 00000000 00:00 0                          [vvar]
+7fffdcb2d000-7fffdcb2f000 r-xp 00000000 00:00 0                          [vdso]
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
+
+VM Arguments:
+java_command: /home/kalrav/kalravwebservice/target/surefire/surefirebooter4150439106928120564.jar /home/kalrav/kalravwebservice/target/surefire/surefire6559876159886662590tmp /home/kalrav/kalravwebservice/target/surefire/surefire_03261676534626194615tmp
+java_class_path (initial): /home/kalrav/kalravwebservice/target/surefire/surefirebooter4150439106928120564.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+JRE_HOME=/usr/lib/jvm/java-1.8.0-openjdk/jre
+PATH=/usr/local/maven/current/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/java/jdk/1.8.0_141/bin:/usr/local/apache-ant/bin:/home/kalrav/.local/bin:/home/kalrav/bin
+SHELL=/bin/bash
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0xa1d300], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGBUS: [libjvm.so+0xa1d300], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGFPE: [libjvm.so+0x876f40], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGPIPE: [libjvm.so+0x876f40], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGXFSZ: [libjvm.so+0x876f40], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGILL: [libjvm.so+0x876f40], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGUSR1: SIG_DFL, sa_mask[0]=00000000000000000000000000000000, sa_flags=none
+SIGUSR2: [libjvm.so+0x876df0], sa_mask[0]=00100000000000000000000000000000, sa_flags=SA_RESTART|SA_SIGINFO
+SIGHUP: [libjvm.so+0x877000], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGINT: [libjvm.so+0x877000], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGTERM: [libjvm.so+0x877000], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+SIGQUIT: [libjvm.so+0x877000], sa_mask[0]=11111111011111111101111111111110, sa_flags=SA_RESTART|SA_SIGINFO
+
+
+---------------  S Y S T E M  ---------------
+
+OS:Amazon Linux AMI release 2017.03
+
+uname:Linux 4.9.38-16.35.amzn1.x86_64 #1 SMP Sat Aug 5 01:39:35 UTC 2017 x86_64
+libc:glibc 2.17 NPTL 2.17 
+rlimit: STACK 8192k, CORE 0k, NPROC 3904, NOFILE 4096, AS infinity
+load average:0.33 0.19 0.10
+
+/proc/meminfo:
+MemTotal:        1017372 kB
+MemFree:           61148 kB
+MemAvailable:          0 kB
+Buffers:             432 kB
+Cached:             7012 kB
+SwapCached:            0 kB
+Active:           907604 kB
+Inactive:           3836 kB
+Active(anon):     904008 kB
+Inactive(anon):       76 kB
+Active(file):       3596 kB
+Inactive(file):     3760 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+SwapTotal:             0 kB
+SwapFree:              0 kB
+Dirty:                96 kB
+Writeback:             0 kB
+AnonPages:        904000 kB
+Mapped:             5228 kB
+Shmem:                84 kB
+Slab:              22504 kB
+SReclaimable:      10644 kB
+SUnreclaim:        11860 kB
+KernelStack:        3600 kB
+PageTables:         9380 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:      508684 kB
+Committed_AS:    1244660 kB
+VmallocTotal:   34359738367 kB
+VmallocUsed:           0 kB
+VmallocChunk:          0 kB
+AnonHugePages:         0 kB
+ShmemHugePages:        0 kB
+ShmemPmdMapped:        0 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:       12288 kB
+DirectMap2M:     1036288 kB
+
+
+CPU:total 1 (initial active 1) (1 cores per cpu, 1 threads per core) family 6 model 63 stepping 2, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, lzcnt, tsc, bmi1, bmi2
+
+/proc/cpuinfo:
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 63
+model name	: Intel(R) Xeon(R) CPU E5-2676 v3 @ 2.40GHz
+stepping	: 2
+microcode	: 0x3a
+cpu MHz		: 2400.070
+cache size	: 30720 KB
+physical id	: 0
+siblings	: 1
+core id		: 0
+cpu cores	: 1
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 13
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc rep_good nopl xtopology eagerfpu pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm fsgsbase bmi1 avx2 smep bmi2 erms invpcid xsaveopt
+bugs		:
+bogomips	: 4800.08
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 46 bits physical, 48 bits virtual
+power management:
+
+
+
+Memory: 4k page, physical 1017372k(61148k free), swap 0k(0k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.141-b16) for linux-amd64 JRE (1.8.0_141-b16), built on Jul 25 2017 17:29:02 by "mockbuild" with gcc 4.8.3 20140911 (Red Hat 4.8.3-9)
+
+time: Sat Nov  4 11:34:23 2017
+elapsed time: 0 seconds (0d 0h 0m 0s)
+
