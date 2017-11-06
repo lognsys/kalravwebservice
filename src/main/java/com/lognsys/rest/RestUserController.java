@@ -190,14 +190,13 @@ public class RestUserController {
 						applicationProperties.getProperty(Constants.REST_MSGS.response_userempty.name()),
 						HttpStatus.NOT_FOUND);
 			}
-
-			if (ue.getMessage()
+			else if (ue.getMessage()
 					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userinvalid.name()))) {
 				return new ResponseEntity<String>(
 						applicationProperties.getProperty(Constants.REST_MSGS.response_userinvalid.name()),
 						HttpStatus.BAD_REQUEST);
 			}
-
+			
 		}
 
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
