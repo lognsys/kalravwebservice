@@ -33,6 +33,8 @@ import com.lognsys.dao.dto.UsersDTO;
 import com.lognsys.dao.jdbc.JdbcDramaRepository;
 import com.lognsys.dao.jdbc.JdbcGroupRepository;
 import com.lognsys.dao.jdbc.JdbcRatingsRepository;
+import com.lognsys.exception.DramaDataAccessException;
+import com.lognsys.exception.UserDataAccessException;
 import com.lognsys.model.Drama;
 import com.lognsys.model.Ratings;
 import com.lognsys.model.Users;
@@ -66,22 +68,42 @@ public class RestDramaController {
 //	list all  drama with group name  even if customer has not assign groupname
 	@GetMapping("/getalldramaandgroup")
 	public  ResponseEntity<?>  getAllDramasAndGroup() {
-		{
+			 List<DramasGroupsDTO> lists=null;
 			try {
-//				System.out.println("jdbcGroupRepository getAllDramasAndGroup ");
-				 List<DramasGroupsDTO> lists=dramaService.getAllDramasAndGroup() /*jdbcGroupRepository.getAllDramasAndGroup()*/;
-//				 System.out.println("jdbcGroupRepository getAllDramasAndGroup lists size "+lists.size());
-					
-				 return new ResponseEntity<List<DramasGroupsDTO>>(lists,HttpStatus.OK);
-			} catch (Exception e) { 
+				lists=dramaService.getAllDramasAndGroup();
+				
+			}/* catch (Exception e) { 
 				System.out.println("jdbcGroupRepository IOException "+e);
 			String str = applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name());
-			return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);	
-		  
+			return new ResponseEntity<String>(str, HttpStatus.NOT_FOUND);			  
+*/
+			catch (DramaDataAccessException ue) {
+				  System.out.println("getAllDramasAndGroup DramaDataAccessException "+ue);
+					
+				// check if user is null
+				if (ue.getMessage()
+						.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_notfound.name()))) {
+
+					return new ResponseEntity<String>(
+							applicationProperties.getProperty(Constants.REST_MSGS.response_dramaempty.name()),
+							HttpStatus.NOT_FOUND);
+				}
+				else if (ue.getMessage()
+						.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_invalid.name()))) {
+					return new ResponseEntity<String>(
+							applicationProperties.getProperty(Constants.REST_MSGS.response_servererror.name()),
+							HttpStatus.BAD_REQUEST);
+				}
+				else{
+					return new ResponseEntity<String>(
+							applicationProperties.getProperty(Constants.REST_MSGS.response_servererror.name()),
+							HttpStatus.INTERNAL_SERVER_ERROR);
+					
+				}
+		
 			}
-				
-		}
-	
+
+			 return new ResponseEntity<List<DramasGroupsDTO>>(lists,HttpStatus.OK);
 	}
 // detail screen of drama with  respect to drama id
 	@GetMapping("/getdramadetailbyid/{id}")

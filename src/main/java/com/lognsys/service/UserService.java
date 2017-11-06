@@ -258,7 +258,7 @@ public class UserService {
 	 * 
 	 * @param userId
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException 3
 	 */
 	@Transactional(rollbackFor = UserDataAccessException.class)
 	public Users getUserWithRoleAndGroup(String response) throws ParseException {
@@ -273,10 +273,11 @@ public class UserService {
         String device;
         
         if(obj2.get("device")!=null)
+        {
         	device=(String) obj2.get("device");
-        else
+        }else{
         	device=null;
-        
+        }
 		
 		// Throw exception on invalid paramter or empty paramter
 		if (username.isEmpty() || !CommonUtilities.isValidEmail(username))
@@ -285,25 +286,32 @@ public class UserService {
 
 		Users users = null;
 
-		try {
+		try 
+		{
+			 System.out.println("getUserWithRoleAndGroup jdbcUserRepository.findUserByUsername(username)=== "+jdbcUserRepository.findUserByUsername(username).toString());
+			    
 			// get Users information from user table
 			users = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
 
 			// database returning empty user
 			if (users == null)
 				throw new UserDataAccessException(
-						applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
+						applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_notfound.name()));
 
 		} catch (DataAccessException dae) {
+			 System.out.println("getUserWithRoleAndGroup dae "+dae);
+		       
 			dae.printStackTrace();
 
 			// throw exception if user is empty
 			throw new UserDataAccessException(
-					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_notfound.name()));
 		}
 
 		// get Role information with role table
 		String role = jdbcRolesRepository.getRoleBy(users.getId());
+        System.out.println("\n \ng etUserWithRoleAndGroup role "+role);
+
 		if (role != null) {
 			users.setRole(role);
 		} else {
@@ -312,12 +320,16 @@ public class UserService {
 
 		// get group information
 		String groupName = jdbcGroupRepository.findGroupBy(users.getId());
+
+        System.out.println("\n \n getUserWithRoleAndGroup groupName "+groupName);
 		if (groupName != null) {
 			users.setGroup(groupName);
 		} else {
 			users.setRole(Constants.DEFAULT_GROUP.NONE.toString());
 		}
-		
+		  System.out.println("\n \n getUserWithRoleAndGroup device "+device);
+		  System.out.println("\n \n getUserWithRoleAndGroup users.getDevice() "+users.getDevice());
+			
 	if(users.getDevice()!=null && device!=null){
 		System.out.println("getUserWithRoleAndGroup device "+device);
 		System.out.println("getUserWithRoleAndGroup users.getDevice() "+users.getDevice());
@@ -341,9 +353,12 @@ public class UserService {
 				users.setDevice(device);
 			}
 			  System.out.println("getUserWithRoleAndGroup users.getDevice  "+users.getDevice());
-				 
+			  
 		}
+		return users;
+
 	}
+	else
 		return users;
 
 	}
@@ -367,12 +382,12 @@ public class UserService {
 
 			if (users == null)
 				throw new UserDataAccessException(
-						applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
+						applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_notfound.name()));
 		} catch (DataAccessException dae) {
 			dae.printStackTrace();
 
 			throw new UserDataAccessException(
-					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()));
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_notfound.name()));
 		}
 
 		// get Role information with role table
@@ -445,7 +460,7 @@ public class UserService {
 			user = ObjectMapper.mapToUsers(jdbcUserRepository.findUserByUsername(username));
 		} catch (EmptyResultDataAccessException e) {
 			throw new UserDataAccessException(
-					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()), e);
+					applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_notfound.name()), e);
 		}
 
 		return user;

@@ -122,8 +122,8 @@ public class Constants {
 	 */
 	public enum REST_MSGS {
 		response_userempty, response_userinvalid, response_userexists,
-		response_dramaexists,response_dramaempty,
-		response_auditoriumempty,
+		response_dramaexists,response_dramaempty,response_checknetworkerror,
+		response_auditoriumempty,response_servererror,
 		response_ratingsuccess,response_bookingmempty,check_no_seats_booked	,fail_booked_seats,
 		response_internalserver
 	}
@@ -132,7 +132,8 @@ public class Constants {
 	 * Exception Messages
 	 */
 	public enum EXCEPTIONS_MSG {
-		exception_userinvalid, exception_userempty, exception_allgroups, exception_database, exception_groupduplicate
+		exception_userinvalid, exception_notfound, exception_allgroups,
+		exception_database, exception_groupduplicate,exception_invalid
 	}
 
 	public enum DEFAULT_GROUP {

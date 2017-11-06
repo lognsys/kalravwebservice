@@ -58,7 +58,7 @@ public class RestUserController {
 		} catch (UserDataAccessException ue) {
 			// empty result returned from database
 			if (ue.getMessage()
-					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()))) {
+					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_notfound.name()))) {
 
 				return new ResponseEntity<String>(
 						applicationProperties.getProperty(Constants.REST_MSGS.response_userempty.name()),
@@ -142,7 +142,7 @@ public class RestUserController {
 				
 			// check if user is null
 			if (ue.getMessage()
-					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()))) {
+					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_notfound.name()))) {
 
 				return new ResponseEntity<String>(
 						applicationProperties.getProperty(Constants.REST_MSGS.response_userempty.name()),
@@ -184,7 +184,7 @@ public class RestUserController {
 				
 			// check if user is null
 			if (ue.getMessage()
-					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_userempty.name()))) {
+					.equals(applicationProperties.getProperty(Constants.EXCEPTIONS_MSG.exception_notfound.name()))) {
 
 				return new ResponseEntity<String>(
 						applicationProperties.getProperty(Constants.REST_MSGS.response_userempty.name()),
@@ -198,7 +198,7 @@ public class RestUserController {
 			}
 	
 		}
-			}
+			
 		return new ResponseEntity<Users>(user, HttpStatus.OK);
 
 	}
