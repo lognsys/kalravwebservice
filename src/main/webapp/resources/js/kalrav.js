@@ -27,7 +27,7 @@
  * 11) SAVE CHANGES OF CURRENT GROUP AND SUBGROUPS
  * 13) CANCEL BUTTON  RETURNS SUBGROUPS OF DESIGNATED GROUP IN ORIGINAL FORM
  * 14) DIALOG BOX ON WORKING ON DIFFERENT GROUP AND NOT SAVING CHANGES OF PREVIOUS GROUP 
- * 15) DELETE GROUP AND REMOVE IF LAST GROUP
+ * 15) DELETE GROUP ROW AND REMOVE IF LAST GROUP
  * 16) CANCEL BUTTON WORKS ON CURRENT GROUP OR THROWS ERROR
  * 
  */
@@ -1000,6 +1000,7 @@ $(document)
             var del_obj = {};
             var add_obj = {};
             var init_subgroups = [];
+            var init_groups = [];
             var isSubgroupPopulated = false;
 
 
@@ -1008,10 +1009,8 @@ $(document)
             var key_add = "add";
             var const_group = "group";
             var const_subgroup = "subgroup";
+            var const_type = "type";
             var countSubgroup = 0;
-            
-            var show_subgroup=[];
-            var hide_subgroup=[];
 
 
             // HOVER CHANGE COLOR ADD/DELETE SUBGROUP BUTTON  
@@ -1090,10 +1089,11 @@ $(document)
 
                 //check if group is undefined set global group object
                 if (groupObj[const_group] === undefined) {
-                    groupObj[const_group] = group_name;
+                    groupObj[const_group] = group_name;  
+                   
                 }
-
-
+                
+           
                 //Very first step is to populate subgroups in array if not initialized
                 if (!isSubgroupPopulated) {
                     init_subgroups = getCurrentSubgroups($this_card);
@@ -1139,7 +1139,7 @@ $(document)
                     local_groupObj[const_group] = group_name;
 
                     //added key "add" in add_obj so that latest subgroups will be saved
-                    add_obj[key_add] = local_groupObj;
+                    add_obj[key_add] = local_groupObj; //{"add":{"group":"HELLO"},"type":"group"}}
 
                 }
             });
@@ -1181,10 +1181,15 @@ $(document)
                 //add group name in localObj
                 local_groupObj[const_group] = group_name;
 
+                //add type=subgroup to make sure changes are to subgroup
+                local_groupObj[const_type] = const_subgroup;
+                
                 //STEP: 1 if subgroupObj is null then add group
                 if (groupObj.group == null) {
                     groupObj[const_group] = group_name;
                 }
+                
+               
 
                 //STEP: 2 check if other group's subgroup is selected
                 if (groupObj.group !== group_name) {
@@ -1265,8 +1270,6 @@ $(document)
                    
                     });
                 	
-                	
-                	
                 	//again add old subgroups, thus reverse the changes
                 	  for(var i in init_subgroups) {
                 		  //replace dummy value "placeholder_subgroup" with subgroup name
@@ -1276,8 +1279,12 @@ $(document)
                     
                     }
                     
+                    //reset all objects
                     delete groupObj[const_group];
                     delete groupObj[const_subgroup];
+                    delete groupObj[const_type];
+                    delete add_obj[key_add];
+                    removeSubgroup.splice(0, removeSubgroup.length);
                     isSubgroupPopulated = false;
                     init_subgroups.splice(0, init_subgroups.length);
                 }
@@ -1371,6 +1378,13 @@ $(document)
 
                         //Adding subgroup array to groupObj Object
                         local_groupObj[const_subgroup] = addSubgroup;
+                        
+                        //add const type of group or subgroup
+                        local_groupObj[const_subgroup] = addSubgroup;
+                        
+                        //add const_subgroup 
+                        local_groupObj[const_type] = const_subgroup;
+                        
                         //Adding group object to add_obj
                         add_obj[key_add] = local_groupObj;
 
@@ -1446,6 +1460,7 @@ $(document)
                     countSubgroup = 0;
                     delete groupObj[const_group];
                     delete groupObj[const_subgroup];
+                    delete groupObj[const_type];
                     isSubgroupPopulated = false;
                     init_subgroups.splice(0, init_subgroups.length);
 
@@ -1470,6 +1485,8 @@ $(document)
                 if (groupObj[const_group] == undefined && $rows == 0) {
                     groupObj[const_group] = group_name;
                 }
+      
+             
 
                 //check if global groupObj is same as local Group Object && initsubgroup length > 0
                 if (groupObj[const_group] != undefined && groupObj.group !== group_name) {
@@ -1520,6 +1537,8 @@ $(document)
                 var group_name = current_card.find('header > span').text();
 
                 groupObj[const_group] = group_name;
+                
+                groupObj[const_type] = const_group;
 
                 //reset subgroup before adding them
                 removeSubgroup.splice(0, removeSubgroup.length);
@@ -1534,7 +1553,9 @@ $(document)
                 if (removeSubgroup.length > 0) {
                     groupObj[const_subgroup] = removeSubgroup;
                 }
-
+                
+               
+                
                 //add group_obj to delete group object with key "remove"
                 delete_group[key_delete] = groupObj;
 
@@ -1552,8 +1573,9 @@ $(document)
                         console.log("AJAX Success: delete groups and subgroups");
                     },
                     complete: function(data) {
-                        // delete groupObj[const_group];
+                        delete groupObj[const_group];
                         delete groupObj[const_subgroup];
+                        delete groupObj[const_type];
                         delete delete_group[key_delete];
                         removeSubgroup.splice(0, removeSubgroup.length);
                         console.log("AJAX Complete: delete groups and subgroups");
@@ -1570,6 +1592,10 @@ $(document)
             //SCENARIO 4: ADD ONLY GROUP. Call AJAX to SAVE NEW GROUP INTO DB
             var textValue;
             $('.button_add_group').click(function() {
+            	
+            	//call getGroups which will return array of group_names
+            	init_groups=getGroups();
+            	
                 $("#groupDialog").dialog("open");
                 $('#group_name').val("");
             });
@@ -1589,21 +1615,30 @@ $(document)
                         var errorMsg = "";
                         var isValid = true;
 
-
-                        if (textValue != "") {
-                            isValid = true;
-                        } else {
-                            isValid = false
-                            errorMsg = "<br/> Group Name cannot be empty...";
-                        }
-
-                        var regx = /^[A-Za-z0-9]+$/;
-
-                        if (!regx.test(textValue)) {
+                        //empty string
+                        if (textValue.trim() == "") {
                             isValid = false;
-                            errorMsg = errorMsg + "<br/> Group Name cannot have special characters...";
-                        } else isValid = true;
-
+                            errorMsg = "<br/> please fill in Group";
+                        } 
+                        
+                        //if duplicate
+                        if (textValue.trim() != "") {
+                        	
+                            for(var i in init_groups) {
+                            	console.log("GROUP DUPLICATE OUTSIDE - "+init_groups[i]);
+                        		if(textValue.trim() == init_groups[i]) {
+                                	console.log("GROUP DUPLICATE INSIDE - "+init_groups[i]);
+                        			isValid = false;
+                        			errorMsg = "<br/> Group cannot be duplicate";
+                        		}
+                        	}
+                        	
+                        }
+                        var regx = /^[A-Za-z0-9]+$/;
+                        if (!regx.test(textValue.trim())) {
+                            isValid = false;
+                            errorMsg = errorMsg + "<br/> group Name cannot have special characters...";
+                        } 
 
                         if (isValid) {
                             //group Add 
@@ -1611,6 +1646,8 @@ $(document)
 
                             groupObj[const_group] = textValue;
                             groupAdd[key_add] = groupObj;
+                            //add type as group 
+                            groupObj[const_type] = const_group;
 
                             console.log("ADD ONLY GROUP NAME - " + JSON.stringify(groupAdd));
 
@@ -1741,4 +1778,18 @@ $(document)
                 return _initArr;
             }
 
+         // init load groups
+            function getGroups() {
+
+                var _initArr = [];
+
+                // loop through each group
+               $('.card_group header > span').each(function(index) {
+                		_initArr.push($(this).text());
+                });
+
+                return _initArr;
+            }
+
+            
         }); //end of document jQuery
